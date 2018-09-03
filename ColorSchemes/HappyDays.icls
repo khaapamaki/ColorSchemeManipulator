@@ -1,14 +1,18 @@
-<scheme name="HappyDays Light" version="142" parent_scheme="Darcula">
+<scheme name="HappyDays" version="142" parent_scheme="Darcula">
   <option name="FONT_SCALE" value="1.0" />
   <metaInfo>
-    <property name="created">2018-09-03T12:04:39</property>
+    <property name="created">2018-09-03T23:13:56</property>
     <property name="ide">Rider</property>
     <property name="ideVersion">2018.2.0.0</property>
-    <property name="modified">2018-09-03T12:04:50</property>
+    <property name="modified">2018-09-03T23:14:13</property>
     <property name="originalScheme">HappyDays</property>
   </metaInfo>
-  <option name="CONSOLE_FONT_NAME" value="Menlo" />
+  <option name="CONSOLE_FONT_NAME" value="Fira Mono" />
   <option name="CONSOLE_LINE_SPACING" value="1.1" />
+  <colors>
+    <option name="CARET_ROW_COLOR" value="2f2f2f" />
+    <option name="GUTTER_BACKGROUND" value="2c2e30" />
+  </colors>
   <attributes>
     <option name="CLASS_NAME_ATTRIBUTES">
       <value>
@@ -98,7 +102,7 @@
     </option>
     <option name="DEFAULT_INSTANCE_FIELD">
       <value>
-        <option name="FOREGROUND" value="baa8e2" />
+        <option name="FOREGROUND" value="b3a5d4" />
       </value>
     </option>
     <option name="DEFAULT_INSTANCE_METHOD">
