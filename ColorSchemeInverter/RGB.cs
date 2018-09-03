@@ -74,7 +74,7 @@ namespace ColorSchemeInverter
 
         public string ToARGBString()
         {
-            return Red.ToString("X2") + Green.ToString("X2") + Blue.ToString("X2");
+            return Alpha.ToString("X2") + Red.ToString("X2") + Green.ToString("X2") + Blue.ToString("X2");
         }
 
         public string ToRGBAString()

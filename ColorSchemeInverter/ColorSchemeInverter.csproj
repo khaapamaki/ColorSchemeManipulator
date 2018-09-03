@@ -45,6 +45,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGB.cs" />
+    <Compile Include="SchemeFormat.cs" />
+    <Compile Include="SchemeFormatUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">
@@ -53,6 +55,8 @@
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>
+    <Content Include="bin\Debug\darcula-vs-2017_inverted.vstheme" />
+    <Content Include="bin\Debug\HappyDays_inverted.icls" />
     <EmbeddedResource Include="..\ColorSchemes\darcula-vs-2017.vstheme">
       <Link>darcula-vs-2017.vstheme</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -4,6 +4,6 @@ namespace ColorSchemeInverter
     {
         VisualStudio,
         Idea,
-        Generic      
+        Generic
     }
 }
