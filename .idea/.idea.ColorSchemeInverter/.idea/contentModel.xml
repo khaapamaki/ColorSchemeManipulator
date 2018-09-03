@@ -13,6 +13,7 @@
         <e p="ColorSchemeInverter.csproj" t="IncludeRecursive" />
         <e p="ColorSchemeProcessor.cs" t="Include" />
         <e p="HSL.cs" t="Include" />
+        <e p="HSV.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">

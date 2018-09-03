@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ColorSchemeProcessor.cs" />
     <Compile Include="HSL.cs" />
+    <Compile Include="HSV.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGB.cs" />

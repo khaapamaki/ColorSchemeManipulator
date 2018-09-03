@@ -1,4 +1,6 @@
-﻿namespace ColorSchemeInverter
+﻿using System;
+
+namespace ColorSchemeInverter
 {
     internal class Program
     {
@@ -12,8 +14,11 @@
                 targetFile = args[1];
             }
             
+            RGB rgb = RGB.FromRGB("fa0000");
+            Console.WriteLine(rgb.ToARGBString());
+            Console.WriteLine(rgb.InvertInHSL().ToRGBString());
             
-            ColorSchemeProcessor.InvertColors(sourceFile, targetFile);
+            //ColorSchemeProcessor.InvertColors(sourceFile, targetFile);
             
         }
     }
