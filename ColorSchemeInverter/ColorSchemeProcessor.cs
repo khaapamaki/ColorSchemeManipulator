@@ -1,5 +1,8 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Xml.Linq;
 
 namespace ColorSchemeInverter
@@ -8,9 +11,19 @@ namespace ColorSchemeInverter
     {
         public static void InvertColors(string sourceFile, string targetFile)
         {
-            DigIntoXML(sourceFile);
+            string text = File.ReadAllText(sourceFile);
+            text = ReplaceColorsWIthInvertedOnes(text);
+            File.WriteAllText(targetFile, text, Encoding.Default);
         }
 
+        private static string ReplaceColorsWIthInvertedOnes(string text)
+        {
+            const string rgbPattern = "=\"#?([0-9abcdefABCDEF]{6})\"";
+            const string argbPattern = "=\"#?([0-9abcdefABCDEF]{8})\"";
+            
+            return text;
+        }
+        
         // temp method for testing stuff
         private static bool DigIntoXML(string sourceFile)
         {

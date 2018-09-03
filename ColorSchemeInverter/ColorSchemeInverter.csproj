@@ -50,6 +50,14 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
+    <EmbeddedResource Include="..\ColorSchemes\darcula-vs-2017.vstheme">
+      <Link>darcula-vs-2017.vstheme</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ColorSchemes\HappyDays.icls">
+      <Link>HappyDays.icls</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
