@@ -4,10 +4,10 @@ namespace ColorSchemeInverter
 {
     public class RGB
     {
-        private byte Red { get; set; } = 0x00;
-        private byte Green { get; set; } = 0x00;
-        private byte Blue { get; set; } = 0x00;
-        private byte Alpha { get; set; } = 0xFF;
+        public byte Red { get; set; } = 0x00;
+        public byte Green { get; set; } = 0x00;
+        public byte Blue { get; set; } = 0x00;
+        public byte Alpha { get; set; } = 0xFF;
 
         private RGB() { }
         
@@ -37,7 +37,7 @@ namespace ColorSchemeInverter
             return new RGB(hsl);
         }
         
-        public static RGB FromRGB(string color)
+        public static RGB FromRGBString(string color)
         {
             var newRGB = new RGB();
             newRGB.Red = byte.Parse(color.Substring(0,2), System.Globalization.NumberStyles.HexNumber);
@@ -47,7 +47,7 @@ namespace ColorSchemeInverter
             return newRGB;
         }
 
-        public static RGB FromARGB(string color)
+        public static RGB FromARGBString(string color)
         {
             var newRGB = new RGB();
             newRGB.Red = byte.Parse(color.Substring(2,2), System.Globalization.NumberStyles.HexNumber);
@@ -57,7 +57,7 @@ namespace ColorSchemeInverter
             return newRGB;
         }
 
-        public static RGB FromRGBA(string color)
+        public static RGB FromRGBAString(string color)
         {
             var newRGB = new RGB();
             newRGB.Red = byte.Parse(color.Substring(0,2), System.Globalization.NumberStyles.HexNumber);
@@ -84,12 +84,87 @@ namespace ColorSchemeInverter
 
         public HSL ToHSL()
         {
-            throw new NotImplementedException();
+            HSL hsl = new HSL();
+            hsl.Alpha = Alpha;
+            
+            double r = (Red / 255.0);
+            double g = (Green/ 255.0);
+            double b = (Blue / 255.0);
+
+            double min = Math.Min(Math.Min(r, g), b);
+            double max = Math.Max(Math.Max(r, g), b);
+            double delta = max - min;
+
+            hsl.Lightness = (max + min) / 2.0;
+
+            if (delta <= 0.0001)
+            {
+                hsl.Hue = 0.0;
+                hsl.Saturation = 0.0;
+            }
+            else
+            {
+                hsl.Saturation = (hsl.Lightness <= 0.5) ? (delta / (max + min)) : (delta / (2.0 - max - min));
+
+                double hue;
+
+                if (r >= max)
+                {
+                    hue = ((g - b) / 6.0) / delta;
+                }
+                else if (g >= max)
+                {
+                    hue = (1.0 / 3.0) + ((b - r) / 6.0) / delta;
+                }
+                else
+                {
+                    hue = (2.0 / 3.0) + ((r - g) / 6.0) / delta;
+                }
+
+                if (hue < 0.0)
+                    hue += 1.0;
+                if (hue > 1.0)
+                    hue -= 1.0;
+
+                hsl.Hue = hue * 360.0;
+            }
+
+            return hsl;
         }
         
         public HSV ToHSV()
         {
-            throw new NotImplementedException();
+            double delta, min;
+            double h = 0.0, s, v;
+
+            min = Math.Min(Math.Min(Red, Green), Blue);
+            v = Math.Max(Math.Max(Red, Green), Blue);
+            delta = v - min;
+
+            if (v <= 0.001)
+                s = 0.0;
+            else
+                s = delta / v;
+
+            if (s <= 0.001)
+                h = 0.0;
+
+            else
+            {
+                if (Red == v)
+                    h = (Green - Blue) / delta;
+                else if (Green == v)
+                    h = 2.0 + (Blue - Red) / delta;
+                else if (Blue == v)
+                    h = 4.0 + (Red - Green) / delta;
+
+                h *= 60.0;
+
+                if (h < 0.0)
+                    h = h + 360.0;
+            }
+
+            return new HSV(h, s, (v / 255.0), Alpha);
         }
         
         public RGB InvertInHSL() { 
@@ -98,20 +173,19 @@ namespace ColorSchemeInverter
         }
 
         public RGB InvertInHSV() { 
-        public RGB InvertInHSV() { 
             SetRGB(ToHSV().InvertValue().ToRGB());
             return this;
         }
         
         public override string ToString()
         {
-            return string.Format($"Red: {Red}, Green: {Green}, Blue: {Blue} ");
+            return string.Format($"Red: {Red}, Green: {Green}, Blue: {Blue}, Alpha: {Alpha}");
         }
         
         public string ToString(string format)
         {
             if (format.ToUpper() == "X2") {
-                return string.Format($"Red: 0x{Red:X2}, Green: 0x{Green:X2}, Blue: 0x{Blue:X2} ");
+                return string.Format($"Red: 0x{Red:X2}, Green: 0x{Green:X2}, Blue: 0x{Blue:X2}  Alpha: 0x{Alpha:X2}");
             } else {
                 return ToString();
             }

@@ -14,9 +14,14 @@ namespace ColorSchemeInverter
                 targetFile = args[1];
             }
             
-            RGB rgb = RGB.FromRGB("fa0000");
-            Console.WriteLine(rgb.ToARGBString());
-            Console.WriteLine(rgb.InvertInHSL().ToRGBString());
+            RGB rgb = RGB.FromRGBAString("EB996380");
+            Console.WriteLine(rgb.ToString());
+            Console.WriteLine(rgb.ToHSL().ToString());
+            Console.WriteLine(rgb.ToHSV().ToString());
+            Console.WriteLine(rgb.ToHSL().ToRGB().ToString());
+            Console.WriteLine(rgb.ToHSV().ToRGB().ToString());
+            Console.WriteLine(rgb.InvertInHSL().ToString());
+            Console.WriteLine(rgb.InvertInHSV().ToString());
             
             //ColorSchemeProcessor.InvertColors(sourceFile, targetFile);
             

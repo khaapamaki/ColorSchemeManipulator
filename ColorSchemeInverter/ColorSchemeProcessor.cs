@@ -43,12 +43,12 @@ namespace ColorSchemeInverter
 
             if (IsValidHexString(rgbString)) {      
                 if (rgbString.Length == 6) {
-                   rgbString = RGB.FromRGB(rgbString).InvertInHSL().ToRGBString();
+                   rgbString = RGB.FromRGBString(rgbString).InvertInHSL().ToRGBString();
                 } else if (rgbString.Length == 8) {
                     if (alphaFirst) {
-                        rgbString = RGB.FromARGB(rgbString).InvertInHSL().ToARGBString();
+                        rgbString = RGB.FromARGBString(rgbString).InvertInHSL().ToARGBString();
                     } else {
-                        rgbString = RGB.FromRGBA(rgbString).InvertInHSL().ToRGBAString();
+                        rgbString = RGB.FromRGBAString(rgbString).InvertInHSL().ToRGBAString();
                     }
                 } else {
                     return colorString;
