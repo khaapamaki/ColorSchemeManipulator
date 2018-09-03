@@ -20,7 +20,6 @@ namespace ColorSchemeInverter
 
         private static string ReplaceColorsWithInvertedOnes(string text, SchemeFormat schemeFormat)
         {
-            
             MatchEvaluator matchEvaluator;
             switch (schemeFormat) {
                     case SchemeFormat.Idea:
@@ -69,7 +68,7 @@ namespace ColorSchemeInverter
                 string converterColorString;
                 switch (rgbStringFormat.ToUpper()) {
                     case "RRGGBB":
-                        converterColorString = RGB.FromRGBString(colorString).InvertInHSV().ToRGBString();
+                        converterColorString = RGB.FromRGBString(colorString).InvertInHSL().ToRGBString();
                         break;
                     case "AARRGGBB":
                         converterColorString = RGB.FromARGBString(colorString).InvertInHSL().ToARGBString();

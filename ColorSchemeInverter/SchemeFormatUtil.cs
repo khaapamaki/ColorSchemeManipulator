@@ -1,4 +1,5 @@
 namespace ColorSchemeInverter {
+    
     public class SchemeFormatUtil
     {
         public static SchemeFormat GetFormatFromExtension(string extension)
@@ -17,8 +18,10 @@ namespace ColorSchemeInverter {
             }  
         }
 
+        
         public static string GetRegEx(SchemeFormat schemeFormat)
         {
+            // Patterns must have three groups, where 2nd must pure hex RGB without any prefixes!
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
                     return "(<option name=\".+\" value=\")([0-9abcdef]{6})(\"\\s?\\/>)";

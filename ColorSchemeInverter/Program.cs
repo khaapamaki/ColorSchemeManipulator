@@ -2,6 +2,13 @@
 using System.IO;
 using System.Net;
 
+// Todo: Add more filters, at least for adjusting saturation and gamma 
+// Todo: Implement RGBA, RGB, argb MatchEvaluator delegates for future needs
+// Todo: Delegate functions for filters. Filters for RGB only or also for HSL? or both?
+// Todo: Add support for CSS
+// Issues: HSV ValueInversion produces bad results. HSV could be dropped out
+
+
 namespace ColorSchemeInverter
 {
     internal class Program
@@ -15,26 +22,12 @@ namespace ColorSchemeInverter
             string sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
             string targetFile = Path.GetFullPath(Path.Combine(baseDir,
                 Path.GetFileNameWithoutExtension(sourceFile) + "_inverted"
-                                                             + Path.GetExtension(sourceFile)
-            ));
+                                                             + Path.GetExtension(sourceFile)));
             
             if (args.Length == 2) {
                 sourceFile = args[0];
                 targetFile = args[1];
             }
-
-            /*
-            Console.WriteLine("Source path: " + sourceFile);
-            Console.WriteLine("Target path: " + targetFile);
-            RGB rgb = RGB.FromRGBAString("EB996380");
-            Console.WriteLine(rgb.ToString());
-            Console.WriteLine(rgb.ToHSL().ToString());
-            Console.WriteLine(rgb.ToHSV().ToString());
-            Console.WriteLine(rgb.ToHSL().ToRGB().ToString());
-            Console.WriteLine(rgb.ToHSV().ToRGB().ToString());
-            Console.WriteLine(rgb.InvertInHSL().ToString());
-            Console.WriteLine(rgb.InvertInHSV().ToString());
-            */
 
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
 
