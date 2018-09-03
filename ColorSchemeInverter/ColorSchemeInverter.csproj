@@ -50,6 +50,9 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
+    <Content Include="..\readme.md">
+      <Link>readme.md</Link>
+    </Content>
     <EmbeddedResource Include="..\ColorSchemes\darcula-vs-2017.vstheme">
       <Link>darcula-vs-2017.vstheme</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
