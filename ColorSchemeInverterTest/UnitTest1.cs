@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using ColorSchemeInverter;
 using NUnit.Framework;
 
 namespace Tests
@@ -8,9 +11,42 @@ namespace Tests
         public void Setup() { }
 
         [Test]
-        public void Test1()
+        public void TestRGB()
         {
-            Assert.Pass();
+            RGB rgb1 = new RGB(0x8A, 0x3B, 0x20, 0xFF);
+            RGB rgb2 = RGB.FromRGBString("8A3B20FF", "RRGGBBAA");
+            Assert.True(rgb1.Equals(rgb2));
+        }
+
+        [Test]
+        public void TestInvertLightness()
+        {
+            RGB rgb1 = new RGB(0x8A, 0x3B, 0x20, 0xFF);
+            RGB rgb1inv = rgb1.ToHSL().ApplyFilter(new HSLFilter(FilterBundle.InvertLightness)).ToRGB();
+            RGB rgb2 = new RGB(0xE0, 0xE0, 0xE0, 0x80);
+            RGB rgb2inv = rgb2.ToHSL().ApplyFilter(new HSLFilter(FilterBundle.InvertLightness)).ToRGB();
+
+            Assert.True(rgb1inv.Equals(RGB.FromRGBAString("DF9075FF")));
+            Assert.True(rgb2inv.Equals(RGB.FromRGBAString("1F1F1F80")));
+        }
+        [Test]
+        public void TestRGBtoHSLtoRGB()
+        {
+            RGB rgb1 = new RGB(0x8A, 0x3B, 0x20, 0xFF);
+            Assert.True(rgb1.Equals(rgb1.ToHSL().ToRGB()));
+        }
+        
+        [Test]
+        public void TestManyRandomRGBtoHSLtoRGB()
+        {
+            for (int i = 0; i < 1000; i++) {
+                var rnd = new Random();
+                RGB rgb = new RGB((byte) rnd.Next(0, 255),
+                    (byte) rnd.Next(0, 255),
+                    (byte) rnd.Next(0, 255),
+                    (byte) rnd.Next(0, 255));
+                Assert.True(rgb.Equals(rgb.ToHSL().ToRGB()));
+            }
         }
     }
 }

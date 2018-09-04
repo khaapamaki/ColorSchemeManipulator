@@ -55,7 +55,7 @@ namespace ColorSchemeInverter
                         .ToRGB()
                         .ToRGBString(rgbStringFormat);
                     
-                    Console.WriteLine(rgbString + " -> " + filteredRGBString);
+                    // Console.WriteLine(rgbString + " -> " + filteredRGBString);
                     return m.Groups[1]
                            + filteredRGBString
                            + m.Groups[3];

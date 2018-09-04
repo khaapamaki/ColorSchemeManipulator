@@ -246,5 +246,11 @@ namespace ColorSchemeInverter
 
             return true;
         }
+
+        public bool Equals(RGB rgb)
+        {
+            bool value = Red == rgb.Red && Green == rgb.Green && Blue == rgb.Blue && Alpha == rgb.Alpha;
+            return value;
+        }
     }
 }
