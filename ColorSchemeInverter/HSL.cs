@@ -121,5 +121,11 @@ namespace ColorSchemeInverter
         {
             return filter.ApplyTo(this);
         }
+        
+        public bool Equals(HSL c)
+        {
+            bool value = Hue.AboutEqual(c.Hue) && Hue.AboutEqual(c.Hue) && Hue.AboutEqual(c.Hue) && Alpha.Equals(Alpha);
+            return value;
+        }
     }
 }
