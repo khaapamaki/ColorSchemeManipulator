@@ -11,59 +11,48 @@ namespace ColorSchemeInverter
 {
     public class ColorSchemeProcessor
     {
-        public static void InvertColors(string sourceFile, string targetFile, SchemeFormat schemeFormat)
+        public ColorSchemeProcessor(SchemeFormat schemeFormat)
         {
-            string text = File.ReadAllText(sourceFile);
-            text = ReplaceColorsWithInvertedOnes(text, schemeFormat);
-            File.WriteAllText(targetFile, text, Encoding.Default);
+            _schemeFormat = schemeFormat;
         }
 
-        private static string ReplaceColorsWithInvertedOnes(string text, SchemeFormat schemeFormat)
+        private SchemeFormat _schemeFormat;
+        
+        public void Process(string sourceFile, string targetFile)
         {
-            MatchEvaluator matchEvaluator;
-            switch (schemeFormat) {
-                    case SchemeFormat.Idea:
-                        matchEvaluator = new MatchEvaluator(MatchReplaceRGBLowercase);
-                        break;
-                    case SchemeFormat.VisualStudio:
-                        matchEvaluator = new MatchEvaluator(MatchReplaceARGBUppercase);
-                        break;
-                    default:
-                        throw new NotImplementedException();
+            string text = File.ReadAllText(sourceFile);
+            string convertedText;
+            try {
+                convertedText = ApplyFilters(text);
+
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
             }
-                
-                
-            string regExPattern = SchemeFormatUtil.GetRegEx(schemeFormat);
-            string rgbStringFormat = SchemeFormatUtil.GetRGBStringFromat(schemeFormat);
+            
+            File.WriteAllText(targetFile, convertedText, Encoding.Default);
+        }
 
-            text = Regex.Replace(text, regExPattern, matchEvaluator);
-
-            Console.WriteLine(text);
+        private string ApplyFilters(string text)
+        {
+            string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);
+            text = Regex.Replace(text, regExPattern, new MatchEvaluator(MatchReplace));
             return text;
         }
 
-        private static string MatchReplaceRGBLowercase(Match m)
+        private string MatchReplace(Match m)
         {
             if (m.Groups.Count == 4) {
                 return  m.Groups[1] 
-                    + ProcessColorString(m.Groups[2].ToString(), "rrggbb")
-                    + m.Groups[3];
-            }
-            throw new Exception("Regular Expression Mismatch");
-        }
-        
-        private static string MatchReplaceARGBUppercase(Match m)
-        {
-            if (m.Groups.Count == 4) {
-                return  m.Groups[1] 
-                        + ProcessColorString(m.Groups[2].ToString(), "AARRGGBB")
+                        + InvertLightness(m.Groups[2].ToString())
                         + m.Groups[3];
             }
             throw new Exception("Regular Expression Mismatch");
         }
         
-        private static string ProcessColorString(string colorString, string rgbStringFormat)
+        private string InvertLightness(string colorString)
         {
+            string rgbStringFormat = SchemeFormatUtil.GetRGBStringFromat(_schemeFormat);
             if (IsValidHexString(colorString) && colorString.Length == rgbStringFormat.Length) {
                 string converterColorString;
                 switch (rgbStringFormat.ToUpper()) {

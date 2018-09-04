@@ -88,7 +88,7 @@ namespace ColorSchemeInverter
         
         public HSL InvertLightness()
         {
-            Lightness = 1f - Lightness;
+            Lightness = 1 - Lightness;
             // todo add some color adjustments if needed, by gamma maybe?
             return this;
         }

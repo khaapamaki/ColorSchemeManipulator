@@ -32,8 +32,10 @@ namespace ColorSchemeInverter
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
-                if (File.Exists(sourceFile))
-                    ColorSchemeProcessor.InvertColors(sourceFile, targetFile, schemeFormat);
+                if (File.Exists(sourceFile)) {
+                    ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
+                    processor.Process(sourceFile, targetFile);
+                }
                 else {
                     Console.Error.WriteLine(sourceFileName + " does not exist");
                 }

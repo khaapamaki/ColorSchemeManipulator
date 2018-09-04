@@ -111,8 +111,7 @@ namespace ColorSchemeInverter
 
         public HSV InvertValue()
         {
-            Value = 1f - Value;
-            // todo add some color adjustments if needed, by gamma maybe?
+            Value = 1.0 - Value;
             return this;
         }
         

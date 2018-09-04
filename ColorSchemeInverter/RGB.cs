@@ -4,9 +4,9 @@ namespace ColorSchemeInverter
 {
     public class RGB
     {
-        public byte Red { get; set; } = 0x00;
-        public byte Green { get; set; } = 0x00;
-        public byte Blue { get; set; } = 0x00;
+        public byte Red { get; set; }
+        public byte Green { get; set; }
+        public byte Blue { get; set; }
         public byte Alpha { get; set; } = 0xFF;
 
         private RGB() { }
