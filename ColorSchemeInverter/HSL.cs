@@ -6,7 +6,7 @@ namespace ColorSchemeInverter
     public class HSL
     {
         public double Hue { get; set; }
-        public double Saturation { get; set; } 
+        public double Saturation { get; set; }
         public double Lightness { get; set; }
         public byte Alpha { get; set; } = 0xFF;
 
@@ -20,18 +20,25 @@ namespace ColorSchemeInverter
             Alpha = alpha;
         }
 
-        
-        public void SetHSL(HSL hsl)
+        public HSL(HSL hsl)
         {
             Hue = hsl.Hue;
             Saturation = hsl.Saturation;
             Lightness = hsl.Lightness;
             Alpha = hsl.Alpha;
         }
-
+        
         public HSL(RGB rgb)
         {
-            SetHSL(rgb.ToHSL());
+            CopyFrom(rgb.ToHSL());
+        }
+
+        public void CopyFrom(HSL hsl)
+        {
+            Hue = hsl.Hue;
+            Saturation = hsl.Saturation;
+            Lightness = hsl.Lightness;
+            Alpha = hsl.Alpha;
         }
 
         public static HSL FromRGB(RGB rgb)
@@ -45,21 +52,20 @@ namespace ColorSchemeInverter
             byte g = 0;
             byte b = 0;
 
-            if (Saturation <= 0.001)
-            {
-                r = g = b = (byte)(Lightness * 255);
-            }
-            else
-            {
+            if (Saturation <= 0.001) {
+                r = g = b = (byte) (Lightness * 255);
+            } else {
                 double v1, v2;
                 double hue = Hue / 360.0;
 
-                v2 = (Lightness < 0.5) ? (Lightness * (1 + Saturation)) : ((Lightness + Saturation) - (Lightness * Saturation));
+                v2 = (Lightness < 0.5)
+                    ? (Lightness * (1 + Saturation))
+                    : ((Lightness + Saturation) - (Lightness * Saturation));
                 v1 = 2 * Lightness - v2;
 
-                r = (byte)(255 * HueToRGB(v1, v2, hue + (1.0 / 3)));
-                g = (byte)(255 * HueToRGB(v1, v2, hue));
-                b = (byte)(255 * HueToRGB(v1, v2, hue - (1.0 / 3)));
+                r = (byte) (255 * HueToRGB(v1, v2, hue + (1.0 / 3)));
+                g = (byte) (255 * HueToRGB(v1, v2, hue));
+                b = (byte) (255 * HueToRGB(v1, v2, hue - (1.0 / 3)));
             }
 
             return new RGB(r, g, b, Alpha);
@@ -84,27 +90,36 @@ namespace ColorSchemeInverter
 
             return v1;
         }
-        
-        
+
         public HSL InvertLightness()
         {
             Lightness = 1 - Lightness;
-            // todo add some color adjustments if needed, by gamma maybe?
             return this;
         }
-        
+
         public override string ToString()
         {
             return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Lightness: {Lightness} ");
         }
-        
+
         public string ToString(string format)
         {
             if (format.ToUpper() == "X2") {
-                return string.Format($"Hue: 0x{Hue*255:X2}, Saturationen: 0x{Saturation*255:X2}, Lightness 0x{Lightness*255:X2} ");
+                return string.Format(
+                    $"Hue: 0x{Hue * 255:X2}, Saturation: 0x{Saturation * 255:X2}, Lightness 0x{Lightness * 255:X2} ");
             } else {
                 return ToString();
             }
+        }
+
+        public HSL ApplyFilterSet(HSLFilterSet filters)
+        {
+            return filters.ApplyTo(this);
+        }
+
+        public HSL ApplyFilter(HSLFilter filter)
+        {
+            return filter.ApplyTo(this);
         }
     }
 }

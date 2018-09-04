@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,24 +18,25 @@ namespace ColorSchemeInverter
         }
 
         private SchemeFormat _schemeFormat;
-        
-        public void Process(string sourceFile, string targetFile)
+        private HSLFilterSet _filters;
+
+        public void ProcessFile(string sourceFile, string targetFile, HSLFilterSet filters)
         {
             string text = File.ReadAllText(sourceFile);
             string convertedText;
             try {
-                convertedText = ApplyFilters(text);
-
+                convertedText = ApplyFilters(text, filters);
             } catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
-            
+
             File.WriteAllText(targetFile, convertedText, Encoding.Default);
         }
 
-        private string ApplyFilters(string text)
+        private string ApplyFilters(string text, HSLFilterSet filters)
         {
+            _filters = filters;
             string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);
             text = Regex.Replace(text, regExPattern, new MatchEvaluator(MatchReplace));
             return text;
@@ -42,55 +44,41 @@ namespace ColorSchemeInverter
 
         private string MatchReplace(Match m)
         {
-            if (m.Groups.Count == 4) {
-                return  m.Groups[1] 
-                        + InvertLightness(m.Groups[2].ToString())
-                        + m.Groups[3];
-            }
-            throw new Exception("Regular Expression Mismatch");
-        }
-        
-        private string InvertLightness(string colorString)
-        {
             string rgbStringFormat = SchemeFormatUtil.GetRGBStringFromat(_schemeFormat);
-            if (IsValidHexString(colorString) && colorString.Length == rgbStringFormat.Length) {
-                string converterColorString;
-                switch (rgbStringFormat.ToUpper()) {
-                    case "RRGGBB":
-                        converterColorString = RGB.FromRGBString(colorString).InvertInHSL().ToRGBString();
-                        break;
-                    case "AARRGGBB":
-                        converterColorString = RGB.FromARGBString(colorString).InvertInHSL().ToARGBString();
-                        break;
-                    case "RRGGBBAA":
-                        converterColorString = RGB.FromRGBAString(colorString).InvertInHSL().ToRGBAString();
-                        break;
-                    default:
-                        converterColorString = colorString;
-                        break;
+            if (m.Groups.Count == 4) {
+                string rgbString = m.Groups[2].ToString();
+                if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
+                    string filteredRGBString = 
+                        RGB.FromRGBString(rgbString, rgbStringFormat)
+                        .ToHSL()
+                        .ApplyFilterSet(_filters)
+                        .ToRGB()
+                        .ToRGBString(rgbStringFormat);
+                    
+                    Console.WriteLine(rgbString + " -> " + filteredRGBString);
+                    return m.Groups[1]
+                           + filteredRGBString
+                           + m.Groups[3];
+                } else {
+                    Console.WriteLine("Invalid RGB string: " + rgbString);
                 }
-
-                return IsUppercase(rgbStringFormat) ? converterColorString.ToUpper() : converterColorString.ToLower();
             }
 
-            // something went wrong, just return input untouched
-            return colorString;
+            throw new Exception("Regular Expression Mismatch");
+            return m.Groups[0].ToString();
         }
 
-        private static bool IsUppercase(string str)
-        {
-            return str.ToUpper() == str;
-        }
-
+        // Duplicate code in RGB class
         private static bool IsValidHexString(string str)
         {
             const string validHex = "0123456789abcdefABCDEF";
             foreach (var c in str) {
-                if (!validHex.Contains(c))
+                if (!validHex.Contains(c.ToString()))
                     return false;
             }
 
             return true;
         }
+        
     }
 }

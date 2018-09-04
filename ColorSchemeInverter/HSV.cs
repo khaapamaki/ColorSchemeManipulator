@@ -3,6 +3,7 @@ using System.Xml.Schema;
 
 namespace ColorSchemeInverter
 {
+    [Obsolete]
     public class HSV
     {
         public double Hue { get; set; }
@@ -20,7 +21,15 @@ namespace ColorSchemeInverter
             Alpha = alpha;
         }
 
-        public void SetHSV(HSV hsv)
+        public HSV(HSV hsv)
+        {
+            Hue = hsv.Hue;
+            Saturation = hsv.Saturation;
+            Value = hsv.Value;
+            Alpha = hsv.Alpha;
+        }
+        
+        public void CopyFrom(HSV hsv)
         {
             Hue = hsv.Hue;
             Saturation = hsv.Saturation;
@@ -30,7 +39,7 @@ namespace ColorSchemeInverter
 
         public HSV(RGB rgb)
         {
-            SetHSV(rgb.ToHSV());
+            CopyFrom(rgb.ToHSV());
         }
 
         public static HSV FromRGB(RGB rgb)

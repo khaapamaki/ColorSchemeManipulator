@@ -39,7 +39,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="FilterBundle.cs" />
+    <Compile Include="HSLFilter.cs" />
     <Compile Include="ColorSchemeProcessor.cs" />
+    <Compile Include="HSLFilterSet.cs" />
     <Compile Include="HSL.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Program.cs" />

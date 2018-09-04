@@ -1,11 +1,16 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 
 // Todo: Add more filters, at least for adjusting saturation and gamma 
-// Todo: Implement RGBA, RGB, argb MatchEvaluator delegates for future needs
-// Todo: Delegate functions for filters. Filters for RGB only or also for HSL? or both?
+
+// Todo: Change RGB presentation and Alpha values from byte to double to make conversions virtually lossless
+
+// Todo: Color superclass for RGB and HSL so it's possible to build generic filters that accept any color type and automatically make conversion if needed
+
 // Todo: Add support for CSS
+
+// Todo: Filters for levels (gamma, black, white) adjustements, gamma adjustment for saturation, contrast
+
 // Issues: HSV ValueInversion produces bad results. HSV could be dropped out
 
 
@@ -21,7 +26,7 @@ namespace ColorSchemeInverter
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             string sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
             string targetFile = Path.GetFullPath(Path.Combine(baseDir,
-                Path.GetFileNameWithoutExtension(sourceFile) + "_inverted"
+                Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
                                                              + Path.GetExtension(sourceFile)));
             
             if (args.Length == 2) {
@@ -33,8 +38,13 @@ namespace ColorSchemeInverter
 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
+
+                    var filters = new HSLFilterSet()
+                        .Add(FilterBundle.InvertLightness)
+                        .Add(FilterBundle.MultiplySaturation, 1.5);
+   
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
-                    processor.Process(sourceFile, targetFile);
+                    processor.ProcessFile(sourceFile, targetFile, filters);
                 }
                 else {
                     Console.Error.WriteLine(sourceFileName + " does not exist");

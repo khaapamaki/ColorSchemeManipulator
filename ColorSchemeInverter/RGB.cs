@@ -21,10 +21,18 @@ namespace ColorSchemeInverter
 
         public RGB(HSL hsl)
         {
-            SetRGB(hsl.ToRGB());
+            CopyFrom(hsl.ToRGB());
         }
 
-        public void SetRGB(RGB rgb)
+        public RGB(RGB rgb)
+        {
+            Red = rgb.Red;
+            Green = rgb.Green;
+            Blue = rgb.Blue;
+            Alpha = rgb.Alpha;
+        }
+        
+        public void CopyFrom(RGB rgb)
         {
             Red = rgb.Red;
             Green = rgb.Green;
@@ -35,6 +43,25 @@ namespace ColorSchemeInverter
         public static RGB FromHSL(HSL hsl)
         {
             return new RGB(hsl);
+        }
+
+        public static RGB FromRGBString(string rgbString, string rgbStringFormat)
+        {
+            if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
+                switch (rgbStringFormat.ToUpper()) {
+                    case "RRGGBB":
+                        return RGB.FromRGBString(rgbString);
+                    case "AARRGGBB":
+                        return RGB.FromARGBString(rgbString);
+                        break;
+                    case "RRGGBBAA":
+                        return RGB.FromRGBAString(rgbString);
+                    default:
+                        throw new Exception("Incorrect RGB string format: " + rgbStringFormat);
+                }
+            }
+
+            throw new Exception("Invalid color string: " + rgbString);
         }
         
         public static RGB FromRGBString(string color)
@@ -165,18 +192,31 @@ namespace ColorSchemeInverter
             }
 
             return new HSV(h, s, (v / 255.0), Alpha);
-        }
-        
-        public RGB InvertInHSL() { 
-            SetRGB(ToHSL().InvertLightness().ToRGB());
-            return this;
+        }       
+
+        public string ToRGBString(string rgbStringFormat)
+        {
+            string result;
+            switch (rgbStringFormat.ToUpper()) {
+                case "RRGGBB":
+                    result = ToRGBString();
+                    break;
+                case "AARRGGBB":
+                    result = ToARGBString();
+                    break;
+                case "RRGGBBAA":
+                    result = ToRGBAString();
+                    break;
+                default:
+                    result = ToRGBString();
+                    break;
+            }
+            
+            return IsUppercase(rgbStringFormat)
+                ? result.ToUpper()
+                : result.ToLower();  
         }
 
-        public RGB InvertInHSV() { 
-            SetRGB(ToHSV().InvertValue().ToRGB());
-            return this;
-        }
-        
         public override string ToString()
         {
             return string.Format($"Red: {Red}, Green: {Green}, Blue: {Blue}, Alpha: {Alpha}");
@@ -189,6 +229,22 @@ namespace ColorSchemeInverter
             } else {
                 return ToString();
             }
+        }
+        
+        private static bool IsUppercase(string str)
+        {
+            return str.ToUpper() == str;
+        }
+        
+        private static bool IsValidHexString(string str)
+        {
+            const string validHex = "0123456789abcdefABCDEF";
+            foreach (var c in str) {
+                if (!validHex.Contains(c.ToString()))
+                    return false;
+            }
+
+            return true;
         }
     }
 }
