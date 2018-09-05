@@ -4,18 +4,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Filters;
-using ColorSchemeInverter.SchemeFormat;
+using ColorSchemeInverter.SchemeFileSupport;
 
 namespace ColorSchemeInverter
 {
     public class ColorSchemeProcessor
     {
-        public ColorSchemeProcessor(SchemeFormat.SchemeFormat schemeFormat)
+        public ColorSchemeProcessor(SchemeFormat schemeFormat)
         {
             _schemeFormat = schemeFormat;
         }
 
-        private SchemeFormat.SchemeFormat _schemeFormat;
+        private SchemeFormat _schemeFormat;
         private FilterSet _filters;
 
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)

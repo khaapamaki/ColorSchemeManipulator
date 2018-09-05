@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using ColorSchemeInverter.Filters;
-using ColorSchemeInverter.SchemeFormat;
+using ColorSchemeInverter.SchemeFileSupport;
 
 // Todo: Add more filters, at least for adjusting saturation and gamma 
 
@@ -37,9 +37,9 @@ namespace ColorSchemeInverter
                 targetFile = args[1];
             }
 
-            SchemeFormat.SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
+            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
 
-            if (schemeFormat == SchemeFormat.SchemeFormat.Idea || schemeFormat == SchemeFormat.SchemeFormat.VisualStudio) {
+            if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
 
                     var filters = new FilterSet()

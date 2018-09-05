@@ -1,4 +1,4 @@
-namespace ColorSchemeInverter.SchemeFormat
+namespace ColorSchemeInverter.SchemeFileSupport
 {
     public enum SchemeFormat
     {
