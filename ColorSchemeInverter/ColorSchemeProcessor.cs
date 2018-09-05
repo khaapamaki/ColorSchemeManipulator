@@ -45,7 +45,7 @@ namespace ColorSchemeInverter
             string rgbStringFormat = SchemeFormatUtil.GetRGBStringFromat(_schemeFormat);
             if (m.Groups.Count == 4) {
                 string rgbString = m.Groups[2].ToString();
-                if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
+                if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
                     string filteredRGBString =
                         RGB.FromRGBString(rgbString, rgbStringFormat)
                             .ToHSL()
@@ -67,16 +67,5 @@ namespace ColorSchemeInverter
             return m.Groups[0].ToString();
         }
 
-        // Duplicate code in RGB class
-        private static bool IsValidHexString(string str)
-        {
-            const string validHex = "0123456789abcdefABCDEF";
-            foreach (var c in str) {
-                if (!validHex.Contains(c.ToString()))
-                    return false;
-            }
-
-            return true;
-        }
     }
 }
