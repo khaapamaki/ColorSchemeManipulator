@@ -47,11 +47,10 @@ namespace ColorSchemeInverter
             if (m.Groups.Count == 4) {
                 string rgbString = m.Groups[2].ToString();
                 if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
+
                     string filteredRGBString =
                         RGB.FromRGBString(rgbString, rgbStringFormat)
-                            .ToHSL()
                             .ApplyFilterSet(_filters)
-                            .ToRGB()
                             .ToRGBString(rgbStringFormat);
 
                     Console.WriteLine(rgbString + " -> " + filteredRGBString);

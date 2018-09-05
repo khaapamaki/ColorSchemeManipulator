@@ -47,55 +47,9 @@ namespace ColorSchemeInverter.Colors
 
         public RGB ToRGB()
         {
-            double r = 0;
-            double g = 0;
-            double b = 0;
-
-            if (Saturation <= 0.001) {
-                r = g = b = Lightness;
-            } else {
-                double v1, v2;
-                double hue = Hue / 360.0;
-
-                v2 = (Lightness < 0.5)
-                    ? (Lightness * (1 + Saturation))
-                    : ((Lightness + Saturation) - (Lightness * Saturation));
-                v1 = 2 * Lightness - v2;
-
-                r = HueToRGB(v1, v2, hue + (1.0 / 3));
-                g = HueToRGB(v1, v2, hue);
-                b = HueToRGB(v1, v2, hue - (1.0 / 3));
-            }
-
-            return new RGB(r, g, b, Alpha);
+            return ColorConverter.HSLToRGB(this);
         }
-
-        private static double HueToRGB(double v1, double v2, double vH)
-        {
-            if (vH < 0)
-                vH += 1;
-
-            if (vH > 1)
-                vH -= 1;
-
-            if ((6 * vH) < 1)
-                return (v1 + (v2 - v1) * 6 * vH);
-
-            if ((2 * vH) < 1)
-                return v2;
-
-            if ((3 * vH) < 2)
-                return (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
-
-            return v1;
-        }
-
-        public HSL InvertLightness()
-        {
-            Lightness = 1 - Lightness;
-            return this;
-        }
-
+        
         public override string ToString()
         {
             return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Lightness: {Lightness} ");

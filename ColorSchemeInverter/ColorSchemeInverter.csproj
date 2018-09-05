@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Colors\Color.cs" />
+    <Compile Include="Colors\ColorConverter.cs" />
     <Compile Include="Colors\HSL.cs" />
     <Compile Include="Colors\HSV.cs" />
     <Compile Include="Colors\RGB.cs" />

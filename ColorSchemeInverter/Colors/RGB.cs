@@ -101,71 +101,13 @@ namespace ColorSchemeInverter.Colors
 
         public HSL ToHSL()
         {
-            HSL hsl = new HSL();
-            hsl.Alpha = Alpha;
-            double r = Red;
-            double g = Green;
-            double b = Blue;
-            double min = Math.Min(Math.Min(r, g), b);
-            double max = Math.Max(Math.Max(r, g), b);
-            double delta = max - min;
-            hsl.Lightness = (max + min) / 2.0;
-            if (delta <= 0.0001) {
-                hsl.Hue = 0.0;
-                hsl.Saturation = 0.0;
-            } else {
-                hsl.Saturation = (hsl.Lightness <= 0.5) ? (delta / (max + min)) : (delta / (2.0 - max - min));
-
-                double hue;
-
-                if (r >= max) {
-                    hue = ((g - b) / 6.0) / delta;
-                } else if (g >= max) {
-                    hue = (1.0 / 3.0) + ((b - r) / 6.0) / delta;
-                } else {
-                    hue = (2.0 / 3.0) + ((r - g) / 6.0) / delta;
-                }
-
-                if (hue < 0.0)
-                    hue += 1.0;
-                if (hue > 1.0)
-                    hue -= 1.0;
-
-                hsl.Hue = hue * 360.0;
-            }
-
-            return hsl;
+            return ColorConverter.RGBToHSL(this);
         }
 
         public HSV ToHSV()
         {
-            double delta, min;
-            double h = 0.0, s, v;
-            min = Math.Min(Math.Min(Red, Green), Blue);
-            v = Math.Max(Math.Max(Red, Green), Blue);
-            delta = v - min;
-            if (v <= 0.001)
-                s = 0.0;
-            else
 
-                s = delta / v;
-            if (s <= 0.001)
-                h = 0.0;
-            else {
-                if (Red.AboutEqual(v))
-                    h = (Green - Blue) / delta;
-                else if (Green.AboutEqual(v))
-                    h = 2.0 + (Blue - Red) / delta;
-                else if (Blue.AboutEqual(v))
-                    h = 4.0 + (Red - Green) / delta;
-
-                h *= 60.0;
-
-                if (h < 0.0)
-                    h = h + 360.0;
-            }
-
-            return new HSV(h, s, v, Alpha);
+            return ColorConverter.RGBToHSV(this);
         }
 
         public string ToRGBString(string rgbStringFormat)
@@ -181,8 +123,10 @@ namespace ColorSchemeInverter.Colors
         public string ToString(string format)
         {
             if (format.ToUpper() == "X2") {
-                return string.Format(
-                    $"Red: 0x{Red * 255:X2}, Green: 0x{Green * 255:X2}, Blue: 0x{Blue * 255:X2}  Alpha: 0x{Alpha * 255:X2}");
+                return string.Format($"Red: 0x{Red * 255:X2}, " +
+                                     $"Green: 0x{Green * 255:X2}, " +
+                                     $"Blue: 0x{Blue * 255:X2} " +
+                                     $"Alpha: 0x{Alpha * 255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
                 return ToString();
