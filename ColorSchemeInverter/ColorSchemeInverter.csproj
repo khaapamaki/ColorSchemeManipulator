@@ -56,6 +56,12 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
+    <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\contentModel.xml" />
+    <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\indexLayout.xml" />
+    <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\modules.xml" />
+    <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\vcs.xml" />
+    <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\workspace.xml" />
+    <Content Include="..\.idea\.idea.ColorSchemeInverter\riderModule.iml" />
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>

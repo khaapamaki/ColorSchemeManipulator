@@ -12,6 +12,16 @@
     <e p="C:\Users\Kati\.Rider2018.2\system\resharper-host\local\Transient\ReSharperHost\v182\SolutionCaches\_ColorSchemeInverter.-1943370201.00" t="ExcludeRecursive" />
     <e p="E:\00-DEVELOPMENT\ColorSchemeInverter" t="IncludeFlat">
       <e p=".gitignore" t="Include" />
+      <e p=".idea\.idea.ColorSchemeInverter" t="Include">
+        <e p=".idea" t="Include">
+          <e p="contentModel.xml" t="Include" />
+          <e p="indexLayout.xml" t="Include" />
+          <e p="modules.xml" t="Include" />
+          <e p="vcs.xml" t="Include" />
+          <e p="workspace.xml" t="Include" />
+        </e>
+        <e p="riderModule.iml" t="Include" />
+      </e>
       <e p="ColorSchemeInverter" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive">
           <e p="Debug" t="Include">
