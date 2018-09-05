@@ -19,7 +19,8 @@ namespace ColorSchemeInverter
             Filter = filter;
             Arguments = args;
         }
-
+        
+        // todo auto cast back to subclass? could this be in base class?
         public override Color ApplyTo(Color color)
         {
             if (color is RGB) {
