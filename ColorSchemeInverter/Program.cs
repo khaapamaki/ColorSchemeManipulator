@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 
 // Todo: Add more filters, at least for adjusting saturation and gamma 
@@ -22,7 +23,6 @@ namespace ColorSchemeInverter
         {           
             string sourceFileName = @"HappyDays.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
- 
             
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             string sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));

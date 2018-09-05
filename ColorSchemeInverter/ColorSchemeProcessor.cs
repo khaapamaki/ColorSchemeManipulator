@@ -1,12 +1,7 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace ColorSchemeInverter
 {
@@ -48,14 +43,15 @@ namespace ColorSchemeInverter
             if (m.Groups.Count == 4) {
                 string rgbString = m.Groups[2].ToString();
                 if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
-                    string filteredRGBString = 
+                    string filteredRGBString =
                         RGB.FromRGBString(rgbString, rgbStringFormat)
-                        .ToHSL()
-                        .ApplyFilterSet(_filters)
-                        .ToRGB()
-                        .ToRGBString(rgbStringFormat);
-                    
-                    // Console.WriteLine(rgbString + " -> " + filteredRGBString);
+                            .ToHSL()
+                            .ApplyFilterSet(_filters)
+                            .ToRGB()
+                            .ToRGBString(rgbStringFormat);
+
+                    Console.WriteLine(rgbString + " -> " + filteredRGBString);
+
                     return m.Groups[1]
                            + filteredRGBString
                            + m.Groups[3];
@@ -79,6 +75,5 @@ namespace ColorSchemeInverter
 
             return true;
         }
-        
     }
 }

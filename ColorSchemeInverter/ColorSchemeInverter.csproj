@@ -49,8 +49,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGB.cs" />
+    <Compile Include="RGB8Bit.cs" />
     <Compile Include="SchemeFormat.cs" />
     <Compile Include="SchemeFormatUtil.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">

@@ -8,11 +8,11 @@ namespace ColorSchemeInverter
         public double Hue { get; set; }
         public double Saturation { get; set; }
         public double Lightness { get; set; }
-        public byte Alpha { get; set; } = 0xFF;
+        public double Alpha { get; set; } = 1.0;
 
         public HSL() { }
 
-        public HSL(double hue, double saturation, double lightness, byte alpha = 0xFF)
+        public HSL(double hue, double saturation, double lightness, double alpha = 1.0)
         {
             Hue = hue;
             Saturation = saturation;
@@ -48,12 +48,12 @@ namespace ColorSchemeInverter
 
         public RGB ToRGB()
         {
-            byte r = 0;
-            byte g = 0;
-            byte b = 0;
+            double r = 0;
+            double g = 0;
+            double b = 0;
 
             if (Saturation <= 0.001) {
-                r = g = b = (byte) (Lightness * 255);
+                r = g = b = Lightness;
             } else {
                 double v1, v2;
                 double hue = Hue / 360.0;
@@ -63,9 +63,9 @@ namespace ColorSchemeInverter
                     : ((Lightness + Saturation) - (Lightness * Saturation));
                 v1 = 2 * Lightness - v2;
 
-                r = (byte) (255 * HueToRGB(v1, v2, hue + (1.0 / 3)));
-                g = (byte) (255 * HueToRGB(v1, v2, hue));
-                b = (byte) (255 * HueToRGB(v1, v2, hue - (1.0 / 3)));
+                r = HueToRGB(v1, v2, hue + (1.0 / 3));
+                g = HueToRGB(v1, v2, hue);
+                b = HueToRGB(v1, v2, hue - (1.0 / 3));
             }
 
             return new RGB(r, g, b, Alpha);
@@ -124,7 +124,7 @@ namespace ColorSchemeInverter
         
         public bool Equals(HSL c)
         {
-            bool value = Hue.AboutEqual(c.Hue) && Hue.AboutEqual(c.Hue) && Hue.AboutEqual(c.Hue) && Alpha.Equals(Alpha);
+            bool value = Hue.AboutEqual(c.Hue) && Saturation.AboutEqual(c.Saturation) && Lightness.AboutEqual(c.Lightness) && Alpha.AboutEqual(c.Alpha);
             return value;
         }
     }
