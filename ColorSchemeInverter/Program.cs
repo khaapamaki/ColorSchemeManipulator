@@ -43,9 +43,9 @@ namespace ColorSchemeInverter
                 if (File.Exists(sourceFile)) {
 
                     var filters = new FilterSet()
-                        .Add(FilterBundle.InvertLightness)
-                        .Add(FilterBundle.MultiplySaturation, 1.5)
-                        .Add(FilterBundle.Invert);
+                        .Add(FilterBundle.LightnessInvert)
+                        .Add(FilterBundle.SaturationGain, 1.5);
+                        //.Add(FilterBundle.Invert);
    
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filters);

@@ -5,7 +5,7 @@ namespace ColorSchemeInverter.Filters
 {
     public class FilterBundle
     {
-        public static HSL InvertLightness(HSL hsl, object[] _)
+        public static HSL LightnessInvert(HSL hsl, object[] _)
         {
             var result = new HSL(hsl);
             // Todo: remove clamping when values over 1.0 and less 0.0 are safely converted to 8 bit RGB
@@ -13,7 +13,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
 
-        public static HSL MultiplySaturation(HSL hsl, object[] args)
+        public static HSL SaturationGain(HSL hsl, object[] args)
         {
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double multiplier) {
