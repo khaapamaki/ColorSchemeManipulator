@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ColorSchemeInverter.Colors;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Filters
 {
+    [Obsolete]
     public class HSLFilterSet
     {
         private readonly List<HSLFilter> _filterChain = new List<HSLFilter>();

@@ -1,7 +1,7 @@
-using System;
 using System.Linq;
+using ColorSchemeInverter.Colors;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Filters
 {
     public class FilterBundle
     {

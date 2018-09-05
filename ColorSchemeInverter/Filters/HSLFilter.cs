@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
+using ColorSchemeInverter.Colors;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Filters
 {
     public class HSLFilter : ColorFilter
     {

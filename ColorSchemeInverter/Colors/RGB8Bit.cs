@@ -1,17 +1,17 @@
 using System;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Colors
 {
-    public class RGB8Bit
+    public class RGB8bit
     {
         public byte Red { get; set; }
         public byte Green { get; set; }
         public byte Blue { get; set; }
         public byte Alpha { get; set; } = 0xFF;
 
-        public RGB8Bit() { }
+        public RGB8bit() { }
 
-        public RGB8Bit(byte red, byte green, byte blue, byte alpha = 0xFF)
+        public RGB8bit(byte red, byte green, byte blue, byte alpha = 0xFF)
         {
             Red = red;
             Green = green;
@@ -19,7 +19,7 @@ namespace ColorSchemeInverter
             Alpha = alpha;
         }
 
-        public RGB8Bit(double red, double green, double blue, double alpha = 1.0)
+        public RGB8bit(double red, double green, double blue, double alpha = 1.0)
         {
             Red = (byte) (red.Clamp(0.0, 1.0) * 255);
             Green = (byte) (green.Clamp(0.0, 1.0) * 255);
@@ -27,7 +27,7 @@ namespace ColorSchemeInverter
             Alpha = (byte) (alpha.Clamp(0.0, 1.0) * 255);
         }
 
-        public RGB8Bit(RGB rgb)
+        public RGB8bit(RGB rgb)
         {
             Red = (byte) (rgb.Red.Clamp(0.0, 1.0) * 255);
             Green = (byte) (rgb.Green.Clamp(0.0, 1.0) * 255);
@@ -55,7 +55,7 @@ namespace ColorSchemeInverter
             }
         }
 
-        public static RGB8Bit FromRGBString(string rgbString, string rgbStringFormat)
+        public static RGB8bit FromRGBString(string rgbString, string rgbStringFormat)
         {
             if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
                 switch (rgbStringFormat.ToUpper()) {
@@ -74,9 +74,9 @@ namespace ColorSchemeInverter
             throw new Exception("Invalid color string: " + rgbString);
         }
 
-        public static RGB8Bit FromRGBString(string rgbString)
+        public static RGB8bit FromRGBString(string rgbString)
         {
-            var newRGB = new RGB8Bit
+            var newRGB = new RGB8bit
             {
                 Red = byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
                 Green = byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
@@ -86,9 +86,9 @@ namespace ColorSchemeInverter
             return newRGB;
         }
 
-        public static RGB8Bit FromARGBString(string rbgString)
+        public static RGB8bit FromARGBString(string rbgString)
         {
-            var newRGB = new RGB8Bit
+            var newRGB = new RGB8bit
             {
                 Red = byte.Parse(rbgString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
                 Green = byte.Parse(rbgString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
@@ -98,9 +98,9 @@ namespace ColorSchemeInverter
             return newRGB;
         }
 
-        public static RGB8Bit FromRGBAString(string rgbString)
+        public static RGB8bit FromRGBAString(string rgbString)
         {
-            var newRGB = new RGB8Bit
+            var newRGB = new RGB8bit
             {
                 Red = byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
                 Green = byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
@@ -155,7 +155,7 @@ namespace ColorSchemeInverter
                    + Alpha.ToString("X2");
         }
 
-        public bool AboutEqual(RGB8Bit c)
+        public bool AboutEqual(RGB8bit c)
         {
             int dr = Math.Abs((int)Red - c.Red);
             int dg = Math.Abs((int)Green - c.Green);

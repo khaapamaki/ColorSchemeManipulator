@@ -1,6 +1,7 @@
 using System;
+using ColorSchemeInverter.Colors;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Filters
 {
     public class RGBFilter : ColorFilter
     {

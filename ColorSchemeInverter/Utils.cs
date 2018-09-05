@@ -1,6 +1,6 @@
 namespace ColorSchemeInverter
 {
-    public class Utils
+    public static class Utils
     {
         public static bool IsUppercase(string str)
         {

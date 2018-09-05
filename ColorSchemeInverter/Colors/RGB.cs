@@ -1,6 +1,7 @@
 using System;
+using ColorSchemeInverter.Filters;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Colors
 {
     public class RGB : Color
     {
@@ -19,12 +20,12 @@ namespace ColorSchemeInverter
             Alpha = alpha;
         }
 
-        public RGB(RGB8Bit rgb8)
+        public RGB(RGB8bit rgb8Bit)
         {
-            Red = rgb8.Red / 255.0;
-            Green = rgb8.Green / 255.0;
-            Blue = rgb8.Blue / 255.0;
-            Alpha = rgb8.Alpha / 255.0;
+            Red = rgb8Bit.Red / 255.0;
+            Green = rgb8Bit.Green / 255.0;
+            Blue = rgb8Bit.Blue / 255.0;
+            Alpha = rgb8Bit.Alpha / 255.0;
         }
 
         public RGB(HSL hsl)
@@ -55,22 +56,22 @@ namespace ColorSchemeInverter
 
         public static RGB FromRGBString(string rgbString, string rgbStringFormat)
         {
-            return RGB8Bit.FromRGBString(rgbString, rgbStringFormat).ToRGB();
+            return RGB8bit.FromRGBString(rgbString, rgbStringFormat).ToRGB();
         }
 
         public static RGB FromRGBString(string rgbString)
         {
-            return RGB8Bit.FromRGBString(rgbString).ToRGB();
+            return RGB8bit.FromRGBString(rgbString).ToRGB();
         }
 
         public static RGB FromARGBString(string rgbString)
         {
-            return RGB8Bit.FromARGBString(rgbString).ToRGB();
+            return RGB8bit.FromARGBString(rgbString).ToRGB();
         }
 
         public static RGB FromRGBAString(string rgbString)
         {
-            return RGB8Bit.FromRGBAString(rgbString).ToRGB();
+            return RGB8bit.FromRGBAString(rgbString).ToRGB();
         }
 
         public string ToRGBString()
@@ -88,9 +89,9 @@ namespace ColorSchemeInverter
             return ToRGB8Bit().ToRGBAString();
         }
 
-        public RGB8Bit ToRGB8Bit()
+        public RGB8bit ToRGB8Bit()
         {
-            return new RGB8Bit(
+            return new RGB8bit(
                 Red.Clamp(0.0, 1.0),
                 Green.Clamp(0.0, 1.0),
                 Blue.Clamp(0.0, 1.0),

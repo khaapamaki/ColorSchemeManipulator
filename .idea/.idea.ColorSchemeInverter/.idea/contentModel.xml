@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+    <e p="/427bf25d" t="IncludeRecursive" />
+    <e p="/app" t="IncludeRecursive" />
     <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/Mono.Cecil.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/nunit.engine.api.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/nunit.engine.dll" t="Include" />
@@ -15,27 +17,34 @@
             <e p="HappyDays_inverted.icls" t="Include" />
           </e>
         </e>
-        <e p="Color.cs" t="Include" />
-        <e p="ColorFilter.cs" t="Include" />
+        <e p="Colors" t="Include">
+          <e p="Color.cs" t="Include" />
+          <e p="ColorMath.cs" t="Include" />
+          <e p="HSL.cs" t="Include" />
+          <e p="HSV.cs" t="Include" />
+          <e p="RGB.cs" t="Include" />
+          <e p="RGB8Bit.cs" t="Include" />
+        </e>
         <e p="ColorSchemeInverter.csproj" t="IncludeRecursive" />
         <e p="ColorSchemeProcessor.cs" t="Include" />
         <e p="ExtensionMethods.cs" t="Include" />
-        <e p="FilterBundle.cs" t="Include" />
-        <e p="FilterSet.cs" t="Include" />
-        <e p="HSL.cs" t="Include" />
-        <e p="HSLFilter.cs" t="Include" />
-        <e p="HSLFilterSet.cs" t="Include" />
-        <e p="HSV.cs" t="Include" />
+        <e p="Filters" t="Include">
+          <e p="ColorFilter.cs" t="Include" />
+          <e p="FilterBundle.cs" t="Include" />
+          <e p="FilterSet.cs" t="Include" />
+          <e p="HSLFilter.cs" t="Include" />
+          <e p="HSLFilterSet.cs" t="Include" />
+          <e p="RGBFilter.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
-        <e p="RGB.cs" t="Include" />
-        <e p="RGB8bit.cs" t="Include" />
-        <e p="RGBFilter.cs" t="Include" />
-        <e p="SchemeFormat.cs" t="Include" />
-        <e p="SchemeFormatUtil.cs" t="Include" />
+        <e p="SchemeFormat" t="Include">
+          <e p="SchemeFormat.cs" t="Include" />
+          <e p="SchemeFormatUtil.cs" t="Include" />
+        </e>
         <e p="Utils.cs" t="Include" />
       </e>
       <e p="ColorSchemeInverter.sln" t="IncludeFlat" />
@@ -58,6 +67,5 @@
     </e>
     <e p="$USER_HOME$/Library/Caches/Rider2018.2/extResources" t="IncludeRecursive" />
     <e p="$USER_HOME$/Library/Caches/Rider2018.2/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_ColorSchemeInverter.-984504531.00" t="ExcludeRecursive" />
-    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
   </component>
 </project>

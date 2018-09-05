@@ -1,7 +1,6 @@
 using System;
-using System.Xml.Schema;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Colors
 {
     [Obsolete]
     public class HSV

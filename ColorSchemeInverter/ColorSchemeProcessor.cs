@@ -2,17 +2,20 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using ColorSchemeInverter.Colors;
+using ColorSchemeInverter.Filters;
+using ColorSchemeInverter.SchemeFormat;
 
 namespace ColorSchemeInverter
 {
     public class ColorSchemeProcessor
     {
-        public ColorSchemeProcessor(SchemeFormat schemeFormat)
+        public ColorSchemeProcessor(SchemeFormat.SchemeFormat schemeFormat)
         {
             _schemeFormat = schemeFormat;
         }
 
-        private SchemeFormat _schemeFormat;
+        private SchemeFormat.SchemeFormat _schemeFormat;
         private FilterSet _filters;
 
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)

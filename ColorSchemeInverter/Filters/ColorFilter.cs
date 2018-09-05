@@ -1,6 +1,6 @@
-using System;
+using ColorSchemeInverter.Colors;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Filters
 {
     public abstract class ColorFilter
     {

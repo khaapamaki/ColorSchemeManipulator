@@ -1,7 +1,6 @@
-using System;
-using System.Xml.Schema;
+using ColorSchemeInverter.Filters;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Colors
 {
     public class HSL : Color
     {

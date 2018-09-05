@@ -1,6 +1,6 @@
 using System;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Colors
 {
     public abstract class Color
     {

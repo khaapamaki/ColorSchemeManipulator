@@ -1,6 +1,6 @@
-namespace ColorSchemeInverter {
+namespace ColorSchemeInverter.SchemeFormat {
     
-    public class SchemeFormatUtil
+    public static class SchemeFormatUtil
     {
         public static SchemeFormat GetFormatFromExtension(string extension)
         {
