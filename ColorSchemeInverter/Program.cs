@@ -3,7 +3,7 @@ using System.IO;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
 
-// Todo: Filters for levels (gamma, black, white), gamma, gamma for saturation, contrast, gain
+// Todo: Filters for levels (gamma, black, white), gain
 // Todo: CLI implementation
 // Todo: Add support for CSS
 // Issues: HSV ValueInversion produces bad results. HSV could be dropped out
@@ -35,8 +35,10 @@ namespace ColorSchemeInverter
 
                     var filters = new FilterSet()
                         .Add(FilterBundle.LightnessInvert)
-                        .Add(FilterBundle.SaturationGain, 1.5);
-                        //.Add(FilterBundle.Invert);
+                        .Add(FilterBundle.SaturationContrast, 0.3)
+                        .Add(FilterBundle.SaturationGain, 1.2)
+                        .Add(FilterBundle.Gain, 1.1)
+                        .Add(FilterBundle.Contrast, 0.3);
    
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filters);

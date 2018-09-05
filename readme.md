@@ -38,7 +38,10 @@ SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExte
 
 var filters = new FilterSet()
     .Add(FilterBundle.LightnessInvert)
-    .Add(FilterBundle.SaturationGain, 1.5);
+    .Add(FilterBundle.SaturationContrast, 0.3)
+    .Add(FilterBundle.SaturationGain, 1.2)
+    .Add(FilterBundle.Gain, 1.1)
+    .Add(FilterBundle.Contrast, 0.3);
 
 ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
 p.ProcessFile(sourceFile, targetFile, filters);
