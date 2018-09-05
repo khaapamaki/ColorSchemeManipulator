@@ -1,26 +1,24 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
+using ColorSchemeInverter.Colors;
+using ColorSchemeInverter.Filters;
+using ColorSchemeInverter.SchemeFormat;
 
 namespace ColorSchemeInverter
 {
     public class ColorSchemeProcessor
     {
-        public ColorSchemeProcessor(SchemeFormat schemeFormat)
+        public ColorSchemeProcessor(SchemeFormat.SchemeFormat schemeFormat)
         {
             _schemeFormat = schemeFormat;
         }
 
-        private SchemeFormat _schemeFormat;
-        private HSLFilterSet _filters;
+        private SchemeFormat.SchemeFormat _schemeFormat;
+        private FilterSet _filters;
 
-        public void ProcessFile(string sourceFile, string targetFile, HSLFilterSet filters)
+        public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
             string text = File.ReadAllText(sourceFile);
             string convertedText;
@@ -34,7 +32,7 @@ namespace ColorSchemeInverter
             File.WriteAllText(targetFile, convertedText, Encoding.Default);
         }
 
-        private string ApplyFilters(string text, HSLFilterSet filters)
+        private string ApplyFilters(string text, FilterSet filters)
         {
             _filters = filters;
             string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);
@@ -48,14 +46,15 @@ namespace ColorSchemeInverter
             if (m.Groups.Count == 4) {
                 string rgbString = m.Groups[2].ToString();
                 if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
-                    string filteredRGBString = 
+                    string filteredRGBString =
                         RGB.FromRGBString(rgbString, rgbStringFormat)
-                        .ToHSL()
-                        .ApplyFilterSet(_filters)
-                        .ToRGB()
-                        .ToRGBString(rgbStringFormat);
-                    
+                            .ToHSL()
+                            .ApplyFilterSet(_filters)
+                            .ToRGB()
+                            .ToRGBString(rgbStringFormat);
+
                     Console.WriteLine(rgbString + " -> " + filteredRGBString);
+
                     return m.Groups[1]
                            + filteredRGBString
                            + m.Groups[3];
@@ -79,6 +78,5 @@ namespace ColorSchemeInverter
 
             return true;
         }
-        
     }
 }

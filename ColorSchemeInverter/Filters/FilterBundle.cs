@@ -1,11 +1,11 @@
-using System;
 using System.Linq;
+using ColorSchemeInverter.Colors;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Filters
 {
     public class FilterBundle
     {
-        public static HSL InvertLightness(HSL hsl, object[] _)
+        public static HSL LightnessInvert(HSL hsl, object[] _)
         {
             var result = new HSL(hsl);
             // Todo: remove clamping when values over 1.0 and less 0.0 are safely converted to 8 bit RGB
@@ -13,7 +13,7 @@ namespace ColorSchemeInverter
             return result;
         }
 
-        public static HSL MultiplySaturation(HSL hsl, object[] args)
+        public static HSL SaturationGain(HSL hsl, object[] args)
         {
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double multiplier) {
@@ -23,11 +23,15 @@ namespace ColorSchemeInverter
             return result;
         }
         
-        public static HSL DoNothing(HSL hsl, object[] args)
+        public static RGB DoNothing(RGB rgb, object[] args)
         {
-            var result = new HSL(hsl);
+            var result = new RGB(rgb);
             // do something here
             return result;
+        }
+        public static RGB Invert(RGB rgb, object[] args)
+        {
+            return new RGB(rgb) {Red = 1.0 - rgb.Red, Green = 1.0 - rgb.Green, Blue = 1.0 - rgb.Blue};
         }
     }
 }
