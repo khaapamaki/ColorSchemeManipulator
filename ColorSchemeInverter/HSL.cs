@@ -3,7 +3,7 @@ using System.Xml.Schema;
 
 namespace ColorSchemeInverter
 {
-    public class HSL
+    public class HSL : Color
     {
         public double Hue { get; set; }
         public double Saturation { get; set; }
@@ -112,14 +112,19 @@ namespace ColorSchemeInverter
             }
         }
 
-        public HSL ApplyFilterSet(HSLFilterSet filters)
+        public HSL ApplyFilterSet(FilterSet filters)
         {
             return filters.ApplyTo(this);
         }
 
         public HSL ApplyFilter(HSLFilter filter)
         {
-            return filter.ApplyTo(this);
+            return filter.ApplyTo(this).ToHSL();
+        }
+        
+        public RGB ApplyFilter(RGBFilter filter)
+        {
+            return filter.ApplyTo(this).ToRGB();
         }
         
         public bool Equals(HSL c)

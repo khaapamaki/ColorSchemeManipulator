@@ -2,7 +2,7 @@ using System;
 
 namespace ColorSchemeInverter
 {
-    public class RGB
+    public class RGB : Color
     {
         public double Red { get; set; }
         public double Green { get; set; }
@@ -193,6 +193,21 @@ namespace ColorSchemeInverter
             bool value = Red.AboutEqual(c.Red) && Green.AboutEqual(c.Green) && Blue.AboutEqual(c.Blue) &&
                          Alpha.AboutEqual(c.Alpha);
             return value;
+        }
+        
+        public RGB ApplyFilterSet(FilterSet filters)
+        {
+            return filters.ApplyTo(this);
+        }
+
+        public HSL ApplyFilter(HSLFilter filter)
+        {
+            return filter.ApplyTo(this).ToHSL();
+        }
+        
+        public RGB ApplyFilter(RGBFilter filter)
+        {
+            return filter.ApplyTo(this).ToRGB();
         }
     }
 }

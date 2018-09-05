@@ -44,11 +44,11 @@ namespace ColorSchemeInverter
             return _filterChain.Any();
         }
 
-        public HSL ApplyTo(HSL hsl)
-        {
-            HSL result  = new HSL(hsl);
-            _filterChain.ForEach(f => result = f.ApplyTo(result));    
-            return result;
-        }
+        // public HSL ApplyTo(HSL hsl)
+        // {
+        //     HSL result  = new HSL(hsl);
+        //     _filterChain.ForEach(f => result = f.ApplyTo(result));    
+        //     return result;
+        // }
     }
 }

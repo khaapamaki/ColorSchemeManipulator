@@ -40,9 +40,10 @@ namespace ColorSchemeInverter
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
 
-                    var filters = new HSLFilterSet()
+                    var filters = new FilterSet()
                         .Add(FilterBundle.InvertLightness)
-                        .Add(FilterBundle.MultiplySaturation, 1.5);
+                        .Add(FilterBundle.MultiplySaturation, 1.5)
+                        .Add(FilterBundle.Invert);
    
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filters);

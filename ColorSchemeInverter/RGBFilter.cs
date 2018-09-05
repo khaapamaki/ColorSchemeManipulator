@@ -1,21 +1,20 @@
 using System;
-using System.Collections.Generic;
 
 namespace ColorSchemeInverter
 {
-    public class HSLFilter : ColorFilter
+    public class RGBFilter : ColorFilter
     {
-        private Func<HSL, object[], HSL> Filter { get; }
+        private Func<RGB, object[], RGB> Filter { get; }
         private object[] Arguments { get; }
-        
-        public HSLFilter(Func<HSL, object[], HSL> filter, object arg = null)
+
+        public RGBFilter(Func<RGB, object[], RGB> filter, object arg = null)
         {
             Filter = filter;
             if (arg != null)
-                Arguments = new [] {arg};
+                Arguments = new[] {arg};
         }
-        
-        public HSLFilter(Func<HSL, object[], HSL> filter, params object[] args)
+
+        public RGBFilter(Func<RGB, object[], RGB> filter, params object[] args)
         {
             Filter = filter;
             Arguments = args;
@@ -24,9 +23,9 @@ namespace ColorSchemeInverter
         public override Color ApplyTo(Color color)
         {
             if (color is RGB) {
-                return Filter(((RGB) color).ToHSL(), Arguments);
+                return Filter((RGB) color, Arguments);
             } else if (color is HSL) {
-                return Filter((HSL) color, Arguments);
+                return Filter(((HSL) color).ToRGB(), Arguments);
             }
 
             throw new NotImplementedException("Only HSL and RGB colors are supported");

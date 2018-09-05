@@ -15,10 +15,13 @@
             <e p="HappyDays_inverted.icls" t="Include" />
           </e>
         </e>
+        <e p="Color.cs" t="Include" />
+        <e p="ColorFilter.cs" t="Include" />
         <e p="ColorSchemeInverter.csproj" t="IncludeRecursive" />
         <e p="ColorSchemeProcessor.cs" t="Include" />
         <e p="ExtensionMethods.cs" t="Include" />
         <e p="FilterBundle.cs" t="Include" />
+        <e p="FilterSet.cs" t="Include" />
         <e p="HSL.cs" t="Include" />
         <e p="HSLFilter.cs" t="Include" />
         <e p="HSLFilterSet.cs" t="Include" />
@@ -30,6 +33,7 @@
         </e>
         <e p="RGB.cs" t="Include" />
         <e p="RGB8bit.cs" t="Include" />
+        <e p="RGBFilter.cs" t="Include" />
         <e p="SchemeFormat.cs" t="Include" />
         <e p="SchemeFormatUtil.cs" t="Include" />
         <e p="Utils.cs" t="Include" />

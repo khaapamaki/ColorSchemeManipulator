@@ -23,11 +23,15 @@ namespace ColorSchemeInverter
             return result;
         }
         
-        public static HSL DoNothing(HSL hsl, object[] args)
+        public static RGB DoNothing(RGB rgb, object[] args)
         {
-            var result = new HSL(hsl);
+            var result = new RGB(rgb);
             // do something here
             return result;
+        }
+        public static RGB Invert(RGB rgb, object[] args)
+        {
+            return new RGB(rgb) {Red = 1.0 - rgb.Red, Green = 1.0 - rgb.Green, Blue = 1.0 - rgb.Blue};
         }
     }
 }

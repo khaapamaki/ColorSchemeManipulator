@@ -13,9 +13,9 @@ namespace ColorSchemeInverter
         }
 
         private SchemeFormat _schemeFormat;
-        private HSLFilterSet _filters;
+        private FilterSet _filters;
 
-        public void ProcessFile(string sourceFile, string targetFile, HSLFilterSet filters)
+        public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
             string text = File.ReadAllText(sourceFile);
             string convertedText;
@@ -29,7 +29,7 @@ namespace ColorSchemeInverter
             File.WriteAllText(targetFile, convertedText, Encoding.Default);
         }
 
-        private string ApplyFilters(string text, HSLFilterSet filters)
+        private string ApplyFilters(string text, FilterSet filters)
         {
             _filters = filters;
             string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);
