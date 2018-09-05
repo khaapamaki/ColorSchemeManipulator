@@ -40,13 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Colors\Color.cs" />
-    <Compile Include="Colors\ColorMath.cs" />
     <Compile Include="Colors\HSL.cs" />
     <Compile Include="Colors\HSV.cs" />
     <Compile Include="Colors\RGB.cs" />
     <Compile Include="Colors\RGB8bit.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Filters\ColorFilter.cs" />
+    <Compile Include="Filters\ColorMath.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
     <Compile Include="Filters\FilterSet.cs" />
     <Compile Include="ColorSchemeProcessor.cs" />
