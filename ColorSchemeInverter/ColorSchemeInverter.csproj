@@ -51,7 +51,6 @@
     <Compile Include="Filters\FilterSet.cs" />
     <Compile Include="ColorSchemeProcessor.cs" />
     <Compile Include="Filters\HSLFilter.cs" />
-    <Compile Include="Filters\HSLFilterSet.cs" />
     <Compile Include="Filters\RGBFilter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
