@@ -27,8 +27,12 @@ Current operation includes luminance invert filter and saturation enhancement.
 #### Filtering colors in Program.cs
 
 ```c#
+using System;
+using System.IO;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
+
+[...]
 
 SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
 

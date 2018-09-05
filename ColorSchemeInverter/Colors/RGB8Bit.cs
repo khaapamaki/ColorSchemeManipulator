@@ -128,8 +128,9 @@ namespace ColorSchemeInverter.Colors
                     result = ToRGBString();
                     break;
             }
-            
-            return Utils.IsUppercase(rgbStringFormat)
+
+            bool isUpperCase = rgbStringFormat.ToUpper() == rgbStringFormat;
+            return isUpperCase
                 ? result.ToUpper()
                 : result.ToLower();             
         }

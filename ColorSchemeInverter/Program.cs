@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.IO;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
 
-// Todo: Add more filters, at least for adjusting saturation and gamma 
-
-// Todo: Change RGB presentation and Alpha values from byte to double to make conversions virtually lossless
-
-// Todo: Color superclass for RGB and HSL so it's possible to build generic filters that accept any color type and automatically make conversion if needed
-
+// Todo: Filters for levels (gamma, black, white), gamma, gamma for saturation, contrast, gain
+// Todo: CLI implementation
 // Todo: Add support for CSS
-
-// Todo: Filters for levels (gamma, black, white) adjustements, gamma adjustment for saturation, contrast
-
 // Issues: HSV ValueInversion produces bad results. HSV could be dropped out
-
 
 namespace ColorSchemeInverter
 {
@@ -56,7 +47,6 @@ namespace ColorSchemeInverter
             } else {
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
             }
-
         }
     }
 }

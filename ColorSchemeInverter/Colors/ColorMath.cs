@@ -15,5 +15,6 @@ namespace ColorSchemeInverter.Colors
             return d;
         }
         
+        // Todo: Move conversion functions here...
     }
 }

@@ -10,13 +10,12 @@ namespace ColorSchemeInverter
 {
     public class ColorSchemeProcessor
     {
+        private readonly SchemeFormat _schemeFormat;
+
         public ColorSchemeProcessor(SchemeFormat schemeFormat)
         {
             _schemeFormat = schemeFormat;
         }
-
-        private SchemeFormat _schemeFormat;
-        private FilterSet _filters;
 
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
@@ -32,6 +31,8 @@ namespace ColorSchemeInverter
             File.WriteAllText(targetFile, convertedText, Encoding.Default);
         }
 
+        private FilterSet _filters;  // filters need to be stored for MatchEvaluator since it doesn't take parameters
+        
         private string ApplyFilters(string text, FilterSet filters)
         {
             _filters = filters;
@@ -64,7 +65,7 @@ namespace ColorSchemeInverter
             }
 
             throw new Exception("Regular Expression Mismatch");
-            return m.Groups[0].ToString();
+            return m.Groups[0].ToString();  // alternative for throwing
         }
 
     }
