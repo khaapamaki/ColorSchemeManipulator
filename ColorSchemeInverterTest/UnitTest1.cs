@@ -23,10 +23,10 @@ namespace Tests
         {
             RGB rgb1 = new RGB(0x8A, 0x3B, 0x20, 0xFF);
             RGB rgb1inv = rgb1.ToHSL().ApplyFilter(new HSLFilter(FilterBundle.InvertLightness)).ToRGB();
+            Assert.True(rgb1inv.Equals(RGB.FromRGBAString("DF9075FF")));
+            
             RGB rgb2 = new RGB(0xE0, 0xE0, 0xE0, 0x80);
             RGB rgb2inv = rgb2.ToHSL().ApplyFilter(new HSLFilter(FilterBundle.InvertLightness)).ToRGB();
-
-            Assert.True(rgb1inv.Equals(RGB.FromRGBAString("DF9075FF")));
             Assert.True(rgb2inv.Equals(RGB.FromRGBAString("1F1F1F80")));
         }
         [Test]
@@ -47,6 +47,13 @@ namespace Tests
                     (byte) rnd.Next(0, 255));
                 Assert.True(rgb.Equals(rgb.ToHSL().ToRGB()));
             }
+        }
+        
+        [Test]
+        public void TestRGBToHSL()
+        {
+           // Todo: Implement TestRGBToHSL()
+           Assert.Fail(); 
         }
     }
 }
