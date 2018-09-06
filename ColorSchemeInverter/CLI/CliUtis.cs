@@ -13,14 +13,14 @@ namespace ColorSchemeInverter.CLI
         /// </summary>
         /// <param name="args"></param>
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (FilterSet, string[]) ParseArgs(string[] args)
+        public static (FilterSet, string[]) ParseFilterArgs(string[] args)
         {
-            (FilterSet cliFilters, List<string> remainingArgs) = CliUtils.RecursiveParseArgs(args);
+            (FilterSet cliFilters, List<string> remainingArgs) = CliUtils.RecursiveParseFilterArgs(args);
             return (cliFilters, remainingArgs.ToArray());
         }
         
         
-        private static (FilterSet, List<string>) RecursiveParseArgs(string[] args, int index = 0,
+        private static (FilterSet, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
             FilterSet filters = null, List<string> remainingArgs = null)
         { 
             filters = filters ?? new FilterSet();
@@ -40,7 +40,7 @@ namespace ColorSchemeInverter.CLI
                 remainingArgs.Add(arg);
             }
              
-            (filters,remainingArgs) = RecursiveParseArgs(args, index, filters, remainingArgs); // recurse
+            (filters,remainingArgs) = RecursiveParseFilterArgs(args, index, filters, remainingArgs); // recurse
             return (filters, remainingArgs);
         }
 

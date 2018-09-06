@@ -58,9 +58,9 @@ namespace ColorSchemeInverter.CLI
         /// </summary>
         /// <param name="args"></param>
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (FilterSet, string[]) ParseArgs(string[] args)
+        public static (FilterSet, string[]) ParseFilterArgs(string[] args)
         {
-            return CliUtils.ParseArgs(args);
+            return CliUtils.ParseFilterArgs(args);
         }
        
         /// <summary>

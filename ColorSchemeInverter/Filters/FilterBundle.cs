@@ -33,6 +33,8 @@ namespace ColorSchemeInverter.Filters
         }
         
 
+        // Todo Parsing from string arguments, because cli arguments come in as strings
+        
         public static HSL LightnessInvert(HSL hsl, params object[] _)
         {
             var result = new HSL(hsl);
