@@ -57,7 +57,7 @@ namespace ColorSchemeInverter.Colors
 
         public static RGB8bit FromRGBString(string rgbString, string rgbStringFormat)
         {
-            if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
+            if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
                 switch (rgbStringFormat.ToUpper()) {
                     case "RRGGBB":
                         return FromRGBString(rgbString);
@@ -163,7 +163,17 @@ namespace ColorSchemeInverter.Colors
             int db = Math.Abs((int)Blue - c.Blue);
             int da = Math.Abs((int)Alpha - c.Alpha);
             return (dr <= 1 && dg <= 1 && db <= 1 && da <= 1);
+        }
+        
+        private static bool IsValidHexString(string str)
+        {
+            const string validHex = "0123456789abcdefABCDEF";
+            foreach (var c in str) {
+                if (!validHex.Contains(c.ToString()))
+                    return false;
+            }
 
+            return true;
         }
     }
 }

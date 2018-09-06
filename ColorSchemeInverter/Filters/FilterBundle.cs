@@ -2,25 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using ColorSchemeInverter.CLI;
 using ColorSchemeInverter.Colors;
 
 namespace ColorSchemeInverter.Filters
 {
     public sealed class FilterBundle
     {
-        public static FilterSet TestGetFilterSet()
-        {
-            var filters = new FilterSet();
-            Delegate filter = CliArgs.GetItem(0).FilterDelegate;
-            if (filter is Func<HSL, object[], HSL>) {
-                filters.Add((Func<HSL, object[], HSL>) filter);
-            } else if (filter is Func<RGB, object[], RGB>) {
-                filters.Add((Func<RGB, object[], RGB>) filter);
-            }
-
-            return filters;
-        }
-
 
         public static HSL LightnessInvert(HSL hsl, params object[] _)
         {
@@ -96,13 +84,11 @@ namespace ColorSchemeInverter.Filters
 
             return result;
         }
-
-
+        
         public static HSL LightnessLevels(HSL hsl, params object[] args)
         {
             return hsl;
         }
-
 
         public static RGB Contrast(RGB hsl, params object[] args)
         {
@@ -118,7 +104,6 @@ namespace ColorSchemeInverter.Filters
                     result.Blue = ColorMath.SSpline(hsl.Blue, strength);
                 }
             }
-
             return result;
         }
 

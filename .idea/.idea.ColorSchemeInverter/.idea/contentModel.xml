@@ -27,9 +27,15 @@
             <e p="HappyDays_inverted.icls" t="Include" />
           </e>
         </e>
+        <e p="CLI" t="Include">
+          <e p="CliArg.cs" t="Include" />
+          <e p="CliArgs.cs" t="Include" />
+          <e p="CliUtis.cs" t="Include" />
+        </e>
         <e p="Colors" t="Include">
           <e p="Color.cs" t="Include" />
           <e p="ColorConverter.cs" t="Include" />
+          <e p="ExtensionMethods.cs" t="Include" />
           <e p="HSL.cs" t="Include" />
           <e p="HSV.cs" t="Include" />
           <e p="RGB.cs" t="Include" />
@@ -37,10 +43,7 @@
         </e>
         <e p="ColorSchemeInverter.csproj" t="IncludeRecursive" />
         <e p="ColorSchemeProcessor.cs" t="Include" />
-        <e p="ExtensionMethods.cs" t="Include" />
         <e p="Filters" t="Include">
-          <e p="CliArg.cs" t="Include" />
-          <e p="CliArgs.cs" t="Include" />
           <e p="ColorFilter.cs" t="Include" />
           <e p="ColorMath.cs" t="Include" />
           <e p="FilterBundle.cs" t="Include" />

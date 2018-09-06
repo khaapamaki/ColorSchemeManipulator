@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ColorSchemeInverter.CLI;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
 
@@ -16,8 +17,7 @@ namespace ColorSchemeInverter
         public static void Main(string[] args)
         {           
             RegisterCliCommands();
-            (FilterSet cliFilters, List<string> remainingArgs) = CliArgs.ParseArgs(args);
-            args = remainingArgs.ToArray();
+            (FilterSet cliFilters, string[] remainingArgs) = CliArgs.ParseArgs(args);
             
             Console.WriteLine("Available Filters:");
             Console.WriteLine(CliArgs.ToString());
@@ -25,7 +25,7 @@ namespace ColorSchemeInverter
             Console.WriteLine("Asked Filters:");
             Console.WriteLine(cliFilters.ToString());
             
-            
+            // Test files for debugging
             string sourceFileName = @"HappyDays.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
             
@@ -38,19 +38,16 @@ namespace ColorSchemeInverter
             
             // get source and target, if not available use built-in ones for debugging
             // todo: show error if source or target is missing
-            if (args.Length == 2) {
+            if (remainingArgs.Length == 2) {
                 sourceFile = args[0];
                 targetFile = args[1];
             }
             
-            if (args.Length == 1) {
+            if (remainingArgs.Length == 1) {
                 targetFile = args[0];
             }
 
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
-
-
-            FilterSet test = FilterBundle.TestGetFilterSet();
  
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
@@ -74,7 +71,7 @@ namespace ColorSchemeInverter
             
         }
         
-        private bool _isRegisterd = false;
+       // private bool _isRegisterd = false;
         
         public static void RegisterCliCommands()
         {

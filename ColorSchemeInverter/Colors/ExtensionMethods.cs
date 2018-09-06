@@ -1,6 +1,6 @@
 using System;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeInverter.Colors
 {
     public static class ExtensionMethods
     {

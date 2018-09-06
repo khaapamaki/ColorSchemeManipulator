@@ -39,15 +39,16 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLI\CliArg.cs" />
+    <Compile Include="CLI\CliArgs.cs" />
+    <Compile Include="CLI\CliUtis.cs" />
     <Compile Include="Colors\Color.cs" />
     <Compile Include="Colors\ColorConverter.cs" />
+    <Compile Include="Colors\ExtensionMethods.cs" />
     <Compile Include="Colors\HSL.cs" />
     <Compile Include="Colors\HSV.cs" />
     <Compile Include="Colors\RGB.cs" />
     <Compile Include="Colors\RGB8bit.cs" />
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="Filters\CliArg.cs" />
-    <Compile Include="Filters\CliArgs.cs" />
     <Compile Include="Filters\ColorFilter.cs" />
     <Compile Include="Filters\ColorMath.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
