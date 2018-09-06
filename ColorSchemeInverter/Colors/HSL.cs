@@ -26,7 +26,7 @@ namespace ColorSchemeInverter.Colors
             Lightness = hsl.Lightness;
             Alpha = hsl.Alpha;
         }
-        
+
         public HSL(RGB rgb)
         {
             CopyFrom(rgb.ToHSL());
@@ -45,11 +45,6 @@ namespace ColorSchemeInverter.Colors
             return new HSL(rgb);
         }
 
-        public RGB ToRGB()
-        {
-            return ColorConverter.HSLToRGB(this);
-        }
-        
         public override string ToString()
         {
             return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Lightness: {Lightness} ");
@@ -74,15 +69,16 @@ namespace ColorSchemeInverter.Colors
         {
             return filter.ApplyTo(this).ToHSL();
         }
-        
+
         public RGB ApplyFilter(RGBFilter filter)
         {
             return filter.ApplyTo(this).ToRGB();
         }
-        
+
         public bool Equals(HSL c)
         {
-            bool value = Hue.AboutEqual(c.Hue) && Saturation.AboutEqual(c.Saturation) && Lightness.AboutEqual(c.Lightness) && Alpha.AboutEqual(c.Alpha);
+            bool value = Hue.AboutEqual(c.Hue) && Saturation.AboutEqual(c.Saturation) &&
+                         Lightness.AboutEqual(c.Lightness) && Alpha.AboutEqual(c.Alpha);
             return value;
         }
     }

@@ -8,14 +8,14 @@ namespace ColorSchemeInverter.Filters
     {
         private Func<HSL, object[], HSL> FilterDelegate { get; }
         private object[] Arguments { get; }
-        
+
         public HSLFilter(Func<HSL, object[], HSL> filterDelegate, object arg = null)
         {
             FilterDelegate = filterDelegate;
             if (arg != null)
-                Arguments = new [] {arg};
+                Arguments = new[] {arg};
         }
-        
+
         public HSLFilter(Func<HSL, object[], HSL> filterDelegate, params object[] args)
         {
             FilterDelegate = filterDelegate;
@@ -26,16 +26,16 @@ namespace ColorSchemeInverter.Filters
         {
             FilterDelegate = (Func<HSL, object[], HSL>) filterDelegate;
             if (arg != null)
-                Arguments = new [] {arg};
+                Arguments = new[] {arg};
         }
-        
+
         public HSLFilter(Func<Color, object[], Color> filterDelegate, params object[] args)
         {
             FilterDelegate = (Func<HSL, object[], HSL>) filterDelegate;
             Arguments = args;
         }
-        
-       
+
+
         public override Color ApplyTo(Color color)
         {
             if (color is RGB) {

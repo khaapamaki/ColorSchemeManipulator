@@ -53,14 +53,6 @@ namespace ColorSchemeInverter
  
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
-
-                    // old testing, now ClI parsing is in use:
-                    // var filters = new FilterSet()
-                    //     .Add(FilterBundle.LightnessInvert)
-                    //     .Add(FilterBundle.SaturationContrast, 0.3)
-                    //     .Add(FilterBundle.SaturationGain, 1.2)
-                    //     .Add(FilterBundle.Gain, 1.1)
-                    //     .Add(FilterBundle.Contrast, 0.3);
    
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
@@ -71,6 +63,15 @@ namespace ColorSchemeInverter
             } else {
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
             }  
+            
+            // old testing, now ClI parsing is in use:
+            var filters = new FilterSet()
+                .Add(FilterBundle.LightnessInvert)
+                .Add(FilterBundle.SaturationContrast, 0.3)
+                .Add(FilterBundle.SaturationGain, 1.2)
+                .Add(FilterBundle.Gain, 1.1)
+                .Add(FilterBundle.Contrast, 0.3, 0.3);
+            
         }
     }
 }

@@ -27,7 +27,7 @@ namespace ColorSchemeInverter.Filters
             return 0.0;
         }
 
-
+        // This is quite funny. There must be a better way...
         public static bool IsNumber(object o)
         {
             return o is double || o is decimal || o is int || o is byte || o is float

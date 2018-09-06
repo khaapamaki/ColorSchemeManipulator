@@ -98,15 +98,8 @@ namespace ColorSchemeInverter.Colors
                 Alpha.Clamp(0.0, 1.0));
         }
 
-
-        public HSL ToHSL()
-        {
-            return ColorConverter.RGBToHSL(this);
-        }
-
         public HSV ToHSV()
         {
-
             return ColorConverter.RGBToHSV(this);
         }
 
@@ -139,7 +132,7 @@ namespace ColorSchemeInverter.Colors
                          Alpha.AboutEqual(c.Alpha);
             return value;
         }
-        
+
         public RGB ApplyFilterSet(FilterSet filters)
         {
             return filters.ApplyTo(this);
@@ -149,7 +142,7 @@ namespace ColorSchemeInverter.Colors
         {
             return filter.ApplyTo(this).ToHSL();
         }
-        
+
         public RGB ApplyFilter(RGBFilter filter)
         {
             return filter.ApplyTo(this).ToRGB();

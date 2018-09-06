@@ -64,18 +64,18 @@ namespace ColorSchemeInverter.CLI
         }
        
         /// <summary>
-        /// Gets matching filterDelegate delegate function and given arguments for given command line option
+        /// Gets matching filterDelegate delegate function and given arguments for given command line optionArg
         /// Filter must be registered in CliArgs class.
         /// </summary>
-        /// <param name="option"></param>
+        /// <param name="optionArg"></param>
         /// <returns></returns>
-        public static (Delegate, string[]) GetDelegateAndParameters(string option)
+        public static (Delegate, string[]) GetDelegateAndParameters(string optionArg)
         {
             string argString;
-            (option, argString) = CliUtils.SplitIntoCommandAndArguments(option);
+            (optionArg, argString) = CliUtils.SplitIntoCommandAndArguments(optionArg);
             
             foreach (var cliArg in GetInstance().Items) {
-                if (cliArg.Commands.Contains(option)) {
+                if (cliArg.OptionArgs.Contains(optionArg)) {
                     string[] argList = CliUtils.ExtractArgs(argString);
                     if (argList.Length >= cliArg.MinNumberOfParams)
                         return (cliArg.FilterDelegate, argList);
