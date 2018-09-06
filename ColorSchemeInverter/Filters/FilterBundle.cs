@@ -33,13 +33,14 @@ namespace ColorSchemeInverter.Filters
             CliArgs.Register(new List<string> { "-g", "--gamma"}, Gamma, 1);
             CliArgs.Register(new List<string> { "-i", "--invert"}, Invert, 0); 
             
-            CliArgs.Register(new List<string> { "-il", "--invert-lightness"}, LightnessInvert, 0);
-            CliArgs.Register(new List<string> { "-lg", "--lightness-gain"}, LightnessGain, 1);
-            CliArgs.Register(new List<string> { "-s", "--saturation"}, SaturationGain, 1);
-            CliArgs.Register(new List<string> { "-sg", "--saturation-gamma"}, SaturationGamma, 1);
-            CliArgs.Register(new List<string> { "-l", "--lightness-gain"}, LightnessGamma, 1);
-            CliArgs.Register(new List<string> { "-sc", "--saturation-contrast"}, SaturationContrast, 1);
+            CliArgs.Register(new List<string> { "-l", "--lightness"}, LightnessGain, 1);
             CliArgs.Register(new List<string> { "-lc", "--lightness-contrast"}, LightnessContrast, 1);
+            CliArgs.Register(new List<string> { "-lg", "--lightness-gamma"}, LightnessGamma, 1);
+            CliArgs.Register(new List<string> { "-li", "--lightness-invert"}, LightnessInvert, 0);
+
+            CliArgs.Register(new List<string> { "-s", "--saturation"}, SaturationGain, 1);
+            CliArgs.Register(new List<string> { "-sc", "--saturation-contrast"}, SaturationContrast, 1);
+            CliArgs.Register(new List<string> { "-sg", "--saturation-gamma"}, SaturationGamma, 1);
         }
         
         public static HSL LightnessInvert(HSL hsl, params object[] _)
