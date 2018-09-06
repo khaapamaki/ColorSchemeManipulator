@@ -32,7 +32,7 @@ namespace ColorSchemeInverter
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
 
             RegisterCliCommands();
-            FilterSet test = FilterBundle.GetFilterSet();
+            FilterSet test = FilterBundle.TestGetFilterSet();
                 
                 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
@@ -65,6 +65,7 @@ namespace ColorSchemeInverter
 
             CliArgs.Register(new List<string> { "-il", "--invertlightness"}, FilterBundle.LightnessInvert, 0);
             CliArgs.Register(new List<string> { "-s", "--saturation"}, FilterBundle.SaturationGain, 1);
+            CliArgs.Register(new List<string> { "-s", "--saturation"}, FilterBundle.Invert, 1);
         }
     }
     

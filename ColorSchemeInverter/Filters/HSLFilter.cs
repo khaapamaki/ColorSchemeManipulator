@@ -34,8 +34,7 @@ namespace ColorSchemeInverter.Filters
             Arguments = args;
         }
         
-        
-        // todo auto cast back to subclass?
+       
         public override Color ApplyTo(Color color)
         {
             if (color is RGB) {

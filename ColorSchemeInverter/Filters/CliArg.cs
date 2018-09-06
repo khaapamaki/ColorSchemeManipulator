@@ -13,45 +13,30 @@ namespace ColorSchemeInverter.Filters
 
         private CliArg() { }
         
-        public CliArg(string cliCmd, Delegate filter, byte minArguments)
+        public CliArg(string option, Func<HSL, object[], HSL> filter, byte minArguments)
         {
-            Commands = new List<string>() {cliCmd};
+            Commands = new List<string>() {option};
             Filter = filter;
             MinNumberOfArguments = minArguments;
         }
         
-        public CliArg(List<string> cliCmds, Func<Color, object[], Color> filter, byte minArguments)
+        public CliArg(List<string> options, Func<HSL, object[], HSL> filter, byte minArguments)
         {
-            Commands = new List<string>(cliCmds);
-            Filter = filter;
-            MinNumberOfArguments = minArguments;     
-        }    
-        
-        
-        public CliArg(string cliCmd, Func<HSL, object[], HSL> filter, byte minArguments)
-        {
-            Commands = new List<string>() {cliCmd};
-            Filter = filter;
-            MinNumberOfArguments = minArguments;
-        }
-        
-        public CliArg(List<string> cliCmds, Func<HSL, object[], HSL> filter, byte minArguments)
-        {
-            Commands = new List<string>(cliCmds);
+            Commands = new List<string>(options);
             Filter = filter;
             MinNumberOfArguments = minArguments;     
         }   
         
-        public CliArg(string cliCmd, Func<RGB, object[], RGB> filter, byte minArguments)
+        public CliArg(string option, Func<RGB, object[], RGB> filter, byte minArguments)
         {
-            Commands = new List<string>() {cliCmd};
+            Commands = new List<string>() {option};
             Filter = filter;
             MinNumberOfArguments = minArguments;
         }
         
-        public CliArg(List<string> cliCmds, Func<RGB, object[], RGB> filter, byte minArguments)
+        public CliArg(List<string> options, Func<RGB, object[], RGB> filter, byte minArguments)
         {
-            Commands = new List<string>(cliCmds);
+            Commands = new List<string>(options);
             Filter = filter;
             MinNumberOfArguments = minArguments;     
         }   

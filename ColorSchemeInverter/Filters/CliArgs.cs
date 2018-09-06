@@ -8,7 +8,7 @@ namespace ColorSchemeInverter.Filters
     public sealed class CliArgs
     {
         private static CliArgs _instance;
-        private static readonly object padlock = new object();
+        private static readonly object Padlock = new object();
         
         public List<CliArg> Items { get; set; }
   
@@ -19,11 +19,8 @@ namespace ColorSchemeInverter.Filters
        
         private static CliArgs GetInstance()
         {
-            lock (padlock) {
-                if (_instance == null)
-                    _instance = new CliArgs();
-
-                return _instance;
+            lock (Padlock) {
+                return _instance ?? (_instance = new CliArgs());
             }
         }
 
@@ -32,24 +29,24 @@ namespace ColorSchemeInverter.Filters
             return GetInstance().Items[index];
         }
 
-        public static void Register(string cliCmd, Delegate filter, byte minArguments)
+        public static void Register(string option, Func<RGB, object[], RGB> filter, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(cliCmd, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
         }
         
-        public static void Register(List<string> cliCmds, Func<Color, object[], Color> filter, byte minArguments)
+        public static void Register(List<string> option, Func<RGB, object[], RGB> filter, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(cliCmds, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
         }    
 
-        public static void Register(string cliCmd, Func<HSL, object[], HSL> filter, byte minArguments)
+        public static void Register(string option, Func<HSL, object[], HSL> filter, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(cliCmd, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
         }
         
-        public static void Register(List<string> cliCmds, Func<HSL, object[], HSL> filter, byte minArguments)
+        public static void Register(List<string> option, Func<HSL, object[], HSL> filter, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(cliCmds, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
         }  
         
     }
