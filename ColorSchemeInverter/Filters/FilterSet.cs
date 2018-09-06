@@ -13,9 +13,9 @@ namespace ColorSchemeInverter.Filters
         public FilterSet() { }
         
 
-        public FilterSet(Func<HSL, object[], HSL> filter)
+        public FilterSet(Func<HSL, object[], HSL> filterDelegate)
         {
-            _filterChain.Add(new HSLFilter(filter));
+            _filterChain.Add(new HSLFilter(filterDelegate));
         }
 
         public void Add(HSLFilter filter)
@@ -23,27 +23,27 @@ namespace ColorSchemeInverter.Filters
             _filterChain.Add(filter);
         }
         
-        public FilterSet Add(Func<HSL, object[], HSL> filter)
+        public FilterSet Add(Func<HSL, object[], HSL> filterDelegate)
         {
-            _filterChain.Add(new HSLFilter(filter));
+            _filterChain.Add(new HSLFilter(filterDelegate));
             return this;
         }
         
-        public FilterSet Add(Func<HSL, object[], HSL> filter, object arg)
+        public FilterSet Add(Func<HSL, object[], HSL> filterDelegate, object arg)
         {
-            _filterChain.Add(new HSLFilter(filter, arg));
+            _filterChain.Add(new HSLFilter(filterDelegate, arg));
             return this;
         }
         
-        public FilterSet Add(Func<HSL, object[], HSL> filter, object[] args)
+        public FilterSet Add(Func<HSL, object[], HSL> filterDelegate, object[] args)
         {
-            _filterChain.Add(new HSLFilter(filter, args));
+            _filterChain.Add(new HSLFilter(filterDelegate, args));
             return this;
         }
         
-        public FilterSet(Func<RGB, object[], RGB> filter)
+        public FilterSet(Func<RGB, object[], RGB> filterDelegate)
         {
-            _filterChain.Add(new RGBFilter(filter));
+            _filterChain.Add(new RGBFilter(filterDelegate));
         }
 
         public void Add(RGBFilter filter)
@@ -51,21 +51,21 @@ namespace ColorSchemeInverter.Filters
             _filterChain.Add(filter);
         }
         
-        public FilterSet Add(Func<RGB, object[], RGB> filter)
+        public FilterSet Add(Func<RGB, object[], RGB> filterDelegate)
         {
-            _filterChain.Add(new RGBFilter(filter));
+            _filterChain.Add(new RGBFilter(filterDelegate));
             return this;
         }
         
-        public FilterSet Add(Func<RGB, object[], RGB> filter, object arg)
+        public FilterSet Add(Func<RGB, object[], RGB> filterDelegate, object arg)
         {
-            _filterChain.Add(new RGBFilter(filter, arg));
+            _filterChain.Add(new RGBFilter(filterDelegate, arg));
             return this;
         }
         
-        public FilterSet Add(Func<RGB, object[], RGB> filter, object[] args)
+        public FilterSet Add(Func<RGB, object[], RGB> filterDelegate, object[] args)
         {
-            _filterChain.Add(new RGBFilter(filter, args));
+            _filterChain.Add(new RGBFilter(filterDelegate, args));
             return this;
         }
         

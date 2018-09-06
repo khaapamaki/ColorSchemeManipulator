@@ -6,19 +6,19 @@ namespace ColorSchemeInverter.Filters
 {
     public class RGBFilter : ColorFilter
     {
-        private Func<RGB, object[], RGB> Filter { get; }
+        private Func<RGB, object[], RGB> FilterDelegate { get; }
         private object[] Arguments { get; }
 
-        public RGBFilter(Func<RGB, object[], RGB> filter, object arg = null)
+        public RGBFilter(Func<RGB, object[], RGB> filterDelegate, object arg = null)
         {
-            Filter = filter;
+            FilterDelegate = filterDelegate;
             if (arg != null)
                 Arguments = new[] {arg};
         }
 
-        public RGBFilter(Func<RGB, object[], RGB> filter, params object[] args)
+        public RGBFilter(Func<RGB, object[], RGB> filterDelegate, params object[] args)
         {
-            Filter = filter;
+            FilterDelegate = filterDelegate;
             Arguments = args;
         }
         
@@ -26,9 +26,9 @@ namespace ColorSchemeInverter.Filters
         public override Color ApplyTo(Color color)
         {
             if (color is RGB) {
-                return Filter((RGB) color, Arguments);
+                return FilterDelegate((RGB) color, Arguments);
             } else if (color is HSL) {
-                return Filter(((HSL) color).ToRGB(), Arguments);
+                return FilterDelegate(((HSL) color).ToRGB(), Arguments);
             }
 
             throw new NotImplementedException("Only HSL and RGB colors are supported");
@@ -41,7 +41,7 @@ namespace ColorSchemeInverter.Filters
                 sb.Append(argument + " ");
             }
 
-            return Filter.Method.Name + " " + sb;
+            return FilterDelegate.Method.Name + " " + sb;
         }
     }
 }

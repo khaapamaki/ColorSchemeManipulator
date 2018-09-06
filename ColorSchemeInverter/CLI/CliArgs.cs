@@ -7,7 +7,7 @@ using ColorSchemeInverter.Filters;
 namespace ColorSchemeInverter.CLI
 {
     /// <summary>
-    /// A singleton class to store and handle command line arguments relating to filters and filter paramters
+    /// A singleton class to store and handle command line arguments relating to filters and filterDelegate paramters
     /// </summary>
     public sealed class CliArgs
     {
@@ -32,24 +32,24 @@ namespace ColorSchemeInverter.CLI
             return GetInstance().Items[index];
         }
 
-        public static void Register(string option, Func<RGB, object[], RGB> filter, byte minArguments)
+        public static void Register(string option, Func<RGB, object[], RGB> filterDelegate, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
         
-        public static void Register(List<string> option, Func<RGB, object[], RGB> filter, byte minArguments)
+        public static void Register(List<string> option, Func<RGB, object[], RGB> filterDelegate, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }    
 
-        public static void Register(string option, Func<HSL, object[], HSL> filter, byte minArguments)
+        public static void Register(string option, Func<HSL, object[], HSL> filterDelegate, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
         
-        public static void Register(List<string> option, Func<HSL, object[], HSL> filter, byte minArguments)
+        public static void Register(List<string> option, Func<HSL, object[], HSL> filterDelegate, byte minArguments)
         {
-            GetInstance().Items.Add(new CliArg(option, filter, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace ColorSchemeInverter.CLI
         }
        
         /// <summary>
-        /// Gets matching filter delegate function and given arguments for given command line option
+        /// Gets matching filterDelegate delegate function and given arguments for given command line option
         /// Filter must be registered in CliArgs class.
         /// </summary>
         /// <param name="option"></param>

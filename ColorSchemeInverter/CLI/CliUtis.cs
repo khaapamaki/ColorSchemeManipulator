@@ -15,7 +15,7 @@ namespace ColorSchemeInverter.CLI
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
         public static (FilterSet, string[]) ParseFilterArgs(string[] args)
         {
-            (FilterSet cliFilters, List<string> remainingArgs) = CliUtils.RecursiveParseFilterArgs(args);
+            (FilterSet cliFilters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
             return (cliFilters, remainingArgs.ToArray());
         }
         
@@ -30,12 +30,12 @@ namespace ColorSchemeInverter.CLI
 
             string arg = args[index++];
             
-            (Delegate filter, string[] argStrings) = CliArgs.GetDelegateAndParameters(arg);
+            (Delegate filterDelegate, string[] argStrings) = CliArgs.GetDelegateAndParameters(arg);
 
-            if (filter is Func<HSL, object[], HSL>) {
-                filters.Add((Func<HSL, object[], HSL>) filter, argStrings);
-            } else if (filter is Func<RGB, object[], RGB>) {
-                filters.Add((Func<RGB, object[], RGB>) filter, argStrings);
+            if (filterDelegate is Func<HSL, object[], HSL>) {
+                filters.Add((Func<HSL, object[], HSL>) filterDelegate, argStrings);
+            } else if (filterDelegate is Func<RGB, object[], RGB>) {
+                filters.Add((Func<RGB, object[], RGB>) filterDelegate, argStrings);
             } else {
                 remainingArgs.Add(arg);
             }

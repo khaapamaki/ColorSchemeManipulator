@@ -15,7 +15,7 @@ namespace ColorSchemeInverter
     internal class Program
     {
         public static void Main(string[] args)
-        {           
+        {
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
             
@@ -70,11 +70,7 @@ namespace ColorSchemeInverter
                 }
             } else {
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
-            }
-            
+            }  
         }
-
     }
-    
-    
 }
