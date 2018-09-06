@@ -21,19 +21,26 @@ namespace ColorSchemeInverter.Filters
             }
         }
         
-        private bool _isRegisterd = false;
+        private bool _isRegistered = false;
         
         public static void RegisterCliOptions()
         {
-            if (GetInstance()._isRegisterd)
+            if (GetInstance()._isRegistered)
                 return;
+            
+            CliArgs.Register(new List<string> { "-b", "--brightness"}, Gain, 1);
+            CliArgs.Register(new List<string> { "-c", "--contrast"}, Contrast, 1);
+            CliArgs.Register(new List<string> { "-g", "--gamma"}, Gamma, 1);
+            CliArgs.Register(new List<string> { "-i", "--invert"}, Invert, 0); 
+            
             CliArgs.Register(new List<string> { "-il", "--invert-lightness"}, LightnessInvert, 0);
+            CliArgs.Register(new List<string> { "-lg", "--lightness-gain"}, LightnessGain, 1);
             CliArgs.Register(new List<string> { "-s", "--saturation"}, SaturationGain, 1);
-            CliArgs.Register(new List<string> { "-i", "--invert"}, Invert, 0);
+            CliArgs.Register(new List<string> { "-sg", "--saturation-gamma"}, SaturationGamma, 1);
+            CliArgs.Register(new List<string> { "-l", "--lightness-gain"}, LightnessGamma, 1);
+            CliArgs.Register(new List<string> { "-sc", "--saturation-contrast"}, SaturationContrast, 1);
+            CliArgs.Register(new List<string> { "-lc", "--lightness-contrast"}, LightnessContrast, 1);
         }
-        
-
-        // Todo Parsing from string arguments, because cli arguments come in as strings
         
         public static HSL LightnessInvert(HSL hsl, params object[] _)
         {
@@ -55,8 +62,9 @@ namespace ColorSchemeInverter.Filters
         public static HSL SaturationGain(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
-            if (args.Any() && args[0] is double gain) {
-                result.Saturation = (result.Saturation * gain);
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double gain = FilterUtils.GetDouble(args[0]);
+                result.Saturation = result.Saturation * gain;
             }
 
             return result;
@@ -65,7 +73,8 @@ namespace ColorSchemeInverter.Filters
         public static HSL SaturationGamma(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
-            if (args.Any() && args[0] is double gamma) {
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double gamma = FilterUtils.GetDouble(args[0]);
                 result.Saturation = ColorMath.Gamma(hsl.Saturation, gamma);
             }
 
@@ -75,7 +84,8 @@ namespace ColorSchemeInverter.Filters
         public static HSL LightnessGamma(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
-            if (args.Any() && args[0] is double gamma) {
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double gamma = FilterUtils.GetDouble(args[0]);
                 result.Lightness = ColorMath.Gamma(hsl.Lightness, gamma);
             }
 
@@ -85,8 +95,10 @@ namespace ColorSchemeInverter.Filters
         public static HSL SaturationContrast(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
-            if (args.Any() && args[0] is double strength) {
-                if (args.Length >= 2 && args[1] is double midpoint) {
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double strength = FilterUtils.GetDouble(args[0]);
+                if (args.Length >= 2 && FilterUtils.IsNumberOrString(args[1])) {
+                    double midpoint = FilterUtils.GetDouble(args[1]);
                     result.Saturation = ColorMath.SSpline(hsl.Saturation, strength, midpoint);
                 } else {
                     result.Saturation = ColorMath.SSpline(hsl.Saturation, strength);
@@ -99,8 +111,10 @@ namespace ColorSchemeInverter.Filters
         public static HSL LightnessContrast(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
-            if (args.Any() && args[0] is double strength) {
-                if (args.Length >= 2 && args[1] is double midpoint) {
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double strength = FilterUtils.GetDouble(args[0]);
+                if (args.Length >= 2 && FilterUtils.IsNumberOrString(args[1])) {
+                    double midpoint = FilterUtils.GetDouble(args[1]);
                     result.Lightness = ColorMath.SSpline(hsl.Lightness, strength, midpoint);
                 } else {
                     result.Lightness = ColorMath.SSpline(hsl.Lightness, strength);
@@ -118,8 +132,10 @@ namespace ColorSchemeInverter.Filters
         public static RGB Contrast(RGB hsl, params object[] args)
         {
             var result = new RGB(hsl);
-            if (args.Any() && args[0] is double strength) {
-                if (args.Length >= 2 && args[1] is double midpoint) {
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double strength = FilterUtils.GetDouble(args[0]);
+                if (args.Length >= 2 && FilterUtils.IsNumberOrString(args[1])) {
+                    double midpoint = FilterUtils.GetDouble(args[1]);
                     result.Red = ColorMath.SSpline(hsl.Red, strength, midpoint);
                     result.Green = ColorMath.SSpline(hsl.Green, strength, midpoint);
                     result.Blue = ColorMath.SSpline(hsl.Blue, strength, midpoint);
@@ -135,10 +151,11 @@ namespace ColorSchemeInverter.Filters
         public static RGB Gamma(RGB rgb, params object[] args)
         {
             var result = new RGB(rgb);
-            if (args.Any() && args[0] is double strength) {
-                result.Red = ColorMath.Gamma(rgb.Red, strength);
-                result.Green = ColorMath.Gamma(rgb.Green, strength);
-                result.Blue = ColorMath.Gamma(rgb.Blue, strength);
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double gamma = FilterUtils.GetDouble(args[0]);
+                result.Red = ColorMath.Gamma(rgb.Red, gamma);
+                result.Green = ColorMath.Gamma(rgb.Green, gamma);
+                result.Blue = ColorMath.Gamma(rgb.Blue, gamma);
             }
 
             return result;
@@ -147,10 +164,11 @@ namespace ColorSchemeInverter.Filters
         public static RGB Gain(RGB rgb, params object[] args)
         {
             var result = new RGB(rgb);
-            if (args.Any() && args[0] is double strength) {
-                result.Red = ColorMath.Gain(rgb.Red, strength);
-                result.Green = ColorMath.Gain(rgb.Green, strength);
-                result.Blue = ColorMath.Gain(rgb.Blue, strength);
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double gain = FilterUtils.GetDouble(args[0]);
+                result.Red = ColorMath.Gain(rgb.Red, gain);
+                result.Green = ColorMath.Gain(rgb.Green, gain);
+                result.Blue = ColorMath.Gain(rgb.Blue, gain);
             }
 
             return result;
@@ -176,7 +194,8 @@ namespace ColorSchemeInverter.Filters
             return rgb;
         }
 
-        public static RGB DoNothing(RGB rgb, params object[] args)
+        // just dummy template
+        private static RGB DoNothing(RGB rgb, params object[] args)
         {
             var result = new RGB(rgb);
             // do something here

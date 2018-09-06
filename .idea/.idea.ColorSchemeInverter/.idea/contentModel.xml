@@ -48,6 +48,7 @@
           <e p="ColorMath.cs" t="Include" />
           <e p="FilterBundle.cs" t="Include" />
           <e p="FilterSet.cs" t="Include" />
+          <e p="FilterUtils.cs" t="Include" />
           <e p="HSLFilter.cs" t="Include" />
           <e p="RGBFilter.cs" t="Include" />
         </e>
