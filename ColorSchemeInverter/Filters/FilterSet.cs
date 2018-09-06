@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using ColorSchemeInverter.Colors;
 
 namespace ColorSchemeInverter.Filters
@@ -97,7 +98,18 @@ namespace ColorSchemeInverter.Filters
         {
             return filter.ApplyTo(color);
         }
-        
+
+        public string ToString(string delimiter = "\n", string prefix = "   ")
+        {
+            StringBuilder sb = new StringBuilder();
+            
+            for (var i = 0; i < _filterChain.Count; i++) {
+                sb.Append(prefix + _filterChain[i].ToString());
+                if (i != _filterChain.Count - 1)
+                    sb.Append(delimiter);
+            }
+            return sb.ToString();
+        }
 
     }
 }

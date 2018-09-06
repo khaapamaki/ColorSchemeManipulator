@@ -15,6 +15,17 @@ namespace ColorSchemeInverter
     {
         public static void Main(string[] args)
         {           
+            RegisterCliCommands();
+            (FilterSet cliFilters, List<string> remainingArgs) = CliArgs.ParseArgs(args);
+            args = remainingArgs.ToArray();
+            
+            Console.WriteLine("Available Filters:");
+            Console.WriteLine(CliArgs.ToString());
+            
+            Console.WriteLine("Asked Filters:");
+            Console.WriteLine(cliFilters.ToString());
+            
+            
             string sourceFileName = @"HappyDays.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
             
@@ -24,29 +35,35 @@ namespace ColorSchemeInverter
                 Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
                                                              + Path.GetExtension(sourceFile)));
             
+            
+            // get source and target, if not available use built-in ones for debugging
+            // todo: show error if source or target is missing
             if (args.Length == 2) {
                 sourceFile = args[0];
                 targetFile = args[1];
             }
+            
+            if (args.Length == 1) {
+                targetFile = args[0];
+            }
 
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
 
-            RegisterCliCommands();
+
             FilterSet test = FilterBundle.TestGetFilterSet();
-                
-                
+ 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
 
-                    var filters = new FilterSet()
-                        .Add(FilterBundle.LightnessInvert)
-                        .Add(FilterBundle.SaturationContrast, 0.3)
-                        .Add(FilterBundle.SaturationGain, 1.2)
-                        .Add(FilterBundle.Gain, 1.1)
-                        .Add(FilterBundle.Contrast, 0.3);
+                    // var filters = new FilterSet()
+                    //     .Add(FilterBundle.LightnessInvert)
+                    //     .Add(FilterBundle.SaturationContrast, 0.3)
+                    //     .Add(FilterBundle.SaturationGain, 1.2)
+                    //     .Add(FilterBundle.Gain, 1.1)
+                    //     .Add(FilterBundle.Contrast, 0.3);
    
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
-                    processor.ProcessFile(sourceFile, targetFile, filters);
+                    processor.ProcessFile(sourceFile, targetFile, cliFilters);
                 }
                 else {
                     Console.Error.WriteLine(sourceFileName + " does not exist");
@@ -54,6 +71,7 @@ namespace ColorSchemeInverter
             } else {
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
             }
+            
         }
         
         private bool _isRegisterd = false;
@@ -63,9 +81,9 @@ namespace ColorSchemeInverter
             // if (_isRegisterd)
             //     return;
 
-            CliArgs.Register(new List<string> { "-il", "--invertlightness"}, FilterBundle.LightnessInvert, 0);
+            CliArgs.Register(new List<string> { "-il", "--invert-lightness"}, FilterBundle.LightnessInvert, 0);
             CliArgs.Register(new List<string> { "-s", "--saturation"}, FilterBundle.SaturationGain, 1);
-            CliArgs.Register(new List<string> { "-s", "--saturation"}, FilterBundle.Invert, 1);
+            CliArgs.Register(new List<string> { "-i", "--invert"}, FilterBundle.Invert, 0);
         }
     }
     

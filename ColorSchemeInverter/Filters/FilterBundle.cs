@@ -11,7 +11,7 @@ namespace ColorSchemeInverter.Filters
         public static FilterSet TestGetFilterSet()
         {
             var filters = new FilterSet();
-            Delegate filter = CliArgs.GetItem(0).Filter;
+            Delegate filter = CliArgs.GetItem(0).FilterDelegate;
             if (filter is Func<HSL, object[], HSL>) {
                 filters.Add((Func<HSL, object[], HSL>) filter);
             } else if (filter is Func<RGB, object[], RGB>) {

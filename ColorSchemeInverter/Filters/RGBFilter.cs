@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using ColorSchemeInverter.Colors;
 
 namespace ColorSchemeInverter.Filters
@@ -31,6 +32,16 @@ namespace ColorSchemeInverter.Filters
             }
 
             throw new NotImplementedException("Only HSL and RGB colors are supported");
+        }
+        
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var argument in Arguments) {
+                sb.Append(argument + " ");
+            }
+
+            return Filter.Method.Name + " " + sb;
         }
     }
 }
