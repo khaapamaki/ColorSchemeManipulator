@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
@@ -30,6 +31,10 @@ namespace ColorSchemeInverter
 
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
 
+            RegisterCliCommands();
+            FilterSet test = FilterBundle.GetFilterSet();
+                
+                
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
 
@@ -50,5 +55,18 @@ namespace ColorSchemeInverter
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
             }
         }
+        
+        private bool _isRegisterd = false;
+        
+        public static void RegisterCliCommands()
+        {
+            // if (_isRegisterd)
+            //     return;
+
+            CliArgs.Register(new List<string> { "-il", "--invertlightness"}, FilterBundle.LightnessInvert, 0);
+            CliArgs.Register(new List<string> { "-s", "--saturation"}, FilterBundle.SaturationGain, 1);
+        }
     }
+    
+    
 }

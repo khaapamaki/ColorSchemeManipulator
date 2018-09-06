@@ -21,6 +21,20 @@ namespace ColorSchemeInverter.Filters
             Arguments = args;
         }
 
+        public HSLFilter(Func<Color, object[], Color> filter, object arg = null)
+        {
+            Filter = (Func<HSL, object[], HSL>) filter;
+            if (arg != null)
+                Arguments = new [] {arg};
+        }
+        
+        public HSLFilter(Func<Color, object[], Color> filter, params object[] args)
+        {
+            Filter = (Func<HSL, object[], HSL>) filter;
+            Arguments = args;
+        }
+        
+        
         // todo auto cast back to subclass?
         public override Color ApplyTo(Color color)
         {

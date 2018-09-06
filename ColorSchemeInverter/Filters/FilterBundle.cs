@@ -1,18 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using ColorSchemeInverter.Colors;
 
 namespace ColorSchemeInverter.Filters
 {
-    public class FilterBundle
+    public sealed class FilterBundle
     {
-        public static HSL LightnessInvert(HSL hsl, object[] _)
+
+
+
+        public static FilterSet GetFilterSet()
+        {
+
+            var filters = new FilterSet();
+            var filter = CliArgs.GetItem(0).Filter;
+            if (filter is Func<HSL, object[], HSL>)
+            {
+                filters.Add( (Func<HSL, object[], HSL>) filter);
+            }
+            else if (filter is Func<RGB, object[], RGB>)
+            {
+                filters.Add( (Func<RGB, object[], RGB>) filter);
+            }
+
+            return filters;
+        }
+        
+        
+        public static HSL LightnessInvert(HSL hsl, params object[] _)
         {
             var result = new HSL(hsl);
             result.Lightness = 1.0 - result.Lightness;
             return result;
         }
 
-        public static HSL LightnessGain(HSL hsl, object[] args)
+        public static HSL LightnessGain(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double gain) {
@@ -21,7 +45,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
         
-        public static HSL SaturationGain(HSL hsl, object[] args)
+        public static HSL SaturationGain(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double gain) {
@@ -30,8 +54,8 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
         
-        public static HSL SaturationGamma(HSL hsl, object[] args)
-        {
+        public static HSL SaturationGamma(HSL hsl, params object[] args)
+        { 
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double gamma) {
                 result.Saturation = ColorMath.Gamma(hsl.Saturation, gamma);
@@ -39,7 +63,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
         
-        public static HSL LightnessGamma(HSL hsl, object[] args)
+        public static HSL LightnessGamma(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double gamma) {
@@ -48,7 +72,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
         
-        public static HSL SaturationContrast(HSL hsl, object[] args)
+        public static HSL SaturationContrast(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double strength) {
@@ -61,7 +85,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
        
-        public static HSL LightnessContrast(HSL hsl, object[] args)
+        public static HSL LightnessContrast(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
             if (args.Any() && args[0] is double strength) {
@@ -73,8 +97,16 @@ namespace ColorSchemeInverter.Filters
             }        
             return result;
         }
+
+
+        public static HSL LightnessLevels(HSL hsl, params object[] args)
+        {
+            return hsl;
+        }
         
-        public static RGB Contrast(RGB hsl, object[] args)
+        
+        
+        public static RGB Contrast(RGB hsl, params object[] args)
         {
             var result = new RGB(hsl);
             if (args.Any() && args[0] is double strength) {
@@ -91,7 +123,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
         
-        public static RGB Gamma(RGB rgb, object[] args)
+        public static RGB Gamma(RGB rgb, params object[] args)
         {
             var result = new RGB(rgb);
             if (args.Any() && args[0] is double strength) {
@@ -102,7 +134,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
         
-        public static RGB Gain(RGB rgb, object[] args)
+        public static RGB Gain(RGB rgb, params object[] args)
         {
             var result = new RGB(rgb);
             if (args.Any() && args[0] is double strength) {
@@ -112,17 +144,32 @@ namespace ColorSchemeInverter.Filters
             }        
             return result;
         }
+
+        public static RGB Invert(RGB rgb, params object[] args)
+        {
+            return new RGB(rgb) { Red = 1.0 - rgb.Red, Green = 1.0 - rgb.Green, Blue = 1.0 - rgb.Blue };
+        }
+
+        public static RGB Levels(RGB rgb, params object[] args)
+        {
+            return rgb;
+        }
         
-        public static RGB DoNothing(RGB rgb, object[] args)
+        public static RGB RGBLevels(RGB rgb, params object[] args)
+        {
+            return rgb;
+        }
+        
+        public static RGB RGBLevelsForColors(RGB rgb, params object[] args)
+        {
+            return rgb;
+        }
+        
+        public static RGB DoNothing(RGB rgb, params object[] args)
         {
             var result = new RGB(rgb);
             // do something here
             return result;
-        }
-        
-        public static RGB Invert(RGB rgb, object[] args)
-        {
-            return new RGB(rgb) { Red = 1.0 - rgb.Red, Green = 1.0 - rgb.Green, Blue = 1.0 - rgb.Blue };
         }
     }
 }

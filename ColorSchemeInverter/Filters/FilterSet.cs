@@ -68,6 +68,7 @@ namespace ColorSchemeInverter.Filters
             return this;
         }
         
+
         public bool Any()
         {
             return _filterChain.Any();
