@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f72e255e-a3c7-42e5-988b-3c4d4d7891c6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterUtils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ColorSchemeInverter/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ColorSchemeInverter/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ColorSchemeInverter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ColorSchemeInverter/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ColorSchemeInverter/ColorSchemeInverter.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ColorSchemeInverter/ColorSchemeInverter.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterBundle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterBundle.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,28 +62,28 @@
         <counts>
           <entry key="cs" value="30" />
           <entry key="icls" value="1" />
-          <entry key="md" value="1" />
+          <entry key="md" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="C#" value="30" />
-          <entry key="Markdown" value="1" />
+          <entry key="Markdown" value="2" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cs" value="8676" />
-          <entry key="md" value="86" />
-          <entry key="txt" value="282" />
+          <entry key="cs" value="8711" />
+          <entry key="md" value="450" />
+          <entry key="txt" value="363" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C#" value="8677" />
-          <entry key="Markdown" value="85" />
-          <entry key="PLAIN_TEXT" value="282" />
+          <entry key="C#" value="8713" />
+          <entry key="Markdown" value="448" />
+          <entry key="PLAIN_TEXT" value="363" />
         </counts>
       </usages-collector>
     </session>
@@ -145,10 +142,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Program.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
+            <state relative-caret-position="40">
+              <caret line="2" selection-start-line="2" selection-end-line="3" selection-end-column="30" />
               <folding>
-                <marker date="1536251513047" expanded="false" signature="6:175" ph="..." />
+                <marker date="1536251513047" expanded="true" signature="6:175" ph="..." />
                 <marker date="1536251513047" expanded="true" signature="177:366" ph="/* Todo: Filters for levels (gamma, black, white), gain ... */" />
                 <marker date="1536251513047" expanded="true" signature="397:3207" ph="{...}" />
                 <marker date="1536251513047" expanded="true" signature="426:3195" ph="{...}" />
@@ -161,6 +158,18 @@
                 <marker date="1536251513047" expanded="true" signature="2306:2716" ph="/* old testing, now ClI parsing is in use: ... */" />
                 <marker date="1536251513047" expanded="true" signature="2909:3031" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/readme.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="60">
+                <caret line="3" selection-start-line="3" selection-end-line="3" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -180,15 +189,6 @@
                 <marker date="1536250767818" expanded="true" signature="1322:1485" ph="{...}" />
                 <marker date="1536250767818" expanded="true" signature="1523:1743" ph="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Utils.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -254,45 +254,45 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterBundle.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="445">
-              <caret line="108" column="13" lean-forward="true" selection-start-line="108" selection-start-column="13" selection-end-line="108" selection-end-column="13" />
+            <state relative-caret-position="497">
+              <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
               <folding>
-                <marker date="1536253159793" expanded="false" signature="6:157" ph="..." />
-                <marker date="1536253159793" expanded="true" signature="196:7709" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="235:7707" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="447:581" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="690:1800" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="1977:2118" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="2190:2409" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="2294:2371" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="2482:2778" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="2601:2740" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="2852:3163" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="2971:3125" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="3236:3545" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="3355:3507" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="3622:4234" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="3741:4196" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="3888:4072" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="4310:4918" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="4429:4880" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="4576:4758" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="5000:5044" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="5111:6010" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="5230:5973" ph="{...}" />
-                <marker date="1536253159793" expanded="true" signature="5377:5715" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="6074:6501" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="6193:6463" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="6564:6984" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="6683:6946" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="7049:7172" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="7237:7281" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="7349:7393" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="7470:7514" ph="{...}" />
-                <marker date="1536253159793" expanded="false" signature="7582:7701" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="6:157" ph="..." />
+                <marker date="1536253295290" expanded="true" signature="196:7657" ph="{...}" />
+                <marker date="1536253295290" expanded="true" signature="235:7655" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="447:581" ph="{...}" />
+                <marker date="1536253295290" expanded="true" signature="691:1814" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="1893:2034" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="2106:2325" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="2210:2287" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="2398:2694" ph="{...}" />
+                <marker date="1536253295290" expanded="true" signature="2517:2656" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="2768:3079" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="2887:3041" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="3152:3461" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="3271:3423" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="3538:4150" ph="{...}" />
+                <marker date="1536253295290" expanded="true" signature="3657:4112" ph="{...}" />
+                <marker date="1536253295290" expanded="true" signature="3804:3988" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="4226:4834" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="4345:4796" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="4492:4674" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="4916:4960" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="5027:5926" ph="{...}" />
+                <marker date="1536253295290" expanded="true" signature="5146:5889" ph="{...}" />
+                <marker date="1536253295290" expanded="true" signature="5293:5631" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="5990:6417" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="6109:6379" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="6480:6900" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="6599:6862" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="6965:7088" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="7153:7197" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="7265:7309" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="7386:7430" ph="{...}" />
+                <marker date="1536253295290" expanded="false" signature="7530:7649" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -389,7 +389,6 @@
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Filters/HSLFilterSet.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/SchemeFileSupport/SchemeFormat.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Colors/ColorMath.cs" />
-        <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Filters/ColorMath.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Colors/HSL.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Colors/RGB.cs" />
@@ -413,6 +412,7 @@
         <option value="$PROJECT_DIR$/ColorSchemeInverter/CLI/CliUtis.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterUtils.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterBundle.cs" />
+        <option value="$PROJECT_DIR$/readme.md" />
       </list>
     </option>
   </component>
@@ -523,7 +523,7 @@
       <workItem from="1536174090515" duration="3114000" />
       <workItem from="1536178431346" duration="1288000" />
       <workItem from="1536218981670" duration="21476000" />
-      <workItem from="1536250934673" duration="2222000" />
+      <workItem from="1536250934673" duration="2916000" />
     </task>
     <task id="LOCAL-00001" summary="Readme update">
       <created>1536168539515</created>
@@ -581,11 +581,18 @@
       <option name="project" value="LOCAL" />
       <updated>1536251537056</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="string[] is now valid parameter type for filters. New filters registered.">
+      <created>1536253340469</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1536253340469</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29562000" />
+    <option name="totallyTimeSpent" value="30256000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -694,7 +701,8 @@
     <MESSAGE value="CLI argument parsing. Filters cannot yet read string[] parameters as they want object[]" />
     <MESSAGE value="Refactoring. Methods moved between classes. CliUtils class added." />
     <MESSAGE value="Refactoring. Renamed ParseArgs to ParseFilterArgs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring. Renamed ParseArgs to ParseFilterArgs" />
+    <MESSAGE value="string[] is now valid parameter type for filters. New filters registered." />
+    <option name="LAST_COMMIT_MESSAGE" value="string[] is now valid parameter type for filters. New filters registered." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -765,16 +773,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="229" column="16" selection-start-line="229" selection-start-column="16" selection-end-line="229" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="703">
-            <caret line="37" selection-start-line="37" selection-end-line="37" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -917,27 +915,6 @@
     <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/bin/Debug/HappyDays_inverted.icls">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Program.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
-          <folding>
-            <marker date="1536251513047" expanded="false" signature="6:175" ph="..." />
-            <marker date="1536251513047" expanded="true" signature="177:366" ph="/* Todo: Filters for levels (gamma, black, white), gain ... */" />
-            <marker date="1536251513047" expanded="true" signature="397:3207" ph="{...}" />
-            <marker date="1536251513047" expanded="true" signature="426:3195" ph="{...}" />
-            <marker date="1536251513047" expanded="true" signature="479:3188" ph="{...}" />
-            <marker date="1536251513047" expanded="true" signature="1624:1775" ph="/* get source and target from CLI args, if not available use built-in ones for debugging ... */" />
-            <marker date="1536251513047" expanded="true" signature="1819:1910" ph="{...}" />
-            <marker date="1536251513047" expanded="true" signature="1967:2020" ph="{...}" />
-            <marker date="1536251513047" expanded="true" signature="2236:3045" ph="{...}" />
-            <marker date="1536251513047" expanded="true" signature="2283:2909" ph="{...}" />
-            <marker date="1536251513047" expanded="true" signature="2306:2716" ph="/* old testing, now ClI parsing is in use: ... */" />
-            <marker date="1536251513047" expanded="true" signature="2909:3031" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Filters/ColorFilter.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -1018,43 +995,74 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterBundle.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="108" column="13" lean-forward="true" selection-start-line="108" selection-start-column="13" selection-end-line="108" selection-end-column="13" />
+        <state relative-caret-position="497">
+          <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
           <folding>
-            <marker date="1536253159793" expanded="false" signature="6:157" ph="..." />
-            <marker date="1536253159793" expanded="true" signature="196:7709" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="235:7707" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="447:581" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="690:1800" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="1977:2118" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="2190:2409" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="2294:2371" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="2482:2778" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="2601:2740" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="2852:3163" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="2971:3125" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="3236:3545" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="3355:3507" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="3622:4234" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="3741:4196" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="3888:4072" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="4310:4918" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="4429:4880" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="4576:4758" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="5000:5044" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="5111:6010" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="5230:5973" ph="{...}" />
-            <marker date="1536253159793" expanded="true" signature="5377:5715" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="6074:6501" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="6193:6463" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="6564:6984" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="6683:6946" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="7049:7172" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="7237:7281" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="7349:7393" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="7470:7514" ph="{...}" />
-            <marker date="1536253159793" expanded="false" signature="7582:7701" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="6:157" ph="..." />
+            <marker date="1536253295290" expanded="true" signature="196:7657" ph="{...}" />
+            <marker date="1536253295290" expanded="true" signature="235:7655" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="447:581" ph="{...}" />
+            <marker date="1536253295290" expanded="true" signature="691:1814" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="1893:2034" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="2106:2325" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="2210:2287" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="2398:2694" ph="{...}" />
+            <marker date="1536253295290" expanded="true" signature="2517:2656" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="2768:3079" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="2887:3041" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="3152:3461" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="3271:3423" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="3538:4150" ph="{...}" />
+            <marker date="1536253295290" expanded="true" signature="3657:4112" ph="{...}" />
+            <marker date="1536253295290" expanded="true" signature="3804:3988" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="4226:4834" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="4345:4796" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="4492:4674" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="4916:4960" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="5027:5926" ph="{...}" />
+            <marker date="1536253295290" expanded="true" signature="5146:5889" ph="{...}" />
+            <marker date="1536253295290" expanded="true" signature="5293:5631" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="5990:6417" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="6109:6379" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="6480:6900" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="6599:6862" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="6965:7088" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="7153:7197" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="7265:7309" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="7386:7430" ph="{...}" />
+            <marker date="1536253295290" expanded="false" signature="7530:7649" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" selection-start-line="2" selection-end-line="3" selection-end-column="30" />
+          <folding>
+            <marker date="1536251513047" expanded="true" signature="6:175" ph="..." />
+            <marker date="1536251513047" expanded="true" signature="177:366" ph="/* Todo: Filters for levels (gamma, black, white), gain ... */" />
+            <marker date="1536251513047" expanded="true" signature="397:3207" ph="{...}" />
+            <marker date="1536251513047" expanded="true" signature="426:3195" ph="{...}" />
+            <marker date="1536251513047" expanded="true" signature="479:3188" ph="{...}" />
+            <marker date="1536251513047" expanded="true" signature="1624:1775" ph="/* get source and target from CLI args, if not available use built-in ones for debugging ... */" />
+            <marker date="1536251513047" expanded="true" signature="1819:1910" ph="{...}" />
+            <marker date="1536251513047" expanded="true" signature="1967:2020" ph="{...}" />
+            <marker date="1536251513047" expanded="true" signature="2236:3045" ph="{...}" />
+            <marker date="1536251513047" expanded="true" signature="2283:2909" ph="{...}" />
+            <marker date="1536251513047" expanded="true" signature="2306:2716" ph="/* old testing, now ClI parsing is in use: ... */" />
+            <marker date="1536251513047" expanded="true" signature="2909:3031" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="60">
+            <caret line="3" selection-start-line="3" selection-end-line="3" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

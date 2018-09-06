@@ -1,22 +1,38 @@
 ### Color Scheme Inverter
 
-## ** WORK IN PROGRESS **
+##### ** WORK IN PROGRESS **
 
-This is going to be a tiny tool for inverting color schemes from dark to light and vice versa.
+This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
-Current operation includes luminance invert filter and saturation enhancement.
 
+### Currently available filters (cli options)
+```
+Available Filters:
+   -b  --brightness   =gain
+   -c  --contrast     =value(-1..1),midpoint(0..1)
+   -g  --gamma        =gamma(0..x)
+   -i  --invert
+   -il --invert-lightness
+   -lg --lightness-gain
+   -s  --saturation
+   -sg --saturation-gamma
+   -l  --lightness-gain
+   -sc --saturation-contrast
+   -lc --lightness-contrast
+   
+Usage:
+    -b=1.1
+    --contrast=0.1
+    --contrast=0.1,0.6
+
+```
 
 #### ToDo
 
 + Add more filters, at least for adjusting saturation and gamma 
   + Levels (gamma, black, white) adjustements,
-  + Gamma adjustment for saturation
-  + Contrast (levels may be enough?)
   + RBG gamma and levels adjustments (implementation that doesn't affect b/w colors at all!)
-
-+ CLI arguments to apply desired filters with desired parameters
 
 + Support for CSS and HTML files? What else?
 
@@ -24,13 +40,14 @@ Current operation includes luminance invert filter and saturation enhancement.
 
 + Change the project name. Inversion is not any more the only way to tweak colors!!
 
-#### Filtering colors in Program.cs
+#### Manually filtering bypassing CLI arguments
 
 ```c#
 using System;
 using System.IO;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
+using ColorSchemeInverter.CLI;
 
 [...]
 
