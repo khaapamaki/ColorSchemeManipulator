@@ -1,7 +1,10 @@
-namespace ColorSchemeInverter.SchemeFileSupport {
-    
+namespace ColorSchemeInverter.SchemeFileSupport
+{
     public static class SchemeFormatUtil
     {
+        private const string PatternHex8 = "([0-9abcdefABCDEF]{8})";
+        private const string PatternHex6 = "([0-9abcdefABCDEF]{6})";
+
         public static SchemeFormat GetFormatFromExtension(string extension)
         {
             if (extension.StartsWith(".")) {
@@ -15,24 +18,24 @@ namespace ColorSchemeInverter.SchemeFileSupport {
                     return SchemeFormat.VisualStudio;
                 default:
                     return SchemeFormat.Generic;
-            }  
+            }
         }
 
-        
+
         public static string GetRegEx(SchemeFormat schemeFormat)
         {
             // Patterns must have three groups, where 2nd must pure hex RGB without any prefixes!
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
-                    return "(<option name=\".+\" value=\")([0-9abcdef]{6})(\"\\s?\\/>)";
+                    return "(<option name=\".+\" value=\")" + PatternHex6 + "(\"\\s?\\/>)";
                 case SchemeFormat.VisualStudio:
-                    return "(ground Type=\".+\" Source=\")([0-9ABCDEF]{8})(\" *\\/>)";
+                    return "(ground Type=\".+\" Source=\")" + PatternHex8 + "(\" *\\/>)";
                 case SchemeFormat.Generic:
                 default:
-                    return "(#)([0-9abcdefABCDEF]{6})(.*)";
+                    return "(#)" + PatternHex6 + "(.*)";
             }
         }
-        
+
         public static string GetRGBStringFromat(SchemeFormat schemeFormat)
         {
             switch (schemeFormat) {
@@ -44,6 +47,5 @@ namespace ColorSchemeInverter.SchemeFileSupport {
                     return "RRGGBB";
             }
         }
-        
     }
 }
