@@ -30,15 +30,17 @@ Usage:
 
 #### ToDo
 
-+ Add more filters, at least for adjusting saturation and gamma 
-  + Levels (gamma, black, white) adjustements,
-  + RBG gamma and levels adjustments (implementation that doesn't affect b/w colors at all!)
++ More filters
+  + Levels (gamma, black, white) adjustments,
+  + RBG levels adjustments, plus implementation that doesn't affect b/w colors at all
+  + RGB gamma that doesn't affect b/w colors
 
 + Support for CSS and HTML files? What else?
 
-+ Automatic detection which scheme is originally dark or light. For using pre-made settings for inversion process.
++ Automatic detection which scheme is originally dark or light. For using pre-made settings for inversion process
 
 + Change the project name. Inversion is not any more the only way to tweak colors!!
+
 
 #### Manually filtering bypassing CLI arguments
 
