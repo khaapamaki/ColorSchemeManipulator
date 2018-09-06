@@ -9,6 +9,29 @@ namespace ColorSchemeInverter.Filters
 {
     public sealed class FilterBundle
     {
+        private static FilterBundle _instance;
+        private static readonly object Padlock = new object();
+  
+        private FilterBundle() { }
+       
+        private static FilterBundle GetInstance()
+        { 
+            lock (Padlock) {
+                return _instance ?? (_instance = new FilterBundle());
+            }
+        }
+        
+        private bool _isRegisterd = false;
+        
+        public static void RegisterCliOptions()
+        {
+            if (GetInstance()._isRegisterd)
+                return;
+            CliArgs.Register(new List<string> { "-il", "--invert-lightness"}, LightnessInvert, 0);
+            CliArgs.Register(new List<string> { "-s", "--saturation"}, SaturationGain, 1);
+            CliArgs.Register(new List<string> { "-i", "--invert"}, Invert, 0);
+        }
+        
 
         public static HSL LightnessInvert(HSL hsl, params object[] _)
         {

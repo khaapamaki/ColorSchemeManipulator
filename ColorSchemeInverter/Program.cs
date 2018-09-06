@@ -16,14 +16,17 @@ namespace ColorSchemeInverter
     {
         public static void Main(string[] args)
         {           
-            RegisterCliCommands();
-            (FilterSet cliFilters, string[] remainingArgs) = CliArgs.ParseArgs(args);
+            // Make FilterBundle filters available for CLI
+            FilterBundle.RegisterCliOptions();
+            
+            // Parse CLI args and generate FilterSet of them
+            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseArgs(args);
             
             Console.WriteLine("Available Filters:");
             Console.WriteLine(CliArgs.ToString());
             
-            Console.WriteLine("Asked Filters:");
-            Console.WriteLine(cliFilters.ToString());
+            Console.WriteLine("Filters to be applied:");
+            Console.WriteLine(filterSet.ToString());
             
             // Test files for debugging
             string sourceFileName = @"HappyDays.icls";
@@ -35,8 +38,7 @@ namespace ColorSchemeInverter
                 Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
                                                              + Path.GetExtension(sourceFile)));
             
-            
-            // get source and target, if not available use built-in ones for debugging
+            // get source and target from CLI args, if not available use built-in ones for debugging
             // todo: show error if source or target is missing
             if (remainingArgs.Length == 2) {
                 sourceFile = args[0];
@@ -52,6 +54,7 @@ namespace ColorSchemeInverter
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
 
+                    // old testing, now ClI parsing is in use:
                     // var filters = new FilterSet()
                     //     .Add(FilterBundle.LightnessInvert)
                     //     .Add(FilterBundle.SaturationContrast, 0.3)
@@ -60,7 +63,7 @@ namespace ColorSchemeInverter
                     //     .Add(FilterBundle.Contrast, 0.3);
    
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
-                    processor.ProcessFile(sourceFile, targetFile, cliFilters);
+                    processor.ProcessFile(sourceFile, targetFile, filterSet);
                 }
                 else {
                     Console.Error.WriteLine(sourceFileName + " does not exist");
@@ -70,18 +73,7 @@ namespace ColorSchemeInverter
             }
             
         }
-        
-       // private bool _isRegisterd = false;
-        
-        public static void RegisterCliCommands()
-        {
-            // if (_isRegisterd)
-            //     return;
 
-            CliArgs.Register(new List<string> { "-il", "--invert-lightness"}, FilterBundle.LightnessInvert, 0);
-            CliArgs.Register(new List<string> { "-s", "--saturation"}, FilterBundle.SaturationGain, 1);
-            CliArgs.Register(new List<string> { "-i", "--invert"}, FilterBundle.Invert, 0);
-        }
     }
     
     

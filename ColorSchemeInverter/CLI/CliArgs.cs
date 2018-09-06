@@ -14,12 +14,7 @@ namespace ColorSchemeInverter.CLI
         private static CliArgs _instance;
         private static readonly object Padlock = new object();
 
-        private List<CliArg> Items { get; set; }
-  
-        private CliArgs()
-        {
-            Items = new List<CliArg>();
-        }
+        private CliArgs() { }
        
         private static CliArgs GetInstance()
         {
@@ -27,6 +22,8 @@ namespace ColorSchemeInverter.CLI
                 return _instance ?? (_instance = new CliArgs());
             }
         }
+
+        private List<CliArg> Items { get; set; } = new List<CliArg>();
 
         // ---- API Methods --------
         
