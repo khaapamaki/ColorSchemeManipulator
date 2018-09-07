@@ -21,8 +21,9 @@ Available Filters:
    -lc  --lightness-contrast        (double,[double])
    
 Usage example:
-    <appname> -li -sg=1.1 --saturation-contrast=0.2,0.6 <sourcefile> <targetfile>´
+    <appname> -li -sg=1.1 --saturation-contrast=0.2,0.6 <sourcefile> <targetfile>
 ```
+
 
 #### ToDo
 
@@ -30,15 +31,12 @@ Usage example:
   + Levels (gamma, black, white) adjustments,
   + RBG levels adjustments, plus implementation that doesn't affect b/w colors at all
   + RGB gamma that doesn't affect b/w colors
-
 + Support for CSS and HTML files? What else?
-
 + Automatic detection which scheme is originally dark or light. For using pre-made settings for inversion process
-
 + Change the project name. Inversion is not any more the only way to tweak colors!!
 
 
-#### Manually filtering bypassing CLI arguments
+#### Manually filtering (no using CLI arguments)
 
 ```c#
 using System;
@@ -59,7 +57,7 @@ namespace ColorSchemeInverter
             
             var filters = new FilterSet()
                 .Add(FilterBundle.LightnessInvert)
-                .Add(FilterBundle.SaturationContrast, 0.3)
+                .Add(FilterBundle.SaturationContrast, 0.3, 0.45)
                 .Add(FilterBundle.SaturationGain, 1.2)
                 .Add(FilterBundle.Gain, 1.1)
                 .Add(FilterBundle.Contrast, 0.3);
@@ -91,7 +89,7 @@ namespace ColorSchemeInverter
             FilterBundle.RegisterCliOptions();
             
             // Parse CLI args and generate FilterSet of them
-            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            (FilterSet filters, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
             
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
             
@@ -101,7 +99,7 @@ namespace ColorSchemeInverter
                 targetFile = args[1];
                 
                 ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
-                p.ProcessFile(sourceFile, targetFile, filterSet);
+                p.ProcessFile(sourceFile, targetFile, filters);
                 
             } else {     
                
