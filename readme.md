@@ -6,26 +6,22 @@ This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
 
-### Currently available filters (cli options)
+### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-   -b  --brightness   =gain
-   -c  --contrast     =value(-1..1),midpoint(0..1)
-   -g  --gamma        =gamma(0..x)
-   -i  --invert
-   -il --invert-lightness
-   -lg --lightness-gain
-   -s  --saturation
-   -sg --saturation-gamma
-   -l  --lightness-gain
-   -sc --saturation-contrast
-   -lc --lightness-contrast
+   -b   --brightness                (double)
+   -c   --contrast                  (double,[double])
+   -g   --gamma                     (double)
+   -i   --invert
+   -li  --ightness-invert
+   -l   --lightness                 (double)
+   -s   --saturation                (double)
+   -sg  --saturation-gamma          (double)
+   -sc  --saturation-contrast       (double,[double])
+   -lc  --lightness-contrast        (double,[double])
    
-Usage:
-    -b=1.1
-    --contrast=0.1
-    --contrast=0.1,0.6
-
+Usage example:
+    <appname> -li -sg=1.1 --saturation-contrast=0.2,0.6 <sourcefile> <targetfile>´
 ```
 
 #### ToDo
@@ -49,19 +45,66 @@ using System;
 using System.IO;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
+
+
+namespace ColorSchemeInverter
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {    
+            [...]
+    
+            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
+            
+            var filters = new FilterSet()
+                .Add(FilterBundle.LightnessInvert)
+                .Add(FilterBundle.SaturationContrast, 0.3)
+                .Add(FilterBundle.SaturationGain, 1.2)
+                .Add(FilterBundle.Gain, 1.1)
+                .Add(FilterBundle.Contrast, 0.3);
+            
+            ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
+            p.ProcessFile(sourceFile, targetFile, filters);
+            
+        }
+    }
+}
+```
+
+#### Filtering by CLI arguments
+
+```c#
+using System;
+using System.IO;
+using ColorSchemeInverter.Filters;
+using ColorSchemeInverter.SchemeFileSupport;
 using ColorSchemeInverter.CLI;
 
-[...]
+namespace ColorSchemeInverter
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
 
-SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
-
-var filters = new FilterSet()
-    .Add(FilterBundle.LightnessInvert)
-    .Add(FilterBundle.SaturationContrast, 0.3)
-    .Add(FilterBundle.SaturationGain, 1.2)
-    .Add(FilterBundle.Gain, 1.1)
-    .Add(FilterBundle.Contrast, 0.3);
-
-ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
-p.ProcessFile(sourceFile, targetFile, filters);
+            // Make FilterBundle filters available for CLI
+            FilterBundle.RegisterCliOptions();
+            
+            // Parse CLI args and generate FilterSet of them
+            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            
+            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
+            
+            if (remainingArgs.Length == 2) {
+                sourceFile = args[0];
+                targetFile = args[1];
+            }
+            
+            ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
+            p.ProcessFile(sourceFile, targetFile, filterSet);
+        
+        }
+    }
+}
 ```
