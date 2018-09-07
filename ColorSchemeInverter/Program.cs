@@ -64,6 +64,7 @@ namespace ColorSchemeInverter
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
             }  
             
+            /*
             // old testing, now ClI parsing is in use:
             var filters = new FilterSet()
                 .Add(FilterBundle.LightnessInvert)
@@ -71,6 +72,8 @@ namespace ColorSchemeInverter
                 .Add(FilterBundle.SaturationGain, 1.2)
                 .Add(FilterBundle.Gain, 1.1)
                 .Add(FilterBundle.Contrast, 0.3, 0.3);
+             */
+            
             
         }
     }

@@ -30,8 +30,9 @@ namespace ColorSchemeInverter
 
             File.WriteAllText(targetFile, convertedText, Encoding.Default);
         }
-
-        private FilterSet _filters;  // filters need to be stored for MatchEvaluator since it doesn't take parameters
+        
+        // filters need to be stored for MatchEvaluator since it doesn't take parameters
+        private FilterSet _filters;  
         
         private string ApplyFilters(string text, FilterSet filters)
         {
@@ -45,7 +46,10 @@ namespace ColorSchemeInverter
         {
             string rgbStringFormat = SchemeFormatUtil.GetRGBStringFromat(_schemeFormat);
             if (m.Groups.Count == 4) {
+                
+                // the second capture group of the regex pattern must be the one that contains color data
                 string rgbString = m.Groups[2].ToString();
+                
                 if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
 
                     string filteredRGBString =
@@ -53,7 +57,7 @@ namespace ColorSchemeInverter
                             .ApplyFilterSet(_filters)
                             .ToRGBString(rgbStringFormat);
 
-                    Console.WriteLine(rgbString + " -> " + filteredRGBString);
+                    // Console.WriteLine(rgbString + " -> " + filteredRGBString);
 
                     return m.Groups[1]
                            + filteredRGBString
@@ -64,7 +68,7 @@ namespace ColorSchemeInverter
             }
 
             throw new Exception("Regular Expression Mismatch");
-            return m.Groups[0].ToString();  // alternative for throwing
+            // return m.Groups[0].ToString();  // alternative for throwing
         }
 
     }

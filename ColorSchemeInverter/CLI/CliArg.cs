@@ -45,9 +45,10 @@ namespace ColorSchemeInverter.CLI
 
         public new string ToString()
         {
+            // todo formatted output that can be used in cmd line help
             StringBuilder opts = new StringBuilder();
-            OptionArgs.ForEach(c => opts.Append(c + " "));
-            return opts + FilterDelegate.GetMethodInfo().Name + " Required paraneters: " + MinNumberOfParams;
+            OptionArgs.ForEach(c => opts.Append(c + "  "));
+            return opts + "(" + MinNumberOfParams + ")";
         }
     }
 }
