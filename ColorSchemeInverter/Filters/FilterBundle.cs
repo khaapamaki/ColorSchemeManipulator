@@ -31,16 +31,22 @@ namespace ColorSchemeInverter.Filters
             CliArgs.Register(new List<string> { "-b", "--brightness"}, Gain, 1);
             CliArgs.Register(new List<string> { "-c", "--contrast"}, Contrast, 1);
             CliArgs.Register(new List<string> { "-g", "--gamma"}, Gamma, 1);
+            CliArgs.Register(new List<string> { "--levels"}, Levels, 5);
+            CliArgs.Register(new List<string> { "--levels-red"}, LevelsRed, 5);
+            CliArgs.Register(new List<string> { "--levels-green"}, LevelsGreen, 5); 
+            CliArgs.Register(new List<string> { "--levels-blue"}, LevelsBlue, 5); 
             CliArgs.Register(new List<string> { "-i", "--invert"}, Invert, 0); 
             
             CliArgs.Register(new List<string> { "-l", "--lightness"}, LightnessGain, 1);
             CliArgs.Register(new List<string> { "-lc", "--lightness-contrast"}, LightnessContrast, 1);
             CliArgs.Register(new List<string> { "-lg", "--lightness-gamma"}, LightnessGamma, 1);
+            CliArgs.Register(new List<string> { "--lightness-levels"}, LightnessLevels, 5); 
             CliArgs.Register(new List<string> { "-li", "--lightness-invert"}, LightnessInvert, 0);
 
             CliArgs.Register(new List<string> { "-s", "--saturation"}, SaturationGain, 1);
             CliArgs.Register(new List<string> { "-sc", "--saturation-contrast"}, SaturationContrast, 1);
             CliArgs.Register(new List<string> { "-sg", "--saturation-gamma"}, SaturationGamma, 1);
+            CliArgs.Register(new List<string> { "--saturation-levels"}, SaturationLevels, 5); 
         }
         
         public static HSL LightnessInvert(HSL hsl, params object[] _)
@@ -109,6 +115,28 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
 
+        public static HSL SaturationLevels(HSL hsl, params object[] args)
+        {
+            var result = new HSL(hsl);
+        
+            if (args.Length >= 5) {
+                bool skipGrayScaleColors = false;
+                if (args.Length >= 6) {
+                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
+                }
+                if (! hsl.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                    double inputBlack = FilterUtils.GetDouble(args[0]);
+                    double inputWhite = FilterUtils.GetDouble(args[1]);
+                    double midtones = FilterUtils.GetDouble(args[2]);
+                    double outputWhite = FilterUtils.GetDouble(args[3]);
+                    double outputBlack = FilterUtils.GetDouble(args[4]);
+                    result.Saturation = ColorMath.Levels(hsl.Saturation, inputBlack, inputWhite, midtones, outputWhite, outputBlack); 
+                }
+            }
+
+            return result;
+        }
+        
         public static HSL LightnessContrast(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
@@ -127,7 +155,24 @@ namespace ColorSchemeInverter.Filters
         
         public static HSL LightnessLevels(HSL hsl, params object[] args)
         {
-            return hsl;
+            var result = new HSL(hsl);
+        
+            if (args.Length >= 5) {
+                bool skipGrayScaleColors = false;
+                if (args.Length >= 6) {
+                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
+                }
+                if (! hsl.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                    double inputBlack = FilterUtils.GetDouble(args[0]);
+                    double inputWhite = FilterUtils.GetDouble(args[1]);
+                    double midtones = FilterUtils.GetDouble(args[2]);
+                    double outputWhite = FilterUtils.GetDouble(args[3]);
+                    double outputBlack = FilterUtils.GetDouble(args[4]);
+                    result.Lightness = ColorMath.Levels(hsl.Lightness, inputBlack, inputWhite, midtones, outputWhite, outputBlack); 
+                }
+            }
+
+            return result;
         }
 
         public static RGB Contrast(RGB hsl, params object[] args)
@@ -182,18 +227,100 @@ namespace ColorSchemeInverter.Filters
 
         public static RGB Levels(RGB rgb, params object[] args)
         {
-            return rgb;
+            var result = new RGB(rgb);
+
+            if (args.Length >= 5) {
+                bool skipGrayScaleColors = false;
+                if (args.Length >= 6) {
+                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
+                }
+
+                if (!rgb.ToHSL().Saturation.AboutEqual(0.0) || !skipGrayScaleColors) {
+                    double inputBlack = FilterUtils.GetDouble(args[0]);
+                    double inputWhite = FilterUtils.GetDouble(args[1]);
+                    double midtones = FilterUtils.GetDouble(args[2]);
+                    double outputWhite = FilterUtils.GetDouble(args[3]);
+                    double outputBlack = FilterUtils.GetDouble(args[4]);
+                    result.Red = ColorMath.Levels(rgb.Red, inputBlack, inputWhite, midtones, outputWhite, outputBlack);
+                    result.Green = ColorMath.Levels(rgb.Green, inputBlack, inputWhite, midtones, outputWhite,
+                        outputBlack);
+                    result.Blue = ColorMath.Levels(rgb.Blue, inputBlack, inputWhite, midtones, outputWhite,
+                        outputBlack);
+                }
+            }
+
+            return result;
         }
 
-        public static RGB RGBLevels(RGB rgb, params object[] args)
+        public static RGB LevelsRed(RGB rgb, params object[] args)
         {
-            return rgb;
+            var result = new RGB(rgb);
+        
+            if (args.Length >= 5) {
+                bool skipGrayScaleColors = false;
+                if (args.Length >= 6) {
+                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
+                }
+                if (! rgb.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                    double inputBlack = FilterUtils.GetDouble(args[0]);
+                    double inputWhite = FilterUtils.GetDouble(args[1]);
+                    double midtones = FilterUtils.GetDouble(args[2]);
+                    double outputWhite = FilterUtils.GetDouble(args[3]);
+                    double outputBlack = FilterUtils.GetDouble(args[4]);
+                    result.Red = ColorMath.Levels(rgb.Red, inputBlack, inputWhite, midtones, outputWhite, outputBlack); 
+                }
+            }
+
+            return result;
         }
 
-        public static RGB RGBLevelsForColors(RGB rgb, params object[] args)
+        public static RGB LevelsGreen(RGB rgb, params object[] args)
         {
-            return rgb;
+            var result = new RGB(rgb);
+
+            if (args.Length >= 5) {
+                bool skipGrayScaleColors = false;
+                if (args.Length >= 6) {
+                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
+                }
+
+                if (!rgb.ToHSL().Saturation.AboutEqual(0.0) || !skipGrayScaleColors) {
+                    double inputBlack = FilterUtils.GetDouble(args[0]);
+                    double inputWhite = FilterUtils.GetDouble(args[1]);
+                    double midtones = FilterUtils.GetDouble(args[2]);
+                    double outputWhite = FilterUtils.GetDouble(args[3]);
+                    double outputBlack = FilterUtils.GetDouble(args[4]);
+                    result.Green = ColorMath.Levels(rgb.Green, inputBlack, inputWhite, midtones, outputWhite,
+                        outputBlack);
+                }
+            }
+
+            return result;
         }
+        
+        public static RGB LevelsBlue(RGB rgb, params object[] args)
+        {
+            var result = new RGB(rgb);
+
+            if (args.Length >= 5) {
+                bool skipGrayScaleColors = false;
+                if (args.Length >= 6) {
+                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
+                }
+                if (! rgb.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                double inputBlack = FilterUtils.GetDouble(args[0]);
+                double inputWhite = FilterUtils.GetDouble(args[1]);           
+                double midtones = FilterUtils.GetDouble(args[2]);
+                double outputWhite = FilterUtils.GetDouble(args[3]);
+                double outputBlack = FilterUtils.GetDouble(args[4]);
+                result.Blue = ColorMath.Levels(rgb.Blue, inputBlack, inputWhite, midtones, outputWhite, outputBlack); 
+                    }
+            }
+
+            return result;
+        }
+        
+
 
         // just dummy template
         private static RGB DoNothing(RGB rgb, params object[] args)
