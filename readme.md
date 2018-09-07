@@ -87,7 +87,6 @@ namespace ColorSchemeInverter
     {
         public static void Main(string[] args)
         {
-
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
             
@@ -97,13 +96,18 @@ namespace ColorSchemeInverter
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
             
             if (remainingArgs.Length == 2) {
+            
                 sourceFile = args[0];
                 targetFile = args[1];
-            }
-            
-            ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
-            p.ProcessFile(sourceFile, targetFile, filterSet);
-        
+                
+                ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
+                p.ProcessFile(sourceFile, targetFile, filterSet);
+                
+            } else {     
+               
+                [...]   
+                
+            }         
         }
     }
 }
