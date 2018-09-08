@@ -5,6 +5,8 @@
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
+Added option to convert colors on png-files for quick testing
+
 
 ### Currently available filters and corresponding CLI options
 ```
@@ -27,12 +29,16 @@ Usage example:
 
 #### ToDo
 
-+ More filters
-  + Levels (gamma, black, white) adjustments,
-  + RBG levels adjustments, plus implementation that doesn't affect b/w colors at all
-  + RGB gamma that doesn't affect b/w colors
++ HSV<->HSL conversions
++ Range system for other filters than levels based
++ Parse range cli arguments
++ Filter naming consistency
++ More filters?
++ Unit tests
++ Add declaration field to CliArg and write them (used in quick help)
++ Parsing of string argumnents (mostly to doubles) before-hand to optimize for speed
 + Support for CSS and HTML files? What else?
-+ Automatic detection which scheme is originally dark or light. For using pre-made settings for inversion process
++ Presets for quick operations
 + Change the project name. Inversion is not any more the only way to tweak colors!!
 
 
@@ -91,21 +97,20 @@ namespace ColorSchemeInverter
             // Parse CLI args and generate FilterSet of them
             (FilterSet filters, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
             
-            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
+            SchemeFormat schemeFormat 
+            = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
             
             if (remainingArgs.Length == 2) {
             
                 sourceFile = args[0];
                 targetFile = args[1];
                 
-                ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
-                p.ProcessFile(sourceFile, targetFile, filters);
+                if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
+                    ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
+                    p.ProcessFile(sourceFile, targetFile, filters);
+                }
                 
-            } else {     
-               
-                [...]   
-                
-            }         
+            }        
         }
     }
 }
