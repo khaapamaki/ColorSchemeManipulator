@@ -32,6 +32,10 @@ namespace ColorSchemeInverter.Filters
             CliArgs.Register(new List<string> { "-b", "--brightness"}, Gain, 1);
             CliArgs.Register(new List<string> { "-c", "--contrast"}, Contrast, 1);
             CliArgs.Register(new List<string> { "-g", "--gamma"}, Gamma, 1);
+            CliArgs.Register(new List<string> { "-gr", "--gamma-red"}, GammaRed, 1);
+            CliArgs.Register(new List<string> { "-gg", "--gamma-green"}, GammaGreen, 1);
+            CliArgs.Register(new List<string> { "-gb", "--gamma-blue"}, GammaBlue, 1);
+            
             CliArgs.Register(new List<string> { "--levels"}, Levels, 5);
             CliArgs.Register(new List<string> { "--levels-red"}, LevelsRed, 5);
             CliArgs.Register(new List<string> { "--levels-green"}, LevelsGreen, 5); 
@@ -121,11 +125,8 @@ namespace ColorSchemeInverter.Filters
             var result = new HSL(hsl);
         
             if (args.Length >= 5) {
-                bool skipGrayScaleColors = false;
-                if (args.Length >= 6) {
-                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
-                }
-                if (! hsl.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                double saturationThreshold = args.Length >= 6 ? FilterUtils.GetDouble(args[5]) : -1;
+                if (hsl.Saturation > saturationThreshold) {
                     double inputBlack = FilterUtils.GetDouble(args[0]);
                     double inputWhite = FilterUtils.GetDouble(args[1]);
                     double midtones = FilterUtils.GetDouble(args[2]);
@@ -159,11 +160,8 @@ namespace ColorSchemeInverter.Filters
             var result = new HSL(hsl);
         
             if (args.Length >= 5) {
-                bool skipGrayScaleColors = false;
-                if (args.Length >= 6) {
-                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
-                }
-                if (! hsl.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                double saturationThreshold = args.Length >= 6 ? FilterUtils.GetDouble(args[5]) : -1;
+                if (hsl.Saturation > saturationThreshold) {
                     double inputBlack = FilterUtils.GetDouble(args[0]);
                     double inputWhite = FilterUtils.GetDouble(args[1]);
                     double midtones = FilterUtils.GetDouble(args[2]);
@@ -207,6 +205,50 @@ namespace ColorSchemeInverter.Filters
 
             return result;
         }
+        
+        public static RGB GammaRed(RGB rgb, params object[] args)
+        {
+            var result = new RGB(rgb);
+
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double saturationThreshold = args.Length >= 2 ? FilterUtils.GetDouble(args[1]) : -1;
+                if (rgb.ToHSL().Saturation > saturationThreshold) {
+                    double gamma = FilterUtils.GetDouble(args[0]);
+                    result.Red = ColorMath.Gamma(rgb.Red, gamma);
+                }
+            }
+            return result;
+        }
+        
+        
+        public static RGB GammaGreen(RGB rgb, params object[] args)
+        {
+            var result = new RGB(rgb);
+
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double saturationThreshold = args.Length >= 2 ? FilterUtils.GetDouble(args[1]) : -1;
+                if (rgb.ToHSL().Saturation > saturationThreshold) {
+                    double gamma = FilterUtils.GetDouble(args[0]);
+                    result.Green = ColorMath.Gamma(rgb.Green, gamma);
+                
+                }
+            }
+            return result;
+        }
+        
+        public static RGB GammaBlue(RGB rgb, params object[] args)
+        {
+            var result = new RGB(rgb);
+
+            if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
+                double saturationThreshold = args.Length >= 2 ? FilterUtils.GetDouble(args[1]) : -1;
+                if (rgb.ToHSL().Saturation > saturationThreshold) {
+                    double gamma = FilterUtils.GetDouble(args[0]);
+                    result.Blue = ColorMath.Gamma(rgb.Blue, gamma);
+                }
+            }
+            return result;
+        }
 
         public static RGB Gain(RGB rgb, params object[] args)
         {
@@ -223,6 +265,7 @@ namespace ColorSchemeInverter.Filters
 
         public static RGB Invert(RGB rgb, params object[] args)
         {
+            // todo clamp to min 0.0
             return new RGB(rgb) {Red = 1.0 - rgb.Red, Green = 1.0 - rgb.Green, Blue = 1.0 - rgb.Blue};
         }
 
@@ -231,12 +274,8 @@ namespace ColorSchemeInverter.Filters
             var result = new RGB(rgb);
 
             if (args.Length >= 5) {
-                bool skipGrayScaleColors = false;
-                if (args.Length >= 6) {
-                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
-                }
-
-                if (!rgb.ToHSL().Saturation.AboutEqual(0.0) || !skipGrayScaleColors) {
+                double saturationThreshold = args.Length >= 6 ? FilterUtils.GetDouble(args[5]) : -1;
+                if (rgb.ToHSL().Saturation > saturationThreshold) {
                     double inputBlack = FilterUtils.GetDouble(args[0]);
                     double inputWhite = FilterUtils.GetDouble(args[1]);
                     double midtones = FilterUtils.GetDouble(args[2]);
@@ -258,11 +297,8 @@ namespace ColorSchemeInverter.Filters
             var result = new RGB(rgb);
         
             if (args.Length >= 5) {
-                bool skipGrayScaleColors = false;
-                if (args.Length >= 6) {
-                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
-                }
-                if (! rgb.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                double saturationThreshold = args.Length >= 6 ? FilterUtils.GetDouble(args[5]) : -1;
+                if (rgb.ToHSL().Saturation > saturationThreshold) {
                     double inputBlack = FilterUtils.GetDouble(args[0]);
                     double inputWhite = FilterUtils.GetDouble(args[1]);
                     double midtones = FilterUtils.GetDouble(args[2]);
@@ -280,12 +316,8 @@ namespace ColorSchemeInverter.Filters
             var result = new RGB(rgb);
 
             if (args.Length >= 5) {
-                bool skipGrayScaleColors = false;
-                if (args.Length >= 6) {
-                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
-                }
-
-                if (!rgb.ToHSL().Saturation.AboutEqual(0.0) || !skipGrayScaleColors) {
+                double saturationThreshold = args.Length >= 6 ? FilterUtils.GetDouble(args[5]) : -1;
+                if (rgb.ToHSL().Saturation > saturationThreshold) {
                     double inputBlack = FilterUtils.GetDouble(args[0]);
                     double inputWhite = FilterUtils.GetDouble(args[1]);
                     double midtones = FilterUtils.GetDouble(args[2]);
@@ -304,11 +336,8 @@ namespace ColorSchemeInverter.Filters
             var result = new RGB(rgb);
 
             if (args.Length >= 5) {
-                bool skipGrayScaleColors = false;
-                if (args.Length >= 6) {
-                    skipGrayScaleColors = FilterUtils.GetBoolean(args[5]);
-                }
-                if (! rgb.ToHSL().Saturation.AboutEqual(0.0) || ! skipGrayScaleColors) {
+                double saturationThreshold = args.Length >= 6 ? FilterUtils.GetDouble(args[5]) : -1;
+                if (rgb.ToHSL().Saturation > saturationThreshold) {
                 double inputBlack = FilterUtils.GetDouble(args[0]);
                 double inputWhite = FilterUtils.GetDouble(args[1]);           
                 double midtones = FilterUtils.GetDouble(args[2]);

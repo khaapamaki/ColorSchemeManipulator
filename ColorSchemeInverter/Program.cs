@@ -17,7 +17,7 @@ namespace ColorSchemeInverter
     {
         public static void Main(string[] args)
         {
-                   
+
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
             
@@ -33,6 +33,7 @@ namespace ColorSchemeInverter
             // Test files for debugging
             string sourceFileName = @"HappyDays.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
+            sourceFileName = "HappyDays.png";
             
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             string sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));

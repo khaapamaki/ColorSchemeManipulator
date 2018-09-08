@@ -46,9 +46,11 @@ namespace ColorSchemeInverter.Filters
                 }
             }
             
+            // Todo this is very flawed, fix asap
             if (obj is string s) {
                 try {
-                    return bool.Parse(s);
+
+                    return (s == "1" || s.ToLower() == "true");
                 } catch (Exception e) {
                     Console.WriteLine("Could not parse string to boolean");
                 }
