@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Filters;
 
@@ -18,18 +19,18 @@ namespace ColorSchemeInverter.CLI
             (FilterSet cliFilters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
             return (cliFilters, remainingArgs.ToArray());
         }
-        
-        
+
+
         private static (FilterSet, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
             FilterSet filters = null, List<string> remainingArgs = null)
-        { 
+        {
             filters = filters ?? new FilterSet();
             remainingArgs = remainingArgs ?? new List<string>();
             if (args.Length < index + 1)
                 return (filters, remainingArgs);
 
             string arg = args[index++];
-            
+
             (Delegate filterDelegate, string[] argStrings) = CliArgs.GetDelegateAndParameters(arg);
 
             if (filterDelegate is Func<HSL, object[], HSL>) {
@@ -39,12 +40,12 @@ namespace ColorSchemeInverter.CLI
             } else {
                 remainingArgs.Add(arg);
             }
-             
-            (filters,remainingArgs) = RecursiveParseFilterArgs(args, index, filters, remainingArgs); // recurse
+
+            (filters, remainingArgs) = RecursiveParseFilterArgs(args, index, filters, remainingArgs); // recurse
             return (filters, remainingArgs);
         }
 
-        
+
         public static (string, string) SplitIntoCommandAndArguments(string option)
         {
             string cmd = option;
@@ -68,6 +69,77 @@ namespace ColorSchemeInverter.CLI
             }
 
             return args.ToArray();
+        }
+
+        public static ColorRange ParseRange(string rangeString)
+        {
+
+            ColorRange range = new ColorRange();
+            double max, min;
+            bool succeeded;
+            
+            (succeeded, min, max) = GetRange(rangeString, "h|hue");
+            if (succeeded)
+            {
+                range.SetHueRange(min, max);
+              
+            }
+            
+            (succeeded, min, max) = GetRange(rangeString, "s|sat|saturation");
+            if (succeeded)
+            {
+                range.SetSaturationRange(min, max);
+            }
+
+            (succeeded, min, max) = GetRange(rangeString, "l|light|lightness");
+            if (succeeded)
+            {
+                range.SetLightnessRange(min, max);
+            }
+            
+            (succeeded, min, max) = GetRange(rangeString, "r|red");
+            if (succeeded)
+            {
+                range.SetRedRange(min, max);
+            }
+            
+            (succeeded, min, max) = GetRange(rangeString, "g|green");
+            if (succeeded)
+            {
+                range.SetGreenRange(min, max);
+            }
+            
+            (succeeded, min, max) = GetRange(rangeString, "b|blue");
+            if (succeeded)
+            {
+                range.SetBlueRange(min, max);
+            }
+            
+            (succeeded, min, max) = GetRange(rangeString, "v|value");
+            if (succeeded)
+            {
+                range.SetValueRange(min, max);
+            }
+            
+            throw new NotImplementedException();
+        }
+
+        private static (bool, double, double) GetRange(string rangeString, string options)
+        {
+            Match m = Regex.Match(rangeString, GetRangePattern(options));
+            if (m.Length == 1 && m.Groups.Count == 4) {
+                double min = double.Parse(m.Groups[2].Value);
+                double max = double.Parse(m.Groups[3].Value);
+                return (true, min, max);
+            }
+
+            return (false, 0, 0);
+        }
+        
+        private static string GetRangePattern(string options)
+        {
+            return @"(?i)" + options
+                + @":\s*([\-]?[0-9]*[\.]?[0-9]+)\s*\-\s*([\-]?[0-9]*[\.]?[0-9]+)";
         }
     }
 }

@@ -123,22 +123,12 @@ namespace ColorSchemeInverter.Filters
         public static HSL SaturationLevels(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
-        
-            if (args.Length >= 5) {
-                double saturationThreshold = args.Length >= 6 ? FilterUtils.GetDouble(args[5]) : -1;
-                if (hsl.Saturation > saturationThreshold) {
-                    double inputBlack = FilterUtils.GetDouble(args[0]);
-                    double inputWhite = FilterUtils.GetDouble(args[1]);
-                    double midtones = FilterUtils.GetDouble(args[2]);
-                    double outputWhite = FilterUtils.GetDouble(args[3]);
-                    double outputBlack = FilterUtils.GetDouble(args[4]);
-                    result.Saturation = ColorMath.Levels(hsl.Saturation, inputBlack, inputWhite, midtones, outputWhite, outputBlack); 
-                }
-            }
-
+            double rangeFactor = FilterUtils.GetRangeFactor(hsl, args, 5);
+            result.Saturation = FilterUtils.CalcLevels(hsl.Saturation, rangeFactor, args);
             return result;
         }
-        
+
+    
         public static HSL LightnessContrast(HSL hsl, params object[] args)
         {
             var result = new HSL(hsl);
@@ -151,7 +141,6 @@ namespace ColorSchemeInverter.Filters
                     result.Lightness = ColorMath.SSpline(hsl.Lightness, strength);
                 }
             }
-
             return result;
         }
         
@@ -170,7 +159,6 @@ namespace ColorSchemeInverter.Filters
                     result.Lightness = ColorMath.Levels(hsl.Lightness, inputBlack, inputWhite, midtones, outputWhite, outputBlack); 
                 }
             }
-
             return result;
         }
 
@@ -359,5 +347,8 @@ namespace ColorSchemeInverter.Filters
             // do something here
             return result;
         }
+
+        
+        
     }
 }

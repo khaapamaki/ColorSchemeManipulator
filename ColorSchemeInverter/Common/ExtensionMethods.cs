@@ -33,5 +33,12 @@ namespace ColorSchemeInverter.Common
             const double tolerance = 0.00001;
             return (val < anotherVal + tolerance  && val > anotherVal - tolerance);
         }
+
+        public static double NormalizeLoopingValue(this double val, double range)
+        {
+            double temp = val % range;
+            return temp >= 0 ? temp : range + temp;
+        }
+        
     }
 }

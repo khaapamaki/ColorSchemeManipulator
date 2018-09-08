@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using ColorSchemeInverter.CLI;
+using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
 
@@ -17,7 +18,7 @@ namespace ColorSchemeInverter
     {
         public static void Main(string[] args)
         {
-
+            
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
             

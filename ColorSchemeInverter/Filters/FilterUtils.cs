@@ -72,5 +72,52 @@ namespace ColorSchemeInverter.Filters
         {
             return IsNumber(o) || o is string;
         }
+        
+        static public double Linear(double x, double x0, double x1, double y0, double y1)
+        {
+            if (x1 - x0 == 0.0)
+            {
+                return (y0 + y1) / 2;
+            }
+            return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
+        }
+        
+        static public double Linear01(double x, double y0, double y1)
+        {
+            const double x1 = 1.0;
+            const double x0 = 0.0;
+            
+            return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
+        } 
+        
+                
+        public static double GetRangeFactor(HSL hsl, object[] args, byte index)
+        {
+            return args.Length > index && args[index] is ColorRange range ? range.InRange(hsl) : 1.0;
+        }
+        
+        public static double GetRangeFactor(RGB rgb, object[] args, byte index)
+        {
+            return args.Length > index && args[index] is ColorRange range ? range.InRange(rgb) : 1.0;
+        }
+        
+        public static double CalcLevels(double value, double rangeFactor, object[] args)
+        {
+            var result = value;
+            rangeFactor.Clamp(0, 1);
+            if (args.Length >= 5) {                
+                if (rangeFactor > 0.0) {
+                    double inputBlack = FilterUtils.GetDouble(args[0]);
+                    double inputWhite = FilterUtils.GetDouble(args[1]);
+                    double midtones = FilterUtils.GetDouble(args[2]);
+                    double outputWhite = FilterUtils.GetDouble(args[3]);
+                    double outputBlack = FilterUtils.GetDouble(args[4]);
+                    double newValue = ColorMath.Levels(value, inputBlack, inputWhite, midtones, outputWhite, outputBlack);
+                    result = FilterUtils.Linear01(rangeFactor,value, newValue);
+                }
+            }
+            return result;
+        }
+
     }
 }

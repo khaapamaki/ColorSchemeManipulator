@@ -3,8 +3,8 @@ using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Colors
 {
-    [Obsolete]
-    public class HSV
+
+    public class HSV : ColorBase
     {
         public double Hue { get; set; }
         public double Saturation { get; set; }

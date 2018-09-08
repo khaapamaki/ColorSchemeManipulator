@@ -57,6 +57,7 @@
     <Compile Include="ColorSchemeProcessor.cs" />
     <Compile Include="Filters\FilterUtils.cs" />
     <Compile Include="Filters\HSLFilter.cs" />
+    <Compile Include="Filters\ColorRange.cs" />
     <Compile Include="Filters\RGBFilter.cs" />
     <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />
@@ -75,10 +76,6 @@
     <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\vcs.xml" />
     <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\workspace.xml" />
     <Content Include="..\.idea\.idea.ColorSchemeInverter\riderModule.iml" />
-    <EmbeddedResource Include="..\ColorSchemes\photo.png">
-      <Link>photo.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\ColorSchemes\HappyDays.png">
       <Link>HappyDays.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
