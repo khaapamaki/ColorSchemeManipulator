@@ -40,17 +40,17 @@ namespace ColorSchemeInverter.Colors
             CopyFrom(rgb.ToHSL());
         }
 
+        public HSL(HSV hsv)
+        {
+            CopyFrom(hsv.ToHSL());
+        }
+            
         public void CopyFrom(HSL hsl)
         {
             Hue = hsl.Hue;
             Saturation = hsl.Saturation;
             Lightness = hsl.Lightness;
             Alpha = hsl.Alpha;
-        }
-
-        public static HSL FromRGB(RGB rgb)
-        {
-            return new HSL(rgb);
         }
 
         public override string ToString()

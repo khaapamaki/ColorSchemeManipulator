@@ -50,10 +50,10 @@ namespace ColorSchemeInverter.Filters
         }
 
         public static double Levels(double input,
-            double inBlack, double inWhite, double midtones, double outBlack, double outWhite)
+            double inBlack, double inWhite, double gamma, double outBlack, double outWhite)
         {
-            // midtones = midtones.Clamp(0.0, 1.0);
-            midtones = midtones.Clamp(0.01, 9.99); // midtones is directly a gamma value
+            // gamma = gamma.Clamp(0.0, 1.0);
+            gamma = gamma.Clamp(0.01, 9.99);
             inBlack = inBlack.Clamp(0.0, 1.0);
             inWhite = inWhite.Clamp(0.0, 1.0);
             // outBlack = outBlack.Clamp(0.0, 1.0);
@@ -64,18 +64,19 @@ namespace ColorSchemeInverter.Filters
             double output = ((input - inBlack) / (inWhite - inBlack)).Clamp(0.0, 1.0);
 
             // mid-tones
-            if (!midtones.AboutEqual(0.5)) {
-                output = Math.Pow(output,1 / midtones);
+            if (!gamma.AboutEqual(0.5)) {
+                output = Math.Pow(output,1 / gamma);
             }
 
             // output values
             output = (output * (outWhite - outBlack) + outBlack).Clamp(0.0, 1.0);
 
-            return output;
+            return output.Min(0.0);
             
             // https://stackoverflow.com/questions/39510072/algorithm-for-adjustment-of-image-levels
         }
 
+        [Obsolete]
         private static double GetGammaFromMidtoneValue(double midtones)
         {
             midtones = midtones.Clamp(0.0, 1.0);

@@ -76,6 +76,7 @@ namespace ColorSchemeInverterTest
             Assert.True(a.Clamp(0,1.0) == 1.0);
             Assert.True(a.Min(0) == 2.0);
             Assert.True(a.Max(1.1) == 1.1);
+   
         }
     }
 }

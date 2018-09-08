@@ -54,6 +54,7 @@
           <e p="FilterSet.cs" t="Include" />
           <e p="FilterUtils.cs" t="Include" />
           <e p="HSLFilter.cs" t="Include" />
+          <e p="HSVFilter.cs" t="Include" />
           <e p="RGBFilter.cs" t="Include" />
         </e>
         <e p="ImageProcessor.cs" t="Include" />
@@ -79,6 +80,8 @@
             </e>
           </e>
         </e>
+        <e p="TestColorMath.cs" t="Include" />
+        <e p="TestFilterUtils.cs" t="Include" />
         <e p="UnitTest1.cs" t="Include" />
       </e>
       <e p="ColorSchemes/darcula-vs-2017.vstheme" t="Include" />

@@ -29,11 +29,6 @@ namespace ColorSchemeInverter.Colors
             Alpha = rgb8Bit.Alpha / 255.0;
         }
 
-        public RGB(HSL hsl)
-        {
-            CopyFrom(hsl.ToRGB());
-        }
-
         public RGB(RGB rgb)
         {
             Red = rgb.Red;
@@ -41,18 +36,24 @@ namespace ColorSchemeInverter.Colors
             Blue = rgb.Blue;
             Alpha = rgb.Alpha;
         }
+        
+        public RGB(HSL hsl)
+        {
+            CopyFrom(hsl.ToRGB());
+        }
 
+        public RGB(HSV hsv)
+        {
+            CopyFrom(hsv.ToRGB());
+        }
+      
+        
         public void CopyFrom(RGB rgb)
         {
             Red = rgb.Red;
             Green = rgb.Green;
             Blue = rgb.Blue;
             Alpha = rgb.Alpha;
-        }
-
-        public static RGB FromHSL(HSL hsl)
-        {
-            return new RGB(hsl);
         }
 
         public static RGB FromRGBString(string rgbString, string rgbStringFormat)
@@ -99,10 +100,7 @@ namespace ColorSchemeInverter.Colors
                 Alpha.Clamp(0.0, 1.0));
         }
 
-        public HSV ToHSV()
-        {
-            return ColorConversions.RGBToHSV(this);
-        }
+
 
         public string ToRGBString(string rgbStringFormat)
         {

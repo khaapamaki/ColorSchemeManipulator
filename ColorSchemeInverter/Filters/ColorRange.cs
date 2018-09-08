@@ -83,59 +83,75 @@ namespace ColorSchemeInverter.Filters
             _valueRange = true;
         } 
         
-        public double InRange(RGB rgb)
+        public double InRangeFactor(RGB rgb)
         {
             double result = 0.0;
-            if (HSLVProcessingNeeded()) {
+            if (HSLorHSVProcessingNeeded()) {
                 HSL hsl = new HSL(rgb);
                 result *= InHueRange(hsl.Hue) * InSaturationRange(hsl.Saturation) * InLightnessRange(hsl.Lightness);
             }
-            if (HsvProcessingNeeded()) {
+            if (HSVProcessingNeeded()) {
                 throw new NotImplementedException();
-                //result *= InValueRange(hsl.ToHSV().Value);
+                //result *= InValueRange(hsv.ToHSV().Value);
             }
-            if (RgbProcessingNeeded()) {
+            if (RGBProcessingNeeded()) {
                 result *= InRedRange(rgb.Red) * InGreenRange(rgb.Green) * InBlueRange(rgb.Blue);
             }
 
             return result;
         }
         
-        public double InRange(HSL hsl)
+        public double InRangeFactor(HSL hsl)
         {
             double result = 0.0;
-            if (HSLVProcessingNeeded()) {
+            if (HSLorHSVProcessingNeeded()) {
                 result *= InHueRange(hsl.Hue) * InSaturationRange(hsl.Saturation) * InLightnessRange(hsl.Lightness);
             }
-            if (HsvProcessingNeeded()) {
-                throw new NotImplementedException();
-                //result *= InValueRange(hsl.ToHSV().Value);
+            if (HSVProcessingNeeded()) {
+                result *= InValueRange(hsl.ToHSV().Value);
             }
-            if (RgbProcessingNeeded()) {
+            if (RGBProcessingNeeded()) {
                 RGB rgb = new RGB(hsl);
                 result *= InRedRange(rgb.Red) * InGreenRange(rgb.Green) * InBlueRange(rgb.Blue);
             }
 
             return result;
-
         }
 
-        private bool RgbProcessingNeeded()
+                
+        public double InRangeFactor(HSV hsv)
+        {
+            double result = 0.0;
+            if (HSLorHSVProcessingNeeded()) {
+                result *= InHueRange(hsv.Hue) * InSaturationRange(hsv.Saturation) * InLightnessRange(hsv.Value);
+            }
+            if (HSLProcessingNeeded()) {
+                result *= InLightnessRange(hsv.ToHSL().Lightness);
+            }
+            if (RGBProcessingNeeded()) {
+                RGB rgb = new RGB(hsv);
+                result *= InRedRange(rgb.Red) * InGreenRange(rgb.Green) * InBlueRange(rgb.Blue);
+            }
+
+            return result;
+        }
+        
+        private bool RGBProcessingNeeded()
         {
             return _redRange || _greenRange || _blueRange;
         }
         
-        private bool HSLVProcessingNeeded()
+        private bool HSLorHSVProcessingNeeded()
         {
             return _saturationRange || _hueRange || _lightnessRange || _valueRange;
         }
         
-        private bool HslProcessingNeeded()
+        private bool HSLProcessingNeeded()
         {
             return _lightnessRange;
         }
         
-        private bool HsvProcessingNeeded()
+        private bool HSVProcessingNeeded()
         {
             return _valueRange;
         }

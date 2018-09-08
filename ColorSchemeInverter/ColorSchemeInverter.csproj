@@ -58,6 +58,7 @@
     <Compile Include="Filters\FilterUtils.cs" />
     <Compile Include="Filters\HSLFilter.cs" />
     <Compile Include="Filters\ColorRange.cs" />
+    <Compile Include="Filters\HSVFilter.cs" />
     <Compile Include="Filters\RGBFilter.cs" />
     <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />

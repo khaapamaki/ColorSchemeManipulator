@@ -78,7 +78,7 @@ namespace ColorSchemeInverter
                 .Add(FilterBundle.LightnessInvert)
                 .Add(FilterBundle.SaturationContrast, 0.3)
                 .Add(FilterBundle.SaturationGain, 1.2)
-                .Add(FilterBundle.Gain, 1.1)
+                .Add(FilterBundle.RGBGain, 1.1)
                 .Add(FilterBundle.Contrast, 0.3, 0.3);
              */
             

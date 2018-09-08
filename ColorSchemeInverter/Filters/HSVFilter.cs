@@ -4,25 +4,25 @@ using ColorSchemeInverter.Colors;
 
 namespace ColorSchemeInverter.Filters
 {
-    public class RGBFilter : ColorFilter
+    public class HSVFilter : ColorFilter
     {
-        private Func<RGB, object[], RGB> FilterDelegate { get; }
+        private Func<HSV, object[], HSV> FilterDelegate { get; }
         private object[] Arguments { get; }
 
-        public RGBFilter(Func<RGB, object[], RGB> filterDelegate, params object[] args)
+        public HSVFilter(Func<HSV, object[], HSV> filterDelegate, params object[] args)
         {
             FilterDelegate = filterDelegate;
             Arguments = args;
         }
-
+        
         public override ColorBase ApplyTo(ColorBase color)
         {
             if (color is RGB) {
-                return FilterDelegate((RGB) color, Arguments);
-            } else if (color is HSL) {
-                return FilterDelegate(((HSL) color).ToRGB(), Arguments);
+                return FilterDelegate(((RGB) color).ToHSV(), Arguments);
             } else if (color is HSV) {
-                return FilterDelegate(((HSV) color).ToRGB(), Arguments);
+                return FilterDelegate((HSV) color, Arguments);
+            }else if (color is HSL) {
+                return FilterDelegate(((HSL) color).ToHSV(), Arguments);
             }
 
             throw new NotImplementedException();

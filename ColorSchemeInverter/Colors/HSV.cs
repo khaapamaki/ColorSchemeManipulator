@@ -42,16 +42,11 @@ namespace ColorSchemeInverter.Colors
             CopyFrom(rgb.ToHSV());
         }
 
-        public static HSV FromRGB(RGB rgb)
+        public HSV(HSL hsl)
         {
-            return new HSV(rgb);
+            CopyFrom(hsl.ToHSV());
         }
-
-        public RGB ToRGB()
-        {
-            return ColorConversions.HSVToRGB(this);
-        }
-
+               
         public override string ToString()
         {
             return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Value: {Value} ");
