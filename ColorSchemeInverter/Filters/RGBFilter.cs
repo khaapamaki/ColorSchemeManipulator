@@ -23,12 +23,12 @@ namespace ColorSchemeInverter.Filters
         }
         
         // todo auto cast back to subclass?
-        public override Color ApplyTo(Color color)
+        public override ColorBase ApplyTo(ColorBase colorBase)
         {
-            if (color is RGB) {
-                return FilterDelegate((RGB) color, Arguments);
-            } else if (color is HSL) {
-                return FilterDelegate(((HSL) color).ToRGB(), Arguments);
+            if (colorBase is RGB) {
+                return FilterDelegate((RGB) colorBase, Arguments);
+            } else if (colorBase is HSL) {
+                return FilterDelegate(((HSL) colorBase).ToRGB(), Arguments);
             }
 
             throw new NotImplementedException("Only HSL and RGB colors are supported");

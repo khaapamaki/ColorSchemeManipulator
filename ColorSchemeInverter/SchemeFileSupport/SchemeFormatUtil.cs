@@ -16,6 +16,8 @@ namespace ColorSchemeInverter.SchemeFileSupport
                     return SchemeFormat.Idea;
                 case "vstheme":
                     return SchemeFormat.VisualStudio;
+                case "png":
+                    return SchemeFormat.Image;
                 default:
                     return SchemeFormat.Generic;
             }

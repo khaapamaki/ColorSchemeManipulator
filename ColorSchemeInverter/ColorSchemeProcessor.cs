@@ -23,8 +23,8 @@ namespace ColorSchemeInverter
             string convertedText;
             try {
                 convertedText = ApplyFilters(text, filters);
-            } catch (Exception e) {
-                Console.WriteLine(e);
+            } catch (Exception ex) {
+                Console.WriteLine(GetType().FullName + " : " + ex.Message);
                 throw;
             }
 

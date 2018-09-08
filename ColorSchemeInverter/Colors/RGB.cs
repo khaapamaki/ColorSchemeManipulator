@@ -1,9 +1,10 @@
 using System;
+using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 
 namespace ColorSchemeInverter.Colors
 {
-    public class RGB : Color
+    public class RGB : ColorBase
     {
         public double Red { get; set; }
         public double Green { get; set; }
@@ -100,7 +101,7 @@ namespace ColorSchemeInverter.Colors
 
         public HSV ToHSV()
         {
-            return ColorConverter.RGBToHSV(this);
+            return ColorConversions.RGBToHSV(this);
         }
 
         public string ToRGBString(string rgbStringFormat)

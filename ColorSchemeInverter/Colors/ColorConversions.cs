@@ -1,8 +1,11 @@
 using System;
+using System.Drawing;
+using System.Runtime.Remoting.Messaging;
+using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Colors
 {
-    public static class ColorConverter
+    public static class ColorConversions
     {
         public static HSL RGBToHSL(RGB rgb)
         {
@@ -183,5 +186,19 @@ namespace ColorSchemeInverter.Colors
 
             return new RGB(r, g, b, hsv.Alpha);
         }
+
+        public static RGB SystemColorToRGB(Color color)
+        {
+            RGB8bit rgb8 = new RGB8bit(color.R, color.G, color.B, color.A);
+            return new RGB(rgb8);
+        }
+
+        public static Color RGBToSystemColor(RGB rgb)
+        {
+            RGB8bit rgb8 = new RGB8bit(rgb);
+            return Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);
+            throw new NotImplementedException();
+        }
+        
     }
 }

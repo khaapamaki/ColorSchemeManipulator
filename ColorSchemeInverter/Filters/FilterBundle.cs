@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using ColorSchemeInverter.CLI;
 using ColorSchemeInverter.Colors;
+using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Filters
 {

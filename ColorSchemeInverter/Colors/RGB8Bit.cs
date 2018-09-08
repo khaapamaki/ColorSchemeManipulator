@@ -1,4 +1,5 @@
 using System;
+using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Colors
 {

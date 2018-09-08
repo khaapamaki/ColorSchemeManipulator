@@ -2,14 +2,14 @@ using System;
 
 namespace ColorSchemeInverter.Colors
 {
-    public abstract class Color
+    public abstract class ColorBase
     {
         public RGB ToRGB()
         {
             if (this is RGB) {
                 return (RGB) this;
             } else if (this is HSL) {
-                return ColorConverter.HSLToRGB((HSL) this);
+                return ColorConversions.HSLToRGB((HSL) this);
             }
 
             throw new NotImplementedException();
@@ -20,7 +20,7 @@ namespace ColorSchemeInverter.Colors
             if (this is HSL) {
                 return (HSL) this;
             } else if (this is RGB) {
-                return ColorConverter.RGBToHSL((RGB) this);
+                return ColorConversions.RGBToHSL((RGB) this);
             }
 
             throw new NotImplementedException();

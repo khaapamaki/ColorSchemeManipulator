@@ -22,26 +22,26 @@ namespace ColorSchemeInverter.Filters
             Arguments = args;
         }
 
-        public HSLFilter(Func<Color, object[], Color> filterDelegate, object arg = null)
+        public HSLFilter(Func<ColorBase, object[], ColorBase> filterDelegate, object arg = null)
         {
             FilterDelegate = (Func<HSL, object[], HSL>) filterDelegate;
             if (arg != null)
                 Arguments = new[] {arg};
         }
 
-        public HSLFilter(Func<Color, object[], Color> filterDelegate, params object[] args)
+        public HSLFilter(Func<ColorBase, object[], ColorBase> filterDelegate, params object[] args)
         {
             FilterDelegate = (Func<HSL, object[], HSL>) filterDelegate;
             Arguments = args;
         }
 
 
-        public override Color ApplyTo(Color color)
+        public override ColorBase ApplyTo(ColorBase colorBase)
         {
-            if (color is RGB) {
-                return FilterDelegate(((RGB) color).ToHSL(), Arguments);
-            } else if (color is HSL) {
-                return FilterDelegate((HSL) color, Arguments);
+            if (colorBase is RGB) {
+                return FilterDelegate(((RGB) colorBase).ToHSL(), Arguments);
+            } else if (colorBase is HSL) {
+                return FilterDelegate((HSL) colorBase, Arguments);
             }
 
             throw new NotImplementedException("Only HSL and RGB colors are supported");

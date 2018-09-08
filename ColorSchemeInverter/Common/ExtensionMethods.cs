@@ -1,6 +1,6 @@
 using System;
 
-namespace ColorSchemeInverter.Colors
+namespace ColorSchemeInverter.Common
 {
     public static class ExtensionMethods
     {
@@ -10,7 +10,19 @@ namespace ColorSchemeInverter.Colors
             else if(val.CompareTo(max) > 0) return max;
             else return val;
         }
+        
+        public static T Min<T>(this T val, T min) where T : IComparable<T>
+        {
+            if (val.CompareTo(min) < 0) return min;
+            else return val;
+        }
 
+        public static T Max<T>(this T val, T max) where T : IComparable<T>
+        {
+            if(val.CompareTo(max) > 0) return max;
+            else return val;
+        }
+        
         public static bool Equals(this double val, double anotherVal, double tolerance)
         {
             return (val < anotherVal + tolerance / 2.0 && val > anotherVal - tolerance / 2.0);

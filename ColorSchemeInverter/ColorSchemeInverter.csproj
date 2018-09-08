@@ -35,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -42,13 +43,13 @@
     <Compile Include="CLI\CliArg.cs" />
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtis.cs" />
-    <Compile Include="Colors\Color.cs" />
-    <Compile Include="Colors\ColorConverter.cs" />
-    <Compile Include="Colors\ExtensionMethods.cs" />
+    <Compile Include="Colors\ColorBase.cs" />
+    <Compile Include="Colors\ColorConversions.cs" />
     <Compile Include="Colors\HSL.cs" />
     <Compile Include="Colors\HSV.cs" />
     <Compile Include="Colors\RGB.cs" />
     <Compile Include="Colors\RGB8bit.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Filters\ColorFilter.cs" />
     <Compile Include="Filters\ColorMath.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Filters\FilterUtils.cs" />
     <Compile Include="Filters\HSLFilter.cs" />
     <Compile Include="Filters\RGBFilter.cs" />
+    <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeFileSupport\SchemeFormat.cs" />

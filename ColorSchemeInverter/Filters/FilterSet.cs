@@ -74,18 +74,18 @@ namespace ColorSchemeInverter.Filters
             return ApplyAnyColorTo(rgb).ToRGB();
         }
 
-        private Color ApplyAnyColorTo(Color color)
+        private ColorBase ApplyAnyColorTo(ColorBase colorBase)
         {
             foreach (var filter in _filterChain) {
-                color = ApplyFilter(color, filter);
+                colorBase = ApplyFilter(colorBase, filter);
             }
 
-            return color;
+            return colorBase;
         }
 
-        private Color ApplyFilter(Color color, ColorFilter filter)
+        private ColorBase ApplyFilter(ColorBase colorBase, ColorFilter filter)
         {
-            return filter.ApplyTo(color);
+            return filter.ApplyTo(colorBase);
         }
 
         public string ToString(string delimiter = "\n", string prefix = "   ")

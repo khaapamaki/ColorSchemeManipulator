@@ -1,8 +1,9 @@
+using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 
 namespace ColorSchemeInverter.Colors
 {
-    public class HSL : Color
+    public class HSL : ColorBase
     {
         public double Hue { get; set; }
         public double Saturation { get; set; }

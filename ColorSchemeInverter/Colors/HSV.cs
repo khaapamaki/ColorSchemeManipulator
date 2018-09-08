@@ -1,4 +1,5 @@
 using System;
+using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Colors
 {
@@ -48,7 +49,7 @@ namespace ColorSchemeInverter.Colors
 
         public RGB ToRGB()
         {
-            return ColorConverter.HSVToRGB(this);
+            return ColorConversions.HSVToRGB(this);
         }
 
         public override string ToString()

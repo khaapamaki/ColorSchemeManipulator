@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Text;
 using ColorSchemeInverter.Colors;
+using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Filters
 {

@@ -4,6 +4,7 @@ namespace ColorSchemeInverter.SchemeFileSupport
     {
         VisualStudio,
         Idea,
+        Image,
         Generic
     }
 }
