@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using ColorSchemeInverter.CLI;
 using ColorSchemeInverter.Filters;
@@ -16,6 +17,7 @@ namespace ColorSchemeInverter
     {
         public static void Main(string[] args)
         {
+                   
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
             
@@ -60,6 +62,10 @@ namespace ColorSchemeInverter
                 else {
                     Console.Error.WriteLine(sourceFileName + " does not exist");
                 }
+            } else if (schemeFormat == SchemeFormat.Image)
+            {
+                ImageProcessor processor = new ImageProcessor();
+                processor.ProcessFile(sourceFile, targetFile, filterSet);
             } else {
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
             }  
