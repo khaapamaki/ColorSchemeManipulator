@@ -1,6 +1,7 @@
 using System;
 using ColorSchemeInverter;
 using ColorSchemeInverter.Colors;
+using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 using NUnit.Framework;
 
@@ -66,6 +67,15 @@ namespace ColorSchemeInverterTest
             Assert.True(hsl.Hue.AboutEqual(15.2830188679245));
             Assert.True(hsl.Saturation.AboutEqual(0.623529411764706));
             Assert.True(hsl.Lightness.AboutEqual(0.333333333333333));
+        }
+
+        [Test]
+        public void TestClamp()
+        {
+            double a = 2.0;
+            Assert.True(a.Clamp(0,1.0) == 1.0);
+            Assert.True(a.Min(0) == 2.0);
+            Assert.True(a.Max(1.1) == 1.1);
         }
     }
 }
