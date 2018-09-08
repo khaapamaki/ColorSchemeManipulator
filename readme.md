@@ -63,9 +63,9 @@ namespace ColorSchemeInverter
             
             var filters = new FilterSet()
                 .Add(FilterBundle.LightnessInvert)
-                .Add(FilterBundle.SaturationContrast, 0.3, 0.45)
+                .Add(FilterBundle.SaturationContrast, 0.3, 0.45, new ColorRange().Lightness(0.3, 1).Blue(0,0.5))
                 .Add(FilterBundle.SaturationGain, 1.2)
-                .Add(FilterBundle.Gain, 1.1)
+                .Add(FilterBundle.Gain, 1.1);
                 .Add(FilterBundle.Contrast, 0.3);
             
             ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
@@ -98,7 +98,7 @@ namespace ColorSchemeInverter
             (FilterSet filters, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
             
             SchemeFormat schemeFormat 
-            = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
+                = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
             
             if (remainingArgs.Length == 2) {
             

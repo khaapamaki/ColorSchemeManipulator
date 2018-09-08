@@ -73,54 +73,45 @@ namespace ColorSchemeInverter.CLI
 
         public static ColorRange ParseRange(string rangeString)
         {
-
             ColorRange range = new ColorRange();
             double max, min;
             bool succeeded;
-            
+
             (succeeded, min, max) = GetRange(rangeString, "h|hue");
-            if (succeeded)
-            {
-                range.SetHueRange(min, max);
-              
+            if (succeeded) {
+                range.Hue(min, max);
             }
-            
+
             (succeeded, min, max) = GetRange(rangeString, "s|sat|saturation");
-            if (succeeded)
-            {
-                range.SetSaturationRange(min, max);
+            if (succeeded) {
+                range.Saturation(min, max);
             }
 
             (succeeded, min, max) = GetRange(rangeString, "l|light|lightness");
-            if (succeeded)
-            {
-                range.SetLightnessRange(min, max);
+            if (succeeded) {
+                range.Lightness(min, max);
             }
-            
+
             (succeeded, min, max) = GetRange(rangeString, "r|red");
-            if (succeeded)
-            {
-                range.SetRedRange(min, max);
+            if (succeeded) {
+                range.Red(min, max);
             }
-            
+
             (succeeded, min, max) = GetRange(rangeString, "g|green");
-            if (succeeded)
-            {
-                range.SetGreenRange(min, max);
+            if (succeeded) {
+                range.Green(min, max);
             }
-            
+
             (succeeded, min, max) = GetRange(rangeString, "b|blue");
-            if (succeeded)
-            {
-                range.SetBlueRange(min, max);
+            if (succeeded) {
+                range.Blue(min, max);
             }
-            
+
             (succeeded, min, max) = GetRange(rangeString, "v|value");
-            if (succeeded)
-            {
-                range.SetValueRange(min, max);
+            if (succeeded) {
+                range.Value(min, max);
             }
-            
+
             throw new NotImplementedException();
         }
 
@@ -135,11 +126,11 @@ namespace ColorSchemeInverter.CLI
 
             return (false, 0, 0);
         }
-        
+
         private static string GetRangePattern(string options)
         {
             return @"(?i)" + options
-                + @":\s*([\-]?[0-9]*[\.]?[0-9]+)\s*\-\s*([\-]?[0-9]*[\.]?[0-9]+)";
+                           + @":\s*([\-]?[0-9]*[\.]?[0-9]+)\s*\-\s*([\-]?[0-9]*[\.]?[0-9]+)";
         }
     }
 }
