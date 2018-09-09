@@ -46,73 +46,81 @@ namespace ColorSchemeInverter.CLI
             return (filters, remainingArgs);
         }
 
-        // todo test method CliUtils.SplitArgIntoPieces
+
         public static (string, string, string) SplitArgIntoPieces(string arg)
         {
             string option = null;
             string filterParams = null;
             string rangeString = null;
-            const string pattern = @"(\-[a-zA-Z]|\-\-[a-zA-Z]{2,})(\((.*)\))?\s*=\s*(.*)";
+            const string pattern = @"(^\-[a-zA-Z]{1,2}|^\-\-[a-zA-Z]{2,})(\((.*)\))?(\s*=\s*(.*))?";
             Match m = Regex.Match(arg, pattern);
-            if (m.Groups.Count == 5) {
+            if (m.Groups.Count == 6) {
                 option = m.Groups[1].ToString();
-                filterParams = m.Groups[4].ToString();
+                filterParams = m.Groups[5].ToString();
                 rangeString = m.Groups[3].ToString();
             }
 
-            return (option, filterParams, rangeString);
+            return (option == "" ? null : option,
+                filterParams == "" ? null : filterParams,
+                rangeString == "" ? null : rangeString);
         }
 
+        // todo test method CliUtils.ExtractArgs, test returning empty list
         public static List<object> ExtractArgs(string argString)
         {
             var args = new List<object>();
+            
+            if (string.IsNullOrEmpty(argString)) {
+                return args;
+            }
+
             foreach (var s in argString.Trim('"').Split(',')) {
                 args.Add(s.Trim());
             }
 
             return args;
         }
-
-
+        
+        // todo test method CliUtils.ParseRange
         public static ColorRange ParseRange(string rangeString)
         {
             if (string.IsNullOrEmpty(rangeString)) return null;
-            
+
             ColorRange range = new ColorRange();
             double max, min;
             bool succeeded;
 
-            (succeeded, min, max) = GetRange(rangeString, "h|hue");
+            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "h|hue");
             if (succeeded) {
                 range.Hue(min, max);
             }
 
-            (succeeded, min, max) = GetRange(rangeString, "s|sat|saturation");
+            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "s|sat|saturation");
             if (succeeded) {
                 range.Saturation(min, max);
             }
 
-            (succeeded, min, max) = GetRange(rangeString, "l|light|lightness");
+            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "l|light|lightness");
             if (succeeded) {
                 range.Lightness(min, max);
             }
 
-            (succeeded, min, max) = GetRange(rangeString, "r|red");
+            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "r|red");
             if (succeeded) {
                 range.Red(min, max);
             }
 
-            (succeeded, min, max) = GetRange(rangeString, "g|green");
+            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "g|green");
             if (succeeded) {
                 range.Green(min, max);
             }
 
-            (succeeded, min, max) = GetRange(rangeString, "b|blue");
+            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "b|blue");
             if (succeeded) {
                 range.Blue(min, max);
             }
 
-            (succeeded, min, max) = GetRange(rangeString, "v|value");
+            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "v|value");
             if (succeeded) {
                 range.Value(min, max);
             }
@@ -120,9 +128,10 @@ namespace ColorSchemeInverter.CLI
             return range;
         }
 
-        private static (bool, double, double) GetRange(string rangeString, string options)
+        // todo test method CliUtils.TryParseRangeForRangeParam
+        private static (bool, double, double) TryParseRangeForRangeParam(string rangeString, string rangeParam)
         {
-            Match m = Regex.Match(rangeString, GetRangePattern(options));
+            Match m = Regex.Match(rangeString, GetRangePattern(rangeParam));
             if (m.Length == 1 && m.Groups.Count == 4) {
                 double min = double.Parse(m.Groups[2].Value);
                 double max = double.Parse(m.Groups[3].Value);

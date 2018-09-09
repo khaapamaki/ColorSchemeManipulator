@@ -5,9 +5,10 @@ using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 using NUnit.Framework;
 
-namespace ColorSchemeInverterTest
+namespace ColorSchemeInverter.UnitTests
 {
-    public class Tests
+    [TestFixture]
+    public class MiscTests
     {
         [SetUp]
         public void Setup() { }

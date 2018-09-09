@@ -4,6 +4,10 @@
         <TargetFramework>net471</TargetFramework>
 
         <IsPackable>false</IsPackable>
+
+        <AssemblyName>ColorSchemeInverter.UnitTests</AssemblyName>
+
+        <RootNamespace>ColorSchemeInverter.UnitTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

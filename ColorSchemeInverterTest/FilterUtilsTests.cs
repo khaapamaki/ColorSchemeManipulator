@@ -1,9 +1,10 @@
 using NUnit.Framework;
 using ColorSchemeInverter.Filters;
     
-namespace ColorSchemeInverterTest
+namespace ColorSchemeInverter.UnitTests
 {
-    public class TestFilterUtils
+    [TestFixture]
+    public class FilterUtilsTests
     {
         [Test]
         public void Linear01_FactorAtMin_ReturnsRangeStart()
@@ -39,6 +40,12 @@ namespace ColorSchemeInverterTest
             double result = FilterUtils.Linear01(1.1, 100.0, 200.0);
             Assert.That(result == 200.0);
         }
-        
+
+        [Test]
+        [Ignore("Not implemented")]
+        public void Test()
+        {
+            
+        }
     }
 }

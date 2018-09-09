@@ -398,7 +398,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ColorSchemeInverter/CLI/CliArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ColorSchemeInverter/Common/ExtensionMethods.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ColorSchemeInverter/Common/GenericExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ColorSchemeInverter/SchemeFileSupport/SchemeFormatUtil.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ColorSchemeInverter/CLI/CliArg.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterUtils.cs" root0="FORCE_HIGHLIGHTING" />
@@ -435,8 +435,8 @@
         <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/Filters/FilterUtils.cs" />
         <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/Filters/FilterBundle.cs" />
         <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/CLI/CliArg.cs" />
-        <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/ColorBases/ExtensionMethods.cs" />
-        <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/Common/ExtensionMethods.cs" />
+        <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/ColorBases/GenericExtensions.cs" />
+        <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/Common/GenericExtensions.cs" />
         <option value="$PROJECT_DIR$/ColorBaseSchemeInverterTest/UnitTest1.cs" />
         <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/Filters/ColorBaseMath.cs" />
         <option value="$PROJECT_DIR$/ColorBaseSchemeInverter/SchemeFileSupport/SchemeFormat.cs" />
@@ -462,7 +462,7 @@
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Colors/Hsl.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Colors/Hsv.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Filters/FilterUtils.cs" />
-        <option value="$PROJECT_DIR$/ColorSchemeInverter/Common/ExtensionMethods.cs" />
+        <option value="$PROJECT_DIR$/ColorSchemeInverter/Common/GenericExtensions.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/ImageProcessor.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Filters/HsvFilter.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeInverter/Filters/ColorRange.cs" />
@@ -857,7 +857,7 @@
     <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/Filters/RGBFilter.cs" />
     <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/Filters/ColorBaseMath.cs" />
     <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/Filters/ColorBaseFilter.cs" />
-    <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/Common/ExtensionMethods.cs" />
+    <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/Common/GenericExtensions.cs" />
     <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/CLI/CliArg.cs" />
     <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/Filters/FilterSet.cs" />
     <entry file="file://$PROJECT_DIR$/ColorBaseSchemeInverter/ColorBases/HSV.cs" />
@@ -992,7 +992,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Common/ExtensionMethods.cs">
+    <entry file="file://$PROJECT_DIR$/ColorSchemeInverter/Common/GenericExtensions.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="635">
           <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
