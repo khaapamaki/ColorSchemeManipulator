@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Filters;
+using NUnit.Framework;
 
 namespace ColorSchemeInverter.CLI
 {
@@ -69,7 +70,7 @@ namespace ColorSchemeInverter.CLI
         public static List<object> ExtractArgs(string argString)
         {
             var args = new List<object>();
-            
+
             if (string.IsNullOrEmpty(argString)) {
                 return args;
             }
@@ -80,7 +81,7 @@ namespace ColorSchemeInverter.CLI
 
             return args;
         }
-        
+
         // todo test method CliUtils.ParseRange
         public static ColorRange ParseRange(string rangeString)
         {
@@ -128,11 +129,11 @@ namespace ColorSchemeInverter.CLI
             return range;
         }
 
-        // todo test method CliUtils.TryParseRangeForRangeParam
-        private static (bool, double, double) TryParseRangeForRangeParam(string rangeString, string rangeParam)
+
+        public static (bool, double, double) TryParseRangeForRangeParam(string rangeString, string rangeParam)
         {
             Match m = Regex.Match(rangeString, GetRangePattern(rangeParam));
-            if (m.Length == 1 && m.Groups.Count == 4) {
+            if (m.Groups.Count == 4) {
                 double min = double.Parse(m.Groups[2].Value);
                 double max = double.Parse(m.Groups[3].Value);
                 return (true, min, max);
@@ -143,8 +144,9 @@ namespace ColorSchemeInverter.CLI
 
         private static string GetRangePattern(string options)
         {
-            return @"(?i)" + options
-                           + @":\s*([\-]?[0-9]*[\.]?[0-9]+)\s*\-\s*([\-]?[0-9]*[\.]?[0-9]+)";
+            return @"(?i)("
+                   + options
+                   + @"):\s*([\-]?[0-9]*[\.]?[0-9]+)\s*\-\s*([\-]?[0-9]*[\.]?[0-9]+)";
         }
     }
 }

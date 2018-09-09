@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 using System.Security.Permissions;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Common;
@@ -46,8 +47,6 @@ namespace ColorSchemeInverter.Filters
         private double _minBlueSlope  = 0.0;
         private double _maxBlueSlope  = 0.0;        
         private bool _blueRange = false;
-
-        public (double, double) HueRange { get; set; }
         
         public ColorRange Hue(double min, double max, double minSlope = 0.0, double maxSlope = 0.0)
         {
@@ -88,8 +87,7 @@ namespace ColorSchemeInverter.Filters
             _redRange = true;
             return this;
         } 
-        
-        
+         
         public ColorRange Green(double min, double max, double minSlope = 0.0, double maxSlope = 0.0)
         {
             _minGreen = min;
@@ -122,14 +120,25 @@ namespace ColorSchemeInverter.Filters
         
         public double InRangeFactor(Rgb rgb)
         {
-            double result = 0.0;
-            if (HsLorHsvProcessingNeeded()) {
+            
+            Hsl __hsl = rgb.ToHsl();
+            double h = InHueRange(__hsl.Hue);
+            double s = InSaturationRange(__hsl.Saturation);
+            double l = InLightnessRange(__hsl.Lightness);
+            double r = InRedRange(rgb.Red);
+            double g = InGreenRange(rgb.Green);
+            double b = InBlueRange(rgb.Blue);
+            double v = InValueRange(rgb.ToHsv().Value);
+            
+            
+            
+            double result = 1.0;
+            if (HslOrHsvProcessingNeeded()) {
                 var hsl = new Hsl(rgb);
                 result *= InHueRange(hsl.Hue) * InSaturationRange(hsl.Saturation) * InLightnessRange(hsl.Lightness);
             }
             if (HsvProcessingNeeded()) {
-                throw new NotImplementedException();
-                //result *= InValueRange(hsv.ToHSV().Value);
+                result *= InValueRange(rgb.ToHsv().Value);
             }
             if (RgbProcessingNeeded()) {
                 result *= InRedRange(rgb.Red) * InGreenRange(rgb.Green) * InBlueRange(rgb.Blue);
@@ -140,8 +149,8 @@ namespace ColorSchemeInverter.Filters
         
         public double InRangeFactor(Hsl hsl)
         {
-            double result = 0.0;
-            if (HsLorHsvProcessingNeeded()) {
+            double result = 1.0;
+            if (HslOrHsvProcessingNeeded()) {
                 result *= InHueRange(hsl.Hue) * InSaturationRange(hsl.Saturation) * InLightnessRange(hsl.Lightness);
             }
             if (HsvProcessingNeeded()) {
@@ -158,8 +167,8 @@ namespace ColorSchemeInverter.Filters
                 
         public double InRangeFactor(Hsv hsv)
         {
-            double result = 0.0;
-            if (HsLorHsvProcessingNeeded()) {
+            double result = 1.0;
+            if (HslOrHsvProcessingNeeded()) {
                 result *= InHueRange(hsv.Hue) * InSaturationRange(hsv.Saturation) * InLightnessRange(hsv.Value);
             }
             if (HslProcessingNeeded()) {
@@ -178,7 +187,7 @@ namespace ColorSchemeInverter.Filters
             return _redRange || _greenRange || _blueRange;
         }
         
-        private bool HsLorHsvProcessingNeeded()
+        private bool HslOrHsvProcessingNeeded()
         {
             return _saturationRange || _hueRange || _lightnessRange || _valueRange;
         }
@@ -196,9 +205,9 @@ namespace ColorSchemeInverter.Filters
         private double InHueRange(double hue)
         {
             if (_minHue <= _maxHue) {
-                return hue >= _minSaturation && hue <= _maxSaturation ? 1.0 : 0.0;
+                return hue >= _minHue && hue <= _maxHue ? 1.0 : 0.0;
             } else {
-                return hue >= _minSaturation || hue <= _maxSaturation ? 1.0 : 0.0;
+                return hue >= _minHue || hue <= _maxHue ? 1.0 : 0.0;
             }
         }
         
@@ -255,5 +264,7 @@ namespace ColorSchemeInverter.Filters
 
             return 0.0;
         }
+
+
     }
 }

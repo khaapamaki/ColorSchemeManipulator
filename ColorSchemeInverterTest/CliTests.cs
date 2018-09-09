@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.CLI;
@@ -24,6 +26,56 @@ namespace ColorSchemeInverter.UnitTests
             Assert.That(optionString, Is.EqualTo(o));
             Assert.That(filterString, Is.EqualTo(f));
             Assert.That(rangeString, Is.EqualTo(r));
+        }
+
+        [Test]
+        [Ignore("Private method")]
+        [TestCase("sat:0-.5,hue:-10-20,l:0.1-1", "h|hue", true, -10, 20)]
+        [TestCase("s:0-.5,hue:-10-20,l:0.1-1", "s|sat|saturation", true, 0, 0.5)]
+        [TestCase("s:0-.5,hue:-10-20,l:0.1-1", "r|red", false, 0, 0)]
+        public void TryParseRangeForRangeParam_CallMethod_ReturnMinAndMaxAndSucceeded(string rangeStr, string rangeParam,
+            bool expSuccess, double expMin, double expMax)
+
+        {
+            (bool success, double min, double max) = CliUtils.TryParseRangeForRangeParam(rangeStr, rangeParam);
+            Assert.That(success == expSuccess);
+            Assert.That(min, Is.EqualTo(expMin));
+            Assert.That(max, Is.EqualTo(expMax));
+        }
+
+        [Test]
+        [TestCase("sat:0-0.5,hue:-10-20", 0.0)]
+        [TestCase("sat:0.5-1.0,hue:-10-20", 1.0)]
+        [TestCase("sat:0-.5,red:0.9-1", 0.0)]
+        [TestCase("sat:0.5-1.0,red:0.9-1", 1.0)]
+        [TestCase("hue:-10-0", 0.0)]
+        [TestCase("hue:350-0", 0.0)]
+        [TestCase("hue:350-10", 1.0)]
+        public void ParseRange_GettingInRangeFactorForRgb_ReturnExpectedFactor(string rangeString, double expFactor)
+        {
+            Rgb rgb = new Rgb(1, 0.1, 0); // a bit yellowish max saturated red
+            var range = CliUtils.ParseRange(rangeString);
+            double factor = range.InRangeFactor(rgb);
+            
+            Assert.That(factor, Is.EqualTo(expFactor));
+        }
+            
+        [Test]
+        [TestCase("sat:0-0.5,hue:-10-20", 0.0)]
+        [TestCase("sat:0.5-1.0,hue:-10-20", 1.0)]
+        [TestCase("sat:0-.5,red:0.9-1", 0.0)]
+        [TestCase("sat:0.5-1.0,red:0.9-1", 1.0)]
+        [TestCase("hue:-10-0", 0.0)]
+        [TestCase("hue:350-0", 0.0)]
+        [TestCase("hue:350-10", 1.0)]
+        public void ParseRange_GettingInRangeFactorForHsl_ReturnExpectedFactor(string rangeString, double expFactor)
+        {
+            Rgb rgb = new Rgb(1, 0.1, 0); // a bit yellowish max saturated red
+            Hsl hsl = new Hsl(rgb);
+            var range = CliUtils.ParseRange(rangeString);
+            double factor = range.InRangeFactor(hsl);
+            
+            Assert.That(factor, Is.EqualTo(expFactor));
         }
     }
 }

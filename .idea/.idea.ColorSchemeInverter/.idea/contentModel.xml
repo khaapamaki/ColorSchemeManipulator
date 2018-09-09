@@ -31,7 +31,7 @@
         <e p="CLI" t="Include">
           <e p="CliArg.cs" t="Include" />
           <e p="CliArgs.cs" t="Include" />
-          <e p="CliUtis.cs" t="Include" />
+          <e p="CliUtils.cs" t="Include" />
         </e>
         <e p="Colors" t="Include">
           <e p="ColorBase.cs" t="Include" />
