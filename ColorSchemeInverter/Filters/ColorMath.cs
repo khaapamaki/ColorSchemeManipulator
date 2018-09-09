@@ -82,7 +82,7 @@ namespace ColorSchemeInverter.Filters
             midtones = midtones.Clamp(0.0, 1.0);
             double gamma = 1.0;
             if (midtones < 0.5) {
-                gamma = 1 + (9 * (1 - 2 * midtones));
+                gamma = 1 + 9 * (1 - 2 * midtones);
                 gamma = Math.Min(gamma, 9.99);
             } else if (midtones > 0.5) {
                 gamma = 1 - (midtones * 2 - 1);

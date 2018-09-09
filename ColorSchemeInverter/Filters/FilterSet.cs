@@ -13,47 +13,47 @@ namespace ColorSchemeInverter.Filters
         public FilterSet() { }
 
 
-        public FilterSet(Func<HSL, object[], HSL> filterDelegate)
+        public FilterSet(Func<Hsl, object[], Hsl> filterDelegate)
         {
-            _filterChain.Add(new HSLFilter(filterDelegate));
+            _filterChain.Add(new HslFilter(filterDelegate));
         }
 
-        public void Add(HSLFilter filter)
+        public void Add(HslFilter filter)
         {
             _filterChain.Add(filter);
         }
 
-        public FilterSet Add(Func<HSL, object[], HSL> filterDelegate)
+        public FilterSet Add(Func<Hsl, object[], Hsl> filterDelegate)
         {
-            _filterChain.Add(new HSLFilter(filterDelegate));
+            _filterChain.Add(new HslFilter(filterDelegate));
             return this;
         }
 
-        public FilterSet Add(Func<HSL, object[], HSL> filterDelegate, params object[] args)
+        public FilterSet Add(Func<Hsl, object[], Hsl> filterDelegate, params object[] args)
         {
-            _filterChain.Add(new HSLFilter(filterDelegate, args));
+            _filterChain.Add(new HslFilter(filterDelegate, args));
             return this;
         }
 
-        public FilterSet(Func<RGB, object[], RGB> filterDelegate)
+        public FilterSet(Func<Rgb, object[], Rgb> filterDelegate)
         {
-            _filterChain.Add(new RGBFilter(filterDelegate));
+            _filterChain.Add(new RgbFilter(filterDelegate));
         }
 
-        public void Add(RGBFilter filter)
+        public void Add(RgbFilter filter)
         {
             _filterChain.Add(filter);
         }
 
-        public FilterSet Add(Func<RGB, object[], RGB> filterDelegate)
+        public FilterSet Add(Func<Rgb, object[], Rgb> filterDelegate)
         {
-            _filterChain.Add(new RGBFilter(filterDelegate));
+            _filterChain.Add(new RgbFilter(filterDelegate));
             return this;
         }
 
-        public FilterSet Add(Func<RGB, object[], RGB> filterDelegate, params object[] args)
+        public FilterSet Add(Func<Rgb, object[], Rgb> filterDelegate, params object[] args)
         {
-            _filterChain.Add(new RGBFilter(filterDelegate, args));
+            _filterChain.Add(new RgbFilter(filterDelegate, args));
             return this;
         }
 
@@ -64,14 +64,14 @@ namespace ColorSchemeInverter.Filters
         }
 
 
-        public HSL ApplyTo(HSL hsl)
+        public Hsl ApplyTo(Hsl hsl)
         {
-            return ApplyAnyColorTo(hsl).ToHSL();
+            return ApplyAnyColorTo(hsl).ToHsl();
         }
 
-        public RGB ApplyTo(RGB rgb)
+        public Rgb ApplyTo(Rgb rgb)
         {
-            return ApplyAnyColorTo(rgb).ToRGB();
+            return ApplyAnyColorTo(rgb).ToRgb();
         }
 
         private ColorBase ApplyAnyColorTo(ColorBase colorBase)
@@ -90,7 +90,7 @@ namespace ColorSchemeInverter.Filters
 
         public string ToString(string delimiter = "\n", string prefix = "   ")
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             for (var i = 0; i < _filterChain.Count; i++) {
                 sb.Append(prefix + _filterChain[i].ToString());

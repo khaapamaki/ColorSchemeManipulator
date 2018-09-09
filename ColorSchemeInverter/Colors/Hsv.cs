@@ -4,16 +4,16 @@ using ColorSchemeInverter.Common;
 namespace ColorSchemeInverter.Colors
 {
 
-    public class HSV : ColorBase
+    public class Hsv : ColorBase
     {
         public double Hue { get; set; }
         public double Saturation { get; set; }
         public double Value { get; set; }
         public double Alpha { get; set; } = 1.0;
 
-        public HSV() { }
+        public Hsv() { }
 
-        public HSV(double hue, double saturation, double value, double alpha = 1.0)
+        public Hsv(double hue, double saturation, double value, double alpha = 1.0)
         {
             Hue = hue;
             Saturation = saturation;
@@ -21,7 +21,7 @@ namespace ColorSchemeInverter.Colors
             Alpha = alpha;
         }
 
-        public HSV(HSV hsv)
+        public Hsv(Hsv hsv)
         {
             Hue = hsv.Hue;
             Saturation = hsv.Saturation;
@@ -29,7 +29,7 @@ namespace ColorSchemeInverter.Colors
             Alpha = hsv.Alpha;
         }
 
-        public void CopyFrom(HSV hsv)
+        public void CopyFrom(Hsv hsv)
         {
             Hue = hsv.Hue;
             Saturation = hsv.Saturation;
@@ -37,14 +37,14 @@ namespace ColorSchemeInverter.Colors
             Alpha = hsv.Alpha;
         }
 
-        public HSV(RGB rgb)
+        public Hsv(Rgb rgb)
         {
-            CopyFrom(rgb.ToHSV());
+            CopyFrom(rgb.ToHsv());
         }
 
-        public HSV(HSL hsl)
+        public Hsv(Hsl hsl)
         {
-            CopyFrom(hsl.ToHSV());
+            CopyFrom(hsl.ToHsv());
         }
                
         public override string ToString()
@@ -63,7 +63,7 @@ namespace ColorSchemeInverter.Colors
             }
         }
 
-        public bool Equals(HSV c)
+        public bool Equals(Hsv c)
         {
             bool value = Hue.AboutEqual(c.Hue)
                          && Saturation.AboutEqual(c.Saturation)

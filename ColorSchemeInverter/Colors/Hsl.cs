@@ -3,7 +3,7 @@ using ColorSchemeInverter.Filters;
 
 namespace ColorSchemeInverter.Colors
 {
-    public class HSL : ColorBase
+    public class Hsl : ColorBase
     {
         private double _hue = 0.0;
 
@@ -17,9 +17,9 @@ namespace ColorSchemeInverter.Colors
         public double Lightness { get; set; }
         public double Alpha { get; set; } = 1.0;
 
-        public HSL() { }
+        public Hsl() { }
 
-        public HSL(double hue, double saturation, double lightness, double alpha = 1.0)
+        public Hsl(double hue, double saturation, double lightness, double alpha = 1.0)
         {
             Hue = hue;
             Saturation = saturation;
@@ -27,7 +27,7 @@ namespace ColorSchemeInverter.Colors
             Alpha = alpha;
         }
 
-        public HSL(HSL hsl)
+        public Hsl(Hsl hsl)
         {
             Hue = hsl.Hue;
             Saturation = hsl.Saturation;
@@ -35,17 +35,17 @@ namespace ColorSchemeInverter.Colors
             Alpha = hsl.Alpha;
         }
 
-        public HSL(RGB rgb)
+        public Hsl(Rgb rgb)
         {
-            CopyFrom(rgb.ToHSL());
+            CopyFrom(rgb.ToHsl());
         }
 
-        public HSL(HSV hsv)
+        public Hsl(Hsv hsv)
         {
-            CopyFrom(hsv.ToHSL());
+            CopyFrom(hsv.ToHsl());
         }
             
-        public void CopyFrom(HSL hsl)
+        public void CopyFrom(Hsl hsl)
         {
             Hue = hsl.Hue;
             Saturation = hsl.Saturation;
@@ -68,22 +68,22 @@ namespace ColorSchemeInverter.Colors
             }
         }
 
-        public HSL ApplyFilterSet(FilterSet filters)
+        public Hsl ApplyFilterSet(FilterSet filters)
         {
             return filters.ApplyTo(this);
         }
 
-        public HSL ApplyFilter(HSLFilter filter)
+        public Hsl ApplyFilter(HslFilter filter)
         {
-            return filter.ApplyTo(this).ToHSL();
+            return filter.ApplyTo(this).ToHsl();
         }
 
-        public RGB ApplyFilter(RGBFilter filter)
+        public Rgb ApplyFilter(RgbFilter filter)
         {
-            return filter.ApplyTo(this).ToRGB();
+            return filter.ApplyTo(this).ToRgb();
         }
 
-        public bool Equals(HSL c)
+        public bool Equals(Hsl c)
         {
             bool value = Hue.AboutEqual(c.Hue) && Saturation.AboutEqual(c.Saturation) &&
                          Lightness.AboutEqual(c.Lightness) && Alpha.AboutEqual(c.Alpha);

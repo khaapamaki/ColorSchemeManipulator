@@ -8,9 +8,9 @@ namespace ColorSchemeInverter.Colors
 {
     public static class ColorConversions
     {
-        public static HSL RGBToHSL(RGB rgb)
+        public static Hsl RgbtoHsl(Rgb rgb)
         {
-            HSL hsl = new HSL();
+            var hsl = new Hsl();
             hsl.Alpha = rgb.Alpha;
             double r = rgb.Red;
             double g = rgb.Green;
@@ -23,16 +23,16 @@ namespace ColorSchemeInverter.Colors
                 hsl.Hue = 0.0;
                 hsl.Saturation = 0.0;
             } else {
-                hsl.Saturation = (hsl.Lightness <= 0.5) ? (delta / (max + min)) : (delta / (2.0 - max - min));
+                hsl.Saturation = hsl.Lightness <= 0.5 ? delta / (max + min) : delta / (2.0 - max - min);
 
                 double hue;
 
                 if (r >= max) {
-                    hue = ((g - b) / 6.0) / delta;
+                    hue = (g - b) / 6.0 / delta;
                 } else if (g >= max) {
-                    hue = (1.0 / 3.0) + ((b - r) / 6.0) / delta;
+                    hue = 1.0 / 3.0 + (b - r) / 6.0 / delta;
                 } else {
-                    hue = (2.0 / 3.0) + ((r - g) / 6.0) / delta;
+                    hue = 2.0 / 3.0 + (r - g) / 6.0 / delta;
                 }
 
                 if (hue < 0.0)
@@ -46,7 +46,7 @@ namespace ColorSchemeInverter.Colors
             return hsl;
         }
 
-        public static RGB HSLToRGB(HSL hsl)
+        public static Rgb HsltoRgb(Hsl hsl)
         {
             double r = 0;
             double g = 0;
@@ -58,20 +58,20 @@ namespace ColorSchemeInverter.Colors
                 double v1, v2;
                 double hue = hsl.Hue / 360.0;
 
-                v2 = (hsl.Lightness < 0.5)
-                    ? (hsl.Lightness * (1 + hsl.Saturation))
-                    : ((hsl.Lightness + hsl.Saturation) - (hsl.Lightness * hsl.Saturation));
+                v2 = hsl.Lightness < 0.5
+                    ? hsl.Lightness * (1 + hsl.Saturation)
+                    : hsl.Lightness + hsl.Saturation - hsl.Lightness * hsl.Saturation;
                 v1 = 2 * hsl.Lightness - v2;
 
-                r = HueToRGB(v1, v2, hue + (1.0 / 3));
-                g = HueToRGB(v1, v2, hue);
-                b = HueToRGB(v1, v2, hue - (1.0 / 3));
+                r = HueToRgb(v1, v2, hue + 1.0 / 3);
+                g = HueToRgb(v1, v2, hue);
+                b = HueToRgb(v1, v2, hue - 1.0 / 3);
             }
 
-            return new RGB(r, g, b, hsl.Alpha);
+            return new Rgb(r, g, b, hsl.Alpha);
         }
 
-        private static double HueToRGB(double v1, double v2, double vH)
+        private static double HueToRgb(double v1, double v2, double vH)
         {
             if (vH < 0)
                 vH += 1;
@@ -79,19 +79,19 @@ namespace ColorSchemeInverter.Colors
             if (vH > 1)
                 vH -= 1;
 
-            if ((6 * vH) < 1)
-                return (v1 + (v2 - v1) * 6 * vH);
+            if (6 * vH < 1)
+                return v1 + (v2 - v1) * 6 * vH;
 
-            if ((2 * vH) < 1)
+            if (2 * vH < 1)
                 return v2;
 
-            if ((3 * vH) < 2)
-                return (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
+            if (3 * vH < 2)
+                return v1 + (v2 - v1) * (2.0f / 3 - vH) * 6;
 
             return v1;
         }
 
-        public static HSV RGBToHSV(RGB rgb)
+        public static Hsv RgbtoHsv(Rgb rgb)
         {
             double delta, min;
             double h = 0.0, s, v;
@@ -119,10 +119,10 @@ namespace ColorSchemeInverter.Colors
                     h = h + 360.0;
             }
 
-            return new HSV(h, s, v, rgb.Alpha);
+            return new Hsv(h, s, v, rgb.Alpha);
         }
 
-        public static RGB HSVToRGB(HSV hsv)
+        public static Rgb HsvtoRgb(Hsv hsv)
         {
             double r = 0, g = 0, b = 0;
 
@@ -143,8 +143,8 @@ namespace ColorSchemeInverter.Colors
                 f = hsv.Hue - i;
 
                 p = hsv.Value * (1.0 - hsv.Saturation);
-                q = hsv.Value * (1.0 - (hsv.Saturation * f));
-                t = hsv.Value * (1.0 - (hsv.Saturation * (1.0 - f)));
+                q = hsv.Value * (1.0 - hsv.Saturation * f);
+                t = hsv.Value * (1.0 - hsv.Saturation * (1.0 - f));
 
                 switch (i) {
                     case 0:
@@ -185,28 +185,28 @@ namespace ColorSchemeInverter.Colors
                 }
             }
 
-            return new RGB(r, g, b, hsv.Alpha);
+            return new Rgb(r, g, b, hsv.Alpha);
         }
 
-        public static HSV HSLToHSV(HSL hsl)
+        public static Hsv HsltoHsv(Hsl hsl)
         {
             throw new NotImplementedException();
         }
         
-        public static HSL HSVToHSL(HSV hsv)
+        public static Hsl HsvtoHsl(Hsv hsv)
         {
             throw new NotImplementedException();
         }
 
-        public static RGB SystemColorToRGB(Color color)
+        public static Rgb SystemColorToRgb(Color color)
         {
-            RGB8bit rgb8 = new RGB8bit(color.R, color.G, color.B, color.A);
-            return new RGB(rgb8);
+            var rgb8 = new Rgb8Bit(color.R, color.G, color.B, color.A);
+            return new Rgb(rgb8);
         }
 
-        public static Color RGBToSystemColor(RGB rgb)
+        public static Color RgbToSystemColor(Rgb rgb)
         {
-            RGB8bit rgb8 = new RGB8bit(rgb);
+            var rgb8 = new Rgb8Bit(rgb);
             return Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);  
         }
         

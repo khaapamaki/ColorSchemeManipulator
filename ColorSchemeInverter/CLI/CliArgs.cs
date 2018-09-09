@@ -32,22 +32,22 @@ namespace ColorSchemeInverter.CLI
             return GetInstance().Items[index];
         }
 
-        public static void Register(string option, Func<RGB, object[], RGB> filterDelegate, byte minArguments)
+        public static void Register(string option, Func<Rgb, object[], Rgb> filterDelegate, byte minArguments)
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
         
-        public static void Register(List<string> option, Func<RGB, object[], RGB> filterDelegate, byte minArguments)
+        public static void Register(List<string> option, Func<Rgb, object[], Rgb> filterDelegate, byte minArguments)
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }    
 
-        public static void Register(string option, Func<HSL, object[], HSL> filterDelegate, byte minArguments)
+        public static void Register(string option, Func<Hsl, object[], Hsl> filterDelegate, byte minArguments)
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
         
-        public static void Register(List<string> option, Func<HSL, object[], HSL> filterDelegate, byte minArguments)
+        public static void Register(List<string> option, Func<Hsl, object[], Hsl> filterDelegate, byte minArguments)
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
@@ -88,7 +88,7 @@ namespace ColorSchemeInverter.CLI
             
         public static string ToString(string delimiter = "\n", string prefix = "   ")
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             
             for (var i = 0; i < GetInstance().Items.Count; i++) {
                 sb.Append(prefix + GetInstance().Items[i].ToString());

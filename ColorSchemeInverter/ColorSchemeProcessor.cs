@@ -44,7 +44,7 @@ namespace ColorSchemeInverter
 
         private string MatchReplace(Match m)
         {
-            string rgbStringFormat = SchemeFormatUtil.GetRGBStringFromat(_schemeFormat);
+            string rgbStringFormat = SchemeFormatUtil.GetRgbStringFormat(_schemeFormat);
             if (m.Groups.Count == 4) {
                 
                 // the second capture group of the regex pattern must be the one that contains color data
@@ -52,15 +52,15 @@ namespace ColorSchemeInverter
                 
                 if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
 
-                    string filteredRGBString =
-                        RGB.FromRGBString(rgbString, rgbStringFormat)
+                    string filteredRgbString =
+                        Rgb.FromRgbString(rgbString, rgbStringFormat)
                             .ApplyFilterSet(_filters)
-                            .ToRGBString(rgbStringFormat);
+                            .ToRgbString(rgbStringFormat);
 
                     // Console.WriteLine(rgbString + " -> " + filteredRGBString);
 
                     return m.Groups[1]
-                           + filteredRGBString
+                           + filteredRgbString
                            + m.Groups[3];
                 } else {
                     Console.WriteLine("Invalid RGB string: " + rgbString);

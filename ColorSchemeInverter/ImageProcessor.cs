@@ -15,8 +15,8 @@ namespace ColorSchemeInverter
         
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
-            Image image = Image.FromFile(sourceFile);
-            Bitmap bitmap = new Bitmap(image);
+            var image = Image.FromFile(sourceFile);
+            var bitmap = new Bitmap(image);
             Bitmap convertedImage;
             try {
                 convertedImage = ApplyFilters(bitmap, filters);
@@ -32,7 +32,7 @@ namespace ColorSchemeInverter
  
             for (int x = 0; x < image.Width; x++) {
                 for (int y = 0; y < image.Height; y++) {
-                    Color pixel = image.GetPixel(x, y);
+                    var pixel = image.GetPixel(x, y);
                     image.SetPixel(x, y, ApplyFilters(pixel, filters));
                 } 
             }
@@ -42,8 +42,8 @@ namespace ColorSchemeInverter
 
         private Color ApplyFilters(Color color, FilterSet filters)
         {
-            return ColorConversions.RGBToSystemColor(
-                ColorConversions.SystemColorToRGB(color).ApplyFilterSet(filters));
+            return ColorConversions.RgbToSystemColor(
+                ColorConversions.SystemColorToRgb(color).ApplyFilterSet(filters));
         }
         
     }

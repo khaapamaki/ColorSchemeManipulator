@@ -50,7 +50,7 @@ namespace ColorSchemeInverter.Filters
             if (obj is string s) {
                 try {
 
-                    return (s == "1" || s.ToLower() == "true");
+                    return s == "1" || s.ToLower() == "true";
                 } catch (Exception e) {
                     Console.WriteLine("Could not parse string to boolean");
                 }
@@ -73,7 +73,7 @@ namespace ColorSchemeInverter.Filters
             return IsNumber(o) || o is string;
         }
         
-        static public double Linear(double x, double x0, double x1, double y0, double y1)
+        public static double Linear(double x, double x0, double x1, double y0, double y1)
         {
             if (x1 - x0 == 0.0)
             {
@@ -82,7 +82,7 @@ namespace ColorSchemeInverter.Filters
             return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
         }
         
-        static public double Linear01(double x, double y0, double y1)
+        public static double Linear01(double x, double y0, double y1)
         {
             const double x1 = 1.0;
             const double x0 = 0.0;
@@ -91,17 +91,17 @@ namespace ColorSchemeInverter.Filters
         } 
         
                 
-        public static double GetRangeFactor(HSL hsl, object[] args, byte index)
+        public static double GetRangeFactor(Hsl hsl, object[] args, byte index)
         {
             return args.Length > index && args[index] is ColorRange range ? range.InRangeFactor(hsl) : 1.0;
         }
         
-        public static double GetRangeFactor(RGB rgb, object[] args, byte index)
+        public static double GetRangeFactor(Rgb rgb, object[] args, byte index)
         {
             return args.Length > index && args[index] is ColorRange range ? range.InRangeFactor(rgb) : 1.0;
         }
    
-        public static double GetRangeFactor(HSV hsv, object[] args, byte index)
+        public static double GetRangeFactor(Hsv hsv, object[] args, byte index)
         {
             return args.Length > index && args[index] is ColorRange range ? range.InRangeFactor(hsv) : 1.0;
         }

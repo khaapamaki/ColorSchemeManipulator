@@ -3,16 +3,16 @@ using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Colors
 {
-    public class RGB8bit
+    public class Rgb8Bit
     {
         public byte Red { get; set; }
         public byte Green { get; set; }
         public byte Blue { get; set; }
         public byte Alpha { get; set; } = 0xFF;
 
-        public RGB8bit() { }
+        public Rgb8Bit() { }
 
-        public RGB8bit(byte red, byte green, byte blue, byte alpha = 0xFF)
+        public Rgb8Bit(byte red, byte green, byte blue, byte alpha = 0xFF)
         {
             Red = red;
             Green = green;
@@ -20,7 +20,7 @@ namespace ColorSchemeInverter.Colors
             Alpha = alpha;
         }
 
-        public RGB8bit(double red, double green, double blue, double alpha = 1.0)
+        public Rgb8Bit(double red, double green, double blue, double alpha = 1.0)
         {
             Red = (byte) (red.Clamp(0.0, 1.0) * 255);
             Green = (byte) (green.Clamp(0.0, 1.0) * 255);
@@ -28,7 +28,7 @@ namespace ColorSchemeInverter.Colors
             Alpha = (byte) (alpha.Clamp(0.0, 1.0) * 255);
         }
 
-        public RGB8bit(RGB rgb)
+        public Rgb8Bit(Rgb rgb)
         {
             Red = (byte) (rgb.Red.Clamp(0.0, 1.0) * 255);
             Green = (byte) (rgb.Green.Clamp(0.0, 1.0) * 255);
@@ -36,9 +36,9 @@ namespace ColorSchemeInverter.Colors
             Alpha = (byte) (rgb.Alpha.Clamp(0.0, 1.0) * 255);
         }
 
-        public RGB ToRGB()
+        public Rgb ToRgb()
         {
-            return new RGB(Red / 255.0, Green / 255.0, Blue / 255.0, Alpha / 255.0);
+            return new Rgb(Red / 255.0, Green / 255.0, Blue / 255.0, Alpha / 255.0);
         }
 
         public override string ToString()
@@ -52,21 +52,20 @@ namespace ColorSchemeInverter.Colors
                 return string.Format($"Red: 0x{Red:X2}, Green: 0x{Green:X2}, Blue: 0x{Blue:X2}  Alpha: 0x{Alpha:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
-                return ToString();
+                //return ToString();
             }
         }
 
-        public static RGB8bit FromRGBString(string rgbString, string rgbStringFormat)
+        public static Rgb8Bit FromRgbString(string rgbString, string rgbStringFormat)
         {
             if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
                 switch (rgbStringFormat.ToUpper()) {
                     case "RRGGBB":
-                        return FromRGBString(rgbString);
+                        return FromRgbString(rgbString);
                     case "AARRGGBB":
-                        return FromARGBString(rgbString);
-                        break;
+                        return FromArgbString(rgbString);
                     case "RRGGBBAA":
-                        return FromRGBAString(rgbString);
+                        return FromRgbaString(rgbString);
                     default:
                         throw new Exception("Incorrect RGB string format: " + rgbStringFormat);
                 }
@@ -75,58 +74,58 @@ namespace ColorSchemeInverter.Colors
             throw new Exception("Invalid color string: " + rgbString);
         }
 
-        public static RGB8bit FromRGBString(string rgbString)
+        public static Rgb8Bit FromRgbString(string rgbString)
         {
-            var newRGB = new RGB8bit
+            var newRgb = new Rgb8Bit
             {
                 Red = byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
                 Green = byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
                 Blue = byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
                 Alpha = 0xFF
             };
-            return newRGB;
+            return newRgb;
         }
 
-        public static RGB8bit FromARGBString(string rbgString)
+        public static Rgb8Bit FromArgbString(string rbgString)
         {
-            var newRGB = new RGB8bit
+            var newRgb = new Rgb8Bit
             {
                 Red = byte.Parse(rbgString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
                 Green = byte.Parse(rbgString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
                 Blue = byte.Parse(rbgString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber),
                 Alpha = byte.Parse(rbgString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber)
             };
-            return newRGB;
+            return newRgb;
         }
 
-        public static RGB8bit FromRGBAString(string rgbString)
+        public static Rgb8Bit FromRgbaString(string rgbString)
         {
-            var newRGB = new RGB8bit
+            var newRgb = new Rgb8Bit
             {
                 Red = byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
                 Green = byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
                 Blue = byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
                 Alpha = byte.Parse(rgbString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber)
             };
-            return newRGB;
+            return newRgb;
         }
 
 
-        public string ToRGBString(string rgbStringFormat)
+        public string ToRgbString(string rgbStringFormat)
         {
             string result;
             switch (rgbStringFormat.ToUpper()) {
                 case "RRGGBB":
-                    result = ToRGBString();
+                    result = ToRgbString();
                     break;
                 case "AARRGGBB":
-                    result = ToARGBString();
+                    result = ToArgbString();
                     break;
                 case "RRGGBBAA":
-                    result = ToRGBAString();
+                    result = ToRgbaString();
                     break;
                 default:
-                    result = ToRGBString();
+                    result = ToRgbString();
                     break;
             }
 
@@ -136,12 +135,12 @@ namespace ColorSchemeInverter.Colors
                 : result.ToLower();             
         }
         
-        public string ToRGBString()
+        public string ToRgbString()
         {
             return Red.ToString("X2") + Green.ToString("X2") + Blue.ToString("X2");
         }
 
-        public string ToARGBString()
+        public string ToArgbString()
         {
             return Alpha.ToString("X2")
                    + Red.ToString("X2")
@@ -149,7 +148,7 @@ namespace ColorSchemeInverter.Colors
                    + Blue.ToString("X2");
         }
 
-        public string ToRGBAString()
+        public string ToRgbaString()
         {
             return Red.ToString("X2")
                    + Green.ToString("X2")
@@ -157,13 +156,13 @@ namespace ColorSchemeInverter.Colors
                    + Alpha.ToString("X2");
         }
 
-        public bool AboutEqual(RGB8bit c)
+        public bool AboutEqual(Rgb8Bit c)
         {
             int dr = Math.Abs((int)Red - c.Red);
             int dg = Math.Abs((int)Green - c.Green);
             int db = Math.Abs((int)Blue - c.Blue);
             int da = Math.Abs((int)Alpha - c.Alpha);
-            return (dr <= 1 && dg <= 1 && db <= 1 && da <= 1);
+            return dr <= 1 && dg <= 1 && db <= 1 && da <= 1;
         }
         
         private static bool IsValidHexString(string str)

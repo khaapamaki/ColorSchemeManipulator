@@ -4,25 +4,25 @@ using ColorSchemeInverter.Colors;
 
 namespace ColorSchemeInverter.Filters
 {
-    public class HSVFilter : ColorFilter
+    public class RgbFilter : ColorFilter
     {
-        private Func<HSV, object[], HSV> FilterDelegate { get; }
+        private Func<Rgb, object[], Rgb> FilterDelegate { get; }
         private object[] Arguments { get; }
 
-        public HSVFilter(Func<HSV, object[], HSV> filterDelegate, params object[] args)
+        public RgbFilter(Func<Rgb, object[], Rgb> filterDelegate, params object[] args)
         {
             FilterDelegate = filterDelegate;
             Arguments = args;
         }
-        
+
         public override ColorBase ApplyTo(ColorBase color)
         {
-            if (color is RGB) {
-                return FilterDelegate(((RGB) color).ToHSV(), Arguments);
-            } else if (color is HSV) {
-                return FilterDelegate((HSV) color, Arguments);
-            }else if (color is HSL) {
-                return FilterDelegate(((HSL) color).ToHSV(), Arguments);
+            if (color is Rgb) {
+                return FilterDelegate((Rgb) color, Arguments);
+            } else if (color is Hsl) {
+                return FilterDelegate(((Hsl) color).ToRgb(), Arguments);
+            } else if (color is Hsv) {
+                return FilterDelegate(((Hsv) color).ToRgb(), Arguments);
             }
 
             throw new NotImplementedException();
@@ -30,7 +30,7 @@ namespace ColorSchemeInverter.Filters
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var argument in Arguments) {
                 sb.Append(argument + " ");
             }

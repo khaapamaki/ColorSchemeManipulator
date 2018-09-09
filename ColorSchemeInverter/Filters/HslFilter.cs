@@ -4,12 +4,12 @@ using ColorSchemeInverter.Colors;
 
 namespace ColorSchemeInverter.Filters
 {
-    public class HSLFilter : ColorFilter
+    public class HslFilter : ColorFilter
     {
-        private Func<HSL, object[], HSL> FilterDelegate { get; }
+        private Func<Hsl, object[], Hsl> FilterDelegate { get; }
         private object[] Arguments { get; }
 
-        public HSLFilter(Func<HSL, object[], HSL> filterDelegate, params object[] args)
+        public HslFilter(Func<Hsl, object[], Hsl> filterDelegate, params object[] args)
         {
             FilterDelegate = filterDelegate;
             Arguments = args;
@@ -17,12 +17,12 @@ namespace ColorSchemeInverter.Filters
 
         public override ColorBase ApplyTo(ColorBase color)
         {
-            if (color is RGB) {
-                return FilterDelegate(((RGB) color).ToHSL(), Arguments);
-            } else if (color is HSL) {
-                return FilterDelegate((HSL) color, Arguments);
-            }else if (color is HSV) {
-                return FilterDelegate(((HSV) color).ToHSL(), Arguments);
+            if (color is Rgb) {
+                return FilterDelegate(((Rgb) color).ToHsl(), Arguments);
+            } else if (color is Hsl) {
+                return FilterDelegate((Hsl) color, Arguments);
+            }else if (color is Hsv) {
+                return FilterDelegate(((Hsv) color).ToHsl(), Arguments);
             }
 
             throw new NotImplementedException("Only HSL and RGB colors are supported");
@@ -30,7 +30,7 @@ namespace ColorSchemeInverter.Filters
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var argument in Arguments) {
                 sb.Append(argument + " ");
             }

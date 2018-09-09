@@ -4,40 +4,40 @@ namespace ColorSchemeInverter.Colors
 {
     public abstract class ColorBase
     {
-        public RGB ToRGB()
+        public Rgb ToRgb()
         {
-            if (this is RGB) {
-                return (RGB) this;
-            } else if (this is HSL) {
-                return ColorConversions.HSLToRGB((HSL) this);
-            } else if (this is HSV) {
-                return ColorConversions.HSVToRGB((HSV) this);
+            if (this is Rgb) {
+                return (Rgb) this;
+            } else if (this is Hsl) {
+                return ColorConversions.HsltoRgb((Hsl) this);
+            } else if (this is Hsv) {
+                return ColorConversions.HsvtoRgb((Hsv) this);
             }
 
             throw new NotImplementedException();
         }
 
-        public HSL ToHSL()
+        public Hsl ToHsl()
         {
-            if (this is HSL) {
-                return (HSL) this;
-            } else if (this is RGB) {
-                return ColorConversions.RGBToHSL((RGB) this);
-            } else if (this is HSV) {
-                return ColorConversions.HSVToHSL((HSV) this);
+            if (this is Hsl) {
+                return (Hsl) this;
+            } else if (this is Rgb) {
+                return ColorConversions.RgbtoHsl((Rgb) this);
+            } else if (this is Hsv) {
+                return ColorConversions.HsvtoHsl((Hsv) this);
             }
 
             throw new NotImplementedException();
         }
         
-        public HSV ToHSV()
+        public Hsv ToHsv()
         {
-            if (this is HSV) {
-                return (HSV) this;
-            } else if (this is RGB) {
-                return ColorConversions.RGBToHSV((RGB) this);
-            } else if (this is HSL) {
-                return ColorConversions.HSLToHSV((HSL) this);
+            if (this is Hsv) {
+                return (Hsv) this;
+            } else if (this is Rgb) {
+                return ColorConversions.RgbtoHsv((Rgb) this);
+            } else if (this is Hsl) {
+                return ColorConversions.HsltoHsv((Hsl) this);
             }
 
             throw new NotImplementedException();

@@ -4,16 +4,16 @@ using ColorSchemeInverter.Filters;
 
 namespace ColorSchemeInverter.Colors
 {
-    public class RGB : ColorBase
+    public class Rgb : ColorBase
     {
         public double Red { get; set; }
         public double Green { get; set; }
         public double Blue { get; set; }
         public double Alpha { get; set; } = 1.0;
 
-        private RGB() { }
+        private Rgb() { }
 
-        public RGB(double red, double green, double blue, double alpha = 1.0)
+        public Rgb(double red, double green, double blue, double alpha = 1.0)
         {
             Red = red;
             Green = green;
@@ -21,7 +21,7 @@ namespace ColorSchemeInverter.Colors
             Alpha = alpha;
         }
 
-        public RGB(RGB8bit rgb8Bit)
+        public Rgb(Rgb8Bit rgb8Bit)
         {
             Red = rgb8Bit.Red / 255.0;
             Green = rgb8Bit.Green / 255.0;
@@ -29,7 +29,7 @@ namespace ColorSchemeInverter.Colors
             Alpha = rgb8Bit.Alpha / 255.0;
         }
 
-        public RGB(RGB rgb)
+        public Rgb(Rgb rgb)
         {
             Red = rgb.Red;
             Green = rgb.Green;
@@ -37,18 +37,18 @@ namespace ColorSchemeInverter.Colors
             Alpha = rgb.Alpha;
         }
         
-        public RGB(HSL hsl)
+        public Rgb(Hsl hsl)
         {
-            CopyFrom(hsl.ToRGB());
+            CopyFrom(hsl.ToRgb());
         }
 
-        public RGB(HSV hsv)
+        public Rgb(Hsv hsv)
         {
-            CopyFrom(hsv.ToRGB());
+            CopyFrom(hsv.ToRgb());
         }
       
         
-        public void CopyFrom(RGB rgb)
+        public void CopyFrom(Rgb rgb)
         {
             Red = rgb.Red;
             Green = rgb.Green;
@@ -56,44 +56,44 @@ namespace ColorSchemeInverter.Colors
             Alpha = rgb.Alpha;
         }
 
-        public static RGB FromRGBString(string rgbString, string rgbStringFormat)
+        public static Rgb FromRgbString(string rgbString, string rgbStringFormat)
         {
-            return RGB8bit.FromRGBString(rgbString, rgbStringFormat).ToRGB();
+            return Rgb8Bit.FromRgbString(rgbString, rgbStringFormat).ToRgb();
         }
 
-        public static RGB FromRGBString(string rgbString)
+        public static Rgb FromRgbString(string rgbString)
         {
-            return RGB8bit.FromRGBString(rgbString).ToRGB();
+            return Rgb8Bit.FromRgbString(rgbString).ToRgb();
         }
 
-        public static RGB FromARGBString(string rgbString)
+        public static Rgb FromArgbString(string rgbString)
         {
-            return RGB8bit.FromARGBString(rgbString).ToRGB();
+            return Rgb8Bit.FromArgbString(rgbString).ToRgb();
         }
 
-        public static RGB FromRGBAString(string rgbString)
+        public static Rgb FromRgbaString(string rgbString)
         {
-            return RGB8bit.FromRGBAString(rgbString).ToRGB();
+            return Rgb8Bit.FromRgbaString(rgbString).ToRgb();
         }
 
-        public string ToRGBString()
+        public string ToRgbString()
         {
-            return ToRGB8Bit().ToRGBString();
+            return ToRgb8Bit().ToRgbString();
         }
 
-        public string ToARGBString()
+        public string ToArgbString()
         {
-            return ToRGB8Bit().ToARGBString();
+            return ToRgb8Bit().ToArgbString();
         }
 
-        public string ToRGBAString()
+        public string ToRgbaString()
         {
-            return ToRGB8Bit().ToRGBAString();
+            return ToRgb8Bit().ToRgbaString();
         }
 
-        public RGB8bit ToRGB8Bit()
+        public Rgb8Bit ToRgb8Bit()
         {
-            return new RGB8bit(
+            return new Rgb8Bit(
                 Red.Clamp(0.0, 1.0),
                 Green.Clamp(0.0, 1.0),
                 Blue.Clamp(0.0, 1.0),
@@ -102,9 +102,9 @@ namespace ColorSchemeInverter.Colors
 
 
 
-        public string ToRGBString(string rgbStringFormat)
+        public string ToRgbString(string rgbStringFormat)
         {
-            return ToRGB8Bit().ToRGBString(rgbStringFormat);
+            return ToRgb8Bit().ToRgbString(rgbStringFormat);
         }
 
         public override string ToString()
@@ -121,30 +121,30 @@ namespace ColorSchemeInverter.Colors
                                      $"Alpha: 0x{Alpha * 255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
-                return ToString();
+                //return ToString();
             }
         }
 
-        public bool Equals(RGB c)
+        public bool Equals(Rgb c)
         {
             bool value = Red.AboutEqual(c.Red) && Green.AboutEqual(c.Green) && Blue.AboutEqual(c.Blue) &&
                          Alpha.AboutEqual(c.Alpha);
             return value;
         }
 
-        public RGB ApplyFilterSet(FilterSet filters)
+        public Rgb ApplyFilterSet(FilterSet filters)
         {
             return filters.ApplyTo(this);
         }
 
-        public HSL ApplyFilter(HSLFilter filter)
+        public Hsl ApplyFilter(HslFilter filter)
         {
-            return filter.ApplyTo(this).ToHSL();
+            return filter.ApplyTo(this).ToHsl();
         }
 
-        public RGB ApplyFilter(RGBFilter filter)
+        public Rgb ApplyFilter(RgbFilter filter)
         {
-            return filter.ApplyTo(this).ToRGB();
+            return filter.ApplyTo(this).ToRgb();
         }
     }
 }
