@@ -56,10 +56,10 @@ namespace ColorSchemeInverter.Colors
             }
         }
 
-        public static Rgb8Bit FromRgbString(string rgbString, string rgbStringFormat)
+        public static Rgb8Bit FromRgbString(string rgbString, string rgbHexFormat)
         {
-            if (IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
-                switch (rgbStringFormat.ToUpper()) {
+            if (IsValidHexString(rgbString) && rgbString.Length == rgbHexFormat.Length) {
+                switch (rgbHexFormat.ToUpper()) {
                     case "RRGGBB":
                         return FromRgbString(rgbString);
                     case "AARRGGBB":
@@ -67,7 +67,7 @@ namespace ColorSchemeInverter.Colors
                     case "RRGGBBAA":
                         return FromRgbaString(rgbString);
                     default:
-                        throw new Exception("Incorrect RGB string format: " + rgbStringFormat);
+                        throw new Exception("Incorrect RGB string format: " + rgbHexFormat);
                 }
             }
 
@@ -111,10 +111,10 @@ namespace ColorSchemeInverter.Colors
         }
 
 
-        public string ToRgbString(string rgbStringFormat)
+        public string ToRgbString(string rgbHexFormat)
         {
             string result;
-            switch (rgbStringFormat.ToUpper()) {
+            switch (rgbHexFormat.ToUpper()) {
                 case "RRGGBB":
                     result = ToRgbString();
                     break;
@@ -129,7 +129,7 @@ namespace ColorSchemeInverter.Colors
                     break;
             }
 
-            bool isUpperCase = rgbStringFormat.ToUpper() == rgbStringFormat;
+            bool isUpperCase = rgbHexFormat.ToUpper() == rgbHexFormat;
             return isUpperCase
                 ? result.ToUpper()
                 : result.ToLower();             

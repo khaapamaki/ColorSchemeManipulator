@@ -44,18 +44,18 @@ namespace ColorSchemeInverter
 
         private string MatchReplace(Match m)
         {
-            string rgbStringFormat = SchemeFormatUtil.GetRgbStringFormat(_schemeFormat);
+            string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(_schemeFormat);
             if (m.Groups.Count == 4) {
                 
                 // the second capture group of the regex pattern must be the one that contains color data
                 string rgbString = m.Groups[2].ToString();
                 
-                if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbStringFormat.Length) {
+                if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbHexFormat.Length) {
 
                     string filteredRgbString =
-                        Rgb.FromRgbString(rgbString, rgbStringFormat)
+                        Rgb.FromRgbString(rgbString, rgbHexFormat)
                             .ApplyFilterSet(_filters)
-                            .ToRgbString(rgbStringFormat);
+                            .ToRgbString(rgbHexFormat);
 
                     // Console.WriteLine(rgbString + " -> " + filteredRGBString);
 

@@ -56,9 +56,9 @@ namespace ColorSchemeInverter.Colors
             Alpha = rgb.Alpha;
         }
 
-        public static Rgb FromRgbString(string rgbString, string rgbStringFormat)
+        public static Rgb FromRgbString(string rgbString, string rgbHexFormat)
         {
-            return Rgb8Bit.FromRgbString(rgbString, rgbStringFormat).ToRgb();
+            return Rgb8Bit.FromRgbString(rgbString, rgbHexFormat).ToRgb();
         }
 
         public static Rgb FromRgbString(string rgbString)
@@ -102,9 +102,9 @@ namespace ColorSchemeInverter.Colors
 
 
 
-        public string ToRgbString(string rgbStringFormat)
+        public string ToRgbString(string rgbHexFormat)
         {
-            return ToRgb8Bit().ToRgbString(rgbStringFormat);
+            return ToRgb8Bit().ToRgbString(rgbHexFormat);
         }
 
         public override string ToString()

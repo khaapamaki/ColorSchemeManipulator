@@ -38,7 +38,7 @@ namespace ColorSchemeInverter.SchemeFileSupport
             }
         }
 
-        public static string GetRgbStringFormat(SchemeFormat schemeFormat)
+        public static string GetRgbHexFormat(SchemeFormat schemeFormat)
         {
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
