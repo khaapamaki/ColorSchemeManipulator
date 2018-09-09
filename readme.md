@@ -5,7 +5,7 @@
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
-Added option to convert colors on png-files for quick testing
+Added option to convert colors on png-files for quick testing.
 
 
 ### Currently available filters and corresponding CLI options
@@ -24,6 +24,9 @@ Available Filters:
    
 Usage example:
     <appname> -li -sg=1.1 --saturation-contrast=0.2,0.6 <sourcefile> <targetfile>
+    
+Using color range with filter:
+    <appname> -gamma(sat:0.5-1,lightess:0-0.5)=1.5 <sourcefile> <targetfile>
 ```
 
 
@@ -31,7 +34,8 @@ Usage example:
 
 + HSV<->HSL conversions
 + Range system for other filters than levels based
-+ Parse range cli arguments
++ Parse range cli arguments (done but buggy)
++ Slope parameter for range. Decide CLI syntax for it.
 + Filter naming consistency
 + More filters?
 + Unit tests
