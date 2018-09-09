@@ -15,7 +15,7 @@ namespace ColorSchemeInverter.CLI
         private static readonly object Padlock = new object();
 
         private CliArgs() { }
-       
+
         private static CliArgs GetInstance()
         {
             lock (Padlock) {
@@ -26,7 +26,7 @@ namespace ColorSchemeInverter.CLI
         private List<CliArg> Items { get; set; } = new List<CliArg>();
 
         // ---- API Methods --------
-        
+
         public static CliArg GetItem(int index)
         {
             return GetInstance().Items[index];
@@ -36,17 +36,17 @@ namespace ColorSchemeInverter.CLI
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
-        
+
         public static void Register(List<string> option, Func<Rgb, object[], Rgb> filterDelegate, byte minArguments)
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
-        }    
+        }
 
         public static void Register(string option, Func<Hsl, object[], Hsl> filterDelegate, byte minArguments)
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
-        
+
         public static void Register(List<string> option, Func<Hsl, object[], Hsl> filterDelegate, byte minArguments)
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
@@ -58,46 +58,49 @@ namespace ColorSchemeInverter.CLI
         /// </summary>
         /// <param name="args"></param>
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (FilterSet, string[]) ParseFilterArgs(string[] args)
+        public static (FilterSet, object[]) ParseFilterArgs(params string[] args)
         {
             return CliUtils.ParseFilterArgs(args);
         }
-       
+
         /// <summary>
-        /// Gets matching filterDelegate delegate function and given arguments for given command line optionArg
+        /// Gets matching filterDelegate delegate function and given arguments for given command line option
         /// Filter must be registered in CliArgs class.
         /// </summary>
-        /// <param name="optionArg"></param>
+        /// <param name="option"></param>
         /// <returns></returns>
-        public static (Delegate, string[]) GetDelegateAndParameters(string optionArg)
+        public static (Delegate, List<object>) GetDelegateAndParameters(string option)
         {
-            string argString;
-            (optionArg, argString) = CliUtils.SplitIntoCommandAndArguments(optionArg);
-            
+            string paramString;
+            string rangeString;
+            (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
+            ColorRange range = CliUtils.ParseRange(rangeString);
             foreach (var cliArg in GetInstance().Items) {
-                if (cliArg.OptionArgs.Contains(optionArg)) {
-                    string[] argList = CliUtils.ExtractArgs(argString);
-                    if (argList.Length >= cliArg.MinNumberOfParams)
-                        return (cliArg.FilterDelegate, argList);
+                if (cliArg.OptionArgs.Contains(option)) {
+                    List<object> filterParams = CliUtils.ExtractArgs(paramString);
+                    if (filterParams.Count >= cliArg.MinNumberOfParams) {
+                        if (range != null)
+                            filterParams.Add(range);
+                        return (cliArg.FilterDelegate, filterParams);
+                    }
                 }
             }
 
             return (null, null);
         }
 
-            
+
         public static string ToString(string delimiter = "\n", string prefix = "   ")
         {
             var sb = new StringBuilder();
-            
+
             for (var i = 0; i < GetInstance().Items.Count; i++) {
                 sb.Append(prefix + GetInstance().Items[i].ToString());
                 if (i != GetInstance().Items.Count - 1)
                     sb.Append(delimiter);
             }
+
             return sb.ToString();
         }
-        
-
     }
 }

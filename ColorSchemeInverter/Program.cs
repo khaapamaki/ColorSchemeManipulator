@@ -23,7 +23,7 @@ namespace ColorSchemeInverter
             FilterBundle.RegisterCliOptions();
             
             // Parse CLI args and generate FilterSet of them
-            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            (FilterSet filterSet, object[] remainingArgs) = CliArgs.ParseFilterArgs(args);
             
             Console.WriteLine("Available Filters:");
             Console.WriteLine(CliArgs.ToString());

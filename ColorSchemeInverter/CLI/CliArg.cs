@@ -8,7 +8,7 @@ namespace ColorSchemeInverter.CLI
 {
     public class CliArg
     {
-        public List<string> OptionArgs { get; set; } = new List<string>();
+        public List<string> OptionArgs { get; set; }
         public byte MinNumberOfParams { get; set; }
         public Delegate FilterDelegate { get; set; }
 

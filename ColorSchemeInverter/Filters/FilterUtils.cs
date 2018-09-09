@@ -91,6 +91,7 @@ namespace ColorSchemeInverter.Filters
         } 
         
                 
+        // Todo Change behavior this always looks for range at the end, extracts it and returns remaining args + range
         public static double GetRangeFactor(Hsl hsl, object[] args, byte index)
         {
             return args.Length > index && args[index] is ColorRange range ? range.InRangeFactor(hsl) : 1.0;

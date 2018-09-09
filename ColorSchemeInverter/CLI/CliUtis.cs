@@ -31,12 +31,13 @@ namespace ColorSchemeInverter.CLI
 
             string arg = args[index++];
 
-            (Delegate filterDelegate, string[] argStrings) = CliArgs.GetDelegateAndParameters(arg);
+            (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
 
+            object[] filterParams = paramList.ToArray();
             if (filterDelegate is Func<Hsl, object[], Hsl>) {
-                filters.Add((Func<Hsl, object[], Hsl>) filterDelegate, argStrings);
+                filters.Add((Func<Hsl, object[], Hsl>) filterDelegate, filterParams);
             } else if (filterDelegate is Func<Rgb, object[], Rgb>) {
-                filters.Add((Func<Rgb, object[], Rgb>) filterDelegate, argStrings);
+                filters.Add((Func<Rgb, object[], Rgb>) filterDelegate, filterParams);
             } else {
                 remainingArgs.Add(arg);
             }
@@ -45,34 +46,38 @@ namespace ColorSchemeInverter.CLI
             return (filters, remainingArgs);
         }
 
-
-        public static (string, string) SplitIntoCommandAndArguments(string option)
+        // todo test method CliUtils.SplitArgIntoPieces
+        public static (string, string, string) SplitArgIntoPieces(string arg)
         {
-            string cmd = option;
-            string argString = "";
-            int splitPos = option.IndexOf('=');
-            if (splitPos > 0) {
-                cmd = option.Substring(0, splitPos);
-                if (splitPos < option.Length) {
-                    argString = option.Substring(splitPos + 1);
-                }
+            string option = null;
+            string filterParams = null;
+            string rangeString = null;
+            const string pattern = @"(\-[a-zA-Z]|\-\-[a-zA-Z]{2,})(\((.*)\))?\s*=\s*(.*)";
+            Match m = Regex.Match(arg, pattern);
+            if (m.Groups.Count == 5) {
+                option = m.Groups[1].ToString();
+                filterParams = m.Groups[4].ToString();
+                rangeString = m.Groups[3].ToString();
             }
 
-            return (cmd, argString);
+            return (option, filterParams, rangeString);
         }
 
-        public static string[] ExtractArgs(string argString)
+        public static List<object> ExtractArgs(string argString)
         {
-            var args = new List<string>();
+            var args = new List<object>();
             foreach (var s in argString.Trim('"').Split(',')) {
                 args.Add(s.Trim());
             }
 
-            return args.ToArray();
+            return args;
         }
+
 
         public static ColorRange ParseRange(string rangeString)
         {
+            if (string.IsNullOrEmpty(rangeString)) return null;
+            
             ColorRange range = new ColorRange();
             double max, min;
             bool succeeded;
@@ -112,7 +117,7 @@ namespace ColorSchemeInverter.CLI
                 range.Value(min, max);
             }
 
-            throw new NotImplementedException();
+            return range;
         }
 
         private static (bool, double, double) GetRange(string rangeString, string options)
