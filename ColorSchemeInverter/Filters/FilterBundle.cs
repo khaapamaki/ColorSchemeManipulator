@@ -415,7 +415,7 @@ namespace ColorSchemeInverter.Filters
             (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
                 double hueShift = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                filtered.Hue = hsv.Hue + hueShift;
+                filtered.Hue = (hsv.Hue + hueShift).NormalizeLoopingValue(360);
             }
 
             return hsv.Interpolate(filtered, rangeFactor); 
