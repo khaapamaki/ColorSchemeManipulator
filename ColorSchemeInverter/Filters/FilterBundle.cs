@@ -35,39 +35,39 @@ namespace ColorSchemeInverter.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1);
-            CliArgs.Register(new List<string> {"-b", "--brightness"}, GainBrightness, 1);
-            CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1);
             CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHsvHue, 1);   
-            CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHsvSaturation, 1);
-            CliArgs.Register(new List<string> {"-S", "--hsl-saturation"}, GainHslSaturation, 1);
+            CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1);
+            CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1);
+            CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1);
+            CliArgs.Register(new List<string> {"-v", "--value"}, GainValue, 1);
+            CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1);
             
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1);    
-            CliArgs.Register(new List<string> {"-cb", "--contrast-brighness"}, ContrastBrightness, 1);    
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1);            
-            CliArgs.Register(new List<string> {"-cs", "--contrast-saturation" }, ContrastHsvSaturation, 1);
-            CliArgs.Register(new List<string> {"-cS", "--contrast-hsl-saturation"}, ContrastHslSaturation, 1);           
+            CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1);    
+            CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1);           
+            CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation" }, ContrastHsvSaturation, 1);
             
             CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1);
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1);
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1);
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1);
-            CliArgs.Register(new List<string> {"-gab", "--gamma-brightness"}, GammaBrightness, 1);
             CliArgs.Register(new List<string> {"-gal", "--gamma-lightness"}, GammaLightness, 1);
-            CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHsvSaturation, 1);
-            CliArgs.Register(new List<string> {"-gaS", "--gamma-hsl-saturation"}, GammaHslSaturation, 1);
+            CliArgs.Register(new List<string> {"-gav", "--gamma-value"}, GammaValue, 1);
+            CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHslSaturation, 1);
+            CliArgs.Register(new List<string> {"-gaS", "--gamma-hsv-saturation"}, GammaHsvSaturation, 1);
             
             CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5);
             CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5);
             CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5);
-            CliArgs.Register(new List<string> {"-leb","--levels-blue"}, LevelsBlue, 5);
+            CliArgs.Register(new List<string> {"-lev","--levels-blue"}, LevelsBlue, 5);
             CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5);
-            CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHsvSaturation, 5);
-            CliArgs.Register(new List<string> {"-leS", "--levels-hsl-saturation"}, LevelsHslSaturation, 5);
+            CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5);
+            CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
             
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);            
-            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertBrightness, 0);
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
+            CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
         }
 
         #region "Invert"
@@ -97,7 +97,7 @@ namespace ColorSchemeInverter.Filters
             return hsl.Interpolate(filtered, rangeFactor);
         }
         
-        public static Hsv InvertBrightness(Hsv hsv, params object[] filterParams)
+        public static Hsv InvertValue(Hsv hsv, params object[] filterParams)
         {
             double rangeFactor;
             (rangeFactor, _) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
@@ -165,7 +165,7 @@ namespace ColorSchemeInverter.Filters
             return hsl.Interpolate(filtered, rangeFactor);
         }
 
-        public static Hsv GainBrightness(Hsv hsv, params object[] filterParams)
+        public static Hsv GainValue(Hsv hsv, params object[] filterParams)
         {
             var filtered = new Hsv(hsv);
             double rangeFactor;
@@ -275,7 +275,7 @@ namespace ColorSchemeInverter.Filters
             return hsl.Interpolate(filtered, rangeFactor);
         }
 
-        public static Hsv GammaBrightness(Hsv hsv, params object[] filterParams)
+        public static Hsv GammaValue(Hsv hsv, params object[] filterParams)
         {
             var filtered = new Hsv(hsv);
             double rangeFactor;
@@ -372,7 +372,7 @@ namespace ColorSchemeInverter.Filters
             return hsl.Interpolate(filtered, rangeFactor);
         }
 
-        public static Hsv ContrastBrightness(Hsv hsv, params object[] filterParams)
+        public static Hsv ContrastValue(Hsv hsv, params object[] filterParams)
         {
             var filtered = new Hsv(hsv);
             double rangeFactor;

@@ -11,38 +11,38 @@ Added option to convert colors on png-files for quick testing.
 ### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-      -g    --gain                         GainRgb
-      -b    --brightness                   GainBrightness
-      -l    --lightness                    GainLightness
       -h    --hue                          ShiftHsvHue
-      -s    --saturation                   GainHsvSaturation
-      -S    --hsl-saturation               GainHslSaturation
+      -s    --saturation                   GainHslSaturation
+      -g    --gain                         GainRgb
+      -l    --lightness                    GainLightness
+      -v    --value                        GainValue
+      -S    --hsv-saturation               GainHsvSaturation
       -c    --contrast                     ContrastRgb
-      -cb   --contrast-brighness           ContrastBrightness
       -cl   --contrast-lightness           ContrastLightness
-      -cs   --contrast-saturation          ContrastHsvSaturation
-      -cS   --contrast-hsl-saturation      ContrastHslSaturation
+      -cv   --contrast-value               ContrastValue
+      -cs   --contrast-saturation          ContrastHslSaturation
+      -cS   --contrast-hsv-saturation      ContrastHsvSaturation
       -ga   --gamma                        GammaRgb
       -gar  --gamma-red                    GammaRed
       -gag  --gamma-green                  GammaGreen
       -gab  --gamma-blue                   GammaBlue
-      -gab  --gamma-brightness             GammaBrightness
       -gal  --gamma-lightness              GammaLightness
-      -gas  --gamma-saturation             GammaHsvSaturation
-      -gaS  --gamma-hsl-saturation         GammaHslSaturation
+      -gav  --gamma-value                  GammaValue
+      -gas  --gamma-saturation             GammaHslSaturation
+      -gaS  --gamma-hsv-saturation         GammaHsvSaturation
       -le   --levels                       LevelsRgb
       -ler  --levels-red                   LevelsRed
       -leg  --levels-green                 LevelsGreen
       -le   --levels                       LevelsRgb
       -ler  --levels-red                   LevelsRed
       -leg  --levels-green                 LevelsGreen
-      -leb  --levels-blue                  LevelsBlue
+      -lev  --levels-blue                  LevelsBlue
       -lel  --levels-lightness             LevelsLightness
-      -les  --levels-saturation            LevelsHsvSaturation
-      -leS  --levels-hsl-saturation        LevelsHslSaturation
+      -les  --levels-saturation            LevelsHslSaturation
+      -leS  --levels-hsv-saturation        LevelsHsvSaturation
       -i    --invert-rgb                   InvertRgb
-      -ib   --invert-brightness            InvertBrightness
       -il   --invert-lightness             InvertLightness
+      -iv   --invert-value                 InvertValue
 
 Usage example:
     <appname> -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
@@ -58,7 +58,7 @@ Using color range with filter:
 + Interpolation for looping values (= hue)
 + Unit tests
 + Add declaration field to CliArg and write them (used in quick help)
-+ Parsing of string argumnents (mostly to doubles) before-hand to optimize for speed
++ Parsing of string arguments (mostly to doubles) before-hand to optimize for speed
 + Support for Visual Studio Code
 + Support for CSS and HTML files? What else?
 + Presets for quick operations
