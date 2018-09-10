@@ -6,8 +6,8 @@ namespace ColorSchemeInverter.Common
     {
         public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
         {
-            var realMin = min.Min(max);
-            var realMax = min.Max(max);
+            var realMin = min; //.Min(max);
+            var realMax = max; //.Max(max);
 
             if (val.CompareTo(realMin) < 0) return realMin;
             else if (val.CompareTo(realMax) > 0) return realMax;
