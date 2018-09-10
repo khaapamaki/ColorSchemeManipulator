@@ -15,6 +15,8 @@ namespace ColorSchemeInverter.Common
 
         public static double NormalizeLoopingValue(this double val, double range)
         {
+            if (val == range)
+                return val;
             double temp = val % range;
             return temp >= 0 ? temp : range + temp;
         }
