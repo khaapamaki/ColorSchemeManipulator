@@ -81,6 +81,7 @@
     <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\vcs.xml" />
     <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\workspace.xml" />
     <Content Include="..\.idea\.idea.ColorSchemeInverter\riderModule.iml" />
+    <Content Include="bin\Debug\photo_converted.png" />
     <EmbeddedResource Include="..\ColorSchemes\HappyDays.png">
       <Link>HappyDays.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
