@@ -38,7 +38,10 @@ namespace ColorSchemeInverter.CLI
                 filters.Add((Func<Hsl, object[], Hsl>) filterDelegate, filterParams);
             } else if (filterDelegate is Func<Rgb, object[], Rgb>) {
                 filters.Add((Func<Rgb, object[], Rgb>) filterDelegate, filterParams);
-            } else {
+            }else if (filterDelegate is Func<Hsv, object[], Hsv>) {
+                filters.Add((Func<Hsv, object[], Hsv>) filterDelegate, filterParams);
+            }  
+            else {
                 remainingArgs.Add(arg);
             }
 
@@ -52,7 +55,7 @@ namespace ColorSchemeInverter.CLI
             string option = null;
             string filterParams = null;
             string rangeString = null;
-            const string pattern = @"(^\-[a-zA-Z]{1,2}|^\-\-[a-zA-Z]{2,})(\((.*)\))?(\s*=\s*(.*))?";
+            const string pattern = @"(^\-[a-zA-Z]{1,2}|^\-\-[a-zA-Z\-]{2,})(\((.*)\))?(\s*=\s*(.*))?";
             Match m = Regex.Match(arg, pattern);
             if (m.Groups.Count == 6) {
                 option = m.Groups[1].ToString();

@@ -17,7 +17,7 @@ namespace ColorSchemeInverter
         public static void Main(string[] args)
         {
 #if DEBUG
-            TestTempStuff();
+            // TestTempStuff();
 #endif
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
@@ -40,8 +40,8 @@ namespace ColorSchemeInverter
             // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
                 Console.WriteLine("Illegal argument: " + remainingOptArgs[0]);
-                Console.WriteLine("Available Filters:");
-                Console.WriteLine(CliArgs.ToString());
+                //Console.WriteLine("Available Filters:");
+                //Console.WriteLine(CliArgs.ToString());
                 return;
             }
 
@@ -90,10 +90,10 @@ namespace ColorSchemeInverter
             // // old testing, now ClI parsing is in use:
             // var filters = new FilterSet()
             //     .Add(FilterBundle.InvertLightness)
-            //     .Add(FilterBundle.ContrastSaturation, 0.3)
-            //     .Add(FilterBundle.GainSaturation, 1.2, new ColorRange().Hue(40,120).Blue(0,0.5))
+            //     .Add(FilterBundle.ContrastHslSaturation, 0.3)
+            //     .Add(FilterBundle.GainHslSaturation, 1.2, new ColorRange().Hue(40,120).Blue(0,0.5))
             //     .Add(FilterBundle.GainRgb, 1.1)
-            //     .Add(FilterBundle.Contrast, 0.3, 0.3);
+            //     .Add(FilterBundle.ContrastRgb, 0.3, 0.3);
             //  
         }
 

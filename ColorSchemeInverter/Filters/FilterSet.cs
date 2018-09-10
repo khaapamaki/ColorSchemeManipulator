@@ -57,6 +57,28 @@ namespace ColorSchemeInverter.Filters
             return this;
         }
 
+        public FilterSet(Func<Hsv, object[], Hsv> filterDelegate)
+        {
+            _filterChain.Add(new HsvFilter(filterDelegate));
+        }
+
+        public void Add(HsvFilter filter)
+        {
+            _filterChain.Add(filter);
+        }
+
+        public FilterSet Add(Func<Hsv, object[], Hsv> filterDelegate)
+        {
+            _filterChain.Add(new HsvFilter(filterDelegate));
+            return this;
+        }
+
+        public FilterSet Add(Func<Hsv, object[], Hsv> filterDelegate, params object[] args)
+        {
+            _filterChain.Add(new HsvFilter(filterDelegate, args));
+            return this;
+        }
+        
 
         public bool Any()
         {

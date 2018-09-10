@@ -320,7 +320,7 @@
                 <marker date="1536480369376" expanded="true" signature="3647:3910" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="4028:4245" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="4132:4207" ph="{...}" />
-                <marker date="1536480369376" expanded="true" signature="4275:7257" ph="&quot;Gamma&quot;" />
+                <marker date="1536480369376" expanded="true" signature="4275:7257" ph="&quot;GammaRgb&quot;" />
                 <marker date="1536480369376" expanded="true" signature="4354:4781" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="4473:4743" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="4848:5341" ph="{...}" />
@@ -336,7 +336,7 @@
                 <marker date="1536480369376" expanded="true" signature="6663:6817" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="6928:7237" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="7047:7199" ph="{...}" />
-                <marker date="1536480369376" expanded="false" signature="7267:9645" ph="&quot;Contrast&quot;" />
+                <marker date="1536480369376" expanded="false" signature="7267:9645" ph="&quot;ContrastRgb&quot;" />
                 <marker date="1536480369376" expanded="true" signature="7352:8252" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="7471:8214" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="7618:7956" ph="{...}" />
@@ -346,7 +346,7 @@
                 <marker date="1536480369376" expanded="true" signature="9017:9625" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="9136:9587" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="9283:9465" ph="{...}" />
-                <marker date="1536480369376" expanded="false" signature="9656:11747" ph="&quot;Levels based filters&quot;" />
+                <marker date="1536480369376" expanded="false" signature="9656:11747" ph="&quot;LevelsRgb based filters&quot;" />
                 <marker date="1536480369376" expanded="true" signature="9751:10149" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="10217:10455" ph="{...}" />
                 <marker date="1536480369376" expanded="true" signature="10525:10767" ph="{...}" />
@@ -386,8 +386,8 @@
     <findStrings>
       <find>RGB</find>
       <find>stringFormat</find>
-      <find>hslHexFormat</find>
-      <find>hslStringFormat</find>
+      <find>hsvHexFormat</find>
+      <find>hsvStringFormat</find>
     </findStrings>
     <replaceStrings>
       <replace>ColorBase</replace>
@@ -1309,7 +1309,7 @@
             <marker date="1536480369376" expanded="true" signature="3647:3910" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="4028:4245" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="4132:4207" ph="{...}" />
-            <marker date="1536480369376" expanded="true" signature="4275:7257" ph="&quot;Gamma&quot;" />
+            <marker date="1536480369376" expanded="true" signature="4275:7257" ph="&quot;GammaRgb&quot;" />
             <marker date="1536480369376" expanded="true" signature="4354:4781" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="4473:4743" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="4848:5341" ph="{...}" />
@@ -1325,7 +1325,7 @@
             <marker date="1536480369376" expanded="true" signature="6663:6817" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="6928:7237" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="7047:7199" ph="{...}" />
-            <marker date="1536480369376" expanded="false" signature="7267:9645" ph="&quot;Contrast&quot;" />
+            <marker date="1536480369376" expanded="false" signature="7267:9645" ph="&quot;ContrastRgb&quot;" />
             <marker date="1536480369376" expanded="true" signature="7352:8252" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="7471:8214" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="7618:7956" ph="{...}" />
@@ -1335,7 +1335,7 @@
             <marker date="1536480369376" expanded="true" signature="9017:9625" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="9136:9587" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="9283:9465" ph="{...}" />
-            <marker date="1536480369376" expanded="false" signature="9656:11747" ph="&quot;Levels based filters&quot;" />
+            <marker date="1536480369376" expanded="false" signature="9656:11747" ph="&quot;LevelsRgb based filters&quot;" />
             <marker date="1536480369376" expanded="true" signature="9751:10149" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="10217:10455" ph="{...}" />
             <marker date="1536480369376" expanded="true" signature="10525:10767" ph="{...}" />

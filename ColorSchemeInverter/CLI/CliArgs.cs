@@ -53,6 +53,16 @@ namespace ColorSchemeInverter.CLI
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
         }
 
+        public static void Register(string option, Func<Hsv, object[], Hsv> filterDelegate, byte minArguments)
+        {
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+        }
+
+        public static void Register(List<string> option, Func<Hsv, object[], Hsv> filterDelegate, byte minArguments)
+        {
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+        }
+        
         /// <summary>
         /// Parses command line arguments, creates a FilterSet from them and returns it together with
         /// remaining arguments that should include source and target files
@@ -116,5 +126,6 @@ namespace ColorSchemeInverter.CLI
 
             return sb.ToString();
         }
+
     }
 }

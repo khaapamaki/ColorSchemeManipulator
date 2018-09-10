@@ -36,38 +36,41 @@ namespace ColorSchemeInverter.Filters
                 return;
 
             CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1);
+            CliArgs.Register(new List<string> {"-b", "--brightness"}, GainBrightness, 1);
             CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1);
-            CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHue, 1);     
-            CliArgs.Register(new List<string> {"-s", "--saturation"}, GainSaturation, 1);
+            CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHsvHue, 1);   
+            CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHsvSaturation, 1);
+            CliArgs.Register(new List<string> {"-S", "--hsl-saturation"}, GainHslSaturation, 1);
             
-            CliArgs.Register(new List<string> {"-c", "--contrast"}, Contrast, 1);    
+            CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1);    
+            CliArgs.Register(new List<string> {"-cb", "--contrast-brighness"}, ContrastBrightness, 1);    
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1);            
-            CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastSaturation, 1);
+            CliArgs.Register(new List<string> {"-cs", "--contrast-saturation" }, ContrastHsvSaturation, 1);
+            CliArgs.Register(new List<string> {"-cS", "--contrast-hsl-saturation"}, ContrastHslSaturation, 1);           
             
-            
-            CliArgs.Register(new List<string> {"-ga", "--gamma"}, Gamma, 1);
+            CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1);
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1);
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1);
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1);
-            CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaSaturation, 1);
+            CliArgs.Register(new List<string> {"-gab", "--gamma-brightness"}, GammaBrightness, 1);
             CliArgs.Register(new List<string> {"-gal", "--gamma-lightness"}, GammaLightness, 1);
+            CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHsvSaturation, 1);
+            CliArgs.Register(new List<string> {"-gaS", "--gamma-hsl-saturation"}, GammaHslSaturation, 1);
             
-            CliArgs.Register(new List<string> {"-le", "--levels"}, Levels, 5);
+            CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5);
             CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5);
             CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5);
             CliArgs.Register(new List<string> {"-leb","--levels-blue"}, LevelsBlue, 5);
             CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5);
-            CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsSaturation, 5);
+            CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHsvSaturation, 5);
+            CliArgs.Register(new List<string> {"-leS", "--levels-hsl-saturation"}, LevelsHslSaturation, 5);
             
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);            
+            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertBrightness, 0);
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
-
-
-
-
         }
 
-        #region "InvertRgb"
+        #region "Invert"
 
         public static Rgb InvertRgb(Rgb rgb, params object[] filterParams)
         {
@@ -93,22 +96,45 @@ namespace ColorSchemeInverter.Filters
 
             return hsl.Interpolate(filtered, rangeFactor);
         }
+        
+        public static Hsv InvertBrightness(Hsv hsv, params object[] filterParams)
+        {
+            double rangeFactor;
+            (rangeFactor, _) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            Hsv filtered = new Hsv(hsv);
+            filtered.Value = ColorMath.Invert(hsv.Value);
+
+            return hsv.Interpolate(filtered, rangeFactor);
+        }
 
         #endregion
 
-        #region "RGBGain"
+        #region "Gain"
 
-        public static Hsl GainSaturation(Hsl hsl, params object[] filterParams)
+        public static Hsl GainHslSaturation(Hsl hsl, params object[] filterParams)
         {
             var filtered = new Hsl(hsl);
             double rangeFactor;
             (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsl, filterParams);
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
-                double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
                 filtered.Saturation = filtered.Saturation * gain;
             }
 
             return hsl.Interpolate(filtered, rangeFactor);
+        }
+
+        public static Hsv GainHsvSaturation(Hsv hsv, params object[] filterParams)
+        {
+            var filtered = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
+                double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
+                filtered.Saturation = filtered.Saturation * gain;
+            }
+
+            return hsv.Interpolate(filtered, rangeFactor);
         }
 
         public static Rgb GainRgb(Rgb rgb, params object[] filterParams)
@@ -117,7 +143,7 @@ namespace ColorSchemeInverter.Filters
             double rangeFactor;
             (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
-                double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
                 filtered.Red = ColorMath.Gain(rgb.Red, gain);
                 filtered.Green = ColorMath.Gain(rgb.Green, gain);
                 filtered.Blue = ColorMath.Gain(rgb.Blue, gain);
@@ -132,27 +158,40 @@ namespace ColorSchemeInverter.Filters
             double rangeFactor;
             (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsl, filterParams);
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
-                double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
                 filtered.Lightness = filtered.Lightness * gain;
             }
 
             return hsl.Interpolate(filtered, rangeFactor);
         }
 
-        #endregion
+        public static Hsv GainBrightness(Hsv hsv, params object[] filterParams)
+        {
+            var filtered = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
+                double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
+                filtered.Value = filtered.Value * gain;
+            }
 
+            return hsv.Interpolate(filtered, rangeFactor);
+        }
+   
+        #endregion
+ 
         #region "Gamma"
 
-        public static Rgb Gamma(Rgb rgb, params object[] filterParams)
+        public static Rgb GammaRgb(Rgb rgb, params object[] filterParams)
         {
             var filtered = new Rgb(rgb);
             double rangeFactor;
             (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
-                double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                filtered.Red = ColorMath.Gamma(rgb.Red, gain);
-                filtered.Green = ColorMath.Gamma(rgb.Green, gain);
-                filtered.Blue = ColorMath.Gamma(rgb.Blue, gain);
+                double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                filtered.Red = ColorMath.Gamma(rgb.Red, gamma);
+                filtered.Green = ColorMath.Gamma(rgb.Green, gamma);
+                filtered.Blue = ColorMath.Gamma(rgb.Blue, gamma);
             }
 
             return rgb.Interpolate(filtered, rangeFactor);
@@ -197,7 +236,7 @@ namespace ColorSchemeInverter.Filters
             return rgb.Interpolate(filtered, rangeFactor);
         }
 
-        public static Hsl GammaSaturation(Hsl hsl, params object[] filterParams)
+        public static Hsl GammaHslSaturation(Hsl hsl, params object[] filterParams)
         {
             var filtered = new Hsl(hsl);
             double rangeFactor;
@@ -208,6 +247,19 @@ namespace ColorSchemeInverter.Filters
             }
             
             return hsl.Interpolate(filtered, rangeFactor);
+        }
+
+        public static Hsv GammaHsvSaturation(Hsv hsv, params object[] filterParams)
+        {
+            var filtered = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
+                double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                filtered.Saturation = ColorMath.Gamma(hsv.Saturation, gamma);
+            }
+
+            return hsv.Interpolate(filtered, rangeFactor);
         }
 
         public static Hsl GammaLightness(Hsl hsl, params object[] filterParams)
@@ -223,11 +275,24 @@ namespace ColorSchemeInverter.Filters
             return hsl.Interpolate(filtered, rangeFactor);
         }
 
+        public static Hsv GammaBrightness(Hsv hsv, params object[] filterParams)
+        {
+            var filtered = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
+                double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                filtered.Value = ColorMath.Gamma(hsv.Value, gamma);
+            }
+
+            return hsv.Interpolate(filtered, rangeFactor);
+        }
+
         #endregion
 
         #region "Contrast"
 
-        public static Rgb Contrast(Rgb rgb, params object[] filterParams)
+        public static Rgb ContrastRgb(Rgb rgb, params object[] filterParams)
         {
             var filtered = new Rgb(rgb);
             double rangeFactor;
@@ -250,7 +315,7 @@ namespace ColorSchemeInverter.Filters
             return rgb.Interpolate(filtered, rangeFactor);
         }
 
-        public static Hsl ContrastSaturation(Hsl hsl, params object[] filterParams)
+        public static Hsl ContrastHslSaturation(Hsl hsl, params object[] filterParams)
         {
             var filtered = new Hsl(hsl);
             double rangeFactor;
@@ -267,6 +332,25 @@ namespace ColorSchemeInverter.Filters
             }
 
             return hsl.Interpolate(filtered, rangeFactor);
+        }
+
+        public static Hsv ContrastHsvSaturation(Hsv hsv, params object[] filterParams)
+        {
+            var filtered = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+
+            if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
+                double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
+                if (filterParams.Length >= 2 && FilterUtils.IsNumberOrString(filterParams[1])) {
+                    double midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
+                    filtered.Saturation = ColorMath.SSpline(hsv.Saturation, strength, midpoint);
+                } else {
+                    filtered.Saturation = ColorMath.SSpline(hsv.Saturation, strength);
+                }
+            }
+
+            return hsv.Interpolate(filtered, rangeFactor);
         }
 
         public static Hsl ContrastLightness(Hsl hsl, params object[] filterParams)
@@ -288,11 +372,30 @@ namespace ColorSchemeInverter.Filters
             return hsl.Interpolate(filtered, rangeFactor);
         }
 
+        public static Hsv ContrastBrightness(Hsv hsv, params object[] filterParams)
+        {
+            var filtered = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            
+            if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
+                double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
+                if (filterParams.Length >= 2 && FilterUtils.IsNumberOrString(filterParams[1])) {
+                    double midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
+                    filtered.Value = ColorMath.SSpline(hsv.Value, strength, midpoint);
+                } else {
+                    filtered.Value = ColorMath.SSpline(hsv.Value, strength);
+                }
+            }
+            
+            return hsv.Interpolate(filtered, rangeFactor);
+        }
+        
         #endregion
 
         #region Hue
 
-        public static Hsl ShiftHue(Hsl hsl, params object[] filterParams)
+        public static Hsl ShiftHslHue(Hsl hsl, params object[] filterParams)
         {
             var filtered = new Hsl(hsl);
             double rangeFactor;
@@ -305,7 +408,7 @@ namespace ColorSchemeInverter.Filters
             return hsl.Interpolate(filtered, rangeFactor); 
         }
 
-        public static Hsv ShiftHue(Hsv hsv, params object[] filterParams)
+        public static Hsv ShiftHsvHue(Hsv hsv, params object[] filterParams)
         {
             var filtered = new Hsv(hsv);
             double rangeFactor;
@@ -320,9 +423,9 @@ namespace ColorSchemeInverter.Filters
 
         #endregion
 
-        #region "Levels based filters"
+        #region "Levels"
 
-        public static Rgb Levels(Rgb rgb, params object[] filterParams)
+        public static Rgb LevelsRgb(Rgb rgb, params object[] filterParams)
         {
             var result = new Rgb(rgb);
             double rangeFactor;
@@ -369,7 +472,17 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
 
-        public static Hsl LevelsSaturation(Hsl hsl, params object[] filterParams)
+        public static Hsv LevelsBrightness(Hsv hsv, params object[] filterParams)
+        {
+            var result = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            result.Value = FilterUtils.CalcLevels(hsv.Value, rangeFactor, filterParams);
+            return result;
+        }
+        
+
+        public static Hsl LevelsHslSaturation(Hsl hsl, params object[] filterParams)
         {
             var result = new Hsl(hsl);
             double rangeFactor;
@@ -378,6 +491,15 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
 
+        public static Hsv LevelsHsvSaturation(Hsv hsv, params object[] filterParams)
+        {
+            var result = new Hsv(hsv);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsv, filterParams);
+            result.Saturation = FilterUtils.CalcLevels(hsv.Saturation, rangeFactor, filterParams);
+            return result;
+        }
+        
         #endregion
     }
 }

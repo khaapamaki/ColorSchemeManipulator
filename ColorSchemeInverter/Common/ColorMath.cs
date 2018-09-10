@@ -29,7 +29,10 @@ namespace ColorSchemeInverter.Filters
             // s=strength of curve -1..1
 
             double output = input;
-
+            a = a.Clamp(0, 1);
+            input = a.LimitLow(0);
+            s = s.Clamp(-1, 1);
+            
             if (input >= 0 && input < a) {
                 output = (1 - s) * input + s * (a * Math.Pow(input / a, 2.0));
             } else if (input >= a && input <= 1) {

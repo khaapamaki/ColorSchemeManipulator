@@ -42,6 +42,20 @@ namespace ColorSchemeInverter.CLI
             MinNumberOfParams = minParams;     
         }
         
+        public CliArg(string option, Func<Hsv, object[], Hsv> filterDelegate, byte minParams)
+        {
+            OptionArgs = new List<string> {option};
+            FilterDelegate = filterDelegate;
+            MinNumberOfParams = minParams;
+        }
+        
+        public CliArg(List<string> options, Func<Hsv, object[], Hsv> filterDelegate, byte minParams)
+        {
+            OptionArgs = new List<string>(options);
+            FilterDelegate = filterDelegate;
+            MinNumberOfParams = minParams;     
+        }   
+        
 
         public new string ToString()
         {
@@ -60,7 +74,7 @@ namespace ColorSchemeInverter.CLI
                 }
             }
 
-            return $"   {opt1,-5} {opt2,-30} ";
+            return $"   {opt1,-5} {opt2,-30} {FilterDelegate.Method.Name,-40}";
             return opts + "(" + MinNumberOfParams + ")";
             
             
