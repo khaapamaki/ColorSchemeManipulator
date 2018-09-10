@@ -7,15 +7,20 @@ Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color s
 
 Added option to convert colors on png-files for quick testing.
 
+### Note
+
+All saturation filter and saturation ranges currently works in HSL domain.
+This WILL CHANGE. Default non-RGB colors will be HSV aka HSB. HSL based saturation may remain in some form though.
 
 ### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-      -g    --gain                         
+      -g    --gain              (rgb)                         
       -l    --lightness                    
       -h    --hue                          
       -s    --saturation                   
-      -c    --contrast                     
+      -c    --contrast          
+      -c    --contrast-rgb           
       -cl   --contrast-lightness           
       -cs   --contrast-saturation          
       -ga   --gamma                        
