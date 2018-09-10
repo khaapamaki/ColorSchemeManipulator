@@ -9,6 +9,12 @@ using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Filters
 {
+    
+    // Todo Fix issue: parameter list that has comma at beginning is not propeperly handled causing slow prosessing (images)
+    // arguments are empty string that will get default values but parsing with exception handling makes it slow
+    // Todo Better argument validation could be the answer
+    // other option would be pre-parsing to correct type and not parsing again when the filter is reapplied.
+    
     public sealed class FilterBundle
     {
         private static FilterBundle _instance;
@@ -79,7 +85,7 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Hsl(hsl);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double gain = FilterUtils.GetDouble(args[0]);
+                double gain = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                 result.Saturation = result.Saturation * gain;
             }
 
@@ -90,7 +96,7 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Rgb(rgb);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double gain = FilterUtils.GetDouble(args[0]);
+                double gain = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                 result.Red = ColorMath.Gain(rgb.Red, gain);
                 result.Green = ColorMath.Gain(rgb.Green, gain);
                 result.Blue = ColorMath.Gain(rgb.Blue, gain);
@@ -117,7 +123,7 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Rgb(rgb);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double gamma = FilterUtils.GetDouble(args[0]);
+                double gamma = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                 result.Red = ColorMath.Gamma(rgb.Red, gamma);
                 result.Green = ColorMath.Gamma(rgb.Green, gamma);
                 result.Blue = ColorMath.Gamma(rgb.Blue, gamma);
@@ -131,9 +137,10 @@ namespace ColorSchemeInverter.Filters
             var result = new Rgb(rgb);
 
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double saturationThreshold = args.Length >= 2 ? FilterUtils.GetDouble(args[1]) : -1;
+                double saturationThreshold = args.Length >= 2 ? 
+                    FilterUtils.TryParseDouble(args[1]) ?? 0.0 : -1;
                 if (rgb.ToHsl().Saturation > saturationThreshold) {
-                    double gamma = FilterUtils.GetDouble(args[0]);
+                    double gamma = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                     result.Red = ColorMath.Gamma(rgb.Red, gamma);
                 }
             }
@@ -146,9 +153,10 @@ namespace ColorSchemeInverter.Filters
             var result = new Rgb(rgb);
 
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double saturationThreshold = args.Length >= 2 ? FilterUtils.GetDouble(args[1]) : -1;
+                double saturationThreshold = args.Length >= 2 ?
+                    FilterUtils.TryParseDouble(args[1]) ?? 0.0 : -1;
                 if (rgb.ToHsl().Saturation > saturationThreshold) {
-                    double gamma = FilterUtils.GetDouble(args[0]);
+                    double gamma = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                     result.Green = ColorMath.Gamma(rgb.Green, gamma);
                 }
             }
@@ -161,9 +169,9 @@ namespace ColorSchemeInverter.Filters
             var result = new Rgb(rgb);
 
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double saturationThreshold = args.Length >= 2 ? FilterUtils.GetDouble(args[1]) : -1;
+                double saturationThreshold = args.Length >= 2 ? FilterUtils.TryParseDouble(args[1])  ?? 0.0 : -1;
                 if (rgb.ToHsl().Saturation > saturationThreshold) {
-                    double gamma = FilterUtils.GetDouble(args[0]);
+                    double gamma = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                     result.Blue = ColorMath.Gamma(rgb.Blue, gamma);
                 }
             }
@@ -175,7 +183,7 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Hsl(hsl);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double gamma = FilterUtils.GetDouble(args[0]);
+                double gamma = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                 result.Saturation = ColorMath.Gamma(hsl.Saturation, gamma);
             }
 
@@ -186,7 +194,7 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Hsl(hsl);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double gamma = FilterUtils.GetDouble(args[0]);
+                double gamma = FilterUtils.TryParseDouble(args[0]) ?? 1.0;
                 result.Lightness = ColorMath.Gamma(hsl.Lightness, gamma);
             }
 
@@ -201,9 +209,9 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Rgb(hsl);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double strength = FilterUtils.GetDouble(args[0]);
+                double strength = FilterUtils.TryParseDouble(args[0]) ?? 0.0;
                 if (args.Length >= 2 && FilterUtils.IsNumberOrString(args[1])) {
-                    double midpoint = FilterUtils.GetDouble(args[1]);
+                    double midpoint = FilterUtils.TryParseDouble(args[1]) ?? 0.5;
                     result.Red = ColorMath.SSpline(hsl.Red, strength, midpoint);
                     result.Green = ColorMath.SSpline(hsl.Green, strength, midpoint);
                     result.Blue = ColorMath.SSpline(hsl.Blue, strength, midpoint);
@@ -221,9 +229,9 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Hsl(hsl);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double strength = FilterUtils.GetDouble(args[0]);
+                double strength = FilterUtils.TryParseDouble(args[0]) ?? 0.0;
                 if (args.Length >= 2 && FilterUtils.IsNumberOrString(args[1])) {
-                    double midpoint = FilterUtils.GetDouble(args[1]);
+                    double midpoint = FilterUtils.TryParseDouble(args[1]) ?? 0.5;
                     result.Saturation = ColorMath.SSpline(hsl.Saturation, strength, midpoint);
                 } else {
                     result.Saturation = ColorMath.SSpline(hsl.Saturation, strength);
@@ -237,9 +245,9 @@ namespace ColorSchemeInverter.Filters
         {
             var result = new Hsl(hsl);
             if (args.Any() && FilterUtils.IsNumberOrString(args[0])) {
-                double strength = FilterUtils.GetDouble(args[0]);
+                double strength = FilterUtils.TryParseDouble(args[0]) ?? 0.0;
                 if (args.Length >= 2 && FilterUtils.IsNumberOrString(args[1])) {
-                    double midpoint = FilterUtils.GetDouble(args[1]);
+                    double midpoint = FilterUtils.TryParseDouble(args[1]) ?? 0.5;
                     result.Lightness = ColorMath.SSpline(hsl.Lightness, strength, midpoint);
                 } else {
                     result.Lightness = ColorMath.SSpline(hsl.Lightness, strength);

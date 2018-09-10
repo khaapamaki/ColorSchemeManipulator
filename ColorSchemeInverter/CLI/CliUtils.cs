@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Filters;
-using NUnit.Framework;
 
 namespace ColorSchemeInverter.CLI
 {
@@ -66,23 +65,22 @@ namespace ColorSchemeInverter.CLI
                 rangeString == "" ? null : rangeString);
         }
 
-        // todo test method CliUtils.ExtractArgs, test returning empty list
-        public static List<object> ExtractArgs(string argString)
+
+        public static List<object> ExtractParams(string paramString)
         {
             var args = new List<object>();
 
-            if (string.IsNullOrEmpty(argString)) {
+            if (string.IsNullOrEmpty(paramString)) {
                 return args;
             }
 
-            foreach (var s in argString.Trim('"').Split(',')) {
+            foreach (var s in paramString.Trim('"').Split(',')) {
                 args.Add(s.Trim());
             }
 
             return args;
         }
 
-        // todo test method CliUtils.ParseRange
         public static ColorRange ParseRange(string rangeString)
         {
             if (string.IsNullOrEmpty(rangeString)) return null;

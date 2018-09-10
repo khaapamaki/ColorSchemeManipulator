@@ -77,7 +77,7 @@ namespace ColorSchemeInverter.CLI
             ColorRange range = CliUtils.ParseRange(rangeString);
             foreach (var cliArg in GetInstance().Items) {
                 if (cliArg.OptionArgs.Contains(option)) {
-                    List<object> filterParams = CliUtils.ExtractArgs(paramString);
+                    List<object> filterParams = CliUtils.ExtractParams(paramString);
                     if (filterParams.Count >= cliArg.MinNumberOfParams) {
                         if (range != null)
                             filterParams.Add(range);

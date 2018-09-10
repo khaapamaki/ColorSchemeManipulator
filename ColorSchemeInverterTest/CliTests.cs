@@ -9,7 +9,7 @@ using ColorSchemeInverter.Colors;
 namespace ColorSchemeInverter.UnitTests
 {
     [TestFixture]
-    public class CliArgsTests
+    public class CliTests
     {
         [Test]
         [TestCase("-li", "-li", null, null)]
@@ -77,5 +77,47 @@ namespace ColorSchemeInverter.UnitTests
             
             Assert.That(factor, Is.EqualTo(expFactor));
         }
+
+        [Test]
+        public void ExtractArgs_NullOrEmptyString_ReturnsEmptyList()
+        {
+            List<Object> resultNullString = CliUtils.ExtractParams(null);
+            List<Object> resultEmptyString = CliUtils.ExtractParams("");
+            Assert.That(resultNullString, Is.EqualTo(new List<object>()));
+            Assert.That(resultEmptyString, Is.EqualTo(new List<object>()));
+        }
+
+        [Test]
+        public void ExtractParams_CorrectlyFormattedString_ReturnsExpectedList()
+        {
+            const string inputString = "2.1, 1.0, 0.1,1 ";
+            var result = CliUtils.ExtractParams(inputString);
+            var expected = new List<object> {"2.1", "1.0", "0.1", "1"};
+
+            if (result.Count == expected.Count) {
+                for (int i = 0; i < expected.Count; i++) {
+                    Assert.That(result[i], Is.EqualTo(expected[i]));
+                }
+            } else {
+                Assert.Fail();
+            }
+        }
+        
+        [Test]
+        public void ExtractParams_StringWithExtraComma_ReturnsListWithEmptyStrings()
+        {
+            const string inputString = ",2.1, 1.0, 0.1,1, ";
+            var result = CliUtils.ExtractParams(inputString);
+            var expected = new List<object> {"", "2.1", "1.0", "0.1", "1", ""};
+
+            if (result.Count == expected.Count) {
+                for (int i = 0; i < expected.Count; i++) {
+                    Assert.That(result[i], Is.EqualTo(expected[i]));
+                }
+            } else {
+                Assert.Fail();
+            }
+        }
+        
     }
 }
