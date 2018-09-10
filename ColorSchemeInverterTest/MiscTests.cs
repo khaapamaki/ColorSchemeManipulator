@@ -24,13 +24,11 @@ namespace ColorSchemeInverter.UnitTests
         [Test]
         public void TestInvertLightness()
         {
-            Rgb rgb1 = new Rgb8Bit(0x8A, 0x3B, 0x20).ToRgb();
-            Rgb rgb1inv = rgb1.ToHsl().ApplyFilter(new HslFilter(FilterBundle.InvertLightness)).ToRgb();
-            Assert.True(rgb1inv.Equals(Rgb.FromRgbaString("DF9075FF")));
-
-            Rgb rgb2 = new Rgb8Bit(0xE0, 0xE0, 0xE0, 0x80).ToRgb();
-            Rgb rgb2inv = rgb2.ToHsl().ApplyFilter(new HslFilter(FilterBundle.InvertLightness)).ToRgb();
-            Assert.True(rgb2inv.Equals(Rgb.FromRgbaString("1F1F1F80")));
+            Hsl hsl = new Hsl(180, 0.7, 0.8);
+            Hsl result = FilterBundle.InvertLightness(hsl);
+            Assert.That(result.Hue, Is.EqualTo(hsl.Hue));
+            Assert.That(result.Saturation, Is.EqualTo(hsl.Saturation));
+            Assert.IsTrue(result.Lightness.AboutEqual(0.2));
         }
 
         [Test]
@@ -75,8 +73,8 @@ namespace ColorSchemeInverter.UnitTests
         {
             double a = 2.0;
             Assert.True(a.Clamp(0,1.0) == 1.0);
-            Assert.True(a.Min(0) == 2.0);
-            Assert.True(a.Max(1.1) == 1.1);
+            Assert.True(a.Min(0) == 0);
+            Assert.True(a.Max(1.1) == 2.0);
    
         }
     }

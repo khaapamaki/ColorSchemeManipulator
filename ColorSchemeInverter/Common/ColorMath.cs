@@ -9,7 +9,7 @@ namespace ColorSchemeInverter.Filters
     {
         public static double Invert(double input)
         {
-            return (1.0 - input).Min(0.0);
+            return (1.0 - input).LimitLow(0.0);
         }
 
         public static double Gamma(double input, double gamma)
@@ -20,7 +20,7 @@ namespace ColorSchemeInverter.Filters
                 output = Math.Pow(input, 1.0 / gamma);
             }
 
-            return output.Min(0.0);
+            return output.LimitLow(0.0);
         }
 
         public static double SSpline(double input, double s, double a = 0.5)
