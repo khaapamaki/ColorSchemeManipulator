@@ -51,10 +51,10 @@ namespace ColorSchemeInverter.Colors
         {
             factor = factor.Clamp(0, 1);
             Hsv result = new Hsv();
-            result.Hue = ColorMath.Linear01(factor, Hue, hsv.Hue);
-            result.Saturation = ColorMath.Linear01(factor, Saturation, hsv.Saturation);
-            result.Value = ColorMath.Linear01(factor, Value, hsv.Value);
-            result.Alpha = ColorMath.Linear01(factor, Alpha, hsv.Alpha);
+            result.Hue = ColorMath.LinearInterpolationForLoopingValues(factor, Hue, hsv.Hue, 360); 
+            result.Saturation = ColorMath.LinearInterpolation(factor, Saturation, hsv.Saturation);
+            result.Value = ColorMath.LinearInterpolation(factor, Value, hsv.Value);
+            result.Alpha = ColorMath.LinearInterpolation(factor, Alpha, hsv.Alpha);
             return result;
         }
 

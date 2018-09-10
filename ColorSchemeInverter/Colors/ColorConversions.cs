@@ -188,14 +188,18 @@ namespace ColorSchemeInverter.Colors
             return new Rgb(r, g, b, hsv.Alpha);
         }
 
+        // Todo algorithm that directly converts from hsl to hsv
         public static Hsv HsltoHsv(Hsl hsl)
         {
-            throw new NotImplementedException();
+            Rgb rgb = new Rgb(hsl);
+            return rgb.ToHsv();
         }
         
+        // Todo algorithm that directly converts from hsv to hsl
         public static Hsl HsvtoHsl(Hsv hsv)
         {
-            throw new NotImplementedException();
+            Rgb rgb = new Rgb(hsv);
+            return rgb.ToHsl();
         }
 
         public static Rgb SystemColorToRgb(Color color)

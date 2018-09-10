@@ -76,8 +76,16 @@ namespace ColorSchemeInverter.Filters
             // https://stackoverflow.com/questions/39510072/algorithm-for-adjustment-of-image-levels
         }
 
-        public static double Linear(double x, double x0, double x1, double y0, double y1)
+        public static double LinearInterpolation(double x, double x0, double x1, double y0, double y1)
         {
+            x = x.Clamp(x0, x1);
+            
+            if (x == x0)
+                return y0;
+            
+            if (x == x1)
+                return y1;
+
             if (x1 - x0 == 0.0) {
                 return (y0 + y1) / 2;
             }
@@ -85,12 +93,29 @@ namespace ColorSchemeInverter.Filters
             return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
         }
 
-        public static double Linear01(double x, double y0, double y1)
+        
+        public static double LinearInterpolation(double x, double y0, double y1)
         {
-            const double x1 = 1.0;
-            const double x0 = 0.0;
-            x = x.Clamp(0, 1);
-            return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
+            return LinearInterpolation(x, 0.0, 1.0, y0, y1);
+        }
+        
+        public static double LinearInterpolationForLoopingValues(double x, double x0, double x1, double y0, double y1, double loopMax)
+        {
+            x = x.Clamp(x0, x1);
+            
+            if (x == x0)
+                return y0;
+            
+            if (x == x1)
+                return y1;
+            
+            // Todo implement interpolation for looping values
+            throw new NotImplementedException();
+        }  
+        
+        public static double LinearInterpolationForLoopingValues(double x, double y0, double y1, double loopMax)
+        {
+            return LinearInterpolationForLoopingValues(x, 0.0, 1.0, y0, y1, loopMax);
         }
         
         [Obsolete]

@@ -13,12 +13,12 @@ namespace ColorSchemeInverter.Common
             return val < anotherVal + tolerance  && val > anotherVal - tolerance;
         }
 
-        public static double NormalizeLoopingValue(this double val, double range)
+        public static double NormalizeLoopingValue(this double val, double loopMax)
         {
-            if (val == range)
+            if (val == loopMax)
                 return val;
-            double temp = val % range;
-            return temp >= 0 ? temp : range + temp;
+            double temp = val % loopMax;
+            return temp >= 0 ? temp : loopMax + temp;
         }
     }
 }

@@ -74,10 +74,10 @@ namespace ColorSchemeInverter
             
             // old testing, now ClI parsing is in use:
             var filters = new FilterSet()
-                .Add(FilterBundle.LightnessInvert)
-                .Add(FilterBundle.SaturationContrast, 0.3)
-                .Add(FilterBundle.SaturationGain, 1.2, new ColorRange().Hue(40,120).Blue(0,0.5))
-                .Add(FilterBundle.RgbGain, 1.1)
+                .Add(FilterBundle.InvertLightness)
+                .Add(FilterBundle.ContrastSaturation, 0.3)
+                .Add(FilterBundle.GainSaturation, 1.2, new ColorRange().Hue(40,120).Blue(0,0.5))
+                .Add(FilterBundle.GainRgb, 1.1)
                 .Add(FilterBundle.Contrast, 0.3, 0.3);
              
             

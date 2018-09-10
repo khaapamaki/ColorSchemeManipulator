@@ -56,10 +56,10 @@ namespace ColorSchemeInverter.Colors
         public Hsl Interpolate(Hsl hsl, double factor)
         {
             Hsl result = new Hsl();
-            result.Hue = ColorMath.Linear01(factor, Hue, hsl.Hue);
-            result.Saturation = ColorMath.Linear01(factor, Saturation, hsl.Saturation);
-            result.Lightness = ColorMath.Linear01(factor, Lightness, hsl.Lightness);
-            result.Alpha = ColorMath.Linear01(factor, Alpha, hsl.Alpha);
+            result.Hue = ColorMath.LinearInterpolationForLoopingValues(factor, Hue, hsl.Hue, 360); 
+            result.Saturation = ColorMath.LinearInterpolation(factor, Saturation, hsl.Saturation);
+            result.Lightness = ColorMath.LinearInterpolation(factor, Lightness, hsl.Lightness);
+            result.Alpha = ColorMath.LinearInterpolation(factor, Alpha, hsl.Alpha);
             return result;
         }
         

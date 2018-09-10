@@ -126,7 +126,7 @@ namespace ColorSchemeInverter.Filters
                     double outputBlack = TryParseDouble(args[4]) ?? 1.0;
                     double newValue =
                         ColorMath.Levels(value, inputBlack, inputWhite, gamma, outputWhite, outputBlack);
-                    result = ColorMath.Linear01(rangeFactor, value, newValue);
+                    result = ColorMath.LinearInterpolation(rangeFactor, value, newValue);
                 }
             }
 

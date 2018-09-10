@@ -11,22 +11,33 @@ Added option to convert colors on png-files for quick testing.
 ### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-   -b   --brightness                (double)
-   -c   --contrast                  (double,[double])
-   -g   --gamma                     (double)
-   -i   --invert
-   -li  --ightness-invert
-   -l   --lightness                 (double)
-   -s   --saturation                (double)
-   -sg  --saturation-gamma          (double)
-   -sc  --saturation-contrast       (double,[double])
-   -lc  --lightness-contrast        (double,[double])
+      -g    --gain                         
+      -l    --lightness                    
+      -h    --hue                          
+      -s    --saturation                   
+      -c    --contrast                     
+      -cl   --contrast-lightness           
+      -cs   --contrast-saturation          
+      -ga   --gamma                        
+      -gar  --gamma-red                    
+      -gag  --gamma-green                  
+      -gab  --gamma-blue                   
+      -gas  --gamma-saturation             
+      -gal  --gamma-lightness              
+      -le   --levels                       
+      -ler  --levels-red                   
+      -leg  --levels-green                 
+      -leb  --levels-blue                  
+      -lel  --levels-lightness             
+      -les  --levels-saturation            
+      -i    --invert-rgb                   
+      -il   --invert-lightness  
    
 Usage example:
-    <appname> -li -sg=1.1 --saturation-contrast=0.2,0.6 <sourcefile> <targetfile>
+    <appname> -il -gs=1.1 --contrast-saturationt=0.2,0.6 <sourcefile> <targetfile>
     
 Using color range with filter:
-    <appname> -gamma(sat:0.5-1,lightess:0-0.5)=1.5 <sourcefile> <targetfile>
+    <appname> --gamma(sat:0.5-1,l:0-0.5)=1.5 <sourcefile> <targetfile>
 ```
 
 

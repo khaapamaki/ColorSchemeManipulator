@@ -104,10 +104,10 @@ namespace ColorSchemeInverter.Colors
         {
             factor = factor.Clamp(0, 1);
             Rgb result = new Rgb();
-            result.Red = ColorMath.Linear01(factor, Red, rgb.Red);
-            result.Green = ColorMath.Linear01(factor,Green, rgb.Green);
-            result.Blue = ColorMath.Linear01(factor,Blue, rgb.Blue);
-            result.Alpha = ColorMath.Linear01(factor,Alpha, rgb.Alpha);
+            result.Red = ColorMath.LinearInterpolation(factor, Red, rgb.Red);
+            result.Green = ColorMath.LinearInterpolation(factor,Green, rgb.Green);
+            result.Blue = ColorMath.LinearInterpolation(factor,Blue, rgb.Blue);
+            result.Alpha = ColorMath.LinearInterpolation(factor,Alpha, rgb.Alpha);
             return result;
         }
 
