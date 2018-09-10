@@ -100,7 +100,16 @@ namespace ColorSchemeInverter.Colors
                 Alpha.Clamp(0.0, 1.0));
         }
 
-
+        public Rgb Interpolate(Rgb rgb, double factor)
+        {
+            factor = factor.Clamp(0, 1);
+            Rgb result = new Rgb();
+            result.Red = ColorMath.Linear01(factor, Red, rgb.Red);
+            result.Green = ColorMath.Linear01(factor,Green, rgb.Green);
+            result.Blue = ColorMath.Linear01(factor,Blue, rgb.Blue);
+            result.Alpha = ColorMath.Linear01(factor,Alpha, rgb.Alpha);
+            return result;
+        }
 
         public string ToRgbString(string rgbHexFormat)
         {
