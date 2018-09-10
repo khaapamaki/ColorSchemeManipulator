@@ -85,6 +85,10 @@
       <Link>HappyDays.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\ColorSchemes\photo.png">
+      <Link>photo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>

@@ -7,39 +7,45 @@ Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color s
 
 Added option to convert colors on png-files for quick testing.
 
-### Note
-
-All saturation filter and saturation ranges currently works in HSL domain.
-This WILL CHANGE. Default non-RGB colors will be HSV aka HSB. HSL based saturation may remain in some form though.
 
 ### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-      -g    --gain              (rgb)                         
-      -l    --lightness                    
-      -h    --hue                          
-      -s    --saturation                   
-      -c    --contrast          
-      -c    --contrast-rgb           
-      -cl   --contrast-lightness           
-      -cs   --contrast-saturation          
-      -ga   --gamma                        
-      -gar  --gamma-red                    
-      -gag  --gamma-green                  
-      -gab  --gamma-blue                   
-      -gas  --gamma-saturation             
-      -gal  --gamma-lightness              
-      -le   --levels                       
-      -ler  --levels-red                   
-      -leg  --levels-green                 
-      -leb  --levels-blue                  
-      -lel  --levels-lightness             
-      -les  --levels-saturation            
-      -i    --invert-rgb                   
-      -il   --invert-lightness  
-   
+      -g    --gain                         GainRgb
+      -b    --brightness                   GainBrightness
+      -l    --lightness                    GainLightness
+      -h    --hue                          ShiftHsvHue
+      -s    --saturation                   GainHsvSaturation
+      -S    --hsl-saturation               GainHslSaturation
+      -c    --contrast                     ContrastRgb
+      -cb   --contrast-brighness           ContrastBrightness
+      -cl   --contrast-lightness           ContrastLightness
+      -cs   --contrast-saturation          ContrastHsvSaturation
+      -cS   --contrast-hsl-saturation      ContrastHslSaturation
+      -ga   --gamma                        GammaRgb
+      -gar  --gamma-red                    GammaRed
+      -gag  --gamma-green                  GammaGreen
+      -gab  --gamma-blue                   GammaBlue
+      -gab  --gamma-brightness             GammaBrightness
+      -gal  --gamma-lightness              GammaLightness
+      -gas  --gamma-saturation             GammaHsvSaturation
+      -gaS  --gamma-hsl-saturation         GammaHslSaturation
+      -le   --levels                       LevelsRgb
+      -ler  --levels-red                   LevelsRed
+      -leg  --levels-green                 LevelsGreen
+      -le   --levels                       LevelsRgb
+      -ler  --levels-red                   LevelsRed
+      -leg  --levels-green                 LevelsGreen
+      -leb  --levels-blue                  LevelsBlue
+      -lel  --levels-lightness             LevelsLightness
+      -les  --levels-saturation            LevelsHsvSaturation
+      -leS  --levels-hsl-saturation        LevelsHslSaturation
+      -i    --invert-rgb                   InvertRgb
+      -ib   --invert-brightness            InvertBrightness
+      -il   --invert-lightness             InvertLightness
+
 Usage example:
-    <appname> -il -gs=1.1 --contrast-saturationt=0.2,0.6 <sourcefile> <targetfile>
+    <appname> -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
     
 Using color range with filter:
     <appname> --gamma(sat:0.5-1,l:0-0.5)=1.5 <sourcefile> <targetfile>
@@ -48,11 +54,8 @@ Using color range with filter:
 
 #### ToDo
 
-+ Range system for other filters than levels based
 + Slope parameter for range. Decide CLI syntax for it + implement math
 + Interpolation for looping values (= hue)
-+ More filters
-    + invert-value
 + Unit tests
 + Add declaration field to CliArg and write them (used in quick help)
 + Parsing of string argumnents (mostly to doubles) before-hand to optimize for speed

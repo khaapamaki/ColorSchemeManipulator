@@ -92,6 +92,7 @@
       <e p="ColorSchemes\darcula-vs-2017.vstheme" t="Include" />
       <e p="ColorSchemes\HappyDays.icls" t="Include" />
       <e p="ColorSchemes\HappyDays.png" t="Include" />
+      <e p="ColorSchemes\photo.png" t="Include" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="readme.md" t="Include" />
     </e>
