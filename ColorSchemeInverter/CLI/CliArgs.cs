@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Filters;
@@ -58,7 +59,7 @@ namespace ColorSchemeInverter.CLI
         /// </summary>
         /// <param name="args"></param>
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (FilterSet, object[]) ParseFilterArgs(params string[] args)
+        public static (FilterSet, string[]) ParseFilterArgs(params string[] args)
         {
             return CliUtils.ParseFilterArgs(args);
         }
@@ -89,7 +90,20 @@ namespace ColorSchemeInverter.CLI
             return (null, null);
         }
 
+        public static (string[], string[]) ExtractOptionArguments(string[] args)
+        {
+            List<string> optList = new List<string>();
+            List<string> otherArgList = new List<string>();
+            foreach (var arg in args) {
+                if (arg.StartsWith("-")) {
+                    optList.Add(arg);
+                } else {
+                    otherArgList.Add(arg);
+                }
+            }
 
+            return (otherArgList.ToArray(), optList.ToArray());
+        }
         public static string ToString(string delimiter = "\n", string prefix = "   ")
         {
             var sb = new StringBuilder();

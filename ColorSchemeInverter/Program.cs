@@ -7,10 +7,7 @@ using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
 
-// Todo: Filters for levels (gamma, black, white), gain
-// Todo: CLI implementation
-// Todo: Add support for CSS
-// Issues: HSV ValueInversion produces bad results. HSV could be dropped out
+
 
 namespace ColorSchemeInverter
 {
@@ -21,14 +18,29 @@ namespace ColorSchemeInverter
             
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
+
+            // print help
+            if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
+                Console.WriteLine("Available Filters:");
+                Console.WriteLine(CliArgs.ToString());
+            }
             
             // Parse CLI args and generate FilterSet of them
-            (FilterSet filterSet, object[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            string[] remainingOptArgs;
             
-            Console.WriteLine("Available Filters:");
-            Console.WriteLine(CliArgs.ToString());
+            (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
+
+            // found incorrect argument
+            if (remainingOptArgs.Length > 0) {
+                Console.WriteLine("Illegal argument: " + remainingOptArgs[0]);
+                Console.WriteLine("Available Filters:");
+                Console.WriteLine(CliArgs.ToString());
+                return;
+            } 
+           
             
-            Console.WriteLine("Filters to be applied:");
+            Console.WriteLine("Applying filters:");
             Console.WriteLine(filterSet.ToString());
             
             // Test files for debugging
