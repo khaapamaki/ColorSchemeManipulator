@@ -60,7 +60,7 @@ namespace ColorSchemeInverter.Colors
 
         public override string ToString()
         {
-            return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Value: {Value} ");
+            return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Value: {Value}, Alpha: {Alpha}");
         }
 
         public string ToString(string format)
@@ -68,7 +68,7 @@ namespace ColorSchemeInverter.Colors
             if (format.ToUpper() == "X2") {
                 return string.Format($"Hue: 0x{Hue * 255:X2}, " +
                                      $"Saturation: 0x{Saturation * 255:X2}, " +
-                                     $"Value 0x{Value * 255:X2} ");
+                                     $"Value 0x{Value * 255:X2}");
             } else {
                 return ToString();
             }
