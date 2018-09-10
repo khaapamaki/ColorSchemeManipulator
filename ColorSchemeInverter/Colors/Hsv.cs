@@ -6,7 +6,15 @@ namespace ColorSchemeInverter.Colors
 {
     public class Hsv : ColorBase
     {
-        public double Hue { get; set; }
+        
+        private double _hue = 0.0;
+
+        public double Hue
+        {
+            get => _hue.NormalizeLoopingValue(360.0);
+            set => _hue = value.NormalizeLoopingValue(360.0);
+        }
+        
         public double Saturation { get; set; }
         public double Value { get; set; }
         public double Alpha { get; set; } = 1.0;
