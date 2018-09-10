@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 using System.Text;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Common;
@@ -90,21 +92,45 @@ namespace ColorSchemeInverter.Filters
         }
 
 
-        // Todo Change behavior this always looks for range at the end, extracts it and returns remaining args + range
-        public static double GetRangeFactor(Hsl hsl, object[] args, byte index)
+        public static (ColorRange, object[]) GetRangeAndRemainingParams(object[] args)
         {
-            return args.Length > index && args[index] is ColorRange range ? range.InRangeFactor(hsl) : 1.0;
+            if (args != null && args.Length > 0) {
+                int lastIndex = args.Length - 1;
+                var lastArg = args[lastIndex];
+                if (lastArg is ColorRange) {
+                    List<object> temp = args.ToList();
+                    temp.Remove(lastArg);
+                    return ((ColorRange) lastArg, temp.ToArray());
+                }
+            }
+
+            return (null, args);
         }
 
-        public static double GetRangeFactor(Rgb rgb, object[] args, byte index)
+        public static (double, object[]) GetRangeFactorAndRemainingParams(Rgb rgb, object[] filterParams)
         {
-            return args.Length > index && args[index] is ColorRange range ? range.InRangeFactor(rgb) : 1.0;
+            ColorRange range;
+            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
+
+            return (range?.InRangeFactor(rgb) ?? 1.0, filterParams);
         }
 
-        public static double GetRangeFactor(Hsv hsv, object[] args, byte index)
+        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsl hsl, object[] filterParams)
         {
-            return args.Length > index && args[index] is ColorRange range ? range.InRangeFactor(hsv) : 1.0;
+            ColorRange range;
+            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
+
+            return (range?.InRangeFactor(hsl) ?? 1.0, filterParams);
         }
+
+        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsv hsv, object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
+
+            return (range?.InRangeFactor(hsv) ?? 1.0, filterParams);
+        }
+
 
         public static double CalcLevels(double value, double rangeFactor, object[] args)
         {
