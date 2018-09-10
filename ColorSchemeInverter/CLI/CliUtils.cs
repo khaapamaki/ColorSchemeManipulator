@@ -33,7 +33,7 @@ namespace ColorSchemeInverter.CLI
 
             (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
 
-            object[] filterParams = paramList.ToArray();
+            object[] filterParams = paramList?.ToArray();
             if (filterDelegate is Func<Hsl, object[], Hsl>) {
                 filters.Add((Func<Hsl, object[], Hsl>) filterDelegate, filterParams);
             } else if (filterDelegate is Func<Rgb, object[], Rgb>) {
