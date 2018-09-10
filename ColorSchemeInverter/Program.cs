@@ -27,11 +27,14 @@ namespace ColorSchemeInverter
             
             // Parse CLI args and generate FilterSet of them
             (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
-            string[] remainingOptArgs;
-            
+                       
+            // Extract non-option and remaining option arguments
+            string[] remainingOptArgs;            
             (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
 
-            // found incorrect argument
+            // PARSE other than filter options here, and remove them from remainingOptArgs array
+            
+            // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
                 Console.WriteLine("Illegal argument: " + remainingOptArgs[0]);
                 Console.WriteLine("Available Filters:");

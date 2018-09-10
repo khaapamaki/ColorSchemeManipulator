@@ -43,17 +43,18 @@ Using color range with filter:
 
 #### ToDo
 
-+ HSV<->HSL conversions
 + Range system for other filters than levels based
-+ Parse range cli arguments (done but buggy)
-+ Slope parameter for range. Decide CLI syntax for it.
-+ Filter naming consistency
-+ More filters?
++ Slope parameter for range. Decide CLI syntax for it + implement math
++ Interpolation for looping values (= hue)
++ More filters
+    + invert-value
 + Unit tests
 + Add declaration field to CliArg and write them (used in quick help)
 + Parsing of string argumnents (mostly to doubles) before-hand to optimize for speed
++ Support for Visual Studio Code
 + Support for CSS and HTML files? What else?
 + Presets for quick operations
++ Proper HSV<->HSL conversions, now done by converting to RGB first
 + Change the project name. Inversion is not any more the only way to tweak colors!!
 
 
@@ -109,8 +110,16 @@ namespace ColorSchemeInverter
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
             
-            // Parse CLI args and generate FilterSet of them
+            // Parse CLI args and generate FilterSet from them
             (FilterSet filters, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            
+            // Extract non-option and remaining option arguments
+            string[] remainingOptArgs;            
+            (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
+
+            // PARSE other than filter options here, and remove them from remainingOptArgs array
+            
+            // All remaining option arguments are considered illegal... 
             
             SchemeFormat schemeFormat 
                 = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
