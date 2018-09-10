@@ -76,6 +76,23 @@ namespace ColorSchemeInverter.Filters
             // https://stackoverflow.com/questions/39510072/algorithm-for-adjustment-of-image-levels
         }
 
+        public static double Linear(double x, double x0, double x1, double y0, double y1)
+        {
+            if (x1 - x0 == 0.0) {
+                return (y0 + y1) / 2;
+            }
+
+            return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
+        }
+
+        public static double Linear01(double x, double y0, double y1)
+        {
+            const double x1 = 1.0;
+            const double x0 = 0.0;
+            x = x.Clamp(0, 1);
+            return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
+        }
+        
         [Obsolete]
         private static double GetGammaFromMidtoneValue(double midtones)
         {

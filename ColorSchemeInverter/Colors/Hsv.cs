@@ -1,9 +1,9 @@
 using System;
 using ColorSchemeInverter.Common;
+using ColorSchemeInverter.Filters;
 
 namespace ColorSchemeInverter.Colors
 {
-
     public class Hsv : ColorBase
     {
         public double Hue { get; set; }
@@ -46,7 +46,18 @@ namespace ColorSchemeInverter.Colors
         {
             CopyFrom(hsl.ToHsv());
         }
-               
+
+        public Hsv Interpolate(Hsv hsv, double factor)
+        {
+            factor = factor.Clamp(0, 1);
+            Hsv result = new Hsv();
+            result.Hue = ColorMath.Linear01(factor, Hue, hsv.Hue);
+            result.Saturation = ColorMath.Linear01(factor, Saturation, hsv.Saturation);
+            result.Value = ColorMath.Linear01(factor, Value, hsv.Value);
+            result.Alpha = ColorMath.Linear01(factor, Alpha, hsv.Alpha);
+            return result;
+        }
+
         public override string ToString()
         {
             return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Value: {Value} ");

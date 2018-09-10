@@ -28,6 +28,7 @@ namespace ColorSchemeInverter.Filters
             throw new NotImplementedException("Only HSL and RGB colors are supported");
         }
 
+        
         public override string ToString()
         {
             var sb = new StringBuilder();

@@ -52,10 +52,10 @@
     <Compile Include="Colors\Hsv.cs" />
     <Compile Include="Colors\Rgb.cs" />
     <Compile Include="Colors\Rgb8Bit.cs" />
+    <Compile Include="Common\ColorMath.cs" />
     <Compile Include="Common\DoubleExtensions.cs" />
     <Compile Include="Common\GenericExtensions.cs" />
     <Compile Include="Filters\ColorFilter.cs" />
-    <Compile Include="Filters\ColorMath.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
     <Compile Include="Filters\FilterSet.cs" />
     <Compile Include="ColorSchemeProcessor.cs" />

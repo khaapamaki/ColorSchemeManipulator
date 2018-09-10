@@ -74,24 +74,6 @@ namespace ColorSchemeInverter.Filters
             return IsNumber(o) || o is string;
         }
 
-        public static double Linear(double x, double x0, double x1, double y0, double y1)
-        {
-            if (x1 - x0 == 0.0) {
-                return (y0 + y1) / 2;
-            }
-
-            return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
-        }
-
-        public static double Linear01(double x, double y0, double y1)
-        {
-            const double x1 = 1.0;
-            const double x0 = 0.0;
-            x = x.Clamp(0, 1);
-            return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
-        }
-
-
         public static (ColorRange, object[]) GetRangeAndRemainingParams(object[] args)
         {
             if (args != null && args.Length > 0) {
@@ -136,15 +118,15 @@ namespace ColorSchemeInverter.Filters
         {
             var result = value;
             if (args.Length >= 5) {
+                double outputWhite = TryParseDouble(args[3]) ?? 0.0;
                 if (rangeFactor > 0.0) {
-                    double inputBlack = FilterUtils.TryParseDouble(args[0]) ?? 0.0;
-                    double inputWhite = FilterUtils.TryParseDouble(args[1]) ?? 1.0;
-                    double gamma = FilterUtils.TryParseDouble(args[2]) ?? 1.0;
-                    double outputWhite = FilterUtils.TryParseDouble(args[3]) ?? 0.0;
-                    double outputBlack = FilterUtils.TryParseDouble(args[4]) ?? 1.0;
+                    double inputBlack = TryParseDouble(args[0]) ?? 0.0;
+                    double inputWhite = TryParseDouble(args[1]) ?? 1.0;
+                    double gamma = TryParseDouble(args[2]) ?? 1.0;
+                    double outputBlack = TryParseDouble(args[4]) ?? 1.0;
                     double newValue =
                         ColorMath.Levels(value, inputBlack, inputWhite, gamma, outputWhite, outputBlack);
-                    result = FilterUtils.Linear01(rangeFactor, value, newValue);
+                    result = ColorMath.Linear01(rangeFactor, value, newValue);
                 }
             }
 

@@ -53,6 +53,16 @@ namespace ColorSchemeInverter.Colors
             Alpha = hsl.Alpha;
         }
 
+        public Hsl Interpolate(Hsl hsl, double factor)
+        {
+            Hsl result = new Hsl();
+            result.Hue = ColorMath.Linear01(factor, Hue, hsl.Hue);
+            result.Saturation = ColorMath.Linear01(factor, Saturation, hsl.Saturation);
+            result.Lightness = ColorMath.Linear01(factor, Lightness, hsl.Lightness);
+            result.Alpha = ColorMath.Linear01(factor, Alpha, hsl.Alpha);
+            return result;
+        }
+        
         public override string ToString()
         {
             return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Lightness: {Lightness} ");

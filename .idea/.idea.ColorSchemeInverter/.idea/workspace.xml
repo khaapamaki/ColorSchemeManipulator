@@ -386,8 +386,8 @@
     <findStrings>
       <find>RGB</find>
       <find>stringFormat</find>
-      <find>rgbHexFormat</find>
-      <find>rgbStringFormat</find>
+      <find>hslHexFormat</find>
+      <find>hslStringFormat</find>
     </findStrings>
     <replaceStrings>
       <replace>ColorBase</replace>
