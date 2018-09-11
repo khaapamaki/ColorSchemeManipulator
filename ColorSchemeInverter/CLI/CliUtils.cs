@@ -53,6 +53,8 @@ namespace ColorSchemeInverter.CLI
 
         public static object[] TryParseDoubles(object[] filterParams)
         {
+            if (filterParams == null)
+                return null;
             List<object> newList = new List<object>();
             foreach (var param in filterParams) {
                 object newParam = param;

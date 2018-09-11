@@ -33,34 +33,40 @@ namespace ColorSchemeInverter.CLI
             return GetInstance().Items[index];
         }
 
-        public static void Register(string option, Func<Rgb, object[], Rgb> filterDelegate, byte minArguments)
+        public static void Register(string option, Func<Rgb, object[], Rgb> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
 
-        public static void Register(List<string> option, Func<Rgb, object[], Rgb> filterDelegate, byte minArguments)
+        public static void Register(List<string> option, Func<Rgb, object[], Rgb> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
 
-        public static void Register(string option, Func<Hsl, object[], Hsl> filterDelegate, byte minArguments)
+        public static void Register(string option, Func<Hsl, object[], Hsl> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
 
-        public static void Register(List<string> option, Func<Hsl, object[], Hsl> filterDelegate, byte minArguments)
+        public static void Register(List<string> option, Func<Hsl, object[], Hsl> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
 
-        public static void Register(string option, Func<Hsv, object[], Hsv> filterDelegate, byte minArguments)
+        public static void Register(string option, Func<Hsv, object[], Hsv> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
 
-        public static void Register(List<string> option, Func<Hsv, object[], Hsv> filterDelegate, byte minArguments)
+        public static void Register(List<string> option, Func<Hsv, object[], Hsv> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minArguments));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
         
         /// <summary>
@@ -89,7 +95,7 @@ namespace ColorSchemeInverter.CLI
             foreach (var cliArg in GetInstance().Items) {
                 if (cliArg.OptionArgs.Contains(option)) {
                     List<object> filterParams = CliUtils.ExtractParams(paramString);
-                    if (filterParams.Count >= cliArg.MinNumberOfParams) {
+                    if (filterParams.Count >= cliArg.MinParams) {
                         if (range != null)
                             filterParams.Add(range);
                         return (cliArg.FilterDelegate, filterParams);
@@ -114,12 +120,13 @@ namespace ColorSchemeInverter.CLI
 
             return (otherArgList.ToArray(), optList.ToArray());
         }
-        public static string ToString(string delimiter = "\n", string prefix = "   ")
+        public static string ToString(string delimiter = "\n", string prefix = "  ")
         {
             var sb = new StringBuilder();
 
             for (var i = 0; i < GetInstance().Items.Count; i++) {
-                sb.Append(prefix + GetInstance().Items[i].ToString());
+                string line = GetInstance().Items[i].ToString();
+                sb.Append(prefix + line);
                 if (i != GetInstance().Items.Count - 1)
                     sb.Append(delimiter);
             }

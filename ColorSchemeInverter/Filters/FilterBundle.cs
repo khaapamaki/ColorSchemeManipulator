@@ -35,18 +35,20 @@ namespace ColorSchemeInverter.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1);   
-            CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1);
+            CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1, 
+                desc: "Hue shift as values of degrees -360..360");   
+            CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1,
+            desc: "Saturation multiplier");
             CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1);
             CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1);
             CliArgs.Register(new List<string> {"-v", "--value"}, GainValue, 1);
             CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1);
             
-            CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1);    
-            CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1);            
-            CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1);    
-            CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1);           
-            CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation" }, ContrastHsvSaturation, 1);
+            CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2);    
+            CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1,2);            
+            CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1,2);    
+            CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1,2);           
+            CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation" }, ContrastHsvSaturation, 1,2);
             
             CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1);
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1);
