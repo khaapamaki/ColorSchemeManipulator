@@ -57,13 +57,9 @@ namespace ColorSchemeInverter.Colors
 
         public Hsv Interpolate(Hsv hsv, double factor)
         {
-            factor = factor.Clamp(0, 1);
-            Hsv result = new Hsv();
-            result.Hue = ColorMath.LinearInterpolationForLoopingValues(factor, Hue, hsv.Hue, 360); 
-            result.Saturation = ColorMath.LinearInterpolation(factor, Saturation, hsv.Saturation);
-            result.Value = ColorMath.LinearInterpolation(factor, Value, hsv.Value);
-            result.Alpha = ColorMath.LinearInterpolation(factor, Alpha, hsv.Alpha);
-            return result;
+            Rgb rgb1 = ToRgb();
+            Rgb rgb2 = hsv.ToRgb();
+            return rgb1.Interpolate(rgb2, factor).ToHsv();
         }
 
         public override string ToString()

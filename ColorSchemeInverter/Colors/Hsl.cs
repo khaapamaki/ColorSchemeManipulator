@@ -55,12 +55,9 @@ namespace ColorSchemeInverter.Colors
 
         public Hsl Interpolate(Hsl hsl, double factor)
         {
-            Hsl result = new Hsl();
-            result.Hue = ColorMath.LinearInterpolationForLoopingValues(factor, Hue, hsl.Hue, 360); 
-            result.Saturation = ColorMath.LinearInterpolation(factor, Saturation, hsl.Saturation);
-            result.Lightness = ColorMath.LinearInterpolation(factor, Lightness, hsl.Lightness);
-            result.Alpha = ColorMath.LinearInterpolation(factor, Alpha, hsl.Alpha);
-            return result;
+            Rgb rgb1 = ToRgb();
+            Rgb rgb2 = hsl.ToRgb();
+            return rgb1.Interpolate(rgb2, factor).ToHsl();
         }
         
         public override string ToString()

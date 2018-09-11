@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Kati\.nuget\packages\nunit3testadapter\3.10.0\build\net35\Mono.Cecil.dll" t="Include" />
-    <e p="C:\Users\Kati\.nuget\packages\nunit3testadapter\3.10.0\build\net35\nunit.engine.api.dll" t="Include" />
-    <e p="C:\Users\Kati\.nuget\packages\nunit3testadapter\3.10.0\build\net35\nunit.engine.dll" t="Include" />
-    <e p="C:\Users\Kati\.nuget\packages\nunit3testadapter\3.10.0\build\net35\NUnit3.TestAdapter.dll" t="Include" />
-    <e p="C:\Users\Kati\.nuget\packages\nunit3testadapter\3.10.0\build\net35\NUnit3.TestAdapter.pdb" t="Include" />
-    <e p="C:\Users\Kati\.Rider2018.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Kati\.Rider2018.2\system\resharper-host\local\Transient\ReSharperHost\v182\SolutionCaches\_ColorSchemeInverter.-1943370201.00" t="ExcludeRecursive" />
-    <e p="E:\00-DEVELOPMENT\ColorSchemeInverter" t="IncludeFlat">
+    <e p="/427bf25d" t="IncludeRecursive" />
+    <e p="/app" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/Mono.Cecil.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/nunit.engine.api.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/nunit.engine.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/NUnit3.TestAdapter.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/net35/NUnit3.TestAdapter.pdb" t="Include" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p=".gitignore" t="Include" />
-      <e p=".idea\.idea.ColorSchemeInverter" t="Include">
+      <e p=".idea/.idea.ColorSchemeInverter" t="Include">
         <e p=".idea" t="Include">
           <e p="contentModel.xml" t="Include" />
           <e p="indexLayout.xml" t="Include" />
@@ -90,12 +90,14 @@
           </e>
         </e>
       </e>
-      <e p="ColorSchemes\darcula-vs-2017.vstheme" t="Include" />
-      <e p="ColorSchemes\HappyDays.icls" t="Include" />
-      <e p="ColorSchemes\HappyDays.png" t="Include" />
-      <e p="ColorSchemes\photo.png" t="Include" />
+      <e p="ColorSchemes/darcula-vs-2017.vstheme" t="Include" />
+      <e p="ColorSchemes/HappyDays.icls" t="Include" />
+      <e p="ColorSchemes/HappyDays.png" t="Include" />
+      <e p="ColorSchemes/photo.png" t="Include" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="readme.md" t="Include" />
     </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_ColorSchemeInverter.-984504531.00" t="ExcludeRecursive" />
   </component>
 </project>

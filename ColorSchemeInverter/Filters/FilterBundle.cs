@@ -35,7 +35,7 @@ namespace ColorSchemeInverter.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHsvHue, 1);   
+            CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1);   
             CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1);
             CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1);
             CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1);
@@ -60,8 +60,9 @@ namespace ColorSchemeInverter.Filters
             CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5);
             CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5);
             CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5);
-            CliArgs.Register(new List<string> {"-lev","--levels-blue"}, LevelsBlue, 5);
+            CliArgs.Register(new List<string> {"-leb","--levels-blue"}, LevelsBlue, 5);
             CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5);
+            CliArgs.Register(new List<string> {"-lev", "--levels-value"}, LevelsValue, 5);
             CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5);
             CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
             
@@ -472,7 +473,7 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
 
-        public static Hsv LevelsBrightness(Hsv hsv, params object[] filterParams)
+        public static Hsv LevelsValue(Hsv hsv, params object[] filterParams)
         {
             var result = new Hsv(hsv);
             double rangeFactor;
