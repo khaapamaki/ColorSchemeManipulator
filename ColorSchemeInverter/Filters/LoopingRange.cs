@@ -1,4 +1,5 @@
 using System;
+using System.Drawing.Printing;
 using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Filters
@@ -9,8 +10,8 @@ namespace ColorSchemeInverter.Filters
         public double MinEnd { get; set; }
         public double MaxStart { get; set; }
         public double MaxEnd { get; set; }
-        private double _loopMax;
-        
+        private readonly double _loopMax;
+
         public LoopingRange(double min, double max, double loopMax = 360)
         {
             MinStart = min.NormalizeLoopingValue(loopMax);
@@ -19,44 +20,57 @@ namespace ColorSchemeInverter.Filters
             MaxEnd = max.NormalizeLoopingValue(loopMax);
             _loopMax = loopMax;
         }
-        
+
         public LoopingRange(double min, double max, double minSlope = 0.0, double maxSlope = 0.0, double loopMax = 360)
         {
             minSlope = minSlope.LimitHigh(Math.Abs(min - max));
             maxSlope = maxSlope.LimitHigh(Math.Abs(min - max));
-            MinStart = (min - minSlope / 2).NormalizeLoopingValue(loopMax);
-            MinEnd = (min + minSlope / 2).NormalizeLoopingValue(loopMax);
-            MaxStart = (max - maxSlope / 2).NormalizeLoopingValue(loopMax);
-            MaxEnd = (max + maxSlope / 2).NormalizeLoopingValue(loopMax);
+            min = min.NormalizeLoopingValue(loopMax);
+            max = max.NormalizeLoopingValue(loopMax);
+
+            MinStart = min - minSlope / 2;
+            MinEnd = min + minSlope / 2;
+            MaxStart = max - maxSlope / 2;
+            MaxEnd = max + maxSlope / 2;
             _loopMax = loopMax;
         }
-        
+
         public double InRangeFactor(double value)
         {
+            value = value.NormalizeLoopingValue(_loopMax);
             // out of range
-            if (value <= MinStart || value >= MaxEnd)
+            if (!IsInNormalizedRange(value, MinStart, MaxEnd))
                 return 0;
             // in full range
-            if (value >= MinEnd && value <= MaxStart)
+            if (IsInNormalizedRange(value, MinEnd, MaxStart))
                 return 1.0;
             // in min slope range
-            if (value > MinStart && value < MinEnd)
-                return (value - MinStart) / (MinEnd - MinStart);
+            if (IsInNormalizedRange(value, MinStart, MinEnd))
+                return ShortestDifference(value, MinStart) / Math.Abs(MinStart - MinEnd);
             // in max slope range
-            if (value > MaxStart && value < MaxEnd)
-                return (value - MaxStart) / (MaxEnd - MaxStart);
+            if (IsInNormalizedRange(value, MaxStart, MaxEnd))
+                return ShortestDifference(value, MaxStart) / Math.Abs(MaxStart - MaxEnd);
 
             return 0;
         }
 
-//        private double InHueRange(double hue)
-//        {
-//            if (_minHue <= _maxHue) {
-//                return hue >= _minHue && hue <= _maxHue ? 1.0 : 0.0;
-//            } else {
-//                return hue >= _minHue || hue <= _maxHue ? 1.0 : 0.0;
-//            }
-//        }
-        
+        private double ShortestDifference(double a, double b)
+        {
+            double d1 = Math.Abs(a - b);
+            double d2 = _loopMax - d1;
+            return d1.Min(d2);
+        }
+
+        private bool IsInNormalizedRange(double value, double min, double max)
+        {
+            min = min.NormalizeLoopingValue(_loopMax);
+            max = max.NormalizeLoopingValue(_loopMax);
+            if (min <= max) {
+                return value >= min && value <= max;
+            } else {
+                return value >= min || value <= max;
+            }
+        }
+
     }
 }

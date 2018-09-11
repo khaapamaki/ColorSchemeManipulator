@@ -26,9 +26,9 @@ namespace ColorSchemeInverter.UnitTests
         {
             Hsl hsl = new Hsl(180, 0.7, 0.8);
             Hsl result = FilterBundle.InvertLightness(hsl);
-            Assert.That(result.Hue, Is.EqualTo(hsl.Hue));
-            Assert.That(result.Saturation, Is.EqualTo(hsl.Saturation));
-            Assert.IsTrue(result.Lightness.AboutEqual(0.2));
+            Assert.That(result.Hue, Is.EqualTo(hsl.Hue).Within(0.00001));
+            Assert.That(result.Saturation, Is.EqualTo(hsl.Saturation).Within(0.00001));
+            Assert.That(result.Lightness, Is.EqualTo(0.2).Within(0.00001));
         }
 
         [Test]
@@ -63,9 +63,9 @@ namespace ColorSchemeInverter.UnitTests
             Rgb rgb1 = new Rgb(new Rgb8Bit(0x8A, 0x3B, 0x20, 0xFF));
             Hsl hsl = rgb1.ToHsl();
             // Hue: 15.2830188679245, Saturation: 0.623529411764706, Lightness: 0.333333333333333 
-            Assert.True(hsl.Hue.AboutEqual(15.2830188679245));
-            Assert.True(hsl.Saturation.AboutEqual(0.623529411764706));
-            Assert.True(hsl.Lightness.AboutEqual(0.333333333333333));
+            Assert.That(hsl.Hue, Is.EqualTo(15.2830188679245).Within(0.000001));
+            Assert.That(hsl.Saturation, Is.EqualTo(0.623529411764706).Within(0.000001));
+            Assert.That(hsl.Lightness, Is.EqualTo(0.333333333333333).Within(0.000001));
         }
 
         [Test]
