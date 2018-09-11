@@ -33,7 +33,7 @@ namespace ColorSchemeInverter.Filters
         {
             var sb = new StringBuilder();
             foreach (var argument in Arguments) {
-                sb.Append(argument + " ");
+                sb.Append(argument.ToString() + " ");
             }
 
             return FilterDelegate.Method.Name + " " + sb;

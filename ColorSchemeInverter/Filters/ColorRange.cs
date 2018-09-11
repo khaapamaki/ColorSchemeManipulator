@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Security.Permissions;
+using System.Text;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Common;
 
@@ -13,6 +14,7 @@ namespace ColorSchemeInverter.Filters
         // Todo CLI system for ranges
         // Todo implement slopes value
 
+        public ColorRange() { }
         public LinearRange SaturationRange { get; set; } = null;
         public LinearRange LightnessRange { get; set; } = null;
         public LinearRange ValueRange { get; set; } = null;
@@ -59,23 +61,23 @@ namespace ColorSchemeInverter.Filters
 
         private double RgbFactors(Rgb rgb, double result = 1.0)
         {
-            result *= RedRange?.InRangeFactor(rgb.Red) ?? 0;
-            result *= GreenRange?.InRangeFactor(rgb.Green) ?? 0;
-            result *= BlueRange?.InRangeFactor(rgb.Blue) ?? 0;
+            result *= RedRange?.InRangeFactor(rgb.Red) ?? 1;
+            result *= GreenRange?.InRangeFactor(rgb.Green) ?? 1;
+            result *= BlueRange?.InRangeFactor(rgb.Blue) ?? 1;
             return result;
         }
 
         private double HsvFactors(Hsv hsv, double result = 1.0)
         {
-            result *= ValueRange?.InRangeFactor(hsv.Value) ?? 0;
+            result *= ValueRange?.InRangeFactor(hsv.Value) ?? 1;
             return result;
         }
 
         private double HslFactors(Hsl hsl, double result = 1.0)
         {
-            result *= HueRange?.InRangeFactor(hsl.Hue) ?? 0;
-            result *= SaturationRange?.InRangeFactor(hsl.Saturation) ?? 0;
-            result *= LightnessRange?.InRangeFactor(hsl.Lightness) ?? 0;
+            result *= HueRange?.InRangeFactor(hsl.Hue) ?? 1;
+            result *= SaturationRange?.InRangeFactor(hsl.Saturation) ?? 1;
+            result *= LightnessRange?.InRangeFactor(hsl.Lightness) ?? 1;
             return result;
         }
 
@@ -134,6 +136,20 @@ namespace ColorSchemeInverter.Filters
         private bool HsvProcessingNeeded()
         {
             return ValueRange != null;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append(HueRange != null ? $"h:" + HueRange.ToString() + " " : "");
+            sb.Append(SaturationRange != null ? $"s:" + SaturationRange.ToString() + " " : "");
+            sb.Append(LightnessRange != null ? $"l:" + LightnessRange.ToString() + " " : "");
+            sb.Append(RedRange != null ? $"r:"+ RedRange.ToString() + " " : "");
+            sb.Append(GreenRange != null ? $"g:" + GreenRange.ToString() + " " : "");
+            sb.Append(BlueRange != null ? $"b:" + BlueRange.ToString() + " " : "");
+
+            
+            return sb.ToString();
         }
     }
 }

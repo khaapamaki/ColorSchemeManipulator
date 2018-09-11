@@ -33,17 +33,16 @@ namespace ColorSchemeInverter.CLI
 
             (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
 
-            object[] filterParams =  TryParseDoubles(paramList?.ToArray());
+            object[] filterParams = TryParseDoubles(paramList?.ToArray());
             //object[] filterParams =  paramList?.ToArray();
-            
+
             if (filterDelegate is Func<Hsl, object[], Hsl>) {
                 filters.Add((Func<Hsl, object[], Hsl>) filterDelegate, filterParams);
             } else if (filterDelegate is Func<Rgb, object[], Rgb>) {
                 filters.Add((Func<Rgb, object[], Rgb>) filterDelegate, filterParams);
-            }else if (filterDelegate is Func<Hsv, object[], Hsv>) {
+            } else if (filterDelegate is Func<Hsv, object[], Hsv>) {
                 filters.Add((Func<Hsv, object[], Hsv>) filterDelegate, filterParams);
-            }  
-            else {
+            } else {
                 remainingArgs.Add(arg);
             }
 
@@ -64,8 +63,8 @@ namespace ColorSchemeInverter.CLI
                         newParam = d;
                     }
                 }
+
                 newList.Add(newParam);
-                
             }
 
             return newList.ToArray();
@@ -110,62 +109,71 @@ namespace ColorSchemeInverter.CLI
             if (string.IsNullOrEmpty(rangeString)) return null;
 
             ColorRange range = new ColorRange();
-            double max, min;
+            double max, min, minSlope, maxSlope;
             bool succeeded;
 
-            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "h|hue");
+            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "h|hue");
             if (succeeded) {
-                range.HueRange = new LoopingRange(min, max, 360);
+                range.HueRange = new LoopingRange(min, max, minSlope, maxSlope, 360);
             }
 
-            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "s|sat|saturation");
+            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "s|sat|saturation");
             if (succeeded) {
-                range.SaturationRange = new LinearRange(min, max);
+                range.SaturationRange = new LinearRange(min, max, minSlope, maxSlope);
             }
 
-            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "l|light|lightness");
+            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "l|light|lightness");
             if (succeeded) {
-                range.LightnessRange = new LinearRange(min, max);
+                range.LightnessRange = new LinearRange(min, max, minSlope, maxSlope);
             }
 
-            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "r|red");
+            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "r|red");
             if (succeeded) {
-                range.RedRange = new LinearRange(min, max);
+                range.RedRange = new LinearRange(min, max, minSlope, maxSlope);
             }
 
-            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "g|green");
+            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "g|green");
             if (succeeded) {
-                range.GreenRange= new LinearRange(min, max);
+                range.GreenRange = new LinearRange(min, max, minSlope, maxSlope);
             }
 
-            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "b|blue");
+            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "b|blue");
             if (succeeded) {
-                range.BlueRange= new LinearRange(min, max);
+                range.BlueRange = new LinearRange(min, max, minSlope, maxSlope);
             }
 
-            (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "v|value");
+            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "v|value");
             if (succeeded) {
-                range.ValueRange= new LinearRange(min, max);
+                range.ValueRange = new LinearRange(min, max, minSlope, maxSlope);
             }
 
             return range;
         }
 
 
-        public static (bool, double, double) TryParseRangeForRangeParam(string rangeString, string rangeParam)
+        public static (bool, double, double, double, double) TryParseRangeForRangeParam(string rangeString,
+            string rangeParam)
         {
             Match m = Regex.Match(rangeString, GetRangePattern(rangeParam));
-            if (m.Groups.Count == 4) {
-                double min = double.Parse(m.Groups[2].Value);
-                double max = double.Parse(m.Groups[3].Value);
-                return (true, min, max);
+            if (m.Success) {
+                double min = double.Parse(m.Groups["min"].Value);
+                double max = double.Parse(m.Groups["max"].Value);
+                double.TryParse(m.Groups["minslope"].Value, out var minSlope);
+                double.TryParse(m.Groups["maxslope"].Value, out var maxSlope);
+
+                return (true, min, max, minSlope, maxSlope);
             }
 
-            return (false, 0, 0);
+            return (false, 0, 0, 0, 0);
         }
 
         private static string GetRangePattern(string options)
         {
+            return
+                @"(?i)(?<attr>"
+                + options
+                + @"):\s*(?<min>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<minslope>[0-9]*[\.]?[0-9]+))?\s*\-\s*(?<max>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<maxslope>[0-9]*[\.]?[0-9]+))?";
+
             return @"(?i)("
                    + options
                    + @"):\s*([\-]?[0-9]*[\.]?[0-9]+)\s*\-\s*([\-]?[0-9]*[\.]?[0-9]+)";

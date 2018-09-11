@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Filters
@@ -10,10 +11,19 @@ namespace ColorSchemeInverter.Filters
         public double MaxStart { get; set; }
         public double MaxEnd { get; set; }
 
+        private double _max = 0.0;
+        private double _min = 0.0;
+        private double _maxSlope = 0.0;
+        private double _minSlope = 0.0;
+        
         public LinearRange() { }
 
         public LinearRange(double min, double max)
         {
+            _min = min;
+            _max = max;
+            _maxSlope = 0.0;
+            _minSlope = 0.0;
             MinStart = min;
             MinEnd = min;
             MaxStart = max;
@@ -24,6 +34,10 @@ namespace ColorSchemeInverter.Filters
         {
             minSlope = minSlope.LimitHigh(Math.Abs(min - max));
             maxSlope = maxSlope.LimitHigh(Math.Abs(min - max));
+            _min = min;
+            _max = max;
+            _maxSlope = maxSlope;
+            _minSlope = minSlope;
             MinStart = min - minSlope / 2;
             MinEnd = min + minSlope / 2;
             MaxStart = max - maxSlope / 2;
@@ -48,5 +62,24 @@ namespace ColorSchemeInverter.Filters
             return 0;
         }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            if (_minSlope == 0.0) {
+                sb.Append(_min + "-");
+
+            } else {
+                sb.Append(_min + "/" + _minSlope + "-");
+            }
+            
+            if (_maxSlope == 0.0) {
+                sb.Append(_max );
+
+            } else {
+                sb.Append(_max + "/" + _maxSlope);
+            }
+
+            return sb.ToString();
+        }
     }
 }

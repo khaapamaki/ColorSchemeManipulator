@@ -68,7 +68,7 @@ namespace ColorSchemeInverter.CLI
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
-        
+
         /// <summary>
         /// Parses command line arguments, creates a FilterSet from them and returns it together with
         /// remaining arguments that should include source and target files
@@ -120,6 +120,7 @@ namespace ColorSchemeInverter.CLI
 
             return (otherArgList.ToArray(), optList.ToArray());
         }
+
         public static string ToString(string delimiter = "\n", string prefix = "  ")
         {
             var sb = new StringBuilder();
@@ -133,6 +134,5 @@ namespace ColorSchemeInverter.CLI
 
             return sb.ToString();
         }
-
     }
 }

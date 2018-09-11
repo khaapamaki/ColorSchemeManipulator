@@ -37,7 +37,7 @@ namespace ColorSchemeInverter.UnitTests
             bool expSuccess, double expMin, double expMax)
 
         {
-            (bool success, double min, double max) = CliUtils.TryParseRangeForRangeParam(rangeStr, rangeParam);
+            (bool success, double min, double max, _, _) = CliUtils.TryParseRangeForRangeParam(rangeStr, rangeParam);
             Assert.That(success == expSuccess);
             Assert.That(min, Is.EqualTo(expMin));
             Assert.That(max, Is.EqualTo(expMax));
