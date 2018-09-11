@@ -12,6 +12,11 @@ namespace ColorSchemeInverter.Filters
         public double MaxEnd { get; set; }
         private readonly double _loopMax;
 
+        public LoopingRange(double loopMax = 360)
+        {
+            _loopMax = loopMax;
+        }
+
         public LoopingRange(double min, double max, double loopMax = 360)
         {
             MinStart = min.NormalizeLoopingValue(loopMax);

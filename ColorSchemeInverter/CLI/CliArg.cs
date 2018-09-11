@@ -94,7 +94,7 @@ namespace ColorSchemeInverter.CLI
                 }
             }
 
-            string desc = Description == "" ? "++" + FilterDelegate.Method.Name : Description;
+            string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
             return $"{opt1,-5} {opt2,-26} {(desc)}";
             return opts + "(" + MinParams + ")";
 

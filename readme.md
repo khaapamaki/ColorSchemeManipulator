@@ -11,38 +11,36 @@ Added option to convert colors on png-files for quick testing.
 ### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-      -h    --hue                          ShiftHsvHue
-      -s    --saturation                   GainHslSaturation
-      -g    --gain                         GainRgb
-      -l    --lightness                    GainLightness
-      -v    --value                        GainValue
-      -S    --hsv-saturation               GainHsvSaturation
-      -c    --contrast                     ContrastRgb
-      -cl   --contrast-lightness           ContrastLightness
-      -cv   --contrast-value               ContrastValue
-      -cs   --contrast-saturation          ContrastHslSaturation
-      -cS   --contrast-hsv-saturation      ContrastHsvSaturation
-      -ga   --gamma                        GammaRgb
-      -gar  --gamma-red                    GammaRed
-      -gag  --gamma-green                  GammaGreen
-      -gab  --gamma-blue                   GammaBlue
-      -gal  --gamma-lightness              GammaLightness
-      -gav  --gamma-value                  GammaValue
-      -gas  --gamma-saturation             GammaHslSaturation
-      -gaS  --gamma-hsv-saturation         GammaHsvSaturation
-      -le   --levels                       LevelsRgb
-      -ler  --levels-red                   LevelsRed
-      -leg  --levels-green                 LevelsGreen
-      -le   --levels                       LevelsRgb
-      -ler  --levels-red                   LevelsRed
-      -leg  --levels-green                 LevelsGreen
-      -lev  --levels-blue                  LevelsBlue
-      -lel  --levels-lightness             LevelsLightness
-      -les  --levels-saturation            LevelsHslSaturation
-      -leS  --levels-hsv-saturation        LevelsHsvSaturation
-      -i    --invert-rgb                   InvertRgb
-      -il   --invert-lightness             InvertLightness
-      -iv   --invert-value                 InvertValue
+  -h    --hue                      Hue shift as values of degrees -360..360
+  -s    --saturation               Saturation multiplier
+  -g    --gain                     @GainRgb
+  -l    --lightness                @GainLightness
+  -v    --value                    @GainValue
+  -S    --hsv-saturation           @GainHsvSaturation
+  -c    --contrast                 @ContrastRgb
+  -cl   --contrast-lightness       @ContrastLightness
+  -cv   --contrast-value           @ContrastValue
+  -cs   --contrast-saturation      @ContrastHslSaturation
+  -cS   --contrast-hsv-saturation  @ContrastHsvSaturation
+  -ga   --gamma                    @GammaRgb
+  -gar  --gamma-red                @GammaRed
+  -gag  --gamma-green              @GammaGreen
+  -gab  --gamma-blue               @GammaBlue
+  -gal  --gamma-lightness          @GammaLightness
+  -gav  --gamma-value              @GammaValue
+  -gas  --gamma-saturation         @GammaHslSaturation
+  -gaS  --gamma-hsv-saturation     @GammaHsvSaturation
+  -le   --levels                   @LevelsRgb
+  -ler  --levels-red               @LevelsRed
+  -leg  --levels-green             @LevelsGreen
+  -leb  --levels-blue              @LevelsBlue
+  -lel  --levels-lightness         @LevelsLightness
+  -lev  --levels-value             @LevelsValue
+  -les  --levels-saturation        @LevelsHslSaturation
+  -leS  --levels-hsv-saturation    @LevelsHsvSaturation
+  -i    --invert-rgb               @InvertRgb
+  -il   --invert-lightness         @InvertLightness
+  -iv   --invert-value             @InvertValue
 
 Usage example:
     <appname> -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>

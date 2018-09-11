@@ -10,6 +10,8 @@ namespace ColorSchemeInverter.Filters
         public double MaxStart { get; set; }
         public double MaxEnd { get; set; }
 
+        public LinearRange() { }
+
         public LinearRange(double min, double max)
         {
             MinStart = min;

@@ -135,7 +135,5 @@ namespace ColorSchemeInverter.Filters
         {
             return ValueRange != null;
         }
-
-
     }
 }
