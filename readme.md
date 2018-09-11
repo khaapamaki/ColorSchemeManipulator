@@ -45,18 +45,19 @@ Available Filters:
 Usage example:
     <appname> -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
     
-Using color range with filter:
+Using filter with color range:
     <appname> --gamma(sat:0.5-1,l:0-0.5)=1.5 <sourcefile> <targetfile>
+    
+Using filter with color range with slopes
+    <appname> "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
+    where saturation range is 0.5-0.9 with slope of 0.1 on both ends and light range is..
 ```
 
 
 #### ToDo
 
-+ Slope parameter for range. Decide CLI syntax for it + implement math
-+ Interpolation for looping values (= hue)
-+ Unit tests
-+ Add declaration field to CliArg and write them (used in quick help)
-+ Parsing of string arguments (mostly to doubles) before-hand to optimize for speed
++ Optimization in range parameter handling during filtering
++ More Unit tests
 + Support for Visual Studio Code
 + Support for CSS and HTML files? What else?
 + Presets for quick operations
