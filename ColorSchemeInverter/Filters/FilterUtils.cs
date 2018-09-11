@@ -13,6 +13,9 @@ namespace ColorSchemeInverter.Filters
     {
         public static double? TryParseDouble(object obj)
         {
+            if (obj is double)
+                return (double) obj;
+            
             if (IsNumber(obj)) {
                 try {
                     return (double) obj;

@@ -33,7 +33,9 @@ namespace ColorSchemeInverter.CLI
 
             (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
 
-            object[] filterParams = paramList?.ToArray();
+            object[] filterParams =  TryParseDoubles(paramList?.ToArray());
+            //object[] filterParams =  paramList?.ToArray();
+            
             if (filterDelegate is Func<Hsl, object[], Hsl>) {
                 filters.Add((Func<Hsl, object[], Hsl>) filterDelegate, filterParams);
             } else if (filterDelegate is Func<Rgb, object[], Rgb>) {
@@ -49,6 +51,23 @@ namespace ColorSchemeInverter.CLI
             return (filters, remainingArgs);
         }
 
+        public static object[] TryParseDoubles(object[] filterParams)
+        {
+            List<object> newList = new List<object>();
+            foreach (var param in filterParams) {
+                object newParam = param;
+                if (param is string) {
+                    double? d = FilterUtils.TryParseDouble(param);
+                    if (d != null) {
+                        newParam = d;
+                    }
+                }
+                newList.Add(newParam);
+                
+            }
+
+            return newList.ToArray();
+        }
 
         public static (string, string, string) SplitArgIntoPieces(string arg)
         {

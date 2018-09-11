@@ -19,7 +19,11 @@ namespace ColorSchemeInverter
             var bitmap = new Bitmap(image);
             Bitmap convertedImage;
             try {
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 convertedImage = ApplyFilters(bitmap, filters);
+                watch.Stop();
+                var elapsedMs = watch.ElapsedMilliseconds;
+                Console.WriteLine($"Image converted in {elapsedMs} ms");
             } catch (Exception ex) {
                 Console.WriteLine(GetType().FullName + " : " + ex.Message);
                 throw;
