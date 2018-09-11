@@ -13,10 +13,10 @@ namespace ColorSchemeInverter.Filters
         
         public LoopingRange(double min, double max, double loopMax = 360)
         {
-            MinStart = min;
-            MinEnd = min;
-            MaxStart = max;
-            MaxEnd = max;
+            MinStart = min.NormalizeLoopingValue(loopMax);
+            MinEnd = min.NormalizeLoopingValue(loopMax);
+            MaxStart = max.NormalizeLoopingValue(loopMax);
+            MaxEnd = max.NormalizeLoopingValue(loopMax);
             _loopMax = loopMax;
         }
         
@@ -24,10 +24,10 @@ namespace ColorSchemeInverter.Filters
         {
             minSlope = minSlope.LimitHigh(Math.Abs(min - max));
             maxSlope = maxSlope.LimitHigh(Math.Abs(min - max));
-            MinStart = min - minSlope / 2;
-            MinEnd = min + minSlope / 2;
-            MaxStart = max - maxSlope / 2;
-            MaxEnd = max + maxSlope / 2;
+            MinStart = (min - minSlope / 2).NormalizeLoopingValue(loopMax);
+            MinEnd = (min + minSlope / 2).NormalizeLoopingValue(loopMax);
+            MaxStart = (max - maxSlope / 2).NormalizeLoopingValue(loopMax);
+            MaxEnd = (max + maxSlope / 2).NormalizeLoopingValue(loopMax);
             _loopMax = loopMax;
         }
         
