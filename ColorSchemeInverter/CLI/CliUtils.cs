@@ -115,37 +115,37 @@ namespace ColorSchemeInverter.CLI
 
             (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "h|hue");
             if (succeeded) {
-                range.Hue(min, max);
+                range.HueRange = new LoopingRange(min, max, 360);
             }
 
             (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "s|sat|saturation");
             if (succeeded) {
-                range.Saturation(min, max);
+                range.SaturationRange = new LinearRange(min, max);
             }
 
             (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "l|light|lightness");
             if (succeeded) {
-                range.Lightness(min, max);
+                range.LightnessRange = new LinearRange(min, max);
             }
 
             (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "r|red");
             if (succeeded) {
-                range.Red(min, max);
+                range.RedRange = new LinearRange(min, max);
             }
 
             (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "g|green");
             if (succeeded) {
-                range.Green(min, max);
+                range.GreenRange= new LinearRange(min, max);
             }
 
             (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "b|blue");
             if (succeeded) {
-                range.Blue(min, max);
+                range.BlueRange= new LinearRange(min, max);
             }
 
             (succeeded, min, max) = TryParseRangeForRangeParam(rangeString, "v|value");
             if (succeeded) {
-                range.Value(min, max);
+                range.ValueRange= new LinearRange(min, max);
             }
 
             return range;

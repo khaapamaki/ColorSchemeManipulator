@@ -52,7 +52,7 @@ namespace ColorSchemeInverter
             // Test files for debugging
             string sourceFileName = @"HappyDays.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
-            sourceFileName = "HappyDays.png";
+            //sourceFileName = "HappyDays.png";
             sourceFileName = "photo.png";
 
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
