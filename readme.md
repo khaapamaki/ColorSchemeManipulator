@@ -57,6 +57,7 @@ Using filter with color range with slopes
 #### ToDo
 
 + Optimization in range parameter handling during filtering
++ Range parameter validation
 + More Unit tests
 + Support for Visual Studio Code
 + Support for CSS and HTML files? What else?
@@ -86,9 +87,9 @@ namespace ColorSchemeInverter
             
             var filters = new FilterSet()
                 .Add(FilterBundle.LightnessInvert)
-                .Add(FilterBundle.SaturationContrast, 0.3, 0.45, new ColorRange().Lightness(0.3, 1).Blue(0,0.5))
+                .Add(FilterBundle.SaturationContrast, 0.3, 0.45)
                 .Add(FilterBundle.SaturationGain, 1.2)
-                .Add(FilterBundle.Gain, 1.1);
+                .Add(FilterBundle.Gain, 1.1, new ColorRange().Lightness(0.3, 1).Blue(0, 0.5));
                 .Add(FilterBundle.Contrast, 0.3);
             
             ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);

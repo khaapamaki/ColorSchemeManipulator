@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Text;
 using ColorSchemeInverter.Common;
@@ -51,6 +52,19 @@ namespace ColorSchemeInverter.Filters
             _loopMax = loopMax;
         }
 
+        public static LoopingRange Range(double min, double max, double minSlope = 0.0, double maxSlope = 0.0,
+            double loopMax = 360)
+        {
+            return new LoopingRange(min, max, minSlope, maxSlope, loopMax);
+        }
+        
+        public static LoopingRange FourPointRange(double minStart, double minEnd, double maxStart, double maxEnd,
+            double loopMax = 360)
+        {
+            return new LoopingRange(loopMax)
+                {MinStart = minStart, MinEnd = minEnd, MaxStart = maxStart, MaxEnd = maxEnd};
+        }
+        
         public double InRangeFactor(double value)
         {
             value = value.NormalizeLoopingValue(_loopMax);
@@ -107,5 +121,6 @@ namespace ColorSchemeInverter.Filters
 
             return sb.ToString();
         }
+        
     }
 }

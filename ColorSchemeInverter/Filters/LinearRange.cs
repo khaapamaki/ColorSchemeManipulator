@@ -44,6 +44,17 @@ namespace ColorSchemeInverter.Filters
             MaxEnd = max + maxSlope / 2;
         }
         
+        public static LinearRange Range(double min, double max, double minSlope = 0.0, double maxSlope = 0.0)
+        {
+            return new LinearRange(min, max, minSlope, maxSlope);
+        }
+        
+        public static LinearRange FourPointRange(double minStart, double minEnd, double maxStart, double maxEnd)
+        {
+            return new LinearRange()
+                {MinStart = minStart, MinEnd = minEnd, MaxStart = maxStart, MaxEnd = maxEnd};
+        }
+        
         public double InRangeFactor(double value)
         {
             // out of range

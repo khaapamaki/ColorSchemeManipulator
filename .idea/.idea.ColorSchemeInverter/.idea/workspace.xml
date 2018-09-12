@@ -633,7 +633,7 @@
       <option name="project" value="LOCAL" />
       <updated>1536437410490</updated>
     </task>
-    <task id="LOCAL-00003" summary="Refactoring for naming convetions. Clean up.">
+    <task id="LOCAL-00003" summary="Refactoring for naminStartg convetions. Clean up.">
       <created>1536480795032</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
@@ -744,7 +744,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.23113582" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Unit Tests" order="11" sideWeight="0.4996337" weight="0.267658" />
-      <window_info anchor="bottom" id="Terminal" order="12" />
+      <window_info anchor="bottom" id="TerminStartal" order="12" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50036633" side_tool="true" weight="0.32968536" />
       <window_info anchor="bottom" id="Build" order="14" weight="0.32327244" />
       <window_info anchor="bottom" id="Inspection Results" order="15" weight="0.32883242" />
@@ -772,7 +772,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" visible="true" weight="0.23172243" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Unit Tests" order="11" sideWeight="0.4996337" weight="0.267658" />
-      <window_info anchor="bottom" id="Terminal" order="12" />
+      <window_info anchor="bottom" id="TerminStartal" order="12" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50036633" side_tool="true" weight="0.32968536" />
       <window_info anchor="bottom" id="Build" order="14" weight="0.32342008" />
       <window_info anchor="bottom" id="Inspection Results" order="15" weight="0.32961586" />
@@ -831,10 +831,10 @@
     <MESSAGE value="Constant regex pattern for hex color patterns for easier pattern writing" />
     <MESSAGE value="Conversion RBG&lt;-&gt;System.Drawing.Color. Class name change to avoid overlapping ones from System.Drawing.*" />
     <MESSAGE value="Image processing. Not tested." />
-    <MESSAGE value="Clamp, max, min unit test" />
+    <MESSAGE value="Clamp, minEnd, minStart unit test" />
     <MESSAGE value="ColorRange class for specifying loopMax where filters affect." />
     <MESSAGE value="Readme update" />
-    <MESSAGE value="Refactoring for naming convetions. Clean up." />
+    <MESSAGE value="Refactoring for naminStartg convetions. Clean up." />
     <MESSAGE value="Refactoring. RgbStringFormat renamed as RgbHexFormat" />
     <option name="LAST_COMMIT_MESSAGE" value="Refactoring. RgbStringFormat renamed as RgbHexFormat" />
   </component>
