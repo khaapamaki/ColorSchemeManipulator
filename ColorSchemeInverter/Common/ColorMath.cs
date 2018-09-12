@@ -40,7 +40,7 @@ namespace ColorSchemeInverter.Filters
                 output = (1.0 - s) * input + s * (-(1.0 - a) * Math.Pow((1.0 - input) * (1.0 - a), 2.0) + 1.0);
             }
 
-            return output.Min(0.0);
+            return output.LimitLow(0.0);
 
             // Perfect solution Emil, simple and elegant. Just needs an extra powering to
             // shift the turning point from (a,a) to (a,b):
@@ -62,7 +62,7 @@ namespace ColorSchemeInverter.Filters
             inWhite = inWhite.Clamp(0.0, 1.0);
             // outBlack = outBlack.Clamp(0.0, 1.0);
             // outWhite = outWhite.Clamp(0.0, 1.0);
-            input = input.Min(0.0);
+            input = input.LimitLow(0.0);
 
             // input values
             double output = ((input - inBlack) / (inWhite - inBlack)).Clamp(0.0, 1.0);
@@ -75,7 +75,7 @@ namespace ColorSchemeInverter.Filters
             // output values
             output = (output * (outWhite - outBlack) + outBlack).Clamp(0.0, 1.0);
 
-            return output.Min(0.0);
+            return output.LimitLow(0.0);
 
             // https://stackoverflow.com/questions/39510072/algorithm-for-adjustment-of-image-levels
         }
