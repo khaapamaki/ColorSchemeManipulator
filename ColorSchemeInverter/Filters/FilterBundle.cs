@@ -69,9 +69,12 @@ namespace ColorSchemeInverter.Filters
             CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
 
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
+            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
+                desc: "Inverts perceived brightness");
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1);
+            CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0);
         }
 
         #region "Invert"
@@ -131,6 +134,27 @@ namespace ColorSchemeInverter.Filters
             return hsv.Interpolate(filtered, rangeFactor);
         }
 
+        public static Rgb InvertPerceivedBrightness(Rgb rgb, params object[] filterParams)
+        {
+            double rangeFactor;
+            (rangeFactor, _) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
+            Hsl hsl = rgb.ToHsl();
+            Rgb inverted = new Rgb(rgb);
+            var br = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+            Hsl filtered = new Hsl(hsl.Hue, hsl.Saturation, 1 - br, rgb.Alpha);
+            inverted = filtered.ToRgb();
+            var filteredBr =  ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
+            var expected = 1 - br;
+            var lCorr = expected / filteredBr;
+
+            Hsl filtered2 = new Hsl(filtered);
+            filtered2.Lightness = (filtered2.Lightness * lCorr).Clamp(0, 1);
+            Rgb inverted2 = filtered2.ToRgb();
+            
+            return rgb.Interpolate(inverted2, rangeFactor);
+        }
+        
+        
         #endregion
 
         #region "Gain"
@@ -524,6 +548,23 @@ namespace ColorSchemeInverter.Filters
             return result;
         }
 
+        #endregion
+        
+        #region "Misc"
+        
+        public static Rgb BrightnessToGrayScale(Rgb rgb, params object[] filterParams)
+        {
+            var filtered = new Rgb(rgb);
+            double rangeFactor;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
+            var br = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+            filtered.Red = br;
+            filtered.Green = br;
+            filtered.Blue = br;
+            return rgb.Interpolate(filtered, rangeFactor);
+
+        }
+        
         #endregion
     }
 }
