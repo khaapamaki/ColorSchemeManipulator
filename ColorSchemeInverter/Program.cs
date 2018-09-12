@@ -8,8 +8,10 @@ using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
-   // -ilv=0.25 -s(s:0.1-0.9)=1.1 -lel=0,0.92,1,0.05,1 -gal(l:0.02,0.04,0.1,0.5,s:0.1,0.4,1,1)=1.3 -s(l:0.02,0.04,0.3,0.5,s:0.1,0.4,0.8,0.9)=1.2
     
+    // best dark to light inversion so far.. last parts is the neon yellow/green fix
+    // -ib -lel=0.1,0.9,1,0.1,1 -gas=1.15 -ga(s:0.04-0.3/0.1,l:0-0.2/0.1)=2 -ga(h:40/2-56/20,l:0.04-0.6/0.2)=2 -s(h:40/2-56/20,l:0.04-0.6/0.2)=2 
+
 namespace ColorSchemeInverter
 {
     internal class Program
@@ -52,7 +54,7 @@ namespace ColorSchemeInverter
             string sourceFileName = @"HappyDays.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
             sourceFileName = "HappyDays.png";
-            //sourceFileName = "photo.png";
+            // sourceFileName = "photo.png";
 
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             string sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));

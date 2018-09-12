@@ -146,10 +146,11 @@ namespace ColorSchemeInverter.Filters
             var filteredBr =  ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
             var expected = 1 - br;
             var lCorr = expected / filteredBr;
-
-            Hsl filtered2 = new Hsl(filtered);
-            filtered2.Lightness = (filtered2.Lightness * lCorr).Clamp(0, 1);
-            Rgb inverted2 = filtered2.ToRgb();
+            var d = lCorr - 1;
+            lCorr = lCorr + d / 6;
+            
+            Rgb inverted2 = new Rgb(inverted.Red * lCorr, inverted.Green* lCorr, inverted.Blue * lCorr, rgb.Alpha);
+            var filteredBr2 =  ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
             
             return rgb.Interpolate(inverted2, rangeFactor);
         }
