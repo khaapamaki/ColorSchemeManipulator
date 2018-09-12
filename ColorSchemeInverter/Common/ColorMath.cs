@@ -97,6 +97,10 @@ namespace ColorSchemeInverter.Filters
             return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
         }
 
+        public static double RgbPerceivedBrightness(double red, double green, double blue)
+        {
+            return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+        }
 
         public static double LinearInterpolation(double x, double y0, double y1)
         {
@@ -129,7 +133,6 @@ namespace ColorSchemeInverter.Filters
             }
 
             return result.NormalizeLoopingValue(loopMax);
-
         }
 
         public static double? LinearInterpolationForLoopingValues(double x, double y0, double y1, double loopMax)

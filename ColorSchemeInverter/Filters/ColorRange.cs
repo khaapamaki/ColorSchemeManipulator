@@ -22,13 +22,13 @@ namespace ColorSchemeInverter.Filters
         public ParameterRange GreenRange { get; set; } = null;
         public ParameterRange BlueRange { get; set; } = null;
         public ParameterRange HueRange { get; set; } = null;
+        public ParameterRange BrightnessRange { get; set; } = null;
 
-        private double _minHue = 0.0;
-        private double _maxHue = 360.0;
-        private double _minHueSlope = 0.0;
-        private double _maxHueSlope = 0.0;
-        private bool _hueRange = false;
-
+        // private double _minHue = 0.0;
+        // private double _maxHue = 360.0;
+        // private double _minHueSlope = 0.0;
+        // private double _maxHueSlope = 0.0;
+        // private bool _hueRange = false;
 
         // public ColorRange Hue(double min, double max, double minSlope = 0.0, double maxSlope = 0.0)
         // {
@@ -39,8 +39,6 @@ namespace ColorSchemeInverter.Filters
         //     _hueRange = true;
         //     return this;
         // }
-
-
         public double InRangeFactor(Rgb rgb)
         {
             double result = 1.0;
@@ -64,6 +62,8 @@ namespace ColorSchemeInverter.Filters
             result *= RedRange?.InRangeFactor(rgb.Red) ?? 1;
             result *= GreenRange?.InRangeFactor(rgb.Green) ?? 1;
             result *= BlueRange?.InRangeFactor(rgb.Blue) ?? 1;
+            result *= BrightnessRange?.InRangeFactor(
+                          ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue)) ?? 1;
             return result;
         }
 
@@ -120,7 +120,7 @@ namespace ColorSchemeInverter.Filters
 
         private bool RgbProcessingNeeded()
         {
-            return RedRange != null || GreenRange != null || BlueRange != null;
+            return RedRange != null || GreenRange != null || BlueRange != null || BrightnessRange != null;
         }
 
         private bool HslOrHsvProcessingNeeded()
@@ -141,6 +141,7 @@ namespace ColorSchemeInverter.Filters
         public override string ToString()
         {
             var sb = new StringBuilder();
+            sb.Append(BrightnessRange != null ? $"h:" + BrightnessRange.ToString() + " " : "");
             sb.Append(HueRange != null ? $"h:" + HueRange.ToString() + " " : "");
             sb.Append(SaturationRange != null ? $"s:" + SaturationRange.ToString() + " " : "");
             sb.Append(LightnessRange != null ? $"l:" + LightnessRange.ToString() + " " : "");
@@ -151,6 +152,18 @@ namespace ColorSchemeInverter.Filters
             return sb.ToString();
         }
 
+        public ColorRange Brightness(double min, double max, double minSlope = 0, double maxSlope = 0)
+        {
+            BrightnessRange = ParameterRange.Range(min, max, minSlope, maxSlope);
+            return this;
+        }
+        
+        public ColorRange Brightness4P(double minStart, double minEnd, double maxStart, double maxEnd)
+        {
+            BrightnessRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
+            return this;
+        }
+        
         public ColorRange Hue(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             HueRange = ParameterRange.Range(min, max, minSlope, maxSlope, 360);

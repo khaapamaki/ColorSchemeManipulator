@@ -123,7 +123,7 @@ namespace ColorSchemeInverter.CLI
                 colorRange.SaturationRange = range.Copy();
             }
 
-            range = TryParseRangeForRangeParam(rangeString, "l|light|lightness");
+            range = TryParseRangeForRangeParam(rangeString, "l|lig|light|lightness");
             if (range != null) {
                 colorRange.LightnessRange = range.Copy();
             }
@@ -145,6 +145,10 @@ namespace ColorSchemeInverter.CLI
             range = TryParseRangeForRangeParam(rangeString, "v|value");
             if (range != null) {
                 colorRange.ValueRange = range.Copy();
+            }
+            range = TryParseRangeForRangeParam(rangeString, "b|bri|brightness");
+            if (range != null) {
+                colorRange.BrightnessRange = range.Copy();
             }
 
             return colorRange;
