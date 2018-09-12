@@ -9,8 +9,12 @@ using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
     
-    // best dark to light inversion so far.. last parts is the neon yellow/green fix
+    // 2nd best dark to light inversion so far.. last parts is the neon yellow/green fix
     // -ib -lel=0.1,0.9,1,0.1,1 -gas=1.15 -ga(s:0.04-0.3/0.1,l:0-0.2/0.1)=2 -ga(h:40/2-56/20,l:0.04-0.6/0.2)=2 -s(h:40/2-56/20,l:0.04-0.6/0.2)=2 
+
+    //  best dark to light inversion so far.. with pre neon adjust -  last parts is the neon yellow/green fix
+    // -l(b:0.7/0.15-1,s:076/0.1-1)=0.6 -ib -lel=0.1,0.9,1,0.1,1 -ga(h:40/2-56/20,l:0.04-0.6/0.2)=1.7 -s(h:40/2-56/20,l:0.04-0.6/0.2)=1.7 -s=1.1
+    // -l(b:0.7/0.15-1,s:076/0.1-1)=0.6 -ib -lel=0.1,0.9,1,0.1,1 -ga(h:37/6-56/20,l:0.04-0.6/0.2)=1.7 -s(h:37/6-56/20,l:0.04-0.6/0.2)=1.7 -gas(s:0.1-0.6/0.2)=1.4
 
 namespace ColorSchemeInverter
 {
