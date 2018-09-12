@@ -31,7 +31,7 @@ namespace ColorSchemeInverter.Filters
 
             double output = input;
             a = a.Clamp(0, 1);
-            input = a.LimitLow(0);
+            input = input.LimitLow(0);
             s = s.Clamp(-1, 1);
 
             if (input >= 0 && input < a) {

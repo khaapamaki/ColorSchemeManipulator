@@ -60,7 +60,7 @@ Note: Some filters are purely for experimental purposes!
 
 #### Issues
 
-Contrast filters have currently something wrong
+Hunting for them...
 
 
 #### ToDo
