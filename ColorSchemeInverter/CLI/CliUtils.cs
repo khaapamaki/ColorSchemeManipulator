@@ -75,7 +75,7 @@ namespace ColorSchemeInverter.CLI
             string option = null;
             string filterParams = null;
             string rangeString = null;
-            const string pattern = @"(^\-[a-zA-Z]{1,2}|^\-\-[a-zA-Z\-]{2,})(\((.*)\))?(\s*=\s*(.*))?";
+            const string pattern = @"(^\-[a-zA-Z]{1,3}|^\-\-[a-zA-Z\-]{3,})(\((.*)\))?(\s*=\s*(.*))?";
             Match m = Regex.Match(arg, pattern);
             if (m.Groups.Count == 6) {
                 option = m.Groups[1].ToString();
