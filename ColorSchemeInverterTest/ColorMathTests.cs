@@ -56,8 +56,8 @@ namespace ColorSchemeInverter.UnitTests
         [TestCase(20, 320, 0.5, 350)]
         [TestCase(0, 360, 0.5, 0)]
         [TestCase(360, 0, 0.5, 0)]
-        [TestCase(90, 270, 0.5, null)]
-        public void LinearLoopingValues(double a, double b, double x, double exp)
+        [TestCase(90, 270, 0.1, null)]
+        public void LinearLoopingValues(double a, double b, double x, double? exp)
         {
             double? mid = ColorMath.LinearInterpolationForLoopingValues(x, a, b, 360);
             Assert.That(mid, Is.EqualTo(exp));

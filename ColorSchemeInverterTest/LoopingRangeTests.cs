@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace ColorSchemeInverter.UnitTests
 {
-    [TestFixture]
+    [Obsolete]
     public class LoopingRangeTests
     {
         [Test]

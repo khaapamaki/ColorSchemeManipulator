@@ -108,50 +108,50 @@ namespace ColorSchemeInverter.CLI
         {
             if (string.IsNullOrEmpty(rangeString)) return null;
 
-            ColorRange range = new ColorRange();
+            ColorRange colorRange = new ColorRange();
             double max, min, minSlope, maxSlope;
             bool succeeded;
 
-            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "h|hue");
-            if (succeeded) {
-                range.HueRange = new LoopingRange(min, max, minSlope, maxSlope, 360);
+            ParameterRange range = TryParseRangeForRangeParam(rangeString, "h|hue");
+            if (range != null) {
+                range.LoopMax = 360; 
+                colorRange.HueRange = range.Copy();
             }
 
-            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "s|sat|saturation");
-            if (succeeded) {
-                range.SaturationRange = new LinearRange(min, max, minSlope, maxSlope);
+            range = TryParseRangeForRangeParam(rangeString, "s|sat|saturation");
+            if (range != null) {
+                colorRange.SaturationRange = range.Copy();
             }
 
-            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "l|light|lightness");
-            if (succeeded) {
-                range.LightnessRange = new LinearRange(min, max, minSlope, maxSlope);
+            range = TryParseRangeForRangeParam(rangeString, "l|light|lightness");
+            if (range != null) {
+                colorRange.LightnessRange = range.Copy();
             }
 
-            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "r|red");
-            if (succeeded) {
-                range.RedRange = new LinearRange(min, max, minSlope, maxSlope);
+            range = TryParseRangeForRangeParam(rangeString, "r|red");
+            if (range != null) {
+                colorRange.RedRange = range.Copy();
             }
 
-            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "g|green");
-            if (succeeded) {
-                range.GreenRange = new LinearRange(min, max, minSlope, maxSlope);
+            range = TryParseRangeForRangeParam(rangeString, "g|green");
+            if (range != null) {
+                colorRange.GreenRange = range.Copy();
+            }
+            range = TryParseRangeForRangeParam(rangeString, "b|blue");
+            if (range != null) {
+                colorRange.BlueRange = range.Copy();
             }
 
-            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "b|blue");
-            if (succeeded) {
-                range.BlueRange = new LinearRange(min, max, minSlope, maxSlope);
+            range = TryParseRangeForRangeParam(rangeString, "v|value");
+            if (range != null) {
+                colorRange.ValueRange = range.Copy();
             }
 
-            (succeeded, min, max, minSlope, maxSlope) = TryParseRangeForRangeParam(rangeString, "v|value");
-            if (succeeded) {
-                range.ValueRange = new LinearRange(min, max, minSlope, maxSlope);
-            }
-
-            return range;
+            return colorRange;
         }
 
 
-        public static (bool, double, double, double, double) TryParseRangeForRangeParam(string rangeString,
+        public static ParameterRange TryParseRangeForRangeParam(string rangeString,
             string rangeParam)
         {
             Match m = Regex.Match(rangeString, GetRangePattern(rangeParam));
@@ -161,10 +161,20 @@ namespace ColorSchemeInverter.CLI
                 double.TryParse(m.Groups["minslope"].Value, out var minSlope);
                 double.TryParse(m.Groups["maxslope"].Value, out var maxSlope);
 
-                return (true, min, max, minSlope, maxSlope);
+                return ParameterRange.Range(min, max, minSlope, maxSlope);
+            }
+            
+            m = Regex.Match(rangeString, GetFourPointRangePattern(rangeParam));
+            if (m.Success) {
+                double minStart = double.Parse(m.Groups["minS"].Value);
+                double minEnd = double.Parse(m.Groups["minE"].Value);
+                double maxStart = double.Parse(m.Groups["maxS"].Value);
+                double maxEnd = double.Parse(m.Groups["maxE"].Value);
+
+                return  ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             }
 
-            return (false, 0, 0, 0, 0);
+            return null;
         }
 
         private static string GetRangePattern(string options)
@@ -174,9 +184,23 @@ namespace ColorSchemeInverter.CLI
                 + options
                 + @"):\s*(?<min>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<minslope>[0-9]*[\.]?[0-9]+))?\s*\-\s*(?<max>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<maxslope>[0-9]*[\.]?[0-9]+))?";
 
-            return @"(?i)("
-                   + options
-                   + @"):\s*([\-]?[0-9]*[\.]?[0-9]+)\s*\-\s*([\-]?[0-9]*[\.]?[0-9]+)";
+            //(?i)(?<attr>):\s*(?<min>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<minslope>[0-9]*[\.]?[0-9]+))?\s*\-\s*(?<max>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<maxslope>[0-9]*[\.]?[0-9]+))?
+        }
+
+        
+        /// <summary>
+        /// Pattern that matches eg. this: s:0,0.1,0.5,0.6 -or- S: 0, 0.1, 0.5, 0.6
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        private static string GetFourPointRangePattern(string options)
+        {
+            return
+                @"(?i)(?<attr>"
+                + options
+                + @"):\s*(?<minS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<minE>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxE>[\-]?[0-9]*[\.]?[0-9]+)?";
+
+            //(?i)(?<attr>s):\s*(?<minS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<minE>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxE>[\-]?[0-9]*[\.]?[0-9]+)?
         }
     }
 }

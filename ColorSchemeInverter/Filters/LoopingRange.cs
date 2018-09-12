@@ -6,6 +6,7 @@ using ColorSchemeInverter.Common;
 
 namespace ColorSchemeInverter.Filters
 {
+    [Obsolete]
     public class LoopingRange
     {
         public double MinStart { get; set; }
