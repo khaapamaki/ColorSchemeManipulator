@@ -46,12 +46,21 @@ Usage example:
     <appname> -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
     
 Using filter with color range:
-    <appname> --gamma(sat:0.5-1,l:0-0.5)=1.5 <sourcefile> <targetfile>
+    <appname> "--gamma(sat: 0.5-1, l: 0-0.5) = 1.5" <sourcefile> <targetfile>
     
-Using filter with color range with slopes
+Using filter with color range defined with four points: (attribute: min1,min2,max1,max2)
+    <appname> "--gamma(sat: 0.4, 0.5, 1, 1, lightness:0, 0, 0.5, 0.7) = 1.5" <sourcefile> <targetfile>
+    
+Using filter with color range with slope parameters: (attribute: min/slope - max/slope)
     <appname> "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
-    where saturation range is 0.5-0.9 with slope of 0.1 on both ends and light range is..
+    
+
+Note: Some filters are purely for experimental purposes!
 ```
+
+#### Issues
+
+Contrast filters have currently something wrong
 
 
 #### ToDo
@@ -74,7 +83,6 @@ using System.IO;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
 
-
 namespace ColorSchemeInverter
 {
     internal class Program
@@ -89,7 +97,7 @@ namespace ColorSchemeInverter
                 .Add(FilterBundle.LightnessInvert)
                 .Add(FilterBundle.SaturationContrast, 0.3, 0.45)
                 .Add(FilterBundle.SaturationGain, 1.2)
-                .Add(FilterBundle.Gain, 1.1, new ColorRange().Lightness(0.3, 1).Blue(0, 0.5));
+                .Add(FilterBundle.Gain, 1.1, new ColorRange().Lightness(0.3, 1).Blue(0, 0.5, 0, 0.2));
                 .Add(FilterBundle.Contrast, 0.3);
             
             ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
