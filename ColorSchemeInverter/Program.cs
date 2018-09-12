@@ -8,8 +8,8 @@ using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Common;
 using ColorSchemeInverter.Filters;
 using ColorSchemeInverter.SchemeFileSupport;
-
-
+   // -ilv=0.25 -s(s:0.1-0.9)=1.1 -lel=0,0.92,1,0.05,1 -gal(l:0.02,0.04,0.1,0.5,s:0.1,0.4,1,1)=1.3 -s(l:0.02,0.04,0.3,0.5,s:0.1,0.4,0.8,0.9)=1.2
+    
 namespace ColorSchemeInverter
 {
     internal class Program
@@ -26,6 +26,7 @@ namespace ColorSchemeInverter
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
                 Console.WriteLine("Available Filters:");
                 Console.WriteLine(CliArgs.ToString());
+                return;
             }
 
             // Parse CLI args and generate FilterSet of them
@@ -40,8 +41,6 @@ namespace ColorSchemeInverter
             // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
                 Console.WriteLine("Illegal argument: " + remainingOptArgs[0]);
-                //Console.WriteLine("Available Filters:");
-                //Console.WriteLine(CliArgs.ToString());
                 return;
             }
 
@@ -52,8 +51,8 @@ namespace ColorSchemeInverter
             // Test files for debugging
             string sourceFileName = @"HappyDays.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
-            //sourceFileName = "HappyDays.png";
-            sourceFileName = "photo.png";
+            // sourceFileName = "HappyDays.png";
+            //sourceFileName = "photo.png";
 
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             string sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
@@ -88,14 +87,8 @@ namespace ColorSchemeInverter
                 Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
             }
 
-            // // old testing, now ClI parsing is in use:
-            // var filters = new FilterSet()
-            //     .Add(FilterBundle.InvertLightness)
-            //     .Add(FilterBundle.ContrastHslSaturation, 0.3)
-            //     .Add(FilterBundle.GainHslSaturation, 1.2, new ColorRange().Hue(40,120).Blue(0,0.5))
-            //     .Add(FilterBundle.GainRgb, 1.1)
-            //     .Add(FilterBundle.ContrastRgb, 0.3, 0.3);
-            //  
+            IEnumerable<string> testEnumerable;
+            
         }
 
         private static void TestTempStuff()

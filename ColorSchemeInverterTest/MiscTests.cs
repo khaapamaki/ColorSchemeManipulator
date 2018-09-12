@@ -31,6 +31,18 @@ namespace ColorSchemeInverter.UnitTests
             Assert.That(result.Lightness, Is.EqualTo(0.2).Within(0.00001));
         }
 
+            
+        [Test]
+        public void TestInvertLightness2()
+        {
+            Rgb rgb = Rgb.FromRgbString("A8C023");
+            Hsl hsl = rgb.ToHsl();
+            Hsv hsv = rgb.ToHsv();
+            Hsv result = FilterBundle.InvertValue(hsv);
+            string invertedString = result.ToRgb().ToRgbString();
+
+        }     
+            
         [Test]
         public void TestRGBtoHSLtoRGB()
         {
@@ -39,6 +51,14 @@ namespace ColorSchemeInverter.UnitTests
             Assert.True(rgb1.Equals(rgb2));
         }
 
+        [Test]
+        public void TestRGBtoHSVtoRGB()
+        {
+            Rgb rgb1 = new Rgb8Bit(0x8A, 0x3B, 0x20).ToRgb();
+            Rgb rgb2 = rgb1.ToHsv().ToRgb();
+            Assert.True(rgb1.Equals(rgb2));
+        }
+        
         [Test]
         public void TestManyRandomRGBtoHSLtoRGB()
         {

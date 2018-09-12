@@ -121,11 +121,11 @@ namespace ColorSchemeInverter.Filters
         {
             var result = value;
             if (args.Length >= 5) {
-                double outputWhite = TryParseDouble(args[3]) ?? 0.0;
                 if (rangeFactor > 0.0) {
                     double inputBlack = TryParseDouble(args[0]) ?? 0.0;
                     double inputWhite = TryParseDouble(args[1]) ?? 1.0;
                     double gamma = TryParseDouble(args[2]) ?? 1.0;
+                    double outputWhite = TryParseDouble(args[3]) ?? 0.0;
                     double outputBlack = TryParseDouble(args[4]) ?? 1.0;
                     double newValue =
                         ColorMath.Levels(value, inputBlack, inputWhite, gamma, outputWhite, outputBlack);

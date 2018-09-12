@@ -1,10 +1,10 @@
 <scheme name="HappyDays" version="142" parent_scheme="Darcula">
   <option name="FONT_SCALE" value="1.0" />
   <metaInfo>
-    <property name="created">2018-09-03T23:13:56</property>
+    <property name="created">2018-09-12T17:00:17</property>
     <property name="ide">Rider</property>
-    <property name="ideVersion">2018.2.0.0</property>
-    <property name="modified">2018-09-03T23:14:13</property>
+    <property name="ideVersion">2018.2.1.0.0</property>
+    <property name="modified">2018-09-12T17:00:29</property>
     <property name="originalScheme">HappyDays</property>
   </metaInfo>
   <option name="CONSOLE_FONT_NAME" value="Fira Mono" />

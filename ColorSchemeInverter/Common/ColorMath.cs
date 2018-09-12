@@ -60,15 +60,15 @@ namespace ColorSchemeInverter.Filters
             gamma = gamma.Clamp(0.01, 9.99);
             inBlack = inBlack.Clamp(0.0, 1.0);
             inWhite = inWhite.Clamp(0.0, 1.0);
-            // outBlack = outBlack.Clamp(0.0, 1.0);
-            // outWhite = outWhite.Clamp(0.0, 1.0);
+            outBlack = outBlack.Clamp(0.0, 1.0);
+            outWhite = outWhite.LimitLow(0.0);
             input = input.LimitLow(0.0);
 
             // input values
             double output = ((input - inBlack) / (inWhite - inBlack)).Clamp(0.0, 1.0);
 
             // mid-tones
-            if (!gamma.AboutEqual(0.5)) {
+            if (gamma != 1.0) {
                 output = Math.Pow(output, 1 / gamma);
             }
 
