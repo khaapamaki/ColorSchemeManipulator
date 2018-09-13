@@ -12,7 +12,6 @@ namespace ColorSchemeInverter.Filters
 
         public FilterSet() { }
 
-
         public FilterSet(Func<Hsl, object[], Hsl> filterDelegate)
         {
             _filterChain.Add(new HslFilter(filterDelegate));
@@ -78,13 +77,11 @@ namespace ColorSchemeInverter.Filters
             _filterChain.Add(new HsvFilter(filterDelegate, args));
             return this;
         }
-        
 
         public bool Any()
         {
             return _filterChain.Any();
         }
-
 
         public Hsl ApplyTo(Hsl hsl)
         {

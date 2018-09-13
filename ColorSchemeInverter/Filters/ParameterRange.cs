@@ -12,11 +12,6 @@ namespace ColorSchemeInverter.Filters
         public double MaxStart { get; set; }
         public double MaxEnd { get; set; }
 
-        // private double _max = 0.0;
-        // private double _min = 0.0;
-        // private double _maxSlope = 0.0;
-        // private double _minSlope = 0.0;
-
         public bool IsLoopingRange { get; private set; } = false;
 
         private double _loopMax;
@@ -39,10 +34,6 @@ namespace ColorSchemeInverter.Filters
 
         public ParameterRange(double min, double max, double? loopMax = null)
         {
-            // _min = min;
-            // _max = max;
-            // _maxSlope = 0.0;
-            // _minSlope = 0.0;
             MinStart = min;
             MinEnd = min;
             MaxStart = max;
@@ -51,59 +42,44 @@ namespace ColorSchemeInverter.Filters
                 LoopMax = (double) loopMax;
         }
 
-        public ParameterRange(double min, double max, double minSlope = 0.0, double maxSlope = 0.0, double? loopMax = null)
+        public ParameterRange(double min, double max, double minSlope = 0.0, double maxSlope = 0.0,
+            double? loopMax = null)
         {
             if (loopMax != null)
                 LoopMax = (double) loopMax;
-            
+
             minSlope = minSlope.LimitHigh(Math.Abs(min - max));
             maxSlope = maxSlope.LimitHigh(Math.Abs(min - max));
             if (IsLoopingRange) {
                 min = min.NormalizeLoopingValue(LoopMax);
                 max = max.NormalizeLoopingValue(LoopMax);
             }
-            
-            // _min = min;
-            // _max = max;
-            // _maxSlope = maxSlope;
-            // _minSlope = minSlope;
+
             MinStart = min - minSlope / 2;
             MinEnd = min + minSlope / 2;
             MaxStart = max - maxSlope / 2;
             MaxEnd = max + maxSlope / 2;
-
         }
 
-        public static ParameterRange Range(double min, double max, double minSlope = 0.0, double maxSlope = 0.0, double? loopMax = null)
+        public static ParameterRange Range(double min, double max, double minSlope = 0.0, double maxSlope = 0.0,
+            double? loopMax = null)
         {
             return new ParameterRange(min, max, minSlope, maxSlope, loopMax);
         }
 
-        public static ParameterRange FourPointRange(double minStart, double minEnd, double maxStart, double maxEnd, double? loopMax = null)
+        public static ParameterRange FourPointRange(double minStart, double minEnd, double maxStart, double maxEnd,
+            double? loopMax = null)
         {
             ParameterRange range = new ParameterRange(loopMax)
                 {MinStart = minStart, MinEnd = minEnd, MaxStart = maxStart, MaxEnd = maxEnd};
-            // if (! range.IsLoopingRange) {
-            //     range._min = ColorMath.LinearInterpolation(0.5, minEnd, minEnd);
-            //     range._max = ColorMath.LinearInterpolation(0.5, maxStart, maxEnd);
-            //     range._minSlope = minEnd - minStart;
-            //     range._maxSlope = maxEnd - maxStart;
-            // } else {
-            //     range._min = ColorMath.LinearInterpolationForLoopingValues(0.5, minStart, minEnd, range._loopMax) ?? 0;
-            //     range._max = ColorMath.LinearInterpolationForLoopingValues(0.5, maxStart, maxEnd, range._loopMax) ?? 0;
-            //     range._minSlope = minEnd - minStart;
-            //     range._maxSlope = maxEnd - maxStart;
-            // }
 
             return range;
-
         }
 
         public double InRangeFactor(double value)
         {
             return IsLoopingRange ? InLoopingRangeFactor(value) : InLinearRangeFactor(value);
         }
-
 
         private double InLinearRangeFactor(double value)
         {
@@ -141,13 +117,10 @@ namespace ColorSchemeInverter.Filters
 
             return 0;
         }
-        
+
         public override string ToString()
         {
-            //var sb = new StringBuilder();
             return $"{MinStart},{MinEnd}-{MaxStart},{MaxEnd}";
-
-            //return sb.ToString();
         }
 
         private double ShortestDifference(double a, double b)
@@ -166,7 +139,6 @@ namespace ColorSchemeInverter.Filters
             } else {
                 return value >= min || value <= max;
             }
-
         }
 
         public ParameterRange Copy()
@@ -180,6 +152,5 @@ namespace ColorSchemeInverter.Filters
             range.IsLoopingRange = IsLoopingRange;
             return range;
         }
-
     }
 }

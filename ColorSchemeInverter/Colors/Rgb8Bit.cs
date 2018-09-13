@@ -110,7 +110,6 @@ namespace ColorSchemeInverter.Colors
             return newRgb;
         }
 
-
         public string ToRgbString(string rgbHexFormat)
         {
             string result;

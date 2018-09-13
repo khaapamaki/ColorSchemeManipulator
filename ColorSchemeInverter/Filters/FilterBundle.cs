@@ -149,7 +149,7 @@ namespace ColorSchemeInverter.Filters
             var hsl = rgb.ToHsl();
             var brightness = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
             var targetBrightness = (1 - brightness).Clamp(0, 1);
-            
+
             // using brightness as lightness is not accurate but we can correct this later
             // how ever it seems that completely correct value produces worse outcome
             // so we may use something in between

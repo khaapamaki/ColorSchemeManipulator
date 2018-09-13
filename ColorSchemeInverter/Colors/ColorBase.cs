@@ -29,7 +29,7 @@ namespace ColorSchemeInverter.Colors
 
             throw new NotImplementedException();
         }
-        
+
         public Hsv ToHsv()
         {
             if (this is Hsv) {

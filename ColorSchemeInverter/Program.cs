@@ -70,7 +70,6 @@ namespace ColorSchemeInverter
             Console.WriteLine("Applying filters:");
             Console.WriteLine(filterSet.ToString());
 
-
             string sourceFile, targetFile;
             
 #if DEBUG

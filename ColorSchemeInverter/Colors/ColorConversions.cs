@@ -194,7 +194,7 @@ namespace ColorSchemeInverter.Colors
             Rgb rgb = new Rgb(hsl);
             return rgb.ToHsv();
         }
-        
+
         // Todo algorithm that directly converts from hsv to hsl
         public static Hsl HsvtoHsl(Hsv hsv)
         {
@@ -211,8 +211,7 @@ namespace ColorSchemeInverter.Colors
         public static Color RgbToSystemColor(Rgb rgb)
         {
             var rgb8 = new Rgb8Bit(rgb);
-            return Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);  
+            return Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);
         }
-        
     }
 }

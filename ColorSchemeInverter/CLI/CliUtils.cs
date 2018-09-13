@@ -88,7 +88,6 @@ namespace ColorSchemeInverter.CLI
                 rangeString == "" ? null : rangeString);
         }
 
-
         public static List<object> ExtractParams(string paramString)
         {
             var args = new List<object>();
@@ -154,7 +153,6 @@ namespace ColorSchemeInverter.CLI
             return colorRange;
         }
 
-
         public static ParameterRange TryParseRangeForRangeParam(string rangeString,
             string rangeParam)
         {
@@ -187,10 +185,7 @@ namespace ColorSchemeInverter.CLI
                 @"(?i)(?<attr>"
                 + options
                 + @"):\s*(?<min>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<minslope>[0-9]*[\.]?[0-9]+))?\s*\-\s*(?<max>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<maxslope>[0-9]*[\.]?[0-9]+))?";
-
-            //(?i)(?<attr>):\s*(?<min>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<minslope>[0-9]*[\.]?[0-9]+))?\s*\-\s*(?<max>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<maxslope>[0-9]*[\.]?[0-9]+))?
         }
-
         
         /// <summary>
         /// Pattern that matches eg. this: s:0,0.1,0.5,0.6 -or- S: 0, 0.1, 0.5, 0.6
@@ -203,8 +198,6 @@ namespace ColorSchemeInverter.CLI
                 @"(?i)(?<attr>"
                 + options
                 + @"):\s*(?<minS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<minE>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxE>[\-]?[0-9]*[\.]?[0-9]+)?";
-
-            //(?i)(?<attr>s):\s*(?<minS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<minE>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxS>[\-]?[0-9]*[\.]?[0-9]+),\s*(?<maxE>[\-]?[0-9]*[\.]?[0-9]+)?
         }
     }
 }

@@ -21,14 +21,13 @@ namespace ColorSchemeInverter.Filters
                 return FilterDelegate(((Rgb) color).ToHsl(), Arguments);
             } else if (color is Hsl) {
                 return FilterDelegate((Hsl) color, Arguments);
-            }else if (color is Hsv) {
+            } else if (color is Hsv) {
                 return FilterDelegate(((Hsv) color).ToHsl(), Arguments);
             }
 
             throw new NotImplementedException("Only HSL and RGB colors are supported");
         }
 
-        
         public override string ToString()
         {
             var sb = new StringBuilder();

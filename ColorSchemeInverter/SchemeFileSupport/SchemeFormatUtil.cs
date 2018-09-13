@@ -23,7 +23,6 @@ namespace ColorSchemeInverter.SchemeFileSupport
             }
         }
 
-
         public static string GetRegEx(SchemeFormat schemeFormat)
         {
             // Patterns must have three groups, where 2nd must pure hex RGB without any prefixes!

@@ -145,10 +145,10 @@ namespace ColorSchemeInverter.Filters
             sb.Append(HueRange != null ? $"h:" + HueRange.ToString() + " " : "");
             sb.Append(SaturationRange != null ? $"s:" + SaturationRange.ToString() + " " : "");
             sb.Append(LightnessRange != null ? $"l:" + LightnessRange.ToString() + " " : "");
-            sb.Append(RedRange != null ? $"r:"+ RedRange.ToString() + " " : "");
+            sb.Append(RedRange != null ? $"r:" + RedRange.ToString() + " " : "");
             sb.Append(GreenRange != null ? $"g:" + GreenRange.ToString() + " " : "");
             sb.Append(BlueRange != null ? $"b:" + BlueRange.ToString() + " " : "");
-           
+
             return sb.ToString();
         }
 
@@ -157,96 +157,95 @@ namespace ColorSchemeInverter.Filters
             BrightnessRange = ParameterRange.Range(min, max, minSlope, maxSlope);
             return this;
         }
-        
+
         public ColorRange Brightness4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             BrightnessRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
-        
+
         public ColorRange Hue(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             HueRange = ParameterRange.Range(min, max, minSlope, maxSlope, 360);
             return this;
         }
-        
+
         public ColorRange Hue4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             HueRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd, 360);
             return this;
         }
-        
+
         public ColorRange Saturation(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             SaturationRange = ParameterRange.Range(min, max, minSlope, maxSlope);
             return this;
         }
-        
+
         public ColorRange Saturation4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             SaturationRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
-        
+
         public ColorRange Lightness(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             LightnessRange = ParameterRange.Range(min, max, minSlope, maxSlope);
             return this;
         }
-        
+
         public ColorRange Lightness4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             LightnessRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
-        
+
         public ColorRange Value(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             ValueRange = ParameterRange.Range(min, max, minSlope, maxSlope);
             return this;
         }
-        
+
         public ColorRange Value4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             ValueRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
-        
+
         public ColorRange Red(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             RedRange = ParameterRange.Range(min, max, minSlope, maxSlope);
             return this;
         }
-        
+
         public ColorRange Red4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             RedRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
-        
+
         public ColorRange Green(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             GreenRange = ParameterRange.Range(min, max, minSlope, maxSlope);
             return this;
         }
-        
+
         public ColorRange Green4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             GreenRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
-        
+
         public ColorRange Blue(double min, double max, double minSlope = 0, double maxSlope = 0)
         {
             BlueRange = ParameterRange.Range(min, max, minSlope, maxSlope);
             return this;
         }
-        
+
         public ColorRange Blue4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
             BlueRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
-        
     }
 }

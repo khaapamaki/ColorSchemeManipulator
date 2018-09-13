@@ -35,36 +35,6 @@ namespace ColorSchemeInverter.Filters
             return null;
         }
 
-        // public static bool GetBoolean(object obj)
-        // {
-        //     if (obj is bool) {
-        //         return (bool) obj;
-        //     }
-        //
-        //     if (IsNumber(obj)) {
-        //         try {
-        //             double d = TryParseDouble(obj);
-        //             return d.AboutEqual(1.0);
-        //         } catch (Exception e) {
-        //             Console.WriteLine("Could not convert object to boolean");
-        //         }
-        //     }
-        //     
-        //     // Todo this is very flawed, fix asap
-        //     if (obj is string s) {
-        //         try {
-        //
-        //             return s == "1" || s.ToLower() == "true";
-        //         } catch (Exception e) {
-        //             Console.WriteLine("Could not parse string to boolean");
-        //         }
-        //     }
-        //
-        //     Console.WriteLine("Object is not a boolean, boolean expected");
-        //     return false;
-        // }
-
-
         // This is quite funny. There must be a better way...
         public static bool IsNumber(object o)
         {
@@ -115,7 +85,6 @@ namespace ColorSchemeInverter.Filters
 
             return (range?.InRangeFactor(hsv) ?? 1.0, filterParams);
         }
-
 
         public static double CalcLevels(double value, double rangeFactor, object[] args)
         {

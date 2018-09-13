@@ -14,8 +14,6 @@ namespace ColorSchemeInverter.CLI
         public byte MaxParams { get; set; }
         public string Description { get; set; }
 
-        // private CliArg() { }
-
         public CliArg(string option, Func<Hsl, object[], Hsl> filterDelegate, byte minParams, byte maxParams = 0,
             string desc = "")
         {
@@ -76,7 +74,6 @@ namespace ColorSchemeInverter.CLI
             Description = desc;
         }
 
-
         public new string ToString()
         {
             // todo formatted output that can be used in cmd line help
@@ -95,17 +92,7 @@ namespace ColorSchemeInverter.CLI
             }
 
             string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
-            return $"{opt1,-5} {opt2,-26} {(desc)}";
-            return opts + "(" + MinParams + ")";
-
-
-            // with string format
-            var columnHeaders1 = string.Format($"|{0,-30}|{1,-4}|{2,-15}|{3,-30}|{4,-30}|{5,-30}|{6,-30}", "ColumnA",
-                "ColumnB", "ColumnC", "ColumnD", "ColumnE", "ColumnF", "ColumnG");
-
-            // with string interpolation
-            var columnHeaders2 =
-                $"|{"ColumnA",-30}|{"ColumnB",-4}|{"ColumnC",-15}|{"ColumnD",-30}|{"ColumnE",-30}|{"ColumnF",-30}|{"ColumnG",-30}";
+            return $"{opt1,-5} {opt2,-26} {desc}";
         }
     }
 }

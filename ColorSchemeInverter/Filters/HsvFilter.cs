@@ -14,14 +14,14 @@ namespace ColorSchemeInverter.Filters
             FilterDelegate = filterDelegate;
             Arguments = args;
         }
-        
+
         public override ColorBase ApplyTo(ColorBase color)
         {
             if (color is Rgb) {
                 return FilterDelegate(((Rgb) color).ToHsv(), Arguments);
             } else if (color is Hsv) {
                 return FilterDelegate((Hsv) color, Arguments);
-            }else if (color is Hsl) {
+            } else if (color is Hsl) {
                 return FilterDelegate(((Hsl) color).ToHsv(), Arguments);
             }
 
