@@ -160,7 +160,7 @@ namespace ColorSchemeInverter.Filters
         
         public ColorRange Brightness4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
-            BrightnessRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
+            BrightnessRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
         
@@ -172,7 +172,7 @@ namespace ColorSchemeInverter.Filters
         
         public ColorRange Hue4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
-            HueRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd, 360);
+            HueRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd, 360);
             return this;
         }
         
@@ -184,7 +184,7 @@ namespace ColorSchemeInverter.Filters
         
         public ColorRange Saturation4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
-            SaturationRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
+            SaturationRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
         
@@ -196,7 +196,7 @@ namespace ColorSchemeInverter.Filters
         
         public ColorRange Lightness4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
-            LightnessRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
+            LightnessRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
         
@@ -208,7 +208,7 @@ namespace ColorSchemeInverter.Filters
         
         public ColorRange Value4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
-            ValueRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
+            ValueRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
         
@@ -220,7 +220,7 @@ namespace ColorSchemeInverter.Filters
         
         public ColorRange Red4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
-            RedRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
+            RedRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
         
@@ -232,7 +232,7 @@ namespace ColorSchemeInverter.Filters
         
         public ColorRange Green4P(double minStart, double minEnd, double maxStart, double maxEnd)
         {
-            GreenRange = ParameterRange.Range(minStart, minEnd, maxStart, maxEnd);
+            GreenRange = ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             return this;
         }
         
