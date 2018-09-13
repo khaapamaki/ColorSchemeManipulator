@@ -64,7 +64,6 @@
     <Compile Include="Filters\ColorRange.cs" />
     <Compile Include="Filters\HsvFilter.cs" />
     <Compile Include="Filters\ParameterRange.cs" />
-    <Compile Include="Filters\LoopingRange.cs" />
     <Compile Include="Filters\RgbFilter.cs" />
     <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />

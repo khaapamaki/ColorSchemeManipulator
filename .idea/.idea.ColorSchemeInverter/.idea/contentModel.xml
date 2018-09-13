@@ -55,7 +55,6 @@
           <e p="FilterUtils.cs" t="Include" />
           <e p="HSLFilter.cs" t="Include" />
           <e p="HSVFilter.cs" t="Include" />
-          <e p="LoopingRange.cs" t="Include" />
           <e p="ParameterRange.cs" t="Include" />
           <e p="RGBFilter.cs" t="Include" />
         </e>
@@ -81,7 +80,6 @@
         <e p="ColorSchemeInverterTest.csproj" t="IncludeRecursive" />
         <e p="ExtensionsTests.cs" t="Include" />
         <e p="FilterUtilsTests.cs" t="Include" />
-        <e p="LoopingRangeTests.cs" t="Include" />
         <e p="MiscTests.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

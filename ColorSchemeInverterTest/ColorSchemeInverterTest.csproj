@@ -20,4 +20,8 @@
       <ProjectReference Include="..\ColorSchemeInverter\ColorSchemeInverter.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="LoopingRangeTests.cs" />
+    </ItemGroup>
+
 </Project>
