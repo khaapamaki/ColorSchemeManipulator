@@ -6,6 +6,7 @@ using System.Linq;
 using ColorSchemeInverter.CLI;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Common;
+using NUnit.Framework;
 
 namespace ColorSchemeInverter.Filters
 {
@@ -36,13 +37,17 @@ namespace ColorSchemeInverter.Filters
                 return;
 
             CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1,
-                desc: "Hue shift as values of degrees -360..360");
+                desc: "Hue shift. Accepts single parameter as degrees -360..360");
             CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1,
-                desc: "Saturation multiplier");
-            CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1);
-            CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1);
-            CliArgs.Register(new List<string> {"-v", "--value"}, GainValue, 1);
-            CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1);
+                desc: "HSL saturation multiplier. Accepts single parameter 0..x");
+            CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1,
+                desc: "RGB multiplier. Accepts single parameter 0..x");
+            CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1,
+                desc: "HSL lightness multiplier. Accepts single parameter 0..x");
+            CliArgs.Register(new List<string> {"-v", "--value"}, GainValue, 1,
+                desc: "HSV value multiplier. Accepts single parameter 0..x");
+            CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1,
+                desc: "HSV saturation multiplier. Accepts single parameter 0..x");
 
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2);
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2);
@@ -70,11 +75,12 @@ namespace ColorSchemeInverter.Filters
 
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
             CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
-                desc: "Inverts perceived brightness");
+                desc: "Inverts perceived brightness - experimental");
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1);
-            CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0);
+            CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
+                desc:"Converts to gray scale based on perceived brightness");
         }
 
         #region "Invert"

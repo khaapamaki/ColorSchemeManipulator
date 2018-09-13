@@ -11,12 +11,12 @@ Added option to convert colors on png-files for quick testing.
 ### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-  -h    --hue                      Hue shift as values of degrees -360..360
-  -s    --saturation               Saturation multiplier
-  -g    --gain                     @GainRgb
-  -l    --lightness                @GainLightness
-  -v    --value                    @GainValue
-  -S    --hsv-saturation           @GainHsvSaturation
+  -h    --hue                      Hue shift. Accepts single parameter as degrees -360..360
+  -s    --saturation               HSL saturation multiplier. Accepts single parameter 0..x
+  -g    --gain                     RGB multiplier. Accepts single parameter 0..x
+  -l    --lightness                HSL lightness multiplier. Accepts single parameter 0..x
+  -v    --value                    HSV value multiplier. Accepts single parameter 0..x
+  -S    --hsv-saturation           HSV saturation multiplier. Accepts single parameter 0..x
   -c    --contrast                 @ContrastRgb
   -cl   --contrast-lightness       @ContrastLightness
   -cv   --contrast-value           @ContrastValue
@@ -39,8 +39,12 @@ Available Filters:
   -les  --levels-saturation        @LevelsHslSaturation
   -leS  --levels-hsv-saturation    @LevelsHsvSaturation
   -i    --invert-rgb               @InvertRgb
+  -ib   --invert-brightness        Inverts perceived brightness - experimental
   -il   --invert-lightness         @InvertLightness
   -iv   --invert-value             @InvertValue
+  -ilv  --invert-lightness-value   @InvertMixedLightnessAndValue
+  -gsb  --grayscale-brightness     Converts to gray scale based on perceived brightness
+
 
 Usage example:
     <appname> -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
