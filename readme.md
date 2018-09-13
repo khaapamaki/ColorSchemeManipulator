@@ -71,10 +71,11 @@ Hunting for them...
 
 + Optimization in range parameter handling during filtering
 + Range parameter validation
++ CliArg subclassing(?) so other than filter delegate type arguments are possible
+    + FilterSet arg type could be useful for creating presets
 + More Unit tests
 + Support for Visual Studio Code
-+ Support for CSS and HTML files? What else?
-+ Presets for quick operations
++ Support for CSS and HTML files
 + Proper HSV<->HSL conversions, now done by converting to RGB first
 + Change the project name. Inversion is not any more the only way to tweak colors!!
 
@@ -98,11 +99,13 @@ namespace ColorSchemeInverter
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
             
             var filters = new FilterSet()
-                .Add(FilterBundle.LightnessInvert)
-                .Add(FilterBundle.SaturationContrast, 0.3, 0.45)
-                .Add(FilterBundle.SaturationGain, 1.2)
-                .Add(FilterBundle.Gain, 1.1, new ColorRange().Lightness(0.3, 1).Blue(0, 0.5, 0, 0.2));
-                .Add(FilterBundle.Contrast, 0.3);
+                .Add(FilterBundle.GainLightness, 0.6, new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0)) // dampen "neon" colors before inversion so don't get too dark
+                .Add(FilterBundle.InvertPerceivedBrightness)  // invert image
+                .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1) // adjust levels
+                .Add(FilterBundle.GammaRgb, 1.7, new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                .Add(FilterBundle.GainHslSaturation, 1.7, new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                .Add(FilterBundle.GammaHslSaturation, 1.4, new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7)) // add saturation for weak colors
+                ;
             
             ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
             p.ProcessFile(sourceFile, targetFile, filters);
