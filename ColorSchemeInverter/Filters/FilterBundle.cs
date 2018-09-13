@@ -79,9 +79,9 @@ namespace ColorSchemeInverter.Filters
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
-                desc:"Inverts colors using both lightness and value, by mixing the result - experimental");
+                desc: "Inverts colors using both lightness and value, by mixing the result - experimental");
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
-                desc:"Converts to gray scale based on perceived brightness");
+                desc: "Converts to gray scale based on perceived brightness");
         }
 
         #region "Invert"
@@ -117,8 +117,9 @@ namespace ColorSchemeInverter.Filters
             (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(hsl, filterParams);
             double mix = 0.333333;
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
-                 mix = (FilterUtils.TryParseDouble(filterParams[0]) ?? 0.5).LimitLow(0.0);
+                mix = (FilterUtils.TryParseDouble(filterParams[0]) ?? 0.5).LimitLow(0.0);
             }
+
             Hsl hslFiltered = new Hsl(hsl);
             Hsv hsv = new Hsv(hsl.ToHsv());
             Hsv hsvFiltered = new Hsv(hsv);
@@ -127,7 +128,7 @@ namespace ColorSchemeInverter.Filters
             hsl = hsl.Interpolate(hslFiltered, rangeFactor);
             hsv = hsv.Interpolate(hsvFiltered, rangeFactor);
 
-            return hsl.Interpolate(hsv.ToHsl(),mix);
+            return hsl.Interpolate(hsv.ToHsl(), mix);
         }
 
 
@@ -144,25 +145,33 @@ namespace ColorSchemeInverter.Filters
         public static Rgb InvertPerceivedBrightness(Rgb rgb, params object[] filterParams)
         {
             double rangeFactor;
-            (rangeFactor, _) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
-            Hsl hsl = rgb.ToHsl();
-            Rgb inverted = new Rgb(rgb);
-            var br = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
-            Hsl filtered = new Hsl(hsl.Hue, hsl.Saturation, 1 - br, rgb.Alpha);
-            inverted = filtered.ToRgb();
-            var filteredBr =  ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
-            var expected = 1 - br;
-            var lCorr = expected / filteredBr;
-            var d = lCorr - 1;
-            lCorr = lCorr + d / 6;
+            (rangeFactor, filterParams) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
+            var hsl = rgb.ToHsl();
+            var brightness = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+            var targetBrightness = (1 - brightness).Clamp(0, 1);
             
-            Rgb inverted2 = new Rgb(inverted.Red * lCorr, inverted.Green* lCorr, inverted.Blue * lCorr, rgb.Alpha);
-            var filteredBr2 =  ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
-            
-            return rgb.Interpolate(inverted2, rangeFactor);
+            // using brightness as lightness is not accurate but we can correct this later
+            // how ever it seems that completely correct value produces worse outcome
+            // so we may use something in between
+            Hsl invertedHsl = new Hsl(hsl.Hue, hsl.Saturation, targetBrightness, hsl.Alpha);
+
+            var invertedRgb = invertedHsl.ToRgb();
+            var newBrightness =
+                ColorMath.RgbPerceivedBrightness(invertedRgb.Red, invertedRgb.Green, invertedRgb.Blue);
+
+            //var delta = targetBrightness / newBrightness - 1;
+            var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1) / 4;
+
+
+            var corrected = new Rgb(invertedRgb.Red * corr, invertedRgb.Green * corr,
+                invertedRgb.Blue * corr, rgb.Alpha);
+
+            // var correctedBrightness = ColorMath.RgbPerceivedBrightness(corrected.Red,
+            //     corrected.Green, corrected.Blue);
+
+            return rgb.Interpolate(corrected, rangeFactor);
         }
-        
-        
+
         #endregion
 
         #region "Gain"
@@ -557,9 +566,9 @@ namespace ColorSchemeInverter.Filters
         }
 
         #endregion
-        
+
         #region "Misc"
-        
+
         public static Rgb BrightnessToGrayScale(Rgb rgb, params object[] filterParams)
         {
             var filtered = new Rgb(rgb);
@@ -570,9 +579,8 @@ namespace ColorSchemeInverter.Filters
             filtered.Green = br;
             filtered.Blue = br;
             return rgb.Interpolate(filtered, rangeFactor);
-
         }
-        
+
         #endregion
     }
 }
