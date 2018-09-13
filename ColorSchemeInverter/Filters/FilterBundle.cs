@@ -78,7 +78,8 @@ namespace ColorSchemeInverter.Filters
                 desc: "Inverts perceived brightness - experimental");
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
-            CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1);
+            CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
+                desc:"Inverts colors using both lightness and value, by mixing the result - experimental");
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
                 desc:"Converts to gray scale based on perceived brightness");
         }
