@@ -25,7 +25,8 @@ namespace ColorSchemeManipulator
 #endif
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
-
+            ExperimentalBundle.RegisterCliOptions();
+            
             // print help
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
                 Console.WriteLine("Available Filters:");
@@ -42,25 +43,27 @@ namespace ColorSchemeManipulator
 
 
             // PARSE other than filter options here, and remove them from remainingOptArgs array
-   
+            
+            
             // Testing something here...
             if (!filterSet.Any() && remainingOptArgs.Any()) {
                 if (remainingOptArgs[0] == "--tolight") {
                     filterSet
-                        .Add(FilterBundle.GainLightness, 0.6, 
-                            new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0)) // dampen "neon" colors before so don't get too dark
-                        .Add(FilterBundle.InvertPerceivedBrightness)  // invert image
+                        .Add(FilterBundle.GainLightness, 0.6,
+                            new ColorRange().Brightness(0.7, 1, 0.15, 0)
+                                .Saturation(0.7, 1, 0.1, 0)) // dampen "neon" colors before so don't get too dark
+                        .Add(FilterBundle.InvertPerceivedBrightness) // invert image
                         .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1) // add some brightness
-                        .Add(FilterBundle.GammaRgb, 1.7, 
+                        .Add(FilterBundle.GammaRgb, 1.7,
                             new ColorRange()
-                            .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                        .Add(FilterBundle.GainHslSaturation, 1.7, 
+                                .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                        .Add(FilterBundle.GainHslSaturation, 1.7,
                             new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                        .Add(FilterBundle.GammaHslSaturation, 1.4, 
+                        .Add(FilterBundle.GammaHslSaturation, 1.4,
                             new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7)) // add saturation for weak colors
                         ;
+                    remainingOptArgs = new string[0];
                 }
-                remainingOptArgs = new string[0];
             }
 
             // All remaining option arguments are considered illegal
@@ -73,12 +76,12 @@ namespace ColorSchemeManipulator
             Console.WriteLine(filterSet.ToString());
 
             string sourceFile, targetFile;
-            
+
 #if DEBUG
             // Test files for debugging
             string sourceFileName = @"HappyDays_Complete.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
-             sourceFileName = "HappyDays.png";
+            sourceFileName = "HappyDays.png";
             // sourceFileName = "photo.png";
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
@@ -86,19 +89,21 @@ namespace ColorSchemeManipulator
                 Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
                                                              + Path.GetExtension(sourceFile)));
 #endif
-            
+
             // get source and target from CLI args, if not available use built-in ones for debugging
             // todo: show error if source or target is missing
             if (remainingArgs.Length == 2) {
-                sourceFile = args[0];
-                targetFile = args[1];
+                sourceFile = remainingArgs[0];
+                targetFile = remainingArgs[1];
             }
 
             if (remainingArgs.Length == 1) {
-                targetFile = args[0];
+                sourceFile = remainingArgs[0];
+                targetFile = Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
+                                                                          + Path.GetExtension(sourceFile);
             }
 
-            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
+            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
@@ -111,13 +116,10 @@ namespace ColorSchemeManipulator
                 ImageProcessor processor = new ImageProcessor();
                 processor.ProcessFile(sourceFile, targetFile, filterSet);
             } else {
-                Console.Error.WriteLine(sourceFileName + " is not supported color scheme format");
+                Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
             }
         }
 
-        private static void TestTempStuff()
-        {
-
-        }
+        private static void TestTempStuff() { }
     }
 }
