@@ -82,29 +82,19 @@
     <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\vcs.xml" />
     <Content Include="..\.idea\.idea.ColorSchemeInverter\.idea\workspace.xml" />
     <Content Include="..\.idea\.idea.ColorSchemeInverter\riderModule.iml" />
+    <Content Include="..\ColorSchemes\Cobalt.icls" />
+    <Content Include="..\ColorSchemes\darcula-vs-2017.vstheme" />
+    <Content Include="..\ColorSchemes\HappyDays.icls" />
+    <Content Include="..\ColorSchemes\HappyDays.png" />
+    <Content Include="..\ColorSchemes\HappyDays_Rider.icls" />
+    <Content Include="..\ColorSchemes\photo.png" />
     <Content Include="bin\Debug\photo_converted.png" />
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays.png">
-      <Link>HappyDays.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\photo.png">
-      <Link>photo.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>
     <Content Include="bin\Debug\darcula-vs-2017_inverted.vstheme" />
     <Content Include="bin\Debug\HappyDays_converted.png" />
     <Content Include="bin\Debug\HappyDays_inverted.icls" />
-    <EmbeddedResource Include="..\ColorSchemes\darcula-vs-2017.vstheme">
-      <Link>darcula-vs-2017.vstheme</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays.icls">
-      <Link>HappyDays.icls</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
