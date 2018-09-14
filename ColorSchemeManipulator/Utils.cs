@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace ColorSchemeManipulator
 {
     public static class Utils

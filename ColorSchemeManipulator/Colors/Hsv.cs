@@ -1,6 +1,4 @@
-using System;
 using ColorSchemeManipulator.Common;
-using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {

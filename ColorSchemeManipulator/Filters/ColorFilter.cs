@@ -1,5 +1,3 @@
-using System;
-using System.Text;
 using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters

@@ -1,7 +1,3 @@
-using System;
-using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Security.Permissions;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;

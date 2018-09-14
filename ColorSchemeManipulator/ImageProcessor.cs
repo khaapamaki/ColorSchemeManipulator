@@ -2,7 +2,6 @@ using System;
 using System.Drawing;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
-using ColorSchemeManipulator.SchemeFileSupport;
 
 namespace ColorSchemeManipulator
 {
