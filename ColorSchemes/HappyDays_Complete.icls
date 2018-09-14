@@ -1,11 +1,4 @@
 <scheme name="HappyDays Complete" parent_scheme="Darcula">
-  <metaInfo>
-    <property name="created">2018-09-14T12:19:18</property>
-    <property name="ide">idea</property>
-    <property name="ideVersion">2018.2.0.0</property>
-    <property name="modified">2018-09-14T12:19:43</property>
-    <property name="originalScheme">HappyDays</property>
-  </metaInfo>
   <colors>
     <option name="ADDED_LINES_COLOR" value="384c38" />
     <option name="ANNOTATIONS_COLOR" value="8b999f" />

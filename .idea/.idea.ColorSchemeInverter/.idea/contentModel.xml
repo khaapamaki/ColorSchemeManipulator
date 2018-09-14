@@ -25,6 +25,8 @@
           <e p="Debug" t="Include">
             <e p="darcula-vs-2017_inverted.vstheme" t="Include" />
             <e p="HappyDays.png" t="Include" />
+            <e p="HappyDays_Complete.icls" t="Include" />
+            <e p="HappyDays_Complete_converted.icls" t="Include" />
             <e p="HappyDays_converted.png" t="Include" />
             <e p="HappyDays_inverted.icls" t="Include" />
             <e p="photo_converted.png" t="Include" />
@@ -68,6 +70,7 @@
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
         <e p="SchemeFileSupport" t="Include">
+          <e p="Notes.txt" t="Include" />
           <e p="SchemeFormat.cs" t="Include" />
           <e p="SchemeFormatUtil.cs" t="Include" />
         </e>
