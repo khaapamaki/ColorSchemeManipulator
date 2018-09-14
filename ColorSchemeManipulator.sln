@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorSchemeManipulator", "ColorSchemeManipulator\ColorSchemeManipulator.csproj", "{98E606AC-4D7A-47DC-A9CF-A526F706EF78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorSchemeManipulator.UnitTests", "ColorSchemeManipulator.UnitTests\ColorSchemeManipulator.UnitTests.csproj", "{7FCCC101-8D1E-4226-A8C6-905BD90A9E70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98E606AC-4D7A-47DC-A9CF-A526F706EF78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98E606AC-4D7A-47DC-A9CF-A526F706EF78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98E606AC-4D7A-47DC-A9CF-A526F706EF78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98E606AC-4D7A-47DC-A9CF-A526F706EF78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCCC101-8D1E-4226-A8C6-905BD90A9E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCCC101-8D1E-4226-A8C6-905BD90A9E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCCC101-8D1E-4226-A8C6-905BD90A9E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCCC101-8D1E-4226-A8C6-905BD90A9E70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

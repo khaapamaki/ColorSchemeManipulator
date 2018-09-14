@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98E606AC-4D7A-47DC-A9CF-A526F706EF78}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ColorSchemeManipulator</RootNamespace>
+    <AssemblyName>colschman</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CLI\CliArg.cs" />
+    <Compile Include="CLI\CliArgs.cs" />
+    <Compile Include="CLI\CliUtils.cs" />
+    <Compile Include="ColorSchemeProcessor.cs" />
+    <Compile Include="Colors\ColorBase.cs" />
+    <Compile Include="Colors\ColorConversions.cs" />
+    <Compile Include="Colors\Hsl.cs" />
+    <Compile Include="Colors\Hsv.cs" />
+    <Compile Include="Colors\Rgb.cs" />
+    <Compile Include="Colors\Rgb8Bit.cs" />
+    <Compile Include="Common\ColorMath.cs" />
+    <Compile Include="Common\DoubleExtensions.cs" />
+    <Compile Include="Common\GenericExtensions.cs" />
+    <Compile Include="Filters\ColorFilter.cs" />
+    <Compile Include="Filters\ColorRange.cs" />
+    <Compile Include="Filters\FilterBundle.cs" />
+    <Compile Include="Filters\FilterSet.cs" />
+    <Compile Include="Filters\FilterUtils.cs" />
+    <Compile Include="Filters\HslFilter.cs" />
+    <Compile Include="Filters\HsvFilter.cs" />
+    <Compile Include="Filters\LoopingRange.cs" />
+    <Compile Include="Filters\ParameterRange.cs" />
+    <Compile Include="Filters\RgbFilter.cs" />
+    <Compile Include="ImageProcessor.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemeFileSupport\SchemeFormat.cs" />
+    <Compile Include="SchemeFileSupport\SchemeFormatUtil.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\ColorSchemes\Cobalt.icls" />
+    <Content Include="..\ColorSchemes\darcula-vs-2017.vstheme" />
+    <Content Include="..\ColorSchemes\HappyDays.icls" />
+    <Content Include="..\ColorSchemes\HappyDays.png" />
+    <Content Include="..\ColorSchemes\HappyDays_Complete.icls" />
+    <Content Include="..\ColorSchemes\photo.png" />
+    <Content Include="SchemeFileSupport\Notes.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+</Project>
