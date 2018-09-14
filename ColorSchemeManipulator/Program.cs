@@ -45,8 +45,8 @@ namespace ColorSchemeManipulator
             // get source and target from CLI args
 
             if (remainingArgs.Length == 2) {
-                sourceFile = args[0];
-                targetFile = args[1];
+                sourceFile = remainingArgs[0];
+                targetFile = remainingArgs[1];
             } else {
                 Console.WriteLine("Both source and target files must be specified");
                 return;
@@ -56,6 +56,7 @@ namespace ColorSchemeManipulator
                 targetFile = args[0];
             }
 
+            var ext = Path.GetExtension(sourceFile);
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
