@@ -47,16 +47,16 @@ Available Filters:
 
 
 Usage example:
-    <appname> -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
+  colschman -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
     
 Using filter with color range:
-    <appname> "--gamma(sat: 0.5-1, l: 0-0.5) = 1.5" <sourcefile> <targetfile>
+  colschman  "--gamma(sat: 0.5-1, l: 0-0.5) = 1.5" <sourcefile> <targetfile>
     
-Using filter with color range defined with four points: (attribute: min1,min2,max1,max2)
-    <appname> "--gamma(sat: 0.4, 0.5, 1, 1, lightness:0, 0, 0.5, 0.7) = 1.5" <sourcefile> <targetfile>
+Using filter with color range defined with four points: (attribute: min1, min2, max1, max2)
+  colschman > "--gamma(sat: 0.4, 0.5, 1, 1, lightness:0, 0, 0.5, 0.7) = 1.5" <sourcefile> <targetfile>
     
 Using filter with color range with slope parameters: (attribute: min/slope - max/slope)
-    <appname> "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
+  colschman  "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
     
 
 Note: Some filters are purely for experimental purposes!
@@ -73,11 +73,13 @@ Hunting for them...
 + Range parameter validation
 + CliArg subclassing(?) so other than filter delegate type arguments are possible
     + FilterSet arg type could be useful for creating presets
++ SchemeFormat specific extra processing
+    + IntelliJ: switch parent scheme based on light/dark background setting
 + More Unit tests
 + Support for Visual Studio Code
 + Support for CSS and HTML files
 + Proper HSV<->HSL conversions, now done by converting to RGB first
-+ Change the project name. Inversion is not any more the only way to tweak colors!!
+
 
 
 #### Manually filtering (no using CLI arguments)
@@ -99,12 +101,16 @@ namespace ColorSchemeInverter
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
             
             var filters = new FilterSet()
-                .Add(FilterBundle.GainLightness, 0.6, new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0)) // dampen "neon" colors before inversion so don't get too dark
+                .Add(FilterBundle.GainLightness, 0.6, 
+                    new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0)) // dampen "neon" colors before inversion so don't get too dark
                 .Add(FilterBundle.InvertPerceivedBrightness)  // invert image
                 .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1) // adjust levels
-                .Add(FilterBundle.GammaRgb, 1.7, new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                .Add(FilterBundle.GainHslSaturation, 1.7, new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                .Add(FilterBundle.GammaHslSaturation, 1.4, new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7)) // add saturation for weak colors
+                .Add(FilterBundle.GammaRgb, 1.7, 
+                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                .Add(FilterBundle.GainHslSaturation, 1.7, 
+                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                .Add(FilterBundle.GammaHslSaturation, 1.4, 
+                    new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7)) // add saturation for weak colors
                 ;
             
             ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
@@ -139,7 +145,7 @@ namespace ColorSchemeInverter
             // Extract non-option and remaining option arguments
             string[] remainingOptArgs;            
             (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
-
+            
             // PARSE other than filter options here, and remove them from remainingOptArgs array
             
             // All remaining option arguments are considered illegal... 
