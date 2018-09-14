@@ -4,6 +4,7 @@ namespace ColorSchemeInverter.SchemeFileSupport
     {
         private const string PatternHex8 = "([0-9abcdefABCDEF]{8})";
         private const string PatternHex6 = "([0-9abcdefABCDEF]{6})";
+        private const string PatternHex2to6 = "([0-9abcdefABCDEF]{2,6})";
 
         public static SchemeFormat GetFormatFromExtension(string extension)
         {
@@ -28,7 +29,7 @@ namespace ColorSchemeInverter.SchemeFileSupport
             // Patterns must have three groups, where 2nd must pure hex RGB without any prefixes!
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
-                    return "(<option name=\".+\" value=\")" + PatternHex6 + "(\"\\s?\\/>)";
+                    return "(<option name=\".+\" value=\")" + PatternHex2to6 + "(\"\\s?\\/>)";
                 case SchemeFormat.VisualStudio:
                     return "(ground Type=\".+\" Source=\")" + PatternHex8 + "(\" *\\/>)";
                 case SchemeFormat.Generic:

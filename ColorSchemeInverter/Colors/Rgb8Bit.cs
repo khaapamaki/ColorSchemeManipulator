@@ -58,7 +58,11 @@ namespace ColorSchemeInverter.Colors
 
         public static Rgb8Bit FromRgbString(string rgbString, string rgbHexFormat)
         {
-            if (IsValidHexString(rgbString) && rgbString.Length == rgbHexFormat.Length) {
+            if (IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
+                if (rgbString.Length < rgbHexFormat.Length) {
+                    rgbString = rgbString.PadLeft(rgbHexFormat.Length, '0');
+                }
+
                 switch (rgbHexFormat.ToUpper()) {
                     case "RRGGBB":
                         return FromRgbString(rgbString);
@@ -131,9 +135,9 @@ namespace ColorSchemeInverter.Colors
             bool isUpperCase = rgbHexFormat.ToUpper() == rgbHexFormat;
             return isUpperCase
                 ? result.ToUpper()
-                : result.ToLower();             
+                : result.ToLower();
         }
-        
+
         public string ToRgbString()
         {
             return Red.ToString("X2") + Green.ToString("X2") + Blue.ToString("X2");
@@ -157,13 +161,13 @@ namespace ColorSchemeInverter.Colors
 
         public bool AboutEqual(Rgb8Bit c)
         {
-            int dr = Math.Abs((int)Red - c.Red);
-            int dg = Math.Abs((int)Green - c.Green);
-            int db = Math.Abs((int)Blue - c.Blue);
-            int da = Math.Abs((int)Alpha - c.Alpha);
+            int dr = Math.Abs((int) Red - c.Red);
+            int dg = Math.Abs((int) Green - c.Green);
+            int db = Math.Abs((int) Blue - c.Blue);
+            int da = Math.Abs((int) Alpha - c.Alpha);
             return dr <= 1 && dg <= 1 && db <= 1 && da <= 1;
         }
-        
+
         private static bool IsValidHexString(string str)
         {
             const string validHex = "0123456789abcdefABCDEF";

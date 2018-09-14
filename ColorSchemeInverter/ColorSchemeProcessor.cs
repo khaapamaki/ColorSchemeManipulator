@@ -50,7 +50,7 @@ namespace ColorSchemeInverter
                 // the second capture group of the regex pattern must be the one that contains color data
                 string rgbString = m.Groups[2].ToString();
                 
-                if (Utils.IsValidHexString(rgbString) && rgbString.Length == rgbHexFormat.Length) {
+                if (Utils.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
 
                     string filteredRgbString =
                         Rgb.FromRgbString(rgbString, rgbHexFormat)
