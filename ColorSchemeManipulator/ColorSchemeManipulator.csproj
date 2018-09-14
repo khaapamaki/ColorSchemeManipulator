@@ -55,6 +55,7 @@
     <Compile Include="Common\GenericExtensions.cs" />
     <Compile Include="Filters\ColorFilter.cs" />
     <Compile Include="Filters\ColorRange.cs" />
+    <Compile Include="Filters\ExperimentalBundle.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
     <Compile Include="Filters\FilterSet.cs" />
     <Compile Include="Filters\FilterUtils.cs" />
@@ -101,6 +102,7 @@
     <Content Include="bin\Debug\HappyDays_Complete.icls" />
     <Content Include="bin\Debug\HappyDays_converted.png" />
     <Content Include="bin\Debug\photo.png" />
+    <Content Include="bin\Debug\photo_converted.png" />
     <Content Include="SchemeFileSupport\Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

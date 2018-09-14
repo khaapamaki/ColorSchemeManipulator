@@ -42,29 +42,8 @@ namespace ColorSchemeManipulator
             (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
 
 
-            // PARSE other than filter options here, and remove them from remainingOptArgs array
-            
-            
-            // Testing something here...
-            if (!filterSet.Any() && remainingOptArgs.Any()) {
-                if (remainingOptArgs[0] == "--tolight") {
-                    filterSet
-                        .Add(FilterBundle.GainLightness, 0.6,
-                            new ColorRange().Brightness(0.7, 1, 0.15, 0)
-                                .Saturation(0.7, 1, 0.1, 0)) // dampen "neon" colors before so don't get too dark
-                        .Add(FilterBundle.InvertPerceivedBrightness) // invert image
-                        .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1) // add some brightness
-                        .Add(FilterBundle.GammaRgb, 1.7,
-                            new ColorRange()
-                                .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                        .Add(FilterBundle.GainHslSaturation, 1.7,
-                            new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                        .Add(FilterBundle.GammaHslSaturation, 1.4,
-                            new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7)) // add saturation for weak colors
-                        ;
-                    remainingOptArgs = new string[0];
-                }
-            }
+            // PARSE other than filter options here, and remove them from remainingOptArgs array 
+           
 
             // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
