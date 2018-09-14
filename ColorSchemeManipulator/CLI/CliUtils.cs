@@ -34,7 +34,6 @@ namespace ColorSchemeManipulator.CLI
             (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
 
             object[] filterParams = TryParseDoubles(paramList?.ToArray());
-            //object[] filterParams =  paramList?.ToArray();
 
             if (filterDelegate is Func<Hsl, object[], Hsl>) {
                 filters.Add((Func<Hsl, object[], Hsl>) filterDelegate, filterParams);
@@ -75,7 +74,7 @@ namespace ColorSchemeManipulator.CLI
             string option = null;
             string filterParams = null;
             string rangeString = null;
-            const string pattern = @"(^\-[a-zA-Z]{1,3}|^\-\-[a-zA-Z\-]{3,})(\((.*)\))?(\s*=\s*(.*))?";
+            const string pattern = @"(^\-[a-zA-Z0-9]{1,3}|^\-\-[a-zA-Z0-9\-]{3,})(\((.*)\))?(\s*=\s*(.*))?";
             Match m = Regex.Match(arg, pattern);
             if (m.Groups.Count == 6) {
                 option = m.Groups[1].ToString();
@@ -108,12 +107,10 @@ namespace ColorSchemeManipulator.CLI
             if (string.IsNullOrEmpty(rangeString)) return null;
 
             ColorRange colorRange = new ColorRange();
-            double max, min, minSlope, maxSlope;
-            bool succeeded;
 
             ParameterRange range = TryParseRangeForRangeParam(rangeString, "h|hue");
             if (range != null) {
-                range.LoopMax = 360; 
+                range.LoopMax = 360;
                 colorRange.HueRange = range.Copy();
             }
 
@@ -136,6 +133,7 @@ namespace ColorSchemeManipulator.CLI
             if (range != null) {
                 colorRange.GreenRange = range.Copy();
             }
+
             range = TryParseRangeForRangeParam(rangeString, "b|blue");
             if (range != null) {
                 colorRange.BlueRange = range.Copy();
@@ -145,6 +143,7 @@ namespace ColorSchemeManipulator.CLI
             if (range != null) {
                 colorRange.ValueRange = range.Copy();
             }
+
             range = TryParseRangeForRangeParam(rangeString, "b|bri|brightness");
             if (range != null) {
                 colorRange.BrightnessRange = range.Copy();
@@ -165,7 +164,7 @@ namespace ColorSchemeManipulator.CLI
 
                 return ParameterRange.Range(min, max, minSlope, maxSlope);
             }
-            
+
             m = Regex.Match(rangeString, GetFourPointRangePattern(rangeParam));
             if (m.Success) {
                 double minStart = double.Parse(m.Groups["minS"].Value);
@@ -173,7 +172,7 @@ namespace ColorSchemeManipulator.CLI
                 double maxStart = double.Parse(m.Groups["maxS"].Value);
                 double maxEnd = double.Parse(m.Groups["maxE"].Value);
 
-                return  ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
+                return ParameterRange.FourPointRange(minStart, minEnd, maxStart, maxEnd);
             }
 
             return null;
@@ -186,7 +185,7 @@ namespace ColorSchemeManipulator.CLI
                 + options
                 + @"):\s*(?<min>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<minslope>[0-9]*[\.]?[0-9]+))?\s*\-\s*(?<max>[\-]?[0-9]*[\.]?[0-9]+)(\/(?<maxslope>[0-9]*[\.]?[0-9]+))?";
         }
-        
+
         /// <summary>
         /// Pattern that matches eg. this: s:0,0.1,0.5,0.6 -or- S: 0, 0.1, 0.5, 0.6
         /// </summary>
