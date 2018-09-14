@@ -84,10 +84,17 @@
     <Content Include="..\.idea\.idea.ColorSchemeInverter\riderModule.iml" />
     <Content Include="..\ColorSchemes\Cobalt.icls" />
     <Content Include="..\ColorSchemes\darcula-vs-2017.vstheme" />
-    <Content Include="..\ColorSchemes\HappyDays.icls" />
-    <Content Include="..\ColorSchemes\HappyDays.png" />
-    <Content Include="..\ColorSchemes\HappyDays_Rider_breaks_IDE.icls" />
-    <Content Include="..\ColorSchemes\photo.png" />
+    <EmbeddedResource Include="..\ColorSchemes\HappyDays.icls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ColorSchemes\HappyDays.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="..\ColorSchemes\HappyDays_Complete.icls" />
+    <EmbeddedResource Include="..\ColorSchemes\photo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="bin\Debug\HappyDays.png" />
     <Content Include="bin\Debug\photo_converted.png" />
     <Content Include="..\readme.md">
       <Link>readme.md</Link>

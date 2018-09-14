@@ -24,6 +24,7 @@
         <e p="bin" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="darcula-vs-2017_inverted.vstheme" t="Include" />
+            <e p="HappyDays.png" t="Include" />
             <e p="HappyDays_converted.png" t="Include" />
             <e p="HappyDays_inverted.icls" t="Include" />
             <e p="photo_converted.png" t="Include" />
@@ -97,7 +98,7 @@
         <e p="darcula-vs-2017.vstheme" t="Include" />
         <e p="HappyDays.icls" t="Include" />
         <e p="HappyDays.png" t="Include" />
-        <e p="HappyDays_Rider_breaks_IDE.icls" t="Include" />
+        <e p="HappyDays_Complete.icls" t="Include" />
         <e p="photo.png" t="Include" />
       </e>
       <e p="packages" t="ExcludeRecursive" />
