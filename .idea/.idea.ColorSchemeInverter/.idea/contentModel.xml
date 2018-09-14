@@ -97,7 +97,7 @@
         <e p="darcula-vs-2017.vstheme" t="Include" />
         <e p="HappyDays.icls" t="Include" />
         <e p="HappyDays.png" t="Include" />
-        <e p="HappyDays_Rider.icls" t="Include" />
+        <e p="HappyDays_Rider_breaks_IDE.icls" t="Include" />
         <e p="photo.png" t="Include" />
       </e>
       <e p="packages" t="ExcludeRecursive" />

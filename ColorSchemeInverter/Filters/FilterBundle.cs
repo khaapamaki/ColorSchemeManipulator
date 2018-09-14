@@ -6,7 +6,6 @@ using System.Linq;
 using ColorSchemeInverter.CLI;
 using ColorSchemeInverter.Colors;
 using ColorSchemeInverter.Common;
-using NUnit.Framework;
 
 namespace ColorSchemeInverter.Filters
 {

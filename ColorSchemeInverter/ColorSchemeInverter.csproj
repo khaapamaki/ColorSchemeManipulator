@@ -86,7 +86,7 @@
     <Content Include="..\ColorSchemes\darcula-vs-2017.vstheme" />
     <Content Include="..\ColorSchemes\HappyDays.icls" />
     <Content Include="..\ColorSchemes\HappyDays.png" />
-    <Content Include="..\ColorSchemes\HappyDays_Rider.icls" />
+    <Content Include="..\ColorSchemes\HappyDays_Rider_breaks_IDE.icls" />
     <Content Include="..\ColorSchemes\photo.png" />
     <Content Include="bin\Debug\photo_converted.png" />
     <Content Include="..\readme.md">
