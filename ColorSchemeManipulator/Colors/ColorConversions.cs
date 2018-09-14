@@ -1,7 +1,5 @@
 using System;
-using System.CodeDom;
 using System.Drawing;
-using System.Runtime.Remoting.Messaging;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors

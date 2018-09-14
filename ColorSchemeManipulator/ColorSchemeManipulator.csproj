@@ -71,37 +71,13 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\ColorSchemes\Cobalt.icls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\darcula-vs-2017.vstheme">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays.icls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays_Complete.icls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\photo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>
-    <Content Include="bin\Debug\Cobalt.icls" />
-    <Content Include="bin\Debug\colschman.exe" />
-    <Content Include="bin\Debug\colschman.pdb" />
-    <Content Include="bin\Debug\darcula-vs-2017.vstheme" />
-    <Content Include="bin\Debug\HappyDays.icls" />
-    <Content Include="bin\Debug\HappyDays.png" />
-    <Content Include="bin\Debug\HappyDays_Complete.icls" />
-    <Content Include="bin\Debug\HappyDays_converted.png" />
-    <Content Include="bin\Debug\photo.png" />
     <Content Include="SchemeFileSupport\Notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

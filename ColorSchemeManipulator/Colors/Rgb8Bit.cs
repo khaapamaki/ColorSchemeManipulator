@@ -52,7 +52,6 @@ namespace ColorSchemeManipulator.Colors
                 return string.Format($"Red: 0x{Red:X2}, Green: 0x{Green:X2}, Blue: 0x{Blue:X2}  Alpha: 0x{Alpha:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
-                //return ToString();
             }
         }
 

@@ -1,5 +1,4 @@
 using System;
-using ColorSchemeManipulator;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;

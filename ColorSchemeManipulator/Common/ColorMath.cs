@@ -1,8 +1,4 @@
 using System;
-using System.Data.Odbc;
-using System.Dynamic;
-using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Common
 {

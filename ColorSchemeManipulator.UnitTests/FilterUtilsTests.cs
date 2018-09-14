@@ -1,6 +1,5 @@
 using NUnit.Framework;
-using ColorSchemeManipulator.Filters;
-    
+
 namespace ColorSchemeManipulator.UnitTests
 {
     [TestFixture]
