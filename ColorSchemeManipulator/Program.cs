@@ -24,22 +24,22 @@ namespace ColorSchemeManipulator
             // TestTempStuff();
 #endif
             // Make FilterBundle filters available for CLI
-            BatchFilterBundle.RegisterCliOptions();
-            BatchExperimentalBundle.RegisterCliOptions();
+            FilterBundle.RegisterCliOptions();
+            ExperimentalBundle.RegisterCliOptions();
             
             // print help
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
                 Console.WriteLine("Available Filters:");
-                Console.WriteLine(BatchCliArgs.ToString());
+                Console.WriteLine(CliArgs.ToString());
                 return;
             }
 
             // Parse CLI args and generate FilterSet of them
-            (BatchFilterSet filterSet, string[] remainingArgs) = BatchCliArgs.ParseFilterArgs(args);
+            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
 
             // Extract non-option and remaining option arguments
             string[] remainingOptArgs;
-            (remainingArgs, remainingOptArgs) = BatchCliArgs.ExtractOptionArguments(remainingArgs);
+            (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
 
 
             // PARSE other than filter options here, and remove them from remainingOptArgs array 

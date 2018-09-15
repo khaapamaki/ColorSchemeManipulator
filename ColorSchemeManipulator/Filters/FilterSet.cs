@@ -5,28 +5,28 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
-    public class BatchFilterSet
+    public class FilterSet
     {
-        private readonly List<BatchFilter> _filters = new List<BatchFilter>();
+        private readonly List<ColorFilter> _filters = new List<ColorFilter>();
 
-        public BatchFilterSet() { }
+        public FilterSet() { }
 
         
-        public BatchFilterSet Add(BatchFilter filter)
+        public FilterSet Add(ColorFilter filter)
         {
             _filters.Add(filter);
             return this;
         }
 
-        public BatchFilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate)
+        public FilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate)
         {
-            _filters.Add(new BatchFilter(filterDelegate));
+            _filters.Add(new ColorFilter(filterDelegate));
             return this;
         }
 
-        public BatchFilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, params object[] args)
+        public FilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, params object[] args)
         {
-            _filters.Add(new BatchFilter(filterDelegate, args));
+            _filters.Add(new ColorFilter(filterDelegate, args));
             return this;
         }
         
@@ -39,7 +39,7 @@ namespace ColorSchemeManipulator.Filters
             return colors;
         }
 
-        private IEnumerable<ColorBase> ApplyFilter(IEnumerable<ColorBase> colors, BatchFilter filter)
+        private IEnumerable<ColorBase> ApplyFilter(IEnumerable<ColorBase> colors, ColorFilter filter)
         {
             return filter.ApplyTo(colors);
         }

@@ -11,17 +11,17 @@ namespace ColorSchemeManipulator.Filters
     // Todo Better argument validation could be the answer
     // other option would be pre-parsing to correct type and not parsing again when the filter is reapplied.
 
-    public sealed class BatchFilterBundle
+    public sealed class FilterBundle
     {
-        private static BatchFilterBundle _instance;
+        private static FilterBundle _instance;
         private static readonly object Padlock = new object();
 
-        private BatchFilterBundle() { }
+        private FilterBundle() { }
 
-        private static BatchFilterBundle GetInstance()
+        private static FilterBundle GetInstance()
         {
             lock (Padlock) {
-                return _instance ?? (_instance = new BatchFilterBundle());
+                return _instance ?? (_instance = new FilterBundle());
             }
         }
 
@@ -69,7 +69,7 @@ namespace ColorSchemeManipulator.Filters
             // CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5);
             // CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
 
-            BatchCliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
+            CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
 
             // CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
             //     desc: "Inverts perceived brightness - experimental");

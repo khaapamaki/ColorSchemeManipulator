@@ -20,7 +20,7 @@ namespace ColorSchemeManipulator
             _schemeFormat = schemeFormat;
         }
         
-        public void ProcessFile(string sourceFile, string targetFile, BatchFilterSet filters)
+        public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
             string text = File.ReadAllText(sourceFile);
             string convertedText;
@@ -38,9 +38,9 @@ namespace ColorSchemeManipulator
         }
 
         // filters need to be stored for MatchEvaluator since it doesn't take parameters
-        private BatchFilterSet _filters;
+        private FilterSet _filters;
 
-        private string ApplyFilters(string text, BatchFilterSet filters)
+        private string ApplyFilters(string text, FilterSet filters)
         {
             _filters = filters;
             string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);

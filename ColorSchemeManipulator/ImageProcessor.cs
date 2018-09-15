@@ -12,7 +12,7 @@ namespace ColorSchemeManipulator
     {
         public ImageProcessor() { }
 
-        public void ProcessFile(string sourceFile, string targetFile, BatchFilterSet filters)
+        public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
             var image = Image.FromFile(sourceFile);
             var bitmap = new Bitmap(image);
@@ -63,7 +63,7 @@ namespace ColorSchemeManipulator
         }
 
 
-        //        private IEnumerable<ColorBase> ApplyFilters(IEnumerable<ColorBase> colorSet, BatchFilterSet filters)
+        //        private IEnumerable<ColorBase> ApplyFilters(IEnumerable<ColorBase> colorSet, FilterSet filters)
         //        {
         //            foreach (var color in colorSet) {
         //                color.ApplyFilterSet(filters);
@@ -71,7 +71,7 @@ namespace ColorSchemeManipulator
         //            }
         //        }
 
-        // private  IEnumerable<ColorBase> ApplyFilters(Bitmap image, BatchFilterSet filters)
+        // private  IEnumerable<ColorBase> ApplyFilters(Bitmap image, FilterSet filters)
         // {
         //     
         //     foreach (var color in filters.ApplyTo(Enumerate(image))) {
@@ -80,14 +80,14 @@ namespace ColorSchemeManipulator
         //
         // }
 
-        public Bitmap ApplyFilters(Bitmap bitmap, BatchFilterSet filters)
+        public Bitmap ApplyFilters(Bitmap bitmap, FilterSet filters)
         {
             SetPixels(bitmap, filters.ApplyTo(Enumerate(bitmap)));
             return bitmap;
         }
 
         // todo THIS CURRENTLY DOES NOTHING
-        private Color ApplyFilters(Color color, BatchFilterSet filters)
+        private Color ApplyFilters(Color color, FilterSet filters)
         {
             return ColorConversions.RgbToSystemColor(
                 ColorConversions.SystemColorToRgb(color)); // .ApplyFilterSet(filters));

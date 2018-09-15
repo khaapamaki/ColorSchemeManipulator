@@ -6,7 +6,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.CLI
 {
-    public class BatchCliArg
+    public class CliArg
     {
         public List<string> OptionArgs { get; set; }
         public Delegate FilterDelegate { get; set; }
@@ -14,7 +14,7 @@ namespace ColorSchemeManipulator.CLI
         public byte MaxParams { get; set; }
         public string Description { get; set; }
 
-        public BatchCliArg(string option, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams, byte maxParams = 0,
+        public CliArg(string option, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams, byte maxParams = 0,
             string desc = "")
         {
             OptionArgs = new List<string> {option};
@@ -24,7 +24,7 @@ namespace ColorSchemeManipulator.CLI
             Description = desc;
         }
 
-        public BatchCliArg(List<string> options, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams, byte maxParams = 0,
+        public CliArg(List<string> options, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams, byte maxParams = 0,
             string desc = "")
         {
             OptionArgs = new List<string>(options);
@@ -33,8 +33,6 @@ namespace ColorSchemeManipulator.CLI
             MaxParams = minParams < maxParams ? maxParams : minParams;
             Description = desc;
         }
-        
-
 
         public new string ToString()
         {

@@ -20,9 +20,9 @@
           </e>
         </e>
         <e p="CLI" t="Include">
-          <e p="BatchCliArg.cs" t="Include" />
-          <e p="BatchCliArgs.cs" t="Include" />
-          <e p="BatchCliUtils.cs" t="Include" />
+          <e p="CliArg.cs" t="Include" />
+          <e p="CliArgs.cs" t="Include" />
+          <e p="CliUtils.cs" t="Include" />
         </e>
         <e p="Colors" t="Include">
           <e p="ColorBase.cs" t="Include" />
@@ -40,12 +40,11 @@
           <e p="GenericExtensions.cs" t="Include" />
         </e>
         <e p="Filters" t="Include">
-          <e p="BatchExperimentalBundle.cs" t="Include" />
-          <e p="BatchFilter.cs" t="Include" />
-          <e p="BatchFilterBundle.cs" t="Include" />
-          <e p="BatchFIlterSet.cs" t="Include" />
           <e p="ColorFilter.cs" t="Include" />
           <e p="ColorRange.cs" t="Include" />
+          <e p="ExperimentalBundle.cs" t="Include" />
+          <e p="FilterBundle.cs" t="Include" />
+          <e p="FilterSet.cs" t="Include" />
           <e p="FilterUtils.cs" t="Include" />
           <e p="ParameterRange.cs" t="Include" />
         </e>

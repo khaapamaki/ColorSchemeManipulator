@@ -9,25 +9,25 @@ namespace ColorSchemeManipulator.CLI
     /// <summary>
     /// A singleton class to store and handle command line arguments relating to filters and filterDelegate paramters
     /// </summary>
-    public sealed class BatchCliArgs
+    public sealed class CliArgs
     {
-        private static BatchCliArgs _instance;
+        private static CliArgs _instance;
         private static readonly object Padlock = new object();
 
-        private BatchCliArgs() { }
+        private CliArgs() { }
 
-        private static BatchCliArgs GetInstance()
+        private static CliArgs GetInstance()
         {
             lock (Padlock) {
-                return _instance ?? (_instance = new BatchCliArgs());
+                return _instance ?? (_instance = new CliArgs());
             }
         }
 
-        private List<BatchCliArg> Items { get; set; } = new List<BatchCliArg>();
+        private List<CliArg> Items { get; set; } = new List<CliArg>();
 
         // ---- API Methods --------
 
-        public static BatchCliArg GetItem(int index)
+        public static CliArg GetItem(int index)
         {
             return GetInstance().Items[index];
         }
@@ -35,29 +35,29 @@ namespace ColorSchemeManipulator.CLI
         public static void Register(string option, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams,
             byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new BatchCliArg(option, filterDelegate, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
 
         public static void Register(List<string> option, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams,
             byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new BatchCliArg(option, filterDelegate, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
  
         /// <summary>
-        /// Parses command line arguments, creates a BatchFilterSet from them and returns it together with
+        /// Parses command line arguments, creates a FilterSet from them and returns it together with
         /// remaining arguments that should include source and target files
         /// </summary>
         /// <param name="args"></param>
-        /// <returns>BatchFilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (BatchFilterSet, string[]) ParseFilterArgs(params string[] args)
+        /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
+        public static (FilterSet, string[]) ParseFilterArgs(params string[] args)
         {
-            return BatchCliUtils.ParseFilterArgs(args);
+            return CliUtils.ParseFilterArgs(args);
         }
 
         /// <summary>
         /// Gets matching filterDelegate delegate function and given arguments for given command line option
-        /// Filter must be registered in BatchCliArgs class.
+        /// Filter must be registered in CliArgs class.
         /// </summary>
         /// <param name="option"></param>
         /// <returns></returns>
@@ -65,11 +65,11 @@ namespace ColorSchemeManipulator.CLI
         {
             string paramString;
             string rangeString;
-            (option, paramString, rangeString) = BatchCliUtils.SplitArgIntoPieces(option);
-            ColorRange range = BatchCliUtils.ParseRange(rangeString);
+            (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
+            ColorRange range = CliUtils.ParseRange(rangeString);
             foreach (var BatchCliArg in GetInstance().Items) {
                 if (BatchCliArg.OptionArgs.Contains(option)) {
-                    List<object> filterParams = BatchCliUtils.ExtractParams(paramString);
+                    List<object> filterParams = CliUtils.ExtractParams(paramString);
                     if (filterParams.Count >= BatchCliArg.MinParams) {
                         if (range != null)
                             filterParams.Add(range);

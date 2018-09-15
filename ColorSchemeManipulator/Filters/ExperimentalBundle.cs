@@ -5,18 +5,18 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
-    public sealed class BatchExperimentalBundle
+    public sealed class ExperimentalBundle
 
     {
-        private static BatchExperimentalBundle _instance;
+        private static ExperimentalBundle _instance;
         private static readonly object Padlock = new object();
 
-        private BatchExperimentalBundle() { }
+        private ExperimentalBundle() { }
 
-        private static BatchExperimentalBundle GetInstance()
+        private static ExperimentalBundle GetInstance()
         {
             lock (Padlock) {
-                return _instance ?? (_instance = new BatchExperimentalBundle());
+                return _instance ?? (_instance = new ExperimentalBundle());
             }
         }
 
@@ -27,11 +27,11 @@ namespace ColorSchemeManipulator.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            // BatchCliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0,
+            // CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0,
             //     desc: null);
-            // BatchCliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0,
+            // CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0,
             //     desc: null);
-            // BatchCliArgs.Register(new List<string> { "--tolight"}, ToLight, 0, 0,
+            // CliArgs.Register(new List<string> { "--tolight"}, ToLight, 0, 0,
             //     desc: null);
 
         }

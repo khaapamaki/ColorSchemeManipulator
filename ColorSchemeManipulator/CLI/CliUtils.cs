@@ -6,32 +6,32 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.CLI
 {
-    public static class BatchCliUtils
+    public static class CliUtils
     {
         /// <summary>
-        /// Parses command line arguments, creates a BatchFilterSet from them and returns it together with
+        /// Parses command line arguments, creates a FilterSet from them and returns it together with
         /// remaining arguments that should include source and target files
         /// </summary>
         /// <param name="args"></param>
-        /// <returns>BatchFilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (BatchFilterSet, string[]) ParseFilterArgs(string[] args)
+        /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
+        public static (FilterSet, string[]) ParseFilterArgs(string[] args)
         {
-            (BatchFilterSet cliFilters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
+            (FilterSet cliFilters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
             return (cliFilters, remainingArgs.ToArray());
         }
 
 
-        private static (BatchFilterSet, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
-            BatchFilterSet filters = null, List<string> remainingArgs = null)
+        private static (FilterSet, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
+            FilterSet filters = null, List<string> remainingArgs = null)
         {
-            filters = filters ?? new BatchFilterSet();
+            filters = filters ?? new FilterSet();
             remainingArgs = remainingArgs ?? new List<string>();
             if (args.Length < index + 1)
                 return (filters, remainingArgs);
 
             string arg = args[index++];
 
-            (Delegate filterDelegate, List<object> paramList) = BatchCliArgs.GetDelegateAndParameters(arg);
+            (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
 
             object[] filterParams = TryParseDoubles(paramList?.ToArray());
 
