@@ -31,23 +31,14 @@ namespace ColorSchemeManipulator.Colors
 
         public Rgb(Rgb rgb)
         {
-            Red = rgb.Red;
-            Green = rgb.Green;
-            Blue = rgb.Blue;
-            Alpha = rgb.Alpha;
+            CopyFrom(rgb);
         }
         
-        public Rgb(Hsl hsl)
+        public Rgb(Color color)
         {
-            CopyFrom(hsl.ToRgb());
+            CopyFrom(color.ToRgb());
         }
 
-        public Rgb(Hsv hsv)
-        {
-            CopyFrom(hsv.ToRgb());
-        }
-      
-        
         public void CopyFrom(Rgb rgb)
         {
             Red = rgb.Red;

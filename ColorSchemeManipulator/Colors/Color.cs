@@ -10,6 +10,7 @@ namespace ColorSchemeManipulator.Colors
         {
             if (this is Rgb) {
                 return (Rgb) this;
+                // return new Rgb((Rgb) this);
             } else if (this is Hsl) {
                 return ColorConversions.HsltoRgb((Hsl) this);
             } else if (this is Hsv) {
@@ -23,6 +24,7 @@ namespace ColorSchemeManipulator.Colors
         {
             if (this is Hsl) {
                 return (Hsl) this;
+                // return new Hsl((Hsl) this);
             } else if (this is Rgb) {
                 return ColorConversions.RgbtoHsl((Rgb) this);
             } else if (this is Hsv) {
@@ -36,6 +38,7 @@ namespace ColorSchemeManipulator.Colors
         {
             if (this is Hsv) {
                 return (Hsv) this;
+                //return new Hsv((Hsv) this);
             } else if (this is Rgb) {
                 return ColorConversions.RgbtoHsv((Rgb) this);
             } else if (this is Hsl) {

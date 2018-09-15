@@ -1,3 +1,4 @@
+using System;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 
@@ -29,20 +30,12 @@ namespace ColorSchemeManipulator.Colors
 
         public Hsl(Hsl hsl)
         {
-            Hue = hsl.Hue;
-            Saturation = hsl.Saturation;
-            Lightness = hsl.Lightness;
-            Alpha = hsl.Alpha;
+            CopyFrom(hsl);
         }
 
-        public Hsl(Rgb rgb)
+        public Hsl(Color color)
         {
-            CopyFrom(rgb.ToHsl());
-        }
-
-        public Hsl(Hsv hsv)
-        {
-            CopyFrom(hsv.ToHsl());
+            CopyFrom(color.ToHsl());
         }
             
         public void CopyFrom(Hsl hsl)
