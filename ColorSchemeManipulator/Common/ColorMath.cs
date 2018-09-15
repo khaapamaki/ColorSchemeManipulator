@@ -31,9 +31,9 @@ namespace ColorSchemeManipulator.Common
             s = s.Clamp(-1, 1);
 
             if (input >= 0 && input < a) {
-                output = (1 - s) * input + s * (a * Math.Pow(input / a, 2.0));
+                output = (1 - s) * input + s * a * Math.Pow(input / a, 2);
             } else if (input >= a && input <= 1) {
-                output = (1.0 - s) * input + s * (-(1.0 - a) * Math.Pow((1.0 - input) * (1.0 - a), 2.0) + 1.0);
+                output = (1 - s) * input + s * (-(1 - a) * Math.Pow((1 - input) / (1 - a), 2) + 1);
             }
 
             return output.LimitLow(0.0);
