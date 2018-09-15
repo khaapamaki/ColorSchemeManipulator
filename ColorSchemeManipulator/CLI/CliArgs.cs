@@ -32,6 +32,18 @@ namespace ColorSchemeManipulator.CLI
             return GetInstance().Items[index];
         }
 
+        public static void Register(string option, Func<IFilterable, object[], IFilterable> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
+        {
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
+        }
+
+        public static void Register(List<string> option, Func<IFilterable, object[], IFilterable> filterDelegate, byte minParams,
+            byte maxParams = 0, string desc = "")
+        {
+            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
+        }
+        
         public static void Register(string option, Func<Rgb, object[], Rgb> filterDelegate, byte minParams,
             byte maxParams = 0, string desc = "")
         {
