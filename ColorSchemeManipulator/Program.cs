@@ -25,12 +25,12 @@ namespace ColorSchemeManipulator
 #endif
             // Make FilterBundle filters available for CLI
             BatchFilterBundle.RegisterCliOptions();
-            // ExperimentalBundle.RegisterCliOptions();
+            BatchExperimentalBundle.RegisterCliOptions();
             
             // print help
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
                 Console.WriteLine("Available Filters:");
-                Console.WriteLine(CliArgs.ToString());
+                Console.WriteLine(BatchCliArgs.ToString());
                 return;
             }
 

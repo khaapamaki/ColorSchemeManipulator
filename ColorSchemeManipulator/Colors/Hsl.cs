@@ -75,21 +75,6 @@ namespace ColorSchemeManipulator.Colors
             }
         }
 
-        public Hsl ApplyFilterSet(FilterSet filters)
-        {
-            return filters.ApplyTo(this);
-        }
-
-        public Hsl ApplyFilter(HslFilter filter)
-        {
-            return filter.ApplyTo(this).ToHsl();
-        }
-
-        public Rgb ApplyFilter(RgbFilter filter)
-        {
-            return filter.ApplyTo(this).ToRgb();
-        }
-
         public bool Equals(Hsl c)
         {
             bool value = Hue.AboutEqual(c.Hue) && Saturation.AboutEqual(c.Saturation) &&

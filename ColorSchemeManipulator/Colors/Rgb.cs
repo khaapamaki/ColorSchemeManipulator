@@ -130,7 +130,6 @@ namespace ColorSchemeManipulator.Colors
                                      $"Alpha: 0x{Alpha * 255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
-                //return ToString();
             }
         }
 
@@ -141,19 +140,5 @@ namespace ColorSchemeManipulator.Colors
             return value;
         }
 
-        public Rgb ApplyFilterSet(FilterSet filters)
-        {
-            return filters.ApplyTo(this);
-        }
-
-        public Hsl ApplyFilter(HslFilter filter)
-        {
-            return filter.ApplyTo(this).ToHsl();
-        }
-
-        public Rgb ApplyFilter(RgbFilter filter)
-        {
-            return filter.ApplyTo(this).ToRgb();
-        }
     }
 }
