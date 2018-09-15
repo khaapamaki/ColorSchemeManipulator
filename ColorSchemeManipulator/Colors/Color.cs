@@ -58,9 +58,5 @@ namespace ColorSchemeManipulator.Colors
             throw new NotImplementedException();
         }
         
-//        public Rgb ApplyFilterSet(FilterSet filters)
-//        {
-//            return filters.ApplyTo(this);
-//        }
     }
 }

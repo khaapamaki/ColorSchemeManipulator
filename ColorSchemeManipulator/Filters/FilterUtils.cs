@@ -57,37 +57,12 @@ namespace ColorSchemeManipulator.Filters
             }
 
             return (null, args);
-        }
-        
+        }   
         
         public static (double, object[]) GetRangeFactor(Color color, ColorRange range, object[] filterParams)
         {
             return (range?.InRangeFactor(color) ?? 1.0, filterParams);
-        }
-        
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Rgb rgb, object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
-
-            return (range?.InRangeFactor(rgb) ?? 1.0, filterParams);
-        }
-
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsl hsl, object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
-
-            return (range?.InRangeFactor(hsl) ?? 1.0, filterParams);
-        }
-
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsv hsv, object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
-
-            return (range?.InRangeFactor(hsv) ?? 1.0, filterParams);
-        }
+        }   
 
         public static double CalcLevels(double value, double rangeFactor, object[] args)
         {

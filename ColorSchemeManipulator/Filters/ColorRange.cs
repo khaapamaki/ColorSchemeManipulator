@@ -39,24 +39,6 @@ namespace ColorSchemeManipulator.Filters
 
             return result;
         }
-        
-        // public double InRangeFactor(Rgb rgb)
-        // {
-        //     double result = 1.0;
-        //     if (HslOrHsvProcessingNeeded()) {
-        //         result = HslFactors(rgb.ToHsl(), result);
-        //     }
-        //
-        //     if (HsvProcessingNeeded()) {
-        //         result = HsvFactors(rgb.ToHsv(), result);
-        //     }
-        //
-        //     if (RgbProcessingNeeded()) {
-        //         result = RgbFactors(rgb, result);
-        //     }
-        //
-        //     return result;
-        // }
 
         private double RgbFactors(Rgb rgb, double result = 1.0)
         {
@@ -81,42 +63,6 @@ namespace ColorSchemeManipulator.Filters
             result *= LightnessRange?.InRangeFactor(hsl.Lightness) ?? 1;
             return result;
         }
-
-        // public double InRangeFactor(Hsl hsl)
-        // {
-        //     double result = 1.0;
-        //     if (HslOrHsvProcessingNeeded()) {
-        //         result = HslFactors(hsl, result);
-        //     }
-        //
-        //     if (HsvProcessingNeeded()) {
-        //         result = HsvFactors(hsl.ToHsv(), result);
-        //     }
-        //
-        //     if (RgbProcessingNeeded()) {
-        //         result = RgbFactors(hsl.ToRgb(), result);
-        //     }
-        //
-        //     return result;
-        // }
-        //
-        // public double InRangeFactor(Hsv hsv)
-        // {
-        //     double result = 1.0;
-        //     if (HslOrHsvProcessingNeeded()) {
-        //         result = HslFactors(hsv.ToHsl(), result);
-        //     }
-        //
-        //     if (HsvProcessingNeeded()) {
-        //         result = HsvFactors(hsv, result);
-        //     }
-        //
-        //     if (RgbProcessingNeeded()) {
-        //         result = RgbFactors(hsv.ToRgb(), result);
-        //     }
-        //
-        //     return result;
-        // }
 
         private bool RgbProcessingNeeded()
         {
