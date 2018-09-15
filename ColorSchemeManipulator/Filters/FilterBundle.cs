@@ -532,7 +532,7 @@ namespace ColorSchemeManipulator.Filters
             result.Lightness = FilterUtils.CalcLevels(hsl.Lightness, rangeFactor, filterParams);
             return result;
         }
-
+   
         public static Hsv LevelsValue(Hsv hsv, params object[] filterParams)
         {
             var result = new Hsv(hsv);

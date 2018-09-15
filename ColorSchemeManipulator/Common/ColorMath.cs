@@ -1,4 +1,5 @@
 using System;
+using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Common
 {
@@ -93,6 +94,11 @@ namespace ColorSchemeManipulator.Common
             return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
         }
 
+        public static double RgbPerceivedBrightness(Rgb rgb)
+        {
+            return RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+        }
+        
         public static double RgbPerceivedBrightness(double red, double green, double blue)
         {
             return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
