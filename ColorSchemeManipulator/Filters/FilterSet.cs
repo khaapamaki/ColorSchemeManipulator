@@ -6,6 +6,7 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
+    [Obsolete]
     public class FilterSet
     {
         private readonly List<ColorFilter> _filterChain = new List<ColorFilter>();

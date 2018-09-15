@@ -4,6 +4,7 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
+    [Obsolete]
     public class HslFilter : ColorFilter
     {
         private Func<Hsl, object[], Hsl> FilterDelegate { get; }

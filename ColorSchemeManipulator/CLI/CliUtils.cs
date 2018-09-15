@@ -6,6 +6,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.CLI
 {
+    [Obsolete]
     public static class CliUtils
     {
         /// <summary>

@@ -4,6 +4,7 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
+    [Obsolete]
     public class HsvFilter : ColorFilter
     {
         private Func<Hsv, object[], Hsv> FilterDelegate { get; }

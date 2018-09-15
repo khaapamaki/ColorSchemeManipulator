@@ -4,6 +4,7 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
+    [Obsolete]
     public class RgbFilter : ColorFilter
     {
         private Func<Rgb, object[], Rgb> FilterDelegate { get; }

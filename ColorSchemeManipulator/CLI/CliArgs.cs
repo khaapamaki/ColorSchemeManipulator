@@ -9,6 +9,7 @@ namespace ColorSchemeManipulator.CLI
     /// <summary>
     /// A singleton class to store and handle command line arguments relating to filters and filterDelegate paramters
     /// </summary>
+    [Obsolete]
     public sealed class CliArgs
     {
         private static CliArgs _instance;

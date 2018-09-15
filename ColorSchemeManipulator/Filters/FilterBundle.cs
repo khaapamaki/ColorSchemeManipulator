@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColorSchemeManipulator.CLI;
@@ -11,6 +12,7 @@ namespace ColorSchemeManipulator.Filters
     // Todo Better argument validation could be the answer
     // other option would be pre-parsing to correct type and not parsing again when the filter is reapplied.
 
+    [Obsolete]
     public sealed class FilterBundle
     {
         private static FilterBundle _instance;
