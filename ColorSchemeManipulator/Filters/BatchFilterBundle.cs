@@ -69,7 +69,7 @@ namespace ColorSchemeManipulator.Filters
             // CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5);
             // CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
 
-            CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
+            BatchCliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
 
             // CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
             //     desc: "Inverts perceived brightness - experimental");
@@ -83,10 +83,9 @@ namespace ColorSchemeManipulator.Filters
 
         // #region "Invert"
 
-        public static IFilterable InvertRgb(IFilterable colorSet, params object[] filterParams)
+        public static IEnumerable<ColorBase> InvertRgb(IEnumerable<ColorBase> colorSet, params object[] filterParams)
         {
-            ColorSet result = new ColorSet(); 
-            foreach (var color in colorSet.GetColors()) {
+            foreach (var color in colorSet) {
                 Rgb rgb = color.ToRgb();
                 double rangeFactor;
                 (rangeFactor, _) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
@@ -98,11 +97,10 @@ namespace ColorSchemeManipulator.Filters
                     Alpha = rgb.Alpha
                 };
                 rgb = rgb.Interpolate(inverted, rangeFactor);
-                
-                result.Add(rgb);
+
+                yield return rgb;
             }
 
-            return result;
         }
 
         /*

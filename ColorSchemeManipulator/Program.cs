@@ -24,8 +24,8 @@ namespace ColorSchemeManipulator
             // TestTempStuff();
 #endif
             // Make FilterBundle filters available for CLI
-            FilterBundle.RegisterCliOptions();
-            ExperimentalBundle.RegisterCliOptions();
+            BatchFilterBundle.RegisterCliOptions();
+            // ExperimentalBundle.RegisterCliOptions();
             
             // print help
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
@@ -35,11 +35,11 @@ namespace ColorSchemeManipulator
             }
 
             // Parse CLI args and generate FilterSet of them
-            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            (BatchFilterSet filterSet, string[] remainingArgs) = BatchCliArgs.ParseFilterArgs(args);
 
             // Extract non-option and remaining option arguments
             string[] remainingOptArgs;
-            (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
+            (remainingArgs, remainingOptArgs) = BatchCliArgs.ExtractOptionArguments(remainingArgs);
 
 
             // PARSE other than filter options here, and remove them from remainingOptArgs array 
@@ -61,7 +61,7 @@ namespace ColorSchemeManipulator
             string sourceFileName = @"HappyDays_Complete.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
             // sourceFileName = "HappyDays.png";
-            // sourceFileName = "photo.png";
+            sourceFileName = "photo.png";
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
             targetFile = Path.GetFullPath(Path.Combine(baseDir,

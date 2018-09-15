@@ -20,6 +20,9 @@
           </e>
         </e>
         <e p="CLI" t="Include">
+          <e p="BatchCliArg.cs" t="Include" />
+          <e p="BatchCliArgs.cs" t="Include" />
+          <e p="BatchCliUtils.cs" t="Include" />
           <e p="CliArg.cs" t="Include" />
           <e p="CliArgs.cs" t="Include" />
           <e p="CliUtils.cs" t="Include" />

@@ -12,7 +12,7 @@ namespace ColorSchemeManipulator
         {
         }
         
-        public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
+        public void ProcessFile(string sourceFile, string targetFile, BatchFilterSet filters)
         {
             var image = Image.FromFile(sourceFile);
             var bitmap = new Bitmap(image);
@@ -30,7 +30,7 @@ namespace ColorSchemeManipulator
             convertedImage.Save(targetFile);
         }
              
-        private Bitmap ApplyFilters(Bitmap image, FilterSet filters)
+        private Bitmap ApplyFilters(Bitmap image, BatchFilterSet filters)
         {    
  
             for (int x = 0; x < image.Width; x++) {
@@ -42,11 +42,11 @@ namespace ColorSchemeManipulator
             
             return image;
         }
-
-        private Color ApplyFilters(Color color, FilterSet filters)
+        // todo THIS CURRENTLY DOES NOTHING
+        private Color ApplyFilters(Color color, BatchFilterSet filters)
         {
             return ColorConversions.RgbToSystemColor(
-                ColorConversions.SystemColorToRgb(color).ApplyFilterSet(filters));
+                ColorConversions.SystemColorToRgb(color)); // .ApplyFilterSet(filters));
         }
         
     }

@@ -19,8 +19,8 @@ namespace ColorSchemeManipulator
         {
             _schemeFormat = schemeFormat;
         }
-
-        public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
+        
+        public void ProcessFile(string sourceFile, string targetFile, BatchFilterSet filters)
         {
             string text = File.ReadAllText(sourceFile);
             string convertedText;
@@ -38,9 +38,9 @@ namespace ColorSchemeManipulator
         }
 
         // filters need to be stored for MatchEvaluator since it doesn't take parameters
-        private FilterSet _filters;
+        private BatchFilterSet _filters;
 
-        private string ApplyFilters(string text, FilterSet filters)
+        private string ApplyFilters(string text, BatchFilterSet filters)
         {
             _filters = filters;
             string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);
@@ -48,6 +48,7 @@ namespace ColorSchemeManipulator
             return text;
         }
 
+        // todo THIS CURRENTLY DOES NOTHING
         private string MatchReplace(Match m)
         {
             string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(_schemeFormat);
@@ -58,7 +59,7 @@ namespace ColorSchemeManipulator
                 if (Utils.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
                     string filteredRgbString =
                         Rgb.FromRgbString(rgbString, rgbHexFormat)
-                            .ApplyFilterSet(_filters)
+                            // .ApplyFilterSet(_filters)
                             .ToRgbString(rgbHexFormat);
 
                     // Console.WriteLine(rgbString + " -> " + filteredRGBString);

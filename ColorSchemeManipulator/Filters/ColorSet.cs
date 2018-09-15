@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
+    [Obsolete]
     public class ColorSet : IFilterable
     {
         private List<ColorBase> _items;

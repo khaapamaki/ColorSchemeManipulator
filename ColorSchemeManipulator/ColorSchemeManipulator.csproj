@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLI\BatchCliArg.cs" />
+    <Compile Include="CLI\BatchCliArgs.cs" />
+    <Compile Include="CLI\BatchCliUtils.cs" />
     <Compile Include="CLI\CliArg.cs" />
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtils.cs" />

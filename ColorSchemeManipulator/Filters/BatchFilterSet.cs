@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
@@ -16,13 +17,13 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
 
-        public BatchFilterSet Add(Func<IFilterable, object[], IFilterable> filterDelegate)
+        public BatchFilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate)
         {
             _filters.Add(new BatchFilter(filterDelegate));
             return this;
         }
 
-        public BatchFilterSet Add(Func<IFilterable, object[], IFilterable> filterDelegate, params object[] args)
+        public BatchFilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, params object[] args)
         {
             _filters.Add(new BatchFilter(filterDelegate, args));
             return this;
