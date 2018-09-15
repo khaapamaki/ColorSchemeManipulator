@@ -98,7 +98,7 @@ namespace ColorSchemeManipulator.Filters
                 };
                 rgb = rgb.Interpolate(inverted, rangeFactor);
 
-                yield return rgb;
+                yield return (ColorBase) rgb;
             }
 
         }

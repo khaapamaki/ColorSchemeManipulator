@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
 
@@ -9,15 +10,15 @@ namespace ColorSchemeManipulator
 {
     public class ImageProcessor
     {
+        public ImageProcessor() { }
 
-        public ImageProcessor()
-        {
-        }
-        
         public void ProcessFile(string sourceFile, string targetFile, BatchFilterSet filters)
         {
             var image = Image.FromFile(sourceFile);
             var bitmap = new Bitmap(image);
+            Console.WriteLine($"{bitmap.Width},{bitmap.Height}");
+            Console.WriteLine("Pixels: " +
+                              Enumerate(bitmap).Count());
             Bitmap convertedImage;
             try {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -29,6 +30,7 @@ namespace ColorSchemeManipulator
                 Console.WriteLine(GetType().FullName + " : " + ex.Message);
                 throw;
             }
+
             convertedImage.Save(targetFile);
         }
 
@@ -37,35 +39,38 @@ namespace ColorSchemeManipulator
             for (int x = 0; x < bitmap.Width; x++) {
                 for (int y = 0; y < bitmap.Height; y++) {
                     yield return ColorConversions.SystemColorToRgb(bitmap.GetPixel(x, y));
-                } 
+                }
             }
         }
-        
+
         public Bitmap SetPixels(Bitmap original, IEnumerable<ColorBase> colors)
         {
             int x = 0;
             int y = 0;
             foreach (ColorBase color in colors) {
+                if (y >= original.Height || x >= original.Width)
+                    break;
                 original.SetPixel(x, y, color.ToSystemColor());
-                x += 1;
+                x++;
                 if (x >= original.Width) {
                     x = 0;
-                    y += 1;
+                    y++;
                 }
             }
 
+            Console.WriteLine($"{x},{y}");
             return original;
         }
-        
-        
-        private IEnumerable<ColorBase> ApplyFilters(IEnumerable<ColorBase> colorSet, BatchFilterSet filters)
-        {
-            foreach (var color in colorSet) {
-                color.ApplyFilterSet(filters);
-                yield return color;
-            }
-        }
-        
+
+
+//        private IEnumerable<ColorBase> ApplyFilters(IEnumerable<ColorBase> colorSet, BatchFilterSet filters)
+//        {
+//            foreach (var color in colorSet) {
+//                color.ApplyFilterSet(filters);
+//                yield return color;
+//            }
+//        }
+
         // private  IEnumerable<ColorBase> ApplyFilters(Bitmap image, BatchFilterSet filters)
         // {
         //     
@@ -80,13 +85,12 @@ namespace ColorSchemeManipulator
             SetPixels(bitmap, filters.ApplyTo(Enumerate(bitmap)));
             return bitmap;
         }
-        
+
         // todo THIS CURRENTLY DOES NOTHING
         private Color ApplyFilters(Color color, BatchFilterSet filters)
         {
             return ColorConversions.RgbToSystemColor(
                 ColorConversions.SystemColorToRgb(color)); // .ApplyFilterSet(filters));
         }
-        
     }
 }

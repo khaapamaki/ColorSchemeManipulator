@@ -47,20 +47,20 @@ namespace ColorSchemeManipulator.Colors
         
         public Color ToSystemColor()
         {
-            if (this is Hsv) {
-                return ((Hsv) this).ToRgb().ToSystemColor();
+            if (this is Hsl) {
+                return ColorConversions.RgbToSystemColor(((Hsl) this).ToRgb());
             } else if (this is Rgb) {
-                return ((Rgb) this).ToSystemColor();
-            } else if (this is Hsl) {
-                return ((Hsl) this).ToRgb().ToSystemColor();
+                return ColorConversions.RgbToSystemColor((Rgb) this);
+            } else if (this is Hsv) {
+                return ColorConversions.RgbToSystemColor(((Hsv) this).ToRgb());
             }
 
             throw new NotImplementedException();
         }
         
-        public Rgb ApplyFilterSet(BatchFilterSet filters)
-        {
-            return filters.ApplyTo(this);
-        }
+//        public Rgb ApplyFilterSet(FilterSet filters)
+//        {
+//            return filters.ApplyTo(this);
+//        }
     }
 }
