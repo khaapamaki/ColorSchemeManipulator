@@ -59,6 +59,12 @@ namespace ColorSchemeManipulator.Filters
             return (null, args);
         }
         
+        
+        public static (double, object[]) GetRangeFactor(Color color, ColorRange range, object[] filterParams)
+        {
+            return (range?.InRangeFactor(color) ?? 1.0, filterParams);
+        }
+        
         public static (double, object[]) GetRangeFactorAndRemainingParams(Rgb rgb, object[] filterParams)
         {
             ColorRange range;

@@ -85,10 +85,12 @@ namespace ColorSchemeManipulator.Filters
 
         public static IEnumerable<Color> InvertRgb(IEnumerable<Color> colorSet, params object[] filterParams)
         {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colorSet) {
-                Rgb rgb = color.ToRgb();
+                var rgb = color.ToRgb();
                 double rangeFactor;
-                (rangeFactor, _) = FilterUtils.GetRangeFactorAndRemainingParams(rgb, filterParams);
+                (rangeFactor, _) = FilterUtils.GetRangeFactor(rgb, range, filterParams);
                 Rgb inverted = new Rgb(rgb)
                 {
                     Red = ColorMath.Invert(rgb.Red),
@@ -100,9 +102,10 @@ namespace ColorSchemeManipulator.Filters
 
                 yield return (Color) rgb;
             }
-
         }
 
+        
+        
         /*
                 public static Hsl InvertLightness(Hsl hsl, params object[] filterParams)
                 {
