@@ -392,16 +392,14 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    if (filterParams.Length >= 2 && FilterUtils.IsNumberOrString(filterParams[1])) {
-                        double midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                        filtered.Red = ColorMath.SSpline(rgb.Red, strength, midpoint);
-                        filtered.Green = ColorMath.SSpline(rgb.Green, strength, midpoint);
-                        filtered.Blue = ColorMath.SSpline(rgb.Blue, strength, midpoint);
-                    } else {
-                        filtered.Red = ColorMath.SSpline(rgb.Red, strength);
-                        filtered.Green = ColorMath.SSpline(rgb.Green, strength);
-                        filtered.Blue = ColorMath.SSpline(rgb.Blue, strength);
+                    double midpoint = 0.5;
+                    if (filterParams.Length >= 2) {
+                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
+
+                    filtered.Red = ColorMath.SSpline(rgb.Red, strength, midpoint);
+                    filtered.Green = ColorMath.SSpline(rgb.Green, strength, midpoint);
+                    filtered.Blue = ColorMath.SSpline(rgb.Blue, strength, midpoint);
                 }
 
                 yield return rgb.Interpolate(filtered, rangeFactor);
@@ -420,12 +418,12 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    if (filterParams.Length >= 2 && FilterUtils.IsNumberOrString(filterParams[1])) {
-                        double midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                        filtered.Saturation = ColorMath.SSpline(hsl.Saturation, strength, midpoint);
-                    } else {
-                        filtered.Saturation = ColorMath.SSpline(hsl.Saturation, strength);
+                    double midpoint = 0.5;
+                    if (filterParams.Length >= 2) {
+                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
+
+                    filtered.Saturation = ColorMath.SSpline(hsl.Saturation, strength, midpoint);
                 }
 
                 yield return hsl.Interpolate(filtered, rangeFactor);
@@ -444,12 +442,12 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    if (filterParams.Length >= 2 && FilterUtils.IsNumberOrString(filterParams[1])) {
-                        double midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                        filtered.Saturation = ColorMath.SSpline(hsv.Saturation, strength, midpoint);
-                    } else {
-                        filtered.Saturation = ColorMath.SSpline(hsv.Saturation, strength);
+                    double midpoint = 0.5;
+                    if (filterParams.Length >= 2) {
+                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
+
+                    filtered.Saturation = ColorMath.SSpline(hsv.Saturation, strength, midpoint);
                 }
 
                 yield return hsv.Interpolate(filtered, rangeFactor);
@@ -467,12 +465,12 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
+                    double midpoint = 0.5;
                     if (filterParams.Length >= 2) {
-                        double midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                        filtered.Lightness = ColorMath.SSpline(hsl.Lightness, strength, midpoint);
-                    } else {
-                        filtered.Lightness = ColorMath.SSpline(hsl.Lightness, strength);
+                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
+
+                    filtered.Lightness = ColorMath.SSpline(hsl.Lightness, strength, midpoint);
                 }
 
                 yield return hsl.Interpolate(filtered, rangeFactor);
@@ -490,12 +488,12 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    if (filterParams.Length >= 2 && FilterUtils.IsNumberOrString(filterParams[1])) {
-                        double midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                        filtered.Value = ColorMath.SSpline(hsv.Value, strength, midpoint);
-                    } else {
-                        filtered.Value = ColorMath.SSpline(hsv.Value, strength);
+                    double midpoint = 0.5;
+                    if (filterParams.Length >= 2) {
+                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
+
+                    filtered.Value = ColorMath.SSpline(hsv.Value, strength, midpoint);
                 }
 
                 yield return hsv.Interpolate(filtered, rangeFactor);
