@@ -200,16 +200,16 @@ namespace ColorSchemeManipulator.Colors
             return rgb.ToHsl();
         }
 
-        public static Rgb SystemColorToRgb(Color color)
+        public static Rgb SystemColorToRgb(System.Drawing.Color sysColor)
         {
-            var rgb8 = new Rgb8Bit(color.R, color.G, color.B, color.A);
+            var rgb8 = new Rgb8Bit(sysColor.R, sysColor.G, sysColor.B, sysColor.A);
             return new Rgb(rgb8);
         }
 
-        public static Color RgbToSystemColor(Rgb rgb)
+        public static System.Drawing.Color RgbToSystemColor(Rgb rgb)
         {
             var rgb8 = new Rgb8Bit(rgb);
-            return Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);
+            return System.Drawing.Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);
         }
     }
 }

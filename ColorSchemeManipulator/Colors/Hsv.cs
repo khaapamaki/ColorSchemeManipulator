@@ -2,7 +2,7 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Hsv : ColorBase
+    public class Hsv : Color
     {
         
         private double _hue = 0.0;

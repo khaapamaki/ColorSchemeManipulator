@@ -14,7 +14,7 @@ namespace ColorSchemeManipulator.CLI
         public byte MaxParams { get; set; }
         public string Description { get; set; }
 
-        public CliArg(string option, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams, byte maxParams = 0,
+        public CliArg(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
             string desc = "")
         {
             OptionArgs = new List<string> {option};
@@ -24,7 +24,7 @@ namespace ColorSchemeManipulator.CLI
             Description = desc;
         }
 
-        public CliArg(List<string> options, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams, byte maxParams = 0,
+        public CliArg(List<string> options, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
             string desc = "")
         {
             OptionArgs = new List<string>(options);

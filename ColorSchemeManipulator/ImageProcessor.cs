@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
+using Color = ColorSchemeManipulator.Colors.Color;
 
 namespace ColorSchemeManipulator
 {
@@ -34,7 +35,7 @@ namespace ColorSchemeManipulator
             convertedImage.Save(targetFile);
         }
 
-        public IEnumerable<ColorBase> Enumerate(Bitmap bitmap)
+        public IEnumerable<Color> Enumerate(Bitmap bitmap)
         {
             for (int y = 0; y < bitmap.Height; y++) {
                 for (int x = 0; x < bitmap.Width; x++) {
@@ -43,11 +44,11 @@ namespace ColorSchemeManipulator
             }
         }
 
-        public Bitmap SetPixels(Bitmap original, IEnumerable<ColorBase> colors)
+        public Bitmap SetPixels(Bitmap original, IEnumerable<Color> colors)
         {
             int x = 0;
             int y = 0;
-            foreach (ColorBase color in colors) {
+            foreach (Color color in colors) {
                 if (y >= original.Height || x >= original.Width)
                     break;
                 original.SetPixel(x, y, color.ToSystemColor());
@@ -63,7 +64,7 @@ namespace ColorSchemeManipulator
         }
 
 
-        //        private IEnumerable<ColorBase> ApplyFilters(IEnumerable<ColorBase> colorSet, FilterSet filters)
+        //        private IEnumerable<Color> ApplyFilters(IEnumerable<Color> colorSet, FilterSet filters)
         //        {
         //            foreach (var color in colorSet) {
         //                color.ApplyFilterSet(filters);
@@ -71,7 +72,7 @@ namespace ColorSchemeManipulator
         //            }
         //        }
 
-        // private  IEnumerable<ColorBase> ApplyFilters(Bitmap image, FilterSet filters)
+        // private  IEnumerable<Color> ApplyFilters(Bitmap image, FilterSet filters)
         // {
         //     
         //     foreach (var color in filters.ApplyTo(Enumerate(image))) {
@@ -87,7 +88,7 @@ namespace ColorSchemeManipulator
         }
 
         // todo THIS CURRENTLY DOES NOTHING
-        private Color ApplyFilters(Color color, FilterSet filters)
+        private System.Drawing.Color ApplyFilters(System.Drawing.Color color, FilterSet filters)
         {
             return ColorConversions.RgbToSystemColor(
                 ColorConversions.SystemColorToRgb(color)); // .ApplyFilterSet(filters));

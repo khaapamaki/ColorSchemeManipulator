@@ -35,7 +35,7 @@ namespace ColorSchemeManipulator.CLI
 
             object[] filterParams = TryParseDoubles(paramList?.ToArray());
 
-            if (filterDelegate is Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> func) {
+            if (filterDelegate is Func<IEnumerable<Color>, object[], IEnumerable<Color>> func) {
                 filters.Add(func, filterParams);
             } else {
                 remainingArgs.Add(arg);

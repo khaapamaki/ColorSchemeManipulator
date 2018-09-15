@@ -36,7 +36,7 @@ namespace ColorSchemeManipulator.Filters
 
         }
 
-        // public static IEnumerable<ColorBase> BrightnessToLightness(IEnumerable<ColorBase> colors, params object[] filterParams)
+        // public static IEnumerable<Color> BrightnessToLightness(IEnumerable<Color> colors, params object[] filterParams)
         // {
         //     var filtered = new Hsl(rgb);
         //     double rangeFactor;
@@ -47,7 +47,7 @@ namespace ColorSchemeManipulator.Filters
         //     return rgb.Interpolate(filtered.ToRgb(), rangeFactor);
         // }
         //
-        // public static IEnumerable<ColorBase> BrightnessToValue(IEnumerable<ColorBase> colors, params object[] filterParams)
+        // public static IEnumerable<Color> BrightnessToValue(IEnumerable<Color> colors, params object[] filterParams)
         // {
         //     var filtered = new Hsv(rgb);
         //     double rangeFactor;
@@ -58,7 +58,7 @@ namespace ColorSchemeManipulator.Filters
         //     return rgb.Interpolate(filtered.ToRgb(), rangeFactor);
         // }
         //
-        // public static IEnumerable<ColorBase> ToLight(IEnumerable<ColorBase> colors, params object[] filterParams)
+        // public static IEnumerable<Color> ToLight(IEnumerable<Color> colors, params object[] filterParams)
         // {
         //     FilterSet filterSet = new FilterSet()
         //         .Add(FilterBundle.GainLightness, 0.6,

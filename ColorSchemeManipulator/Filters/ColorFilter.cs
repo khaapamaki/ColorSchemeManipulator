@@ -7,17 +7,17 @@ namespace ColorSchemeManipulator.Filters
 {
     public class ColorFilter
     {
-        private Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> FilterDelegate { get; }
+        private Func<IEnumerable<Color>, object[], IEnumerable<Color>> FilterDelegate { get; }
         private object[] Arguments { get; }
 
-        public ColorFilter(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate,
+        public ColorFilter(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate,
             params object[] args)
         {
             FilterDelegate = filterDelegate;
             Arguments = args;
         }
 
-        public IEnumerable<ColorBase> ApplyTo(IEnumerable<ColorBase> colors)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             return FilterDelegate(colors, Arguments);
         }

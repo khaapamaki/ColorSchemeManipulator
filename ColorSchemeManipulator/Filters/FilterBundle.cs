@@ -83,7 +83,7 @@ namespace ColorSchemeManipulator.Filters
 
         // #region "Invert"
 
-        public static IEnumerable<ColorBase> InvertRgb(IEnumerable<ColorBase> colorSet, params object[] filterParams)
+        public static IEnumerable<Color> InvertRgb(IEnumerable<Color> colorSet, params object[] filterParams)
         {
             foreach (var color in colorSet) {
                 Rgb rgb = color.ToRgb();
@@ -98,7 +98,7 @@ namespace ColorSchemeManipulator.Filters
                 };
                 rgb = rgb.Interpolate(inverted, rangeFactor);
 
-                yield return (ColorBase) rgb;
+                yield return (Color) rgb;
             }
 
         }

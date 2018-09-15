@@ -4,7 +4,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public abstract class ColorBase
+    public abstract class Color
     {
         public Rgb ToRgb()
         {
@@ -45,7 +45,7 @@ namespace ColorSchemeManipulator.Colors
             throw new NotImplementedException();
         }
         
-        public Color ToSystemColor()
+        public System.Drawing.Color ToSystemColor()
         {
             if (this is Hsl) {
                 return ColorConversions.RgbToSystemColor(((Hsl) this).ToRgb());

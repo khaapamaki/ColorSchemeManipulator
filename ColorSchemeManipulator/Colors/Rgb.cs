@@ -4,7 +4,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Rgb : ColorBase
+    public class Rgb : Color
     {
         public double Red { get; set; }
         public double Green { get; set; }

@@ -3,7 +3,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Hsl : ColorBase
+    public class Hsl : Color
     {
         private double _hue = 0.0;
 

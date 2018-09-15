@@ -32,13 +32,13 @@ namespace ColorSchemeManipulator.CLI
             return GetInstance().Items[index];
         }
 
-        public static void Register(string option, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams,
+        public static void Register(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams,
             byte maxParams = 0, string desc = "")
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
         }
 
-        public static void Register(List<string> option, Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, byte minParams,
+        public static void Register(List<string> option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams,
             byte maxParams = 0, string desc = "")
         {
             GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));

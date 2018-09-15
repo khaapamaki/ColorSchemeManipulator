@@ -18,19 +18,19 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
 
-        public FilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate)
+        public FilterSet Add(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate)
         {
             _filters.Add(new ColorFilter(filterDelegate));
             return this;
         }
 
-        public FilterSet Add(Func<IEnumerable<ColorBase>, object[], IEnumerable<ColorBase>> filterDelegate, params object[] args)
+        public FilterSet Add(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, params object[] args)
         {
             _filters.Add(new ColorFilter(filterDelegate, args));
             return this;
         }
         
-        public IEnumerable<ColorBase> ApplyTo(IEnumerable<ColorBase> colors)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             foreach (var filter in _filters) {
                 colors = ApplyFilter(colors, filter);
@@ -39,7 +39,7 @@ namespace ColorSchemeManipulator.Filters
             return colors;
         }
 
-        private IEnumerable<ColorBase> ApplyFilter(IEnumerable<ColorBase> colors, ColorFilter filter)
+        private IEnumerable<Color> ApplyFilter(IEnumerable<Color> colors, ColorFilter filter)
         {
             return filter.ApplyTo(colors);
         }
