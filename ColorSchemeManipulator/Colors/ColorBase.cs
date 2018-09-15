@@ -1,4 +1,6 @@
 using System;
+using System.Drawing;
+using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
@@ -41,6 +43,24 @@ namespace ColorSchemeManipulator.Colors
             }
 
             throw new NotImplementedException();
+        }
+        
+        public Color ToSystemColor()
+        {
+            if (this is Hsv) {
+                return ((Hsv) this).ToRgb().ToSystemColor();
+            } else if (this is Rgb) {
+                return ((Rgb) this).ToSystemColor();
+            } else if (this is Hsl) {
+                return ((Hsl) this).ToRgb().ToSystemColor();
+            }
+
+            throw new NotImplementedException();
+        }
+        
+        public Rgb ApplyFilterSet(BatchFilterSet filters)
+        {
+            return filters.ApplyTo(this);
         }
     }
 }
