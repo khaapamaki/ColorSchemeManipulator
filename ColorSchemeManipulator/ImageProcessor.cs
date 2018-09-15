@@ -17,9 +17,6 @@ namespace ColorSchemeManipulator
         {
             var image = Image.FromFile(sourceFile);
             var bitmap = new Bitmap(image);
-            Console.WriteLine($"{bitmap.Width},{bitmap.Height}");
-            Console.WriteLine("Pixels: " +
-                              Enumerate(bitmap).Count());
             Bitmap convertedImage;
             try {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -35,7 +32,7 @@ namespace ColorSchemeManipulator
             convertedImage.Save(targetFile);
         }
 
-        public IEnumerable<Color> Enumerate(Bitmap bitmap)
+        public static IEnumerable<Color> Enumerate(Bitmap bitmap)
         {
             for (int y = 0; y < bitmap.Height; y++) {
                 for (int x = 0; x < bitmap.Width; x++) {
@@ -44,7 +41,7 @@ namespace ColorSchemeManipulator
             }
         }
 
-        public Bitmap SetPixels(Bitmap original, IEnumerable<Color> colors)
+        public static void SetPixels(Bitmap original, IEnumerable<Color> colors)
         {
             int x = 0;
             int y = 0;
@@ -58,40 +55,12 @@ namespace ColorSchemeManipulator
                     y++;
                 }
             }
-
-            Console.WriteLine($"{x},{y}");
-            return original;
         }
-
-
-        //        private IEnumerable<Color> ApplyFilters(IEnumerable<Color> colorSet, FilterSet filters)
-        //        {
-        //            foreach (var color in colorSet) {
-        //                color.ApplyFilterSet(filters);
-        //                yield return color;
-        //            }
-        //        }
-
-        // private  IEnumerable<Color> ApplyFilters(Bitmap image, FilterSet filters)
-        // {
-        //     
-        //     foreach (var color in filters.ApplyTo(Enumerate(image))) {
-        //         yield return color;
-        //     }
-        //
-        // }
 
         public Bitmap ApplyFilters(Bitmap bitmap, FilterSet filters)
         {
             SetPixels(bitmap, filters.ApplyTo(Enumerate(bitmap)));
             return bitmap;
-        }
-
-        // todo THIS CURRENTLY DOES NOTHING
-        private System.Drawing.Color ApplyFilters(System.Drawing.Color color, FilterSet filters)
-        {
-            return ColorConversions.RgbToSystemColor(
-                ColorConversions.SystemColorToRgb(color)); // .ApplyFilterSet(filters));
         }
     }
 }
