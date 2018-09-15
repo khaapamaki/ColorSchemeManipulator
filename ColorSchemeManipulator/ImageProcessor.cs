@@ -36,8 +36,8 @@ namespace ColorSchemeManipulator
 
         public IEnumerable<ColorBase> Enumerate(Bitmap bitmap)
         {
-            for (int x = 0; x < bitmap.Width; x++) {
-                for (int y = 0; y < bitmap.Height; y++) {
+            for (int y = 0; y < bitmap.Height; y++) {
+                for (int x = 0; x < bitmap.Width; x++) {
                     yield return ColorConversions.SystemColorToRgb(bitmap.GetPixel(x, y));
                 }
             }
@@ -63,13 +63,13 @@ namespace ColorSchemeManipulator
         }
 
 
-//        private IEnumerable<ColorBase> ApplyFilters(IEnumerable<ColorBase> colorSet, BatchFilterSet filters)
-//        {
-//            foreach (var color in colorSet) {
-//                color.ApplyFilterSet(filters);
-//                yield return color;
-//            }
-//        }
+        //        private IEnumerable<ColorBase> ApplyFilters(IEnumerable<ColorBase> colorSet, BatchFilterSet filters)
+        //        {
+        //            foreach (var color in colorSet) {
+        //                color.ApplyFilterSet(filters);
+        //                yield return color;
+        //            }
+        //        }
 
         // private  IEnumerable<ColorBase> ApplyFilters(Bitmap image, BatchFilterSet filters)
         // {
