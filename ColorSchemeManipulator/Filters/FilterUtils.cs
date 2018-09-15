@@ -59,7 +59,7 @@ namespace ColorSchemeManipulator.Filters
             return (null, args);
         }   
         
-        public static double GetRangeFactor(Color color, ColorRange range)
+        public static double GetRangeFactor(ColorRange range, Color color)
         {
             return range?.InRangeFactor(color) ?? 1.0;
         }   
