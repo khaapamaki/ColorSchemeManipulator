@@ -23,7 +23,7 @@ namespace ColorSchemeManipulator
             }
 
             // Parse CLI args and generate FilterSet of them
-            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            (var filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
 
             // Extract non-option and remaining option arguments
             string[] remainingOptArgs;
@@ -52,22 +52,17 @@ namespace ColorSchemeManipulator
                 return;
             }
 
-            if (remainingArgs.Length == 1) {
-                targetFile = args[0];
-            }
-
-            var ext = Path.GetExtension(sourceFile);
-            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
+            var schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
-                    ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
+                    var processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
                 } else {
                     Console.Error.WriteLine(sourceFile + " does not exist");
                 }
             } else if (schemeFormat == SchemeFormat.Image) {
-                ImageProcessor processor = new ImageProcessor();
+                var processor = new ImageProcessor();
                 processor.ProcessFile(sourceFile, targetFile, filterSet);
             } else {
                 Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
