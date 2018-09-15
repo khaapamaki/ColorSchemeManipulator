@@ -48,7 +48,6 @@
           <e p="FilterUtils.cs" t="Include" />
           <e p="HslFilter.cs" t="Include" />
           <e p="HsvFilter.cs" t="Include" />
-          <e p="LoopingRange.cs" t="Include" />
           <e p="ParameterRange.cs" t="Include" />
           <e p="RgbFilter.cs" t="Include" />
         </e>
