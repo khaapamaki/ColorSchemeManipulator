@@ -191,19 +191,12 @@ namespace ColorSchemeManipulator.Colors
             return color;
         }
 
-        public static Color FromRgb8(byte r, byte g, byte b, byte a = 0xFF)
+        public static Color FromRgb(byte r, byte g, byte b, byte a = 0xFF)
         {
             Color color = new Color();
             color.SetRgb(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
             return color;
         }
-
-        // public static Color FromRgb8(Rgb8Bit rgb8)
-        // {
-        //     Color color = new Color();
-        //     color.SetRgb(rgb8.Red8/ 255.0, rgb8.Green8 / 255.0, rgb8.Blue8 / 255.0, rgb8.Alpha8/ 255.0);
-        //     return color;
-        // }
 
         public static Color FromHsl(double h, double s, double l, double a = 1.0)
         {
@@ -273,20 +266,6 @@ namespace ColorSchemeManipulator.Colors
             if (resetFlags) ResetFlags(ColorFormat.Hsv);
         }
 
-        public void UpdateLightness(double l)
-        {
-            _lightness = l;
-            _hasRgb = false;
-            _hasHsv = false;
-        }
-
-        public void UpdateSaturation(double s)
-        {
-            _saturation = s;
-            _hasRgb = false;
-            _hasHsv = false;
-        }
-
         // INTERFACE
 
         public static Color Interpolate(Color color1, Color color2, double factor)
@@ -322,7 +301,21 @@ namespace ColorSchemeManipulator.Colors
         //     return ToRgb8Bit().ToRgbString(rgbHexFormat);
         // }
 
+        public override string ToString()
+        {
+            return string.Format($"Red: {Red}, Green: {Green}, Blue: {Blue}, Alpha: {Alpha}");
+        }
 
+        public string ToString(string format)
+        {
+            if (format.ToUpper() == "X2") {
+                return string.Format($"Red8: 0x{Red*255:X2}, Green8: 0x{Green*255:X2}, Blue8: 0x{Blue*255:X2}  Alpha8: 0x{Alpha*255:X2}");
+            } else {
+                throw new FormatException("Invalid Format String: " + format);
+            }
+        }
+        
+        
         public double GetBrightness()
         {
             (double r, double g, double b) = GetRgbComponents();

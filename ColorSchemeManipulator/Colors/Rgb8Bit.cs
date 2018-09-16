@@ -48,7 +48,7 @@ namespace ColorSchemeManipulator.Colors
 
         public Color ToColor()
         {
-            return Color.FromRgb8(Red8, Green8, Blue8, Alpha8);
+            return Color.FromRgb(Red8, Green8, Blue8, Alpha8);
         }
 
         /*[Obsolete]

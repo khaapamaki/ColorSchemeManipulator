@@ -14,12 +14,15 @@ namespace ColorSchemeManipulator
 {
     public class ColorSchemeProcessor
     {
-        private readonly SchemeFormat _schemeFormat;
-        private List<Color> _filteredColors;
+        // private readonly SchemeFormat _schemeFormat;
+        private readonly string _hexFormat;
+        private readonly string _regExPattern;
 
         public ColorSchemeProcessor(SchemeFormat schemeFormat)
         {
-            _schemeFormat = schemeFormat;
+            // _schemeFormat = schemeFormat;
+            _hexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
+            _regExPattern = SchemeFormatUtil.GetRegEx(schemeFormat);
         }
 
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
@@ -40,40 +43,39 @@ namespace ColorSchemeManipulator
 
         // filters need to be stored for MatchEvaluator since it doesn't take parameters
         private FilterSet _filters;
-
+        private List<Color> _filteredColors;
+        
         private string ApplyFilters(string text, FilterSet filters)
         {
             _filters = filters;
             _filteredColors = new List<Color>();
-            string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(_schemeFormat);
             List<Color> colorSet = new List<Color>();
-            string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);
-            MatchCollection matches = Regex.Matches(text, regExPattern);
+            MatchCollection matches = Regex.Matches(text, _regExPattern);
             foreach (Match match in matches) {
                 string rgbString = match.Groups[2].ToString();
-                colorSet.Add(HexRgb.FromRgbString(rgbString, rgbHexFormat));
+                colorSet.Add(HexRgb.FromRgbString(rgbString, _hexFormat));
             }
 
             _filteredColors = _filters.ApplyTo(colorSet).ToList();
             _matchReplaceLoopIndex = 0;
-            text = Regex.Replace(text, regExPattern, new MatchEvaluator(MatchReplace));
+            text = Regex.Replace(text, _regExPattern, new MatchEvaluator(MatchReplace));
+            Console.WriteLine($"{_filteredColors.Count} colors found, {_matchReplaceLoopIndex} colors replaced");
+            for (int i = _matchReplaceLoopIndex; i < _filteredColors.Count; i++) {
+                Console.WriteLine(_filteredColors[i].ToString());
+            }
             return text;
         }
 
-        // todo THIS CURRENTLY DOES NOTHING
         private int _matchReplaceLoopIndex = 0;
         private string MatchReplace(Match m)
         {
-            string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(_schemeFormat);
             if (m.Groups.Count == 4) {
                 // the second capture group of the regex pattern must be the one that contains color data
                 string rgbString = m.Groups[2].ToString();
 
-                if (Utils.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
-                    string filteredRgbString =  HexRgb.ToRgbString(_filteredColors[_matchReplaceLoopIndex++], rgbHexFormat);
-
-                    // Console.WriteLine(rgbString + " -> " + filteredRGBString);
-
+                if (Utils.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
+                    string filteredRgbString =  HexRgb.ToRgbString(_filteredColors[_matchReplaceLoopIndex++], _hexFormat);
+                    Console.WriteLine(rgbString + " -> " + filteredRgbString);
                     return m.Groups[1]
                            + filteredRgbString
                            + m.Groups[3];
@@ -81,24 +83,19 @@ namespace ColorSchemeManipulator
                     Console.WriteLine("Invalid RGB string: " + rgbString);
                 }
             }
-
+            
             throw new Exception("Regular Expression Mismatch");
             // return m.Groups[0].ToString();  // alternative for throwing
         }
 
         private IEnumerable<Color> GetAllColors(string text)
         {
-            //var colorList = new List<Color>();
-            string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(_schemeFormat);
-            string regExPattern = SchemeFormatUtil.GetRegEx(_schemeFormat);
-            MatchCollection matches = Regex.Matches(text, regExPattern);
+            MatchCollection matches = Regex.Matches(text, _regExPattern);
             foreach (var obj in matches) {
                 if (obj is Match m) {
                     string rgbString = m.Groups[2].ToString();
-                    if (Utils.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
-                        var rgb8 = Rgb8Bit.FromRgbString(rgbString, rgbHexFormat);
-                        var color = Color.FromRgb8(rgb8.Red8, rgb8.Green8, rgb8.Blue8, rgb8.Alpha8);
-                        yield return color;
+                    if (Utils.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
+                        yield return HexRgb.FromRgbString(rgbString, _hexFormat);
                     }
                 }
             }

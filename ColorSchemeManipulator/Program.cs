@@ -61,7 +61,7 @@ namespace ColorSchemeManipulator
             string sourceFileName = @"HappyDays_Complete.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
             // sourceFileName = "HappyDays.png";
-            sourceFileName = "photo.png";
+            // sourceFileName = "photo.png";
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
             targetFile = Path.GetFullPath(Path.Combine(baseDir,

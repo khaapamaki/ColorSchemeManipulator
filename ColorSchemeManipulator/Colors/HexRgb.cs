@@ -28,7 +28,7 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color FromRgbString(string rgbString)
         {
-            return Color.FromRgb8(
+            return Color.FromRgb(
                 byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
                 byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
                 byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
@@ -37,7 +37,7 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color FromArgbString(string rgbString)
         {
-            return Color.FromRgb8(
+            return Color.FromRgb(
                 byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
                 byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
                 byte.Parse(rgbString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber),
@@ -47,7 +47,7 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color FromRgbaString(string rgbString)
         {
-            return Color.FromRgb8(
+            return Color.FromRgb(
                 byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
                 byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
                 byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
