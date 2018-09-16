@@ -1,6 +1,6 @@
 ##### *** You are in development branch ***
 
-### Color Scheme Inverter
+## Color Scheme Manipulator
 
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
@@ -9,7 +9,7 @@ Added option to convert colors on png-files for quick testing.
 
 #### What's new in version 0.2 and 0.3
 
-##### 0.2
+##### Version 0.2
 
 + ColorFilter is not more abtract base class, but the only filter type replacing HslFilter, RgbFilter and HsvFilter
 + ColorBase class is renamed simply to Color
@@ -20,7 +20,7 @@ New delegate signature is:
 Func<IEnumerable<Color>, object[], IEnumerable<Color>>
 ```
 
-##### 0.3
+##### Version 0.3
 
 + The whole new Color class replaces all other color representations. Color class can hold all RGB, HSL and HSL color 
 attributes, and it makes conversion only on demand and automatically without user knowing nothing of it
