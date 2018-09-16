@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Kati\.Rider2018.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Kati\.Rider2018.2\system\resharper-host\local\Transient\ReSharperHost\v182\SolutionCaches\_ColorSchemeManipulator.988356361.00" t="ExcludeRecursive" />
-    <e p="E:\00-DEVELOPMENT\ColorSchemeManipulator" t="IncludeFlat">
+    <e p="/574f6a14" t="IncludeRecursive" />
+    <e p="/app" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p=".gitignore" t="Include" />
       <e p="ColorSchemeManipulator" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -88,5 +89,7 @@
       <e p="packages" t="ExcludeRecursive" />
       <e p="readme.md" t="Include" />
     </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_ColorSchemeManipulator.-1326244715.00" t="ExcludeRecursive" />
   </component>
 </project>

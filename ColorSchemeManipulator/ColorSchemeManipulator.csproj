@@ -85,6 +85,9 @@
     <EmbeddedResource Include="..\ColorSchemes\photo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="..\.gitignore">
+      <Link>.gitignore</Link>
+    </Content>
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>
