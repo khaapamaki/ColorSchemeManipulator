@@ -39,6 +39,8 @@ namespace ColorSchemeManipulator.UnitTests
         {
             Color rgb1 = Color.FromRgb(0x8A, 0x3B, 0x20);
             Color rgb2 = Color.FromHsl(rgb1.Hue, rgb1.Saturation, rgb1.Lightness);
+            Console.WriteLine(rgb1.ToString());
+            Console.WriteLine(rgb2.ToString());
             Assert.True(rgb1.EqualTo(rgb2));
         }
 
@@ -47,6 +49,8 @@ namespace ColorSchemeManipulator.UnitTests
         {
             Color rgb1 = Color.FromRgb(0x8A, 0x3B, 0x20);
             Color rgb2 = Color.FromHsv(rgb1.HueHsv, rgb1.SaturationHsv, rgb1.Value);
+            Console.WriteLine(rgb1.ToString());
+            Console.WriteLine(rgb2.ToString());
             Assert.True(rgb1.EqualTo(rgb2));
         }
         
@@ -60,9 +64,8 @@ namespace ColorSchemeManipulator.UnitTests
                     (byte) rnd.Next(0, 255),
                     (byte) rnd.Next(0, 255),
                     (byte) rnd.Next(0, 255));
-                Color rgb2 = Color.FromHsl(rgb1.Hue, rgb1.Saturation, rgb1.Lightness);
+                Color rgb2 = Color.FromHsl(rgb1.Hue, rgb1.Saturation, rgb1.Lightness, rgb1.Alpha);
                 Assert.True(rgb1.EqualTo(rgb2));
-                //Assert.True(rgb.AboutEqual(rgb2.ToRgb8Bit())); // accepts difference of 1 for every 8bit component
             }
         }
 
