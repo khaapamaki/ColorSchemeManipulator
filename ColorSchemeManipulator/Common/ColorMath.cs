@@ -1,5 +1,4 @@
 using System;
-using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Common
 {
@@ -93,11 +92,6 @@ namespace ColorSchemeManipulator.Common
 
             return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
         }
-
-        public static double RgbPerceivedBrightness(Rgb rgb)
-        {
-            return RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
-        }
         
         public static double RgbPerceivedBrightness(double red, double green, double blue)
         {
@@ -142,20 +136,5 @@ namespace ColorSchemeManipulator.Common
             return LinearInterpolationForLoopingValues(x, 0.0, 1.0, y0, y1, loopMax);
         }
 
-        [Obsolete]
-        private static double GetGammaFromMidtoneValue(double midtones)
-        {
-            midtones = midtones.Clamp(0.0, 1.0);
-            double gamma = 1.0;
-            if (midtones < 0.5) {
-                gamma = 1 + 9 * (1 - 2 * midtones);
-                gamma = Math.Min(gamma, 9.99);
-            } else if (midtones > 0.5) {
-                gamma = 1 - (midtones * 2 - 1);
-                gamma = Math.Max(gamma, 0.01);
-            }
-
-            return gamma.Clamp(0.01, 9.99);
-        }
     }
 }

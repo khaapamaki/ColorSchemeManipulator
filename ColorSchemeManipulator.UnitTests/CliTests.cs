@@ -52,9 +52,9 @@ namespace ColorSchemeManipulator.UnitTests
         [TestCase("hue:350-10", 1.0)]
         public void ParseRange_GettingInRangeFactorForRgb_ReturnExpectedFactor(string rangeString, double expFactor)
         {
-            Rgb rgb = new Rgb(1, 0.1, 0); // a bit yellowish max saturated red
+            Color color = Color.FromRgb(1, 0.1, 0); // a bit yellowish max saturated red
             var range = CliUtils.ParseRange(rangeString);
-            double factor = range.InRangeFactor(rgb);
+            double factor = range.InRangeFactor(color);
             
             Assert.That(factor, Is.EqualTo(expFactor));
         }
@@ -69,10 +69,10 @@ namespace ColorSchemeManipulator.UnitTests
         [TestCase("hue:350-10", 1.0)]
         public void ParseRange_GettingInRangeFactorForHsl_ReturnExpectedFactor(string rangeString, double expFactor)
         {
-            Rgb rgb = new Rgb(1, 0.1, 0); // a bit yellowish max saturated red
-            Hsl hsl = new Hsl(rgb);
+            Color color = Color.FromRgb(1, 0.1, 0); // a bit yellowish max saturated red
+
             var range = CliUtils.ParseRange(rangeString);
-            double factor = range.InRangeFactor(hsl);
+            double factor = range.InRangeFactor(color);
             
             Assert.That(factor, Is.EqualTo(expFactor));
         }

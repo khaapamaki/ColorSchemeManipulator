@@ -14,6 +14,7 @@
             <e p="HappyDays.icls" t="Include" />
             <e p="HappyDays.png" t="Include" />
             <e p="HappyDays_Complete.icls" t="Include" />
+            <e p="HappyDays_Complete_converted.icls" t="Include" />
             <e p="HappyDays_converted.png" t="Include" />
             <e p="photo.png" t="Include" />
             <e p="photo_converted.png" t="Include" />
@@ -27,10 +28,7 @@
         <e p="Colors" t="Include">
           <e p="Color.cs" t="Include" />
           <e p="ColorConversions.cs" t="Include" />
-          <e p="Hsl.cs" t="Include" />
-          <e p="Hsv.cs" t="Include" />
-          <e p="Rgb.cs" t="Include" />
-          <e p="Rgb8Bit.cs" t="Include" />
+          <e p="HexRgb.cs" t="Include" />
         </e>
         <e p="ColorSchemeManipulator.csproj" t="IncludeRecursive" />
         <e p="ColorSchemeProcessor.cs" t="Include" />

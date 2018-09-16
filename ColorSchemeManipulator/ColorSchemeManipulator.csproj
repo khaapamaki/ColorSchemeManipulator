@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,12 +46,9 @@
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtils.cs" />
     <Compile Include="ColorSchemeProcessor.cs" />
-    <Compile Include="Colors\Color.cs" />
     <Compile Include="Colors\ColorConversions.cs" />
-    <Compile Include="Colors\Hsl.cs" />
-    <Compile Include="Colors\Hsv.cs" />
-    <Compile Include="Colors\Rgb.cs" />
-    <Compile Include="Colors\Rgb8Bit.cs" />
+    <Compile Include="Colors\HexRgb.cs" />
+    <Compile Include="Colors\Color.cs" />
     <Compile Include="Common\ColorMath.cs" />
     <Compile Include="Common\DoubleExtensions.cs" />
     <Compile Include="Common\GenericExtensions.cs" />
@@ -96,6 +95,7 @@
     <Content Include="bin\Debug\HappyDays.icls" />
     <Content Include="bin\Debug\HappyDays.png" />
     <Content Include="bin\Debug\HappyDays_Complete.icls" />
+    <Content Include="bin\Debug\HappyDays_Complete_converted.icls" />
     <Content Include="bin\Debug\HappyDays_converted.png" />
     <Content Include="bin\Debug\photo.png" />
     <Content Include="bin\Debug\photo_converted.png" />

@@ -6,10 +6,10 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
-    // Todo Fix issue: parameter list that has comma at beginning is not propeperly handled causing slow prosessing (images)
+    // Todo Fix issue: parameter list that has comma at beginning is not properly handled causing slow prosessing (images)
     // arguments are empty string that will get default values but parsing with exception handling makes it slow
     // Todo Better argument validation could be the answer
-    // other option would be pre-parsing to correct type and not parsing again when the filter is reapplied.
+    // other options would be pre-parsing to correct type and not parsing again when the filter is reapplied.
 
     public sealed class FilterBundle
     {
@@ -44,14 +44,15 @@ namespace ColorSchemeManipulator.Filters
                 desc: "HSV value multiplier. Accepts single parameter 0..x");
             CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1,
                 desc: "HSV saturation multiplier. Accepts single parameter 0..x");
-
+            
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2);
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2);
             CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1, 2);
             CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1, 2);
             CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation"}, ContrastHsvSaturation, 1, 2);
-
-            CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1);
+            
+            CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1, 1,
+                desc:"Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99");
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1);
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1);
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1);
@@ -59,7 +60,7 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-gav", "--gamma-value"}, GammaValue, 1);
             CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHslSaturation, 1);
             CliArgs.Register(new List<string> {"-gaS", "--gamma-hsv-saturation"}, GammaHsvSaturation, 1);
-
+            
             CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5);
             CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5);
             CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5);
@@ -70,13 +71,29 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
 
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
+            CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
-
+            
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness");
 
             GetInstance()._isRegistered = true;
+        }
+
+        public static IEnumerable<Color> ByBass(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                if (filterParams.Any()) {
+                    (double h, double s, double l) = color.GetHslComponents();
+                    var newColor = Color.FromHsl(h, s, l, color.Alpha);
+                    yield return newColor;
+                } else {
+                    yield return color;
+                }
+            }
         }
 
         #region "Invert"
@@ -86,18 +103,13 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var inverted = new Rgb(color)
-                {
-                    Red = ColorMath.Invert(rgb.Red),
-                    Green = ColorMath.Invert(rgb.Green),
-                    Blue = ColorMath.Invert(rgb.Blue),
-                    Alpha = rgb.Alpha
-                };
-
-                yield return rgb.Interpolate(inverted, rangeFactor);
-                ;
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var inverted = Color.FromRgb(
+                    ColorMath.Invert(color.Red),
+                    ColorMath.Invert(color.Green),
+                    ColorMath.Invert(color.Blue),
+                    color.Alpha);
+                yield return color.InterpolateWith(inverted, rangeFactor);
             }
         }
 
@@ -106,12 +118,13 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
 
-                var filtered = new Hsl(hsl) {Lightness = ColorMath.Invert(hsl.Lightness)};
+                var filtered = new Color(color);
+                    
+                filtered.Lightness = ColorMath.Invert(filtered.Lightness);
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -120,13 +133,13 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
-                filtered.Value = ColorMath.Invert(hsv.Value);
+                filtered.Value = ColorMath.Invert(color.Value);
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -139,16 +152,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
                     filtered.Saturation = filtered.Saturation * gain;
                 }
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -157,16 +170,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.Saturation = filtered.Saturation * gain;
+                    filtered.SaturationHsv = filtered.SaturationHsv * gain;
                 }
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -175,18 +188,18 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.Red = ColorMath.Gain(rgb.Red, gain);
-                    filtered.Green = ColorMath.Gain(rgb.Green, gain);
-                    filtered.Blue = ColorMath.Gain(rgb.Blue, gain);
+                    filtered.Red = ColorMath.Gain(color.Red, gain);
+                    filtered.Green = ColorMath.Gain(color.Green, gain);
+                    filtered.Blue = ColorMath.Gain(color.Blue, gain);
                 }
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -195,16 +208,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
                     filtered.Lightness = filtered.Lightness * gain;
                 }
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -213,16 +226,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
                     filtered.Value = filtered.Value * gain;
                 }
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -235,18 +248,18 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Red = ColorMath.Gamma(rgb.Red, gamma);
-                    filtered.Green = ColorMath.Gamma(rgb.Green, gamma);
-                    filtered.Blue = ColorMath.Gamma(rgb.Blue, gamma);
+                    filtered.Red = ColorMath.Gamma(color.Red, gamma);
+                    filtered.Green = ColorMath.Gamma(color.Green, gamma);
+                    filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
                 }
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -255,16 +268,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Red = ColorMath.Gamma(rgb.Red, gain);
+                    filtered.Red = ColorMath.Gamma(color.Red, gain);
                 }
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -273,17 +286,17 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
 
                 if (filterParams.Any()) {
                     double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Green = ColorMath.Gamma(rgb.Green, gain);
+                    filtered.Green = ColorMath.Gamma(color.Green, gain);
                 }
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -292,16 +305,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Blue = ColorMath.Gamma(rgb.Blue, gain);
+                    filtered.Blue = ColorMath.Gamma(color.Blue, gain);
                 }
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -310,16 +323,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Saturation = ColorMath.Gamma(hsl.Saturation, gamma);
+                    filtered.Saturation = ColorMath.Gamma(color.Saturation, gamma);
                 }
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -328,16 +341,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Saturation = ColorMath.Gamma(hsv.Saturation, gamma);
+                    filtered.SaturationHsv = ColorMath.Gamma(color.SaturationHsv, gamma);
                 }
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -346,16 +359,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Lightness = ColorMath.Gamma(hsl.Lightness, gamma);
+                    filtered.Lightness = ColorMath.Gamma(color.Lightness, gamma);
                 }
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -364,16 +377,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Value = ColorMath.Gamma(hsv.Value, gamma);
+                    filtered.Value = ColorMath.Gamma(color.Value, gamma);
                 }
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -386,9 +399,9 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
@@ -397,12 +410,12 @@ namespace ColorSchemeManipulator.Filters
                         midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
 
-                    filtered.Red = ColorMath.SSpline(rgb.Red, strength, midpoint);
-                    filtered.Green = ColorMath.SSpline(rgb.Green, strength, midpoint);
-                    filtered.Blue = ColorMath.SSpline(rgb.Blue, strength, midpoint);
+                    filtered.Red = ColorMath.SSpline(color.Red, strength, midpoint);
+                    filtered.Green = ColorMath.SSpline(color.Green, strength, midpoint);
+                    filtered.Blue = ColorMath.SSpline(color.Blue, strength, midpoint);
                 }
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -412,9 +425,9 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
@@ -423,10 +436,10 @@ namespace ColorSchemeManipulator.Filters
                         midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
 
-                    filtered.Saturation = ColorMath.SSpline(hsl.Saturation, strength, midpoint);
+                    filtered.Saturation = ColorMath.SSpline(color.Saturation, strength, midpoint);
                 }
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -436,9 +449,9 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
@@ -447,10 +460,10 @@ namespace ColorSchemeManipulator.Filters
                         midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
 
-                    filtered.Saturation = ColorMath.SSpline(hsv.Saturation, strength, midpoint);
+                    filtered.SaturationHsv = ColorMath.SSpline(color.SaturationHsv, strength, midpoint);
                 }
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -459,9 +472,9 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
@@ -470,10 +483,10 @@ namespace ColorSchemeManipulator.Filters
                         midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
 
-                    filtered.Lightness = ColorMath.SSpline(hsl.Lightness, strength, midpoint);
+                    filtered.Lightness = ColorMath.SSpline(color.Lightness, strength, midpoint);
                 }
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -482,9 +495,9 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
@@ -493,10 +506,10 @@ namespace ColorSchemeManipulator.Filters
                         midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
 
-                    filtered.Value = ColorMath.SSpline(hsv.Value, strength, midpoint);
+                    filtered.Value = ColorMath.SSpline(color.Value, strength, midpoint);
                 }
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -509,35 +522,17 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
 
                 if (filterParams.Any()) {
                     double hueShift = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    filtered.Hue = hsl.Hue + hueShift;
+                    filtered.Hue = color.Hue + hueShift;
                 }
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
-            }
-        }
-
-        public static IEnumerable<Color> ShiftHsvHue(IEnumerable<Color> colors, params object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-            foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
-
-                if (filterParams.Any()) {
-                    double hueShift = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    filtered.Hue = hsv.Hue + hueShift;
-                }
-
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -550,18 +545,18 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Red = ColorMath.Levels(rgb.Red, inBlack, inWhite, gamma, outBlack, outWhite);
-                filtered.Green = ColorMath.Levels(rgb.Green, inBlack, inWhite, gamma, outBlack, outWhite);
-                filtered.Blue = ColorMath.Levels(rgb.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -570,16 +565,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Red = ColorMath.Levels(rgb.Red, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -588,16 +583,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Green = ColorMath.Levels(rgb.Green, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -606,16 +601,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Blue = ColorMath.Levels(rgb.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -624,16 +619,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Lightness = ColorMath.Levels(hsl.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -642,16 +637,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Lightness = ColorMath.Levels(hsl.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -661,16 +656,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsl = color.ToHsl();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
-                var filtered = color.ToHsl();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Saturation = ColorMath.Levels(hsl.Saturation, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Saturation = ColorMath.Levels(color.Saturation, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return hsl.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -679,16 +674,16 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var hsv = color.ToHsv();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, hsv);
-                var filtered = color.ToHsv();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Saturation = ColorMath.Levels(hsv.Saturation, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.SaturationHsv = ColorMath.Levels(color.SaturationHsv, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return hsv.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -702,18 +697,18 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                var rgb = color.ToRgb();
-                var rangeFactor = FilterUtils.GetRangeFactor(range, rgb);
-                var filtered = color.ToRgb();
+                
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    var br = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+                    var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
                     filtered.Red = br;
                     filtered.Green = br;
                     filtered.Blue = br;
                 }
 
-                yield return rgb.Interpolate(filtered, rangeFactor);
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using ColorSchemeManipulator.CLI;
-using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.SchemeFileSupport;
 
@@ -56,18 +53,18 @@ namespace ColorSchemeManipulator
 
             string sourceFile, targetFile;
 
-#if DEBUG
+
             // Test files for debugging
             string sourceFileName = @"HappyDays_Complete.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
             // sourceFileName = "HappyDays.png";
-            sourceFileName = "photo.png";
+            // sourceFileName = "photo.png";
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
             targetFile = Path.GetFullPath(Path.Combine(baseDir,
                 Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
                                                              + Path.GetExtension(sourceFile)));
-#endif
+
 
             // get source and target from CLI args, if not available use built-in ones for debugging
             // todo: show error if source or target is missing

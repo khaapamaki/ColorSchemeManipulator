@@ -1,14 +1,33 @@
-### Color Scheme Inverter
+##### *** You are in development branch ***
 
-##### ** WORK IN PROGRESS **
+### Color Scheme Inverter
 
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
 Added option to convert colors on png-files for quick testing.
 
+#### What's new in version 0.2 and 0.3
 
-### Currently available filters and corresponding CLI options
+##### 0.2
+
++ ColorFilter is not more abtract base class, but the only filter type replacing HslFilter, RgbFilter and HsvFilter
++ ColorBase class is renamed simply to Color
++ Filter delegate signature changed. All filters must handle set of colors provided in IEnumerable\<Color>.
+New delegate signature is:
+   
+```C#
+Func<IEnumerable<Color>, object[], IEnumerable<Color>>
+```
+
+##### 0.3
+
++ The whole new Color class replaces all other color representations. Color class can hold all RGB, HSL and HSL color 
+attributes, and it makes conversion only on demand and automatically without user knowing nothing of it
++ HexRgb class provides methods to conveting hex strings to color. Rgb8Bit is removed along with other old color formats.
+
+
+#### Currently available filters and corresponding CLI options
 ```
 Available Filters:
   -h    --hue                      Hue shift. Accepts single parameter as degrees -360..360
@@ -69,17 +88,13 @@ Hunting for them...
 
 #### ToDo
 
-+ Optimization in range parameter handling during filtering
 + Range parameter validation
-+ CliArg subclassing(?) so other than filter delegate type arguments are possible
-    + FilterSet arg type could be useful for creating presets
 + SchemeFormat specific extra processing
     + IntelliJ: switch parent scheme based on light/dark background setting
 + More Unit tests
 + Support for Visual Studio Code
 + Support for CSS and HTML files
 + Proper HSV<->HSL conversions, now done by converting to RGB first
-
 
 
 #### Manually filtering (no using CLI arguments)
@@ -167,4 +182,38 @@ namespace ColorSchemeInverter
         }
     }
 }
+```
+
+#### Creating a filter delegate that uses range system
+
+```C#
+public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, params object[] filterParams)
+{
+    ColorRange range;
+    (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+    foreach (var color in colors) {   
+     
+        var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+        var filtered = new Color(color);
+        
+        if (filterParams.Any()) {
+            double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+            filtered.Red = ColorMath.Gamma(color.Red, gamma);
+            filtered.Green = ColorMath.Gamma(color.Green, gamma);
+            filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
+        }
+        
+        yield return color.InterpolateWith(filtered, rangeFactor);
+    }
+}
+```
+
+And registering it to be used from command line 
+```C#
+CliArgs.Register(
+    options: new List<string> {"-ga", "--gamma"}, 
+    filter: GammaRgb, 
+    minParams: 1, 
+    maxParams: 1,
+    desc: "Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99");
 ```

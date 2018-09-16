@@ -8,12 +8,15 @@ namespace ColorSchemeManipulator.UnitTests
 
         [Test]
         [TestCase(0.1, 0.2, 0.4, 0.6, 0.6, 0)]
+        [TestCase(0.1, 0.2, 0.4, 0.6, 0.1, 0)]
+        [TestCase(0.1, 0.2, 0.4, 0.6, 0.4, 1)]
+        [TestCase(0.1, 0.2, 0.4, 0.6, 0.2, 1)]
         [TestCase(0.1, 0.3, 0.4, 0.6, 0.3, 1)]
         [TestCase(0.1, 0.3, 0.4, 0.6, 0.2, 0.5)]
         [TestCase(0.1, 0.3, 0.4, 0.6, 0.5, 0.5)]
         [TestCase(0.0, 0.4, 0.8, 1.0, 0.1, 0.25)]
         [TestCase(0.0, 0.4, 0.6, 1.0, 0.3, 0.75)]
-        [TestCase(0.0, 0.4, 0.6, 1.0, 0.7, 0.25)]
+        [TestCase(0.0, 0.4, 0.6, 1.0, 0.7, 0.75)]
         public void InRangeFactor_FourPointParameter_ReturnsExpectedValues(double minStart, double minEnd, double maxStart,
             double maxEnd, double val, double expected)
         {
