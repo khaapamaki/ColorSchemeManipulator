@@ -1,11 +1,16 @@
-### Color Scheme Inverter
-
 ##### ** WORK IN PROGRESS **
+
+### Color Scheme Manipulator
 
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
 Added option to convert colors on png-files for quick testing.
+
+### Important notes on using Production branch version
+
++ Function delegate signature will be changed
++ All color formats eg. Rgb, HSl, Hsv are going ot be replaced with single Color class
 
 
 ### Currently available filters and corresponding CLI options
@@ -65,20 +70,6 @@ Note: Some filters are purely for experimental purposes!
 #### Issues
 
 Hunting for them...
-
-
-#### ToDo
-
-+ Optimization in range parameter handling during filtering
-+ Range parameter validation
-+ CliArg subclassing(?) so other than filter delegate type arguments are possible
-    + FilterSet arg type could be useful for creating presets
-+ SchemeFormat specific extra processing
-    + IntelliJ: switch parent scheme based on light/dark background setting
-+ More Unit tests
-+ Support for Visual Studio Code
-+ Support for CSS and HTML files
-+ Proper HSV<->HSL conversions, now done by converting to RGB first
 
 
 
