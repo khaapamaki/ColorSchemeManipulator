@@ -7,7 +7,7 @@ using ColorSchemeManipulator.Filters;
 namespace ColorSchemeManipulator.CLI
 {
     /// <summary>
-    /// A singleton class to store and handle command line arguments relating to filters and filterDelegate paramters
+    /// A singleton class to store and handle command line arguments relating to filters and filter paramters
     /// </summary>
     public sealed class CliArgs
     {
@@ -32,16 +32,16 @@ namespace ColorSchemeManipulator.CLI
             return GetInstance().Items[index];
         }
 
-        public static void Register(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams,
+        public static void Register(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
             byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(option, filter, minParams, maxParams, desc));
         }
 
-        public static void Register(List<string> option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams,
+        public static void Register(List<string> options, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
             byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(options, filter, minParams, maxParams, desc));
         }
  
         /// <summary>
@@ -56,7 +56,7 @@ namespace ColorSchemeManipulator.CLI
         }
 
         /// <summary>
-        /// Gets matching filterDelegate delegate function and given arguments for given command line option
+        /// Gets matching filter delegate function and given arguments for given command line options
         /// Filter must be registered in CliArgs class.
         /// </summary>
         /// <param name="option"></param>

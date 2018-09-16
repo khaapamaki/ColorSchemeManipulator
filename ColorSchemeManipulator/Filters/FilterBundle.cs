@@ -9,7 +9,7 @@ namespace ColorSchemeManipulator.Filters
     // Todo Fix issue: parameter list that has comma at beginning is not properly handled causing slow prosessing (images)
     // arguments are empty string that will get default values but parsing with exception handling makes it slow
     // Todo Better argument validation could be the answer
-    // other option would be pre-parsing to correct type and not parsing again when the filter is reapplied.
+    // other options would be pre-parsing to correct type and not parsing again when the filter is reapplied.
 
     public sealed class FilterBundle
     {
@@ -51,7 +51,8 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1, 2);
             CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation"}, ContrastHsvSaturation, 1, 2);
             
-            CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1);
+            CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1, 1,
+                desc:"Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99");
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1);
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1);
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1);
