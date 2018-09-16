@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d851713-869b-483e-b0df-e936070b1af0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ColorSchemeManipulator.sln" beforeDir="false" afterPath="$PROJECT_DIR$/ColorSchemeManipulator.sln" afterDir="false" />
+    <list default="true" id="6d851713-869b-483e-b0df-e936070b1af0" name="Default Changelist" comment="Target file is formed form source file if not given as argument">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ColorSchemeManipulator/ColorSchemeManipulator.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ColorSchemeManipulator/ColorSchemeManipulator.csproj" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -86,26 +86,28 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="cs" value="25" />
+          <entry key="csproj" value="1" />
           <entry key="gitignore" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="C#" value="25" />
+          <entry key="Csproj" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cs" value="533" />
-          <entry key="gitignore" value="26" />
-          <entry key="txt" value="13" />
+          <entry key="cs" value="541" />
+          <entry key="gitignore" value="72" />
+          <entry key="txt" value="110" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C#" value="533" />
-          <entry key="PLAIN_TEXT" value="39" />
+          <entry key="C#" value="541" />
+          <entry key="PLAIN_TEXT" value="182" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -138,30 +140,36 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ColorSchemeManipulator/Program.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="61" column="36" selection-start-line="61" selection-start-column="36" selection-end-line="61" selection-end-column="36" />
+            <state relative-caret-position="162">
+              <caret line="52" column="20" selection-start-line="52" selection-start-column="20" selection-end-line="52" selection-end-column="20" />
               <folding>
-                <marker date="1537122596000" expanded="false" signature="6:150" ph="..." />
-                <marker date="1537122596000" expanded="true" signature="184:2738" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="213:2736" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="266:2729" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="500:696" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="1057:1214" ph="/* PARSE other than filter options here, and remove them from remainingOptArgs array ... */" />
-                <marker date="1537122596000" expanded="true" signature="1260:1378" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="1637:1746" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="2078:2414" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="2125:2298" ph="{...}" />
-                <marker date="1537122596000" expanded="true" signature="2460:2603" ph="{...}" />
+                <marker date="1537123349000" expanded="false" signature="6:150" ph="..." />
+                <marker date="1537123349000" expanded="true" signature="184:3032" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="213:3030" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="266:3023" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="500:696" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="1057:1214" ph="/* PARSE other than filter options here, and remove them from remainingOptArgs array ... */" />
+                <marker date="1537123349000" expanded="true" signature="1260:1378" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="1636:1894" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="1931:2040" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="2372:2708" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="2419:2592" ph="{...}" />
+                <marker date="1537123349000" expanded="true" signature="2754:2897" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ColorSchemeManipulator.UnitTests/ColorSchemeManipulator.UnitTests.csproj">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+            <state relative-caret-position="57">
+              <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -304,10 +312,10 @@
         <option value="$PROJECT_DIR$/ColorSchemeManipulator/Colors/Color.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeManipulator.UnitTests/MiscTests.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeManipulator/ColorSchemeProcessor.cs" />
-        <option value="$PROJECT_DIR$/ColorSchemeManipulator/Program.cs" />
         <option value="$PROJECT_DIR$/ColorSchemeManipulator/Filters/ExperimentalBundle.cs" />
         <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/ColorSchemeManipulator/Program.cs" />
       </list>
     </option>
   </component>
@@ -332,12 +340,6 @@
               <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
               <item name="ColorSchemeManipulator" type="24d0babc:SolutionExplorerModelNode" />
               <item name="ColorSchemeManipulator" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
-            <path>
-              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="ColorSchemeManipulator" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="ColorSchemeManipulator" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="CLI" type="24d0babc:SolutionExplorerModelNode" />
             </path>
             <path>
               <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
@@ -373,9 +375,9 @@
   </component>
   <component name="RunManager">
     <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/ColorSchemeManipulator/bin/Debug/colschman.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/ColorSchemeManipulator/bin/Release/colschman.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ColorSchemeManipulator/bin/Debug" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ColorSchemeManipulator/bin/Release" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
@@ -406,7 +408,7 @@
       <workItem from="1536994666337" duration="7260000" />
       <workItem from="1537004322445" duration="1342000" />
       <workItem from="1537078848579" duration="1854000" />
-      <workItem from="1537122814213" duration="229000" />
+      <workItem from="1537122814213" duration="781000" />
     </task>
     <task id="LOCAL-00001" summary="Added test material and some references. Version set to 0.1">
       <created>1536929982374</created>
@@ -590,11 +592,25 @@
       <option name="project" value="LOCAL" />
       <updated>1537118252271</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary=".gitignore update">
+      <created>1537123380599</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1537123380599</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Target file is formed form source file if not given as argument">
+      <created>1537123419320</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1537123419320</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52432000" />
+    <option name="totallyTimeSpent" value="52984000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -609,7 +625,7 @@
     <frame x="0" y="22" width="1440" height="874" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2274678" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2274678" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="0" />
@@ -622,12 +638,12 @@
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32972136" />
       <window_info anchor="bottom" id="NuGet" order="8" weight="0.32972136" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="10" visible="true" weight="0.12779973" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12779973" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Unit Tests" order="12" weight="0.32894737" />
       <window_info anchor="bottom" id="Terminal" order="13" weight="0.2987616" />
       <window_info anchor="bottom" id="Event Log" order="14" side_tool="true" />
-      <window_info anchor="bottom" id="Build" order="15" weight="0.32739937" />
+      <window_info active="true" anchor="bottom" id="Build" order="15" visible="true" weight="0.32674572" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -697,8 +713,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added test material and some references. Version set to 0.1" />
-    <MESSAGE value="Bug fix." />
     <MESSAGE value="Accepts numbers in CLI commands" />
     <MESSAGE value="Experimental filters inside own bundle. Bug fixes in Main()" />
     <MESSAGE value="ToLight multifilter moved to ExperimentalBundle" />
@@ -722,7 +736,9 @@
     <MESSAGE value="HexRgb to replace hex operations Rgb8bit. Latter is obsolete." />
     <MESSAGE value="Clean up" />
     <MESSAGE value="Readme update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Readme update" />
+    <MESSAGE value=".gitignore update" />
+    <MESSAGE value="Target file is formed form source file if not given as argument" />
+    <option name="LAST_COMMIT_MESSAGE" value="Target file is formed form source file if not given as argument" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -735,13 +751,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ColorSchemeManipulator.UnitTests/Tests.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ColorSchemeManipulator.UnitTests/ColorConversionsTests.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20">
@@ -965,32 +974,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ColorSchemeManipulator/Program.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="61" column="36" selection-start-line="61" selection-start-column="36" selection-end-line="61" selection-end-column="36" />
+        <state relative-caret-position="162">
+          <caret line="52" column="20" selection-start-line="52" selection-start-column="20" selection-end-line="52" selection-end-column="20" />
           <folding>
-            <marker date="1537122596000" expanded="false" signature="6:150" ph="..." />
-            <marker date="1537122596000" expanded="true" signature="184:2738" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="213:2736" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="266:2729" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="500:696" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="1057:1214" ph="/* PARSE other than filter options here, and remove them from remainingOptArgs array ... */" />
-            <marker date="1537122596000" expanded="true" signature="1260:1378" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="1637:1746" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="2078:2414" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="2125:2298" ph="{...}" />
-            <marker date="1537122596000" expanded="true" signature="2460:2603" ph="{...}" />
+            <marker date="1537123349000" expanded="false" signature="6:150" ph="..." />
+            <marker date="1537123349000" expanded="true" signature="184:3032" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="213:3030" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="266:3023" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="500:696" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="1057:1214" ph="/* PARSE other than filter options here, and remove them from remainingOptArgs array ... */" />
+            <marker date="1537123349000" expanded="true" signature="1260:1378" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="1636:1894" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="1931:2040" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="2372:2708" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="2419:2592" ph="{...}" />
+            <marker date="1537123349000" expanded="true" signature="2754:2897" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/ColorSchemeManipulator.UnitTests/ColorSchemeManipulator.UnitTests.csproj">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

@@ -78,14 +78,6 @@
         </e>
         <e p="Tests.cs" t="Include" />
       </e>
-      <e p="ColorSchemes" t="Include">
-        <e p="Cobalt.icls" t="Include" />
-        <e p="darcula-vs-2017.vstheme" t="Include" />
-        <e p="HappyDays.icls" t="Include" />
-        <e p="HappyDays.png" t="Include" />
-        <e p="HappyDays_Complete.icls" t="Include" />
-        <e p="photo.png" t="Include" />
-      </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="readme.md" t="Include" />
     </e>
