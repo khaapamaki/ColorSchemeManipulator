@@ -43,8 +43,11 @@ namespace ColorSchemeManipulator
             string sourceFile, targetFile;
             
             // get source and target from CLI args
-
-            if (remainingArgs.Length == 2) {
+            if (remainingArgs.Length == 1) {
+                sourceFile = remainingArgs[0];
+                targetFile = Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
+                                                                          + Path.GetExtension(sourceFile);
+            } else if (remainingArgs.Length == 2) {
                 sourceFile = remainingArgs[0];
                 targetFile = remainingArgs[1];
             } else {
