@@ -64,7 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeFileSupport\SchemeFormat.cs" />
     <Compile Include="SchemeFileSupport\SchemeFormatUtil.cs" />
-    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">

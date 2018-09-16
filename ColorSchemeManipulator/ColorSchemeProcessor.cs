@@ -68,7 +68,7 @@ namespace ColorSchemeManipulator
                 // the second capture group of the regex pattern must be the one that contains color data
                 string rgbString = m.Groups[2].ToString();
 
-                if (Utils.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
+                if (HexRgb.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
                     string filteredRgbString =  HexRgb.ToRgbString(_filteredColors[_matchReplaceLoopIndex++], _hexFormat);
                     // Console.WriteLine(rgbString + " -> " + filteredRgbString);
                     return m.Groups[1]
@@ -89,7 +89,7 @@ namespace ColorSchemeManipulator
             foreach (var obj in matches) {
                 if (obj is Match m) {
                     string rgbString = m.Groups[2].ToString();
-                    if (Utils.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
+                    if (HexRgb.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
                         yield return HexRgb.FromRgbString(rgbString, _hexFormat);
                     }
                 }
