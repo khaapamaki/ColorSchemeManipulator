@@ -12,7 +12,7 @@ namespace ColorSchemeManipulator.Filters
         {
             if (obj is double)
                 return (double) obj;
-            
+
             if (IsNumber(obj)) {
                 try {
                     return (double) obj;
@@ -59,29 +59,29 @@ namespace ColorSchemeManipulator.Filters
             return (null, args);
         }
 
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Rgb rgb, object[] filterParams)
+        public static double GetRangeFactor(ColorRange range, Color color)
         {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
-
-            return (range?.InRangeFactor(rgb) ?? 1.0, filterParams);
+            return range?.InRangeFactor(color) ?? 1.0;
         }
 
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsl hsl, object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
+        public static (double, double, double, double, double) ParseLevelsParameters(object[] args)
 
-            return (range?.InRangeFactor(hsl) ?? 1.0, filterParams);
+            // double rangeFactor, double inputBlack, double inputWhite,
+            // double gamma, double outputBlack, double outputWhite)
+        {
+            if (args.Length >= 5) {
+                double inputBlack = TryParseDouble(args[0]) ?? 0.0;
+                double inputWhite = TryParseDouble(args[1]) ?? 1.0;
+                double gamma = TryParseDouble(args[2]) ?? 1.0;
+                double outputBlack = TryParseDouble(args[3]) ?? 0.0;
+                double outputWhite = TryParseDouble(args[4]) ?? 1.0;
+
+                return (inputBlack, inputWhite, gamma, outputBlack, outputWhite);
+            }
+
+            return (0, 1, 1, 0, 1);
         }
 
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsv hsv, object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
-
-            return (range?.InRangeFactor(hsv) ?? 1.0, filterParams);
-        }
 
         public static double CalcLevels(double value, double rangeFactor, object[] args)
         {

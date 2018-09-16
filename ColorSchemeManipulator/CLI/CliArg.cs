@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.CLI
 {
@@ -13,7 +14,7 @@ namespace ColorSchemeManipulator.CLI
         public byte MaxParams { get; set; }
         public string Description { get; set; }
 
-        public CliArg(string option, Func<Hsl, object[], Hsl> filterDelegate, byte minParams, byte maxParams = 0,
+        public CliArg(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
             string desc = "")
         {
             OptionArgs = new List<string> {option};
@@ -23,47 +24,7 @@ namespace ColorSchemeManipulator.CLI
             Description = desc;
         }
 
-        public CliArg(List<string> options, Func<Hsl, object[], Hsl> filterDelegate, byte minParams, byte maxParams = 0,
-            string desc = "")
-        {
-            OptionArgs = new List<string>(options);
-            FilterDelegate = filterDelegate;
-            MinParams = minParams;
-            MaxParams = minParams < maxParams ? maxParams : minParams;
-            Description = desc;
-        }
-
-        public CliArg(string option, Func<Rgb, object[], Rgb> filterDelegate, byte minParams, byte maxParams = 0,
-            string desc = "")
-        {
-            OptionArgs = new List<string> {option};
-            FilterDelegate = filterDelegate;
-            MinParams = minParams;
-            MaxParams = minParams < maxParams ? maxParams : minParams;
-            Description = desc;
-        }
-
-        public CliArg(IEnumerable<string> options, Func<Rgb, object[], Rgb> filterDelegate, byte minParams,
-            byte maxParams = 0, string desc = "")
-        {
-            OptionArgs = new List<string>(options);
-            FilterDelegate = filterDelegate;
-            MinParams = minParams;
-            MaxParams = minParams < maxParams ? maxParams : minParams;
-            Description = desc;
-        }
-
-        public CliArg(string option, Func<Hsv, object[], Hsv> filterDelegate, byte minParams, byte maxParams = 0,
-            string desc = "")
-        {
-            OptionArgs = new List<string> {option};
-            FilterDelegate = filterDelegate;
-            MinParams = minParams;
-            MaxParams = minParams < maxParams ? maxParams : minParams;
-            Description = desc;
-        }
-
-        public CliArg(List<string> options, Func<Hsv, object[], Hsv> filterDelegate, byte minParams, byte maxParams = 0,
+        public CliArg(List<string> options, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
             string desc = "")
         {
             OptionArgs = new List<string>(options);

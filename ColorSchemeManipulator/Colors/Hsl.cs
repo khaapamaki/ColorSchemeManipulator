@@ -1,9 +1,10 @@
+using System;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Hsl : ColorBase
+    public class Hsl : Color
     {
         private double _hue = 0.0;
 
@@ -29,20 +30,12 @@ namespace ColorSchemeManipulator.Colors
 
         public Hsl(Hsl hsl)
         {
-            Hue = hsl.Hue;
-            Saturation = hsl.Saturation;
-            Lightness = hsl.Lightness;
-            Alpha = hsl.Alpha;
+            CopyFrom(hsl);
         }
 
-        public Hsl(Rgb rgb)
+        public Hsl(Color color)
         {
-            CopyFrom(rgb.ToHsl());
-        }
-
-        public Hsl(Hsv hsv)
-        {
-            CopyFrom(hsv.ToHsl());
+            CopyFrom(color.ToHsl());
         }
             
         public void CopyFrom(Hsl hsl)
@@ -73,21 +66,6 @@ namespace ColorSchemeManipulator.Colors
             } else {
                 return ToString();
             }
-        }
-
-        public Hsl ApplyFilterSet(FilterSet filters)
-        {
-            return filters.ApplyTo(this);
-        }
-
-        public Hsl ApplyFilter(HslFilter filter)
-        {
-            return filter.ApplyTo(this).ToHsl();
-        }
-
-        public Rgb ApplyFilter(RgbFilter filter)
-        {
-            return filter.ApplyTo(this).ToRgb();
         }
 
         public bool Equals(Hsl c)

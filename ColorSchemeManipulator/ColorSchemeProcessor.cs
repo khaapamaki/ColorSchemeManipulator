@@ -19,7 +19,7 @@ namespace ColorSchemeManipulator
         {
             _schemeFormat = schemeFormat;
         }
-
+        
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
             string text = File.ReadAllText(sourceFile);
@@ -48,6 +48,7 @@ namespace ColorSchemeManipulator
             return text;
         }
 
+        // todo THIS CURRENTLY DOES NOTHING
         private string MatchReplace(Match m)
         {
             string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(_schemeFormat);
@@ -58,7 +59,7 @@ namespace ColorSchemeManipulator
                 if (Utils.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
                     string filteredRgbString =
                         Rgb.FromRgbString(rgbString, rgbHexFormat)
-                            .ApplyFilterSet(_filters)
+                            // .ApplyFilterSet(_filters)
                             .ToRgbString(rgbHexFormat);
 
                     // Console.WriteLine(rgbString + " -> " + filteredRGBString);

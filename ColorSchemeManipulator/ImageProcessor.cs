@@ -1,17 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
+using Color = ColorSchemeManipulator.Colors.Color;
 
 namespace ColorSchemeManipulator
 {
     public class ImageProcessor
     {
+        public ImageProcessor() { }
 
-        public ImageProcessor()
-        {
-        }
-        
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
             var image = Image.FromFile(sourceFile);
@@ -27,27 +28,39 @@ namespace ColorSchemeManipulator
                 Console.WriteLine(GetType().FullName + " : " + ex.Message);
                 throw;
             }
+
             convertedImage.Save(targetFile);
         }
-             
-        private Bitmap ApplyFilters(Bitmap image, FilterSet filters)
-        {    
- 
-            for (int x = 0; x < image.Width; x++) {
-                for (int y = 0; y < image.Height; y++) {
-                    var pixel = image.GetPixel(x, y);
-                    image.SetPixel(x, y, ApplyFilters(pixel, filters));
-                } 
+
+        public static IEnumerable<Color> Enumerate(Bitmap bitmap)
+        {
+            for (int y = 0; y < bitmap.Height; y++) {
+                for (int x = 0; x < bitmap.Width; x++) {
+                    yield return ColorConversions.SystemColorToRgb(bitmap.GetPixel(x, y));
+                }
             }
-            
-            return image;
         }
 
-        private Color ApplyFilters(Color color, FilterSet filters)
+        public static void SetPixels(Bitmap original, IEnumerable<Color> colors)
         {
-            return ColorConversions.RgbToSystemColor(
-                ColorConversions.SystemColorToRgb(color).ApplyFilterSet(filters));
+            int x = 0;
+            int y = 0;
+            foreach (Color color in colors) {
+                if (y >= original.Height || x >= original.Width)
+                    break;
+                original.SetPixel(x, y, color.ToSystemColor());
+                x++;
+                if (x >= original.Width) {
+                    x = 0;
+                    y++;
+                }
+            }
         }
-        
+
+        public Bitmap ApplyFilters(Bitmap bitmap, FilterSet filters)
+        {
+            SetPixels(bitmap, filters.ApplyTo(Enumerate(bitmap)));
+            return bitmap;
+        }
     }
 }

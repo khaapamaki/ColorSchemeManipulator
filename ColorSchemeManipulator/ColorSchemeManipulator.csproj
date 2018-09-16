@@ -11,7 +11,7 @@
     <AssemblyName>colschman</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,7 +44,7 @@
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtils.cs" />
     <Compile Include="ColorSchemeProcessor.cs" />
-    <Compile Include="Colors\ColorBase.cs" />
+    <Compile Include="Colors\Color.cs" />
     <Compile Include="Colors\ColorConversions.cs" />
     <Compile Include="Colors\Hsl.cs" />
     <Compile Include="Colors\Hsv.cs" />
@@ -53,17 +53,13 @@
     <Compile Include="Common\ColorMath.cs" />
     <Compile Include="Common\DoubleExtensions.cs" />
     <Compile Include="Common\GenericExtensions.cs" />
-    <Compile Include="Filters\ColorFilter.cs" />
-    <Compile Include="Filters\ColorRange.cs" />
     <Compile Include="Filters\ExperimentalBundle.cs" />
+    <Compile Include="Filters\ColorFilter.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
     <Compile Include="Filters\FilterSet.cs" />
+    <Compile Include="Filters\ColorRange.cs" />
     <Compile Include="Filters\FilterUtils.cs" />
-    <Compile Include="Filters\HslFilter.cs" />
-    <Compile Include="Filters\HsvFilter.cs" />
-    <Compile Include="Filters\LoopingRange.cs" />
     <Compile Include="Filters\ParameterRange.cs" />
-    <Compile Include="Filters\RgbFilter.cs" />
     <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

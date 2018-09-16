@@ -1,8 +1,9 @@
+using System;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Hsv : ColorBase
+    public class Hsv : Color
     {
         
         private double _hue = 0.0;
@@ -27,14 +28,6 @@ namespace ColorSchemeManipulator.Colors
             Alpha = alpha;
         }
 
-        public Hsv(Hsv hsv)
-        {
-            Hue = hsv.Hue;
-            Saturation = hsv.Saturation;
-            Value = hsv.Value;
-            Alpha = hsv.Alpha;
-        }
-
         public void CopyFrom(Hsv hsv)
         {
             Hue = hsv.Hue;
@@ -43,14 +36,9 @@ namespace ColorSchemeManipulator.Colors
             Alpha = hsv.Alpha;
         }
 
-        public Hsv(Rgb rgb)
+        public Hsv(Color color)
         {
-            CopyFrom(rgb.ToHsv());
-        }
-
-        public Hsv(Hsl hsl)
-        {
-            CopyFrom(hsl.ToHsv());
+            CopyFrom(color.ToHsv());
         }
 
         public Hsv Interpolate(Hsv hsv, double factor)

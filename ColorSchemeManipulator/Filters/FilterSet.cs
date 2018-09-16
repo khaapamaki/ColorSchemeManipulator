@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 
@@ -8,112 +7,50 @@ namespace ColorSchemeManipulator.Filters
 {
     public class FilterSet
     {
-        private readonly List<ColorFilter> _filterChain = new List<ColorFilter>();
+        private readonly List<ColorFilter> _filters = new List<ColorFilter>();
 
         public FilterSet() { }
 
-        public FilterSet(Func<Hsl, object[], Hsl> filterDelegate)
+        
+        public FilterSet Add(ColorFilter filter)
         {
-            _filterChain.Add(new HslFilter(filterDelegate));
-        }
-
-        public void Add(HslFilter filter)
-        {
-            _filterChain.Add(filter);
-        }
-
-        public FilterSet Add(Func<Hsl, object[], Hsl> filterDelegate)
-        {
-            _filterChain.Add(new HslFilter(filterDelegate));
+            _filters.Add(filter);
             return this;
         }
 
-        public FilterSet Add(Func<Hsl, object[], Hsl> filterDelegate, params object[] args)
+        public FilterSet Add(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate)
         {
-            _filterChain.Add(new HslFilter(filterDelegate, args));
+            _filters.Add(new ColorFilter(filterDelegate));
             return this;
         }
 
-        public FilterSet(Func<Rgb, object[], Rgb> filterDelegate)
+        public FilterSet Add(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, params object[] args)
         {
-            _filterChain.Add(new RgbFilter(filterDelegate));
-        }
-
-        public void Add(RgbFilter filter)
-        {
-            _filterChain.Add(filter);
-        }
-
-        public FilterSet Add(Func<Rgb, object[], Rgb> filterDelegate)
-        {
-            _filterChain.Add(new RgbFilter(filterDelegate));
+            _filters.Add(new ColorFilter(filterDelegate, args));
             return this;
         }
-
-        public FilterSet Add(Func<Rgb, object[], Rgb> filterDelegate, params object[] args)
+        
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
-            _filterChain.Add(new RgbFilter(filterDelegate, args));
-            return this;
-        }
-
-        public FilterSet(Func<Hsv, object[], Hsv> filterDelegate)
-        {
-            _filterChain.Add(new HsvFilter(filterDelegate));
-        }
-
-        public void Add(HsvFilter filter)
-        {
-            _filterChain.Add(filter);
-        }
-
-        public FilterSet Add(Func<Hsv, object[], Hsv> filterDelegate)
-        {
-            _filterChain.Add(new HsvFilter(filterDelegate));
-            return this;
-        }
-
-        public FilterSet Add(Func<Hsv, object[], Hsv> filterDelegate, params object[] args)
-        {
-            _filterChain.Add(new HsvFilter(filterDelegate, args));
-            return this;
-        }
-
-        public bool Any()
-        {
-            return _filterChain.Any();
-        }
-
-        public Hsl ApplyTo(Hsl hsl)
-        {
-            return ApplyAnyColorTo(hsl).ToHsl();
-        }
-
-        public Rgb ApplyTo(Rgb rgb)
-        {
-            return ApplyAnyColorTo(rgb).ToRgb();
-        }
-
-        private ColorBase ApplyAnyColorTo(ColorBase colorBase)
-        {
-            foreach (var filter in _filterChain) {
-                colorBase = ApplyFilter(colorBase, filter);
+            foreach (var filter in _filters) {
+                colors = ApplyFilter(colors, filter);
             }
 
-            return colorBase;
+            return colors;
         }
 
-        private ColorBase ApplyFilter(ColorBase colorBase, ColorFilter filter)
+        private IEnumerable<Color> ApplyFilter(IEnumerable<Color> colors, ColorFilter filter)
         {
-            return filter.ApplyTo(colorBase);
+            return filter.ApplyTo(colors);
         }
 
         public string ToString(string delimiter = "\n", string prefix = "   ")
         {
             var sb = new StringBuilder();
 
-            for (var i = 0; i < _filterChain.Count; i++) {
-                sb.Append(prefix + _filterChain[i].ToString());
-                if (i != _filterChain.Count - 1)
+            for (var i = 0; i < _filters.Count; i++) {
+                sb.Append(prefix + _filters[i].ToString());
+                if (i != _filters.Count - 1)
                     sb.Append(delimiter);
             }
 

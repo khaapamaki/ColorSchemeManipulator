@@ -4,7 +4,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Rgb : ColorBase
+    public class Rgb : Color
     {
         public double Red { get; set; }
         public double Green { get; set; }
@@ -31,23 +31,14 @@ namespace ColorSchemeManipulator.Colors
 
         public Rgb(Rgb rgb)
         {
-            Red = rgb.Red;
-            Green = rgb.Green;
-            Blue = rgb.Blue;
-            Alpha = rgb.Alpha;
+            CopyFrom(rgb);
         }
         
-        public Rgb(Hsl hsl)
+        public Rgb(Color color)
         {
-            CopyFrom(hsl.ToRgb());
+            CopyFrom(color.ToRgb());
         }
 
-        public Rgb(Hsv hsv)
-        {
-            CopyFrom(hsv.ToRgb());
-        }
-      
-        
         public void CopyFrom(Rgb rgb)
         {
             Red = rgb.Red;
@@ -130,7 +121,6 @@ namespace ColorSchemeManipulator.Colors
                                      $"Alpha: 0x{Alpha * 255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
-                //return ToString();
             }
         }
 
@@ -141,19 +131,5 @@ namespace ColorSchemeManipulator.Colors
             return value;
         }
 
-        public Rgb ApplyFilterSet(FilterSet filters)
-        {
-            return filters.ApplyTo(this);
-        }
-
-        public Hsl ApplyFilter(HslFilter filter)
-        {
-            return filter.ApplyTo(this).ToHsl();
-        }
-
-        public Rgb ApplyFilter(RgbFilter filter)
-        {
-            return filter.ApplyTo(this).ToRgb();
-        }
     }
 }

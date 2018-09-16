@@ -25,7 +25,7 @@
           <e p="CliUtils.cs" t="Include" />
         </e>
         <e p="Colors" t="Include">
-          <e p="ColorBase.cs" t="Include" />
+          <e p="Color.cs" t="Include" />
           <e p="ColorConversions.cs" t="Include" />
           <e p="Hsl.cs" t="Include" />
           <e p="Hsv.cs" t="Include" />
@@ -46,11 +46,7 @@
           <e p="FilterBundle.cs" t="Include" />
           <e p="FilterSet.cs" t="Include" />
           <e p="FilterUtils.cs" t="Include" />
-          <e p="HslFilter.cs" t="Include" />
-          <e p="HsvFilter.cs" t="Include" />
-          <e p="LoopingRange.cs" t="Include" />
           <e p="ParameterRange.cs" t="Include" />
-          <e p="RgbFilter.cs" t="Include" />
         </e>
         <e p="ImageProcessor.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
