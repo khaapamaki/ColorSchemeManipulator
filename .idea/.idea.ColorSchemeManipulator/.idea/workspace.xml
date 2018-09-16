@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d851713-869b-483e-b0df-e936070b1af0" name="Default Changelist" comment="Target file is formed form source file if not given as argument">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ColorSchemeManipulator/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ColorSchemeManipulator/ColorSchemeManipulator.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ColorSchemeManipulator/ColorSchemeManipulator.csproj" afterDir="false" />
-    </list>
+    <list default="true" id="6d851713-869b-483e-b0df-e936070b1af0" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,13 +97,13 @@
         <counts>
           <entry key="cs" value="541" />
           <entry key="gitignore" value="72" />
-          <entry key="txt" value="110" />
+          <entry key="txt" value="200" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="C#" value="541" />
-          <entry key="PLAIN_TEXT" value="182" />
+          <entry key="PLAIN_TEXT" value="272" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -341,11 +337,6 @@
               <item name="ColorSchemeManipulator" type="24d0babc:SolutionExplorerModelNode" />
               <item name="ColorSchemeManipulator" type="24d0babc:SolutionExplorerModelNode" />
             </path>
-            <path>
-              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
-              <item name="ColorSchemeManipulator" type="24d0babc:SolutionExplorerModelNode" />
-              <item name="ColorSchemeManipulator.UnitTests" type="24d0babc:SolutionExplorerModelNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -408,7 +399,7 @@
       <workItem from="1536994666337" duration="7260000" />
       <workItem from="1537004322445" duration="1342000" />
       <workItem from="1537078848579" duration="1854000" />
-      <workItem from="1537122814213" duration="781000" />
+      <workItem from="1537122814213" duration="1030000" />
     </task>
     <task id="LOCAL-00001" summary="Added test material and some references. Version set to 0.1">
       <created>1536929982374</created>
@@ -606,11 +597,18 @@
       <option name="project" value="LOCAL" />
       <updated>1537123419320</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Removed resources needed only in development">
+      <created>1537123688437</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1537123688437</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52984000" />
+    <option name="totallyTimeSpent" value="53233000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -623,9 +621,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="874" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2274678" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2274678" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="0" />
@@ -638,12 +635,12 @@
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32972136" />
       <window_info anchor="bottom" id="NuGet" order="8" weight="0.32972136" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.12779973" />
+      <window_info anchor="bottom" id="Version Control" order="10" visible="true" weight="0.12779973" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Unit Tests" order="12" weight="0.32894737" />
       <window_info anchor="bottom" id="Terminal" order="13" weight="0.2987616" />
       <window_info anchor="bottom" id="Event Log" order="14" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Build" order="15" visible="true" weight="0.32674572" />
+      <window_info anchor="bottom" id="Build" order="15" weight="0.32674572" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -713,7 +710,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Accepts numbers in CLI commands" />
     <MESSAGE value="Experimental filters inside own bundle. Bug fixes in Main()" />
     <MESSAGE value="ToLight multifilter moved to ExperimentalBundle" />
     <MESSAGE value="ColorMath.RgbPerceivedBrightness overload. GetAllColors query." />
@@ -738,7 +734,8 @@
     <MESSAGE value="Readme update" />
     <MESSAGE value=".gitignore update" />
     <MESSAGE value="Target file is formed form source file if not given as argument" />
-    <option name="LAST_COMMIT_MESSAGE" value="Target file is formed form source file if not given as argument" />
+    <MESSAGE value="Removed resources needed only in development" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed resources needed only in development" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
