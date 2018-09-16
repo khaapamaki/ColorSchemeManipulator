@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using ColorSchemeManipulator.Common;
 
@@ -28,6 +29,13 @@ namespace ColorSchemeManipulator.Colors
                 CalcRgb();
                 return _red;
             }
+            set
+            {
+                CalcRgb();
+                _red = value;
+                ResetFlags(ColorFormat.Rgb);
+            }
+
         }
 
         public double Green
@@ -36,6 +44,12 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcRgb();
                 return _green;
+            }
+            set
+            {
+                CalcRgb();
+                _green = value;
+                ResetFlags(ColorFormat.Rgb);
             }
         }
 
@@ -46,6 +60,12 @@ namespace ColorSchemeManipulator.Colors
                 CalcRgb();
                 return _blue;
             }
+            set
+            {
+                CalcRgb();
+                _blue = value;
+                ResetFlags(ColorFormat.Rgb);
+            }
         }
 
         public double Hue
@@ -54,6 +74,12 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcHsl();
                 return _hue;
+            }
+            set
+            {
+                CalcHsl();
+                _hue = value.NormalizeLoopingValue(360);
+                ResetFlags(ColorFormat.Hsl);
             }
         }
 
@@ -64,11 +90,13 @@ namespace ColorSchemeManipulator.Colors
                 CalcHsv();
                 return _hueHsv;
             }
+            set
+            {
+                CalcHsv();
+                _hueHsv = value;
+                ResetFlags(ColorFormat.Hsv);
+            }
         }
-        // {
-        //     get => _hue.NormalizeLoopingValue(360.0);
-        //     set => _hue = value.NormalizeLoopingValue(360.0);
-        // }
 
         public double Saturation
         {
@@ -76,6 +104,12 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcHsl();
                 return _saturation;
+            }
+            set
+            {
+                CalcHsl();
+               _saturation = value;
+                ResetFlags(ColorFormat.Hsl);
             }
         }
 
@@ -86,6 +120,12 @@ namespace ColorSchemeManipulator.Colors
                 CalcHsl();
                 return _lightness;
             }
+            set
+            {
+                CalcHsl();
+                _lightness = value;
+                ResetFlags(ColorFormat.Hsl);
+            }
         }
 
         public double SaturationHsv
@@ -95,6 +135,12 @@ namespace ColorSchemeManipulator.Colors
                 CalcHsv();
                 return _saturationHsv;
             }
+            set
+            {
+                CalcHsv();
+                _saturationHsv = value;
+                ResetFlags(ColorFormat.Hsv);
+            }
         }
 
         public double Value
@@ -103,6 +149,12 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcHsv();
                 return _value;
+            }
+            set
+            {
+                CalcHsv();
+                _value = value;
+                ResetFlags(ColorFormat.Hsv);
             }
         }
 
@@ -127,6 +179,8 @@ namespace ColorSchemeManipulator.Colors
             _saturationHsv = color._saturationHsv;
             _value = color._value;
             _hasRgb = color._hasRgb;
+            _hasHsl = color._hasHsl;
+            _hasHsv = color._hasHsv;
             _alpha = color._alpha;
         }
 
@@ -158,70 +212,72 @@ namespace ColorSchemeManipulator.Colors
             return color;
         }
 
-        public void SetRgb(double r, double g, double b, double a = 1.0)
+        public void SetRgb(double r, double g, double b, double a = 1.0, bool resetFlags = true)
         {
             _red = r;
             _green = g;
             _blue = b;
             _alpha = a;
-            _hasRgb = true;
-            _hasHsv = false;
-            _hasHsl = false;
+            if (resetFlags) ResetFlags(ColorFormat.Rgb);
         }
 
-        public void SetHsl((double, double, double) hsl, double a = 1.0)
+        public void SetHsl((double, double, double) hsl, double a = 1.0, bool resetFlags = true)
         {
             _hue = hsl.Item1.NormalizeLoopingValue(360);
             _saturation = hsl.Item2;
             _lightness = hsl.Item3;
             _alpha = a;
-            _hasHsl = true;
-            _hasRgb = false;
-            _hasHsv = false;
+            if (resetFlags) ResetFlags(ColorFormat.Hsl);
         }
 
-        public void SetHsv((double, double, double) hsv, double a = 1.0)
+        public void SetHsv((double, double, double) hsv, double a = 1.0, bool resetFlags = true)
         {
             _hueHsv = hsv.Item1.NormalizeLoopingValue(360);
             _saturationHsv = hsv.Item2;
             _value = hsv.Item3;
             _alpha = a;
-            _hasHsv = true;
-            _hasHsl = false;
-            _hasRgb = false;
+            if (resetFlags) ResetFlags(ColorFormat.Hsv);
         }
 
-        public void SetRgb((double, double, double) rgb, double a = 1.0)
+        public void SetRgb((double, double, double) rgb, double a = 1.0, bool resetFlags = true)
         {
             _red = rgb.Item1;
             _green = rgb.Item2;
             _blue = rgb.Item3;
             _alpha = a;
-            _hasRgb = true;
-            _hasHsv = false;
-            _hasHsl = false;
+            if (resetFlags) ResetFlags(ColorFormat.Rgb);
         }
 
-        public void SetHsl(double h, double s, double l, double a = 1.0)
+        public void SetHsl(double h, double s, double l, double a = 1.0, bool resetFlags = true)
         {
             _hue = h.NormalizeLoopingValue(360);
             _saturation = s;
             _lightness = l;
             _alpha = a;
-            _hasHsl = true;
-            _hasRgb = false;
-            _hasHsv = false;
+            if (resetFlags) ResetFlags(ColorFormat.Hsl);
         }
 
-        public void SetHsv(double h, double s, double v, double a = 1.0)
+        public void SetHsv(double h, double s, double v, double a = 1.0, bool resetFlags = true)
         {
             _hueHsv = h.NormalizeLoopingValue(360);
             _saturationHsv = s;
             _value = v;
             _alpha = a;
-            _hasHsv = true;
-            _hasHsl = false;
+            if (resetFlags) ResetFlags(ColorFormat.Hsv);
+        }
+
+        public void UpdateLightness(double l)
+        {
+            _lightness = l;
             _hasRgb = false;
+            _hasHsv = false;
+        }
+
+        public void UpdateSaturation(double s)
+        {
+            _saturation = s;
+            _hasRgb = false;
+            _hasHsv = false;
         }
 
         // INTERFACE
@@ -267,6 +323,12 @@ namespace ColorSchemeManipulator.Colors
 
         // INTERNAL PROCESSING
 
+        private void ResetFlags(ColorFormat cf)
+        {
+            _hasRgb = cf == ColorFormat.Rgb;
+            _hasHsl = cf == ColorFormat.Hsl;
+            _hasHsv = cf == ColorFormat.Hsv;
+        }
 
         private bool HasValue()
         {
@@ -313,9 +375,9 @@ namespace ColorSchemeManipulator.Colors
                 throw new Exception("Color has no value");
             if (!_hasRgb) {
                 if (_hasHsl) {
-                    SetRgb(ColorConversions.HslToRgb(_hue, _saturation, _lightness), _alpha);
+                    SetRgb(ColorConversions.HslToRgb(_hue, _saturation, _lightness), _alpha, false);
                 } else if (_hasHsv) {
-                    SetRgb(ColorConversions.HslToRgb(_hueHsv, _saturationHsv, _value), _alpha);
+                    SetRgb(ColorConversions.HslToRgb(_hueHsv, _saturationHsv, _value), _alpha, false);
                 }
             }
 
@@ -328,9 +390,9 @@ namespace ColorSchemeManipulator.Colors
                 throw new Exception("Color has no value");
             if (!_hasHsl) {
                 if (_hasRgb) {
-                    SetHsl(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha);
+                    SetHsl(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha, false);
                 } else if (_hasHsv) {
-                    SetHsl(ColorConversions.HsvToHsl(_hueHsv, _saturationHsv, _value), _alpha);
+                    SetHsl(ColorConversions.HsvToHsl(_hueHsv, _saturationHsv, _value), _alpha, false);
                 }
             }
 
@@ -343,13 +405,21 @@ namespace ColorSchemeManipulator.Colors
                 throw new Exception("Color has no value");
             if (!_hasHsv) {
                 if (_hasRgb) {
-                    SetHsv(ColorConversions.RgbToHsv(_red, _green, _blue), _alpha);
+                    SetHsv(ColorConversions.RgbToHsv(_red, _green, _blue), _alpha, false);
                 } else if (_hasHsl) {
-                    SetHsv(ColorConversions.HslToHsv(_hue, _saturation, _lightness), _alpha);
+                    SetHsv(ColorConversions.HslToHsv(_hue, _saturation, _lightness), _alpha, false);
                 }
             }
 
             return _hasHsv;
         }
+    }
+
+    public enum ColorFormat
+    {
+        Rgb,
+        Hsl,
+        Hsv,
+        None
     }
 }
