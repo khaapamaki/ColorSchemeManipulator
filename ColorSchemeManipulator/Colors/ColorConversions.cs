@@ -195,37 +195,37 @@ namespace ColorSchemeManipulator.Colors
             return RgbToHsv(r, g, b);
         }
         
-        public static Hsl RgbtoHsl(Rgb rgb)
+        public static Hsl RgbToHsl(Rgb rgb)
         {
             (double h, double s, double l) = RgbToHsl(rgb.Red, rgb.Green, rgb.Red);
             return new Hsl(h, s, l, rgb.Alpha);
         }    
         
-        public static Rgb HsltoRgb(Hsl hsl)
+        public static Rgb HslToRgb(Hsl hsl)
         {
             (double r, double g, double b) = HslToRgb(hsl.Hue, hsl.Saturation, hsl.Lightness);
             return new Rgb(r, g, b, hsl.Alpha);
         }
 
-        public static Hsv RgbtoHsv(Rgb rgb)
+        public static Hsv RgbToHsv(Rgb rgb)
         {
             (double h, double s, double v) = RgbToHsv(rgb.Red, rgb.Green, rgb.Red);
             return new Hsv(h, s, v, rgb.Alpha);
         }    
 
-        public static Rgb HsvtoRgb(Hsv hsv)
+        public static Rgb HsvToRgb(Hsv hsv)
         {
             (double r, double g, double b) = HslToRgb(hsv.Hue, hsv.Saturation, hsv.Value);
             return new Rgb(r, g, b, hsv.Alpha);
         }   
       
-        public static Hsv HsltoHsv(Hsl hsl)
+        public static Hsv HslToHsv(Hsl hsl)
         {
             (double hue, double s, double v) = HslToHsv(hsl.Hue, hsl.Saturation, hsl.Lightness);
             return new Hsv(hue, s, v, hsl.Alpha);
         }
 
-        public static Hsl HsvtoHsl(Hsv hsv)
+        public static Hsl HsvToHsl(Hsv hsv)
         {
             (double hue, double s, double l) = HsvToHsl(hsv.Hue, hsv.Saturation, hsv.Value);
             return new Hsl(hue, s, l, hsv.Alpha);

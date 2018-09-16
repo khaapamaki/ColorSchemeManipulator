@@ -9,9 +9,9 @@ namespace ColorSchemeManipulator.Colors
             if (this is Rgb) {
                 return (Rgb) this;
             } else if (this is Hsl) {
-                return ColorConversions.HsltoRgb((Hsl) this);
+                return ColorConversions.HslToRgb((Hsl) this);
             } else if (this is Hsv) {
-                return ColorConversions.HsvtoRgb((Hsv) this);
+                return ColorConversions.HsvToRgb((Hsv) this);
             }
 
             throw new NotImplementedException();
@@ -22,9 +22,9 @@ namespace ColorSchemeManipulator.Colors
             if (this is Hsl) {
                 return (Hsl) this;
             } else if (this is Rgb) {
-                return ColorConversions.RgbtoHsl((Rgb) this);
+                return ColorConversions.RgbToHsl((Rgb) this);
             } else if (this is Hsv) {
-                return ColorConversions.HsvtoHsl((Hsv) this);
+                return ColorConversions.HsvToHsl((Hsv) this);
             }
 
             throw new NotImplementedException();
@@ -35,9 +35,9 @@ namespace ColorSchemeManipulator.Colors
             if (this is Hsv) {
                 return (Hsv) this;
             } else if (this is Rgb) {
-                return ColorConversions.RgbtoHsv((Rgb) this);
+                return ColorConversions.RgbToHsv((Rgb) this);
             } else if (this is Hsl) {
-                return ColorConversions.HsltoHsv((Hsl) this);
+                return ColorConversions.HslToHsv((Hsl) this);
             }
 
             throw new NotImplementedException();
