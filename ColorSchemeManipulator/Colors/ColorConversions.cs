@@ -206,6 +206,8 @@ namespace ColorSchemeManipulator.Colors
             (double r, double g, double b) = HslToRgb(h, s, l);
             return RgbToHsv(r, g, b);
         }
+        
+        /*
         [Obsolete]
         public static Hsl RgbToHsl(Rgb rgb)
         {
@@ -254,5 +256,6 @@ namespace ColorSchemeManipulator.Colors
             var rgb8 = new Rgb8Bit(rgb);
             return System.Drawing.Color.FromArgb(rgb8.Alpha8, rgb8.Red8, rgb8.Green8, rgb8.Blue8);
         }
+    */
     }
 }

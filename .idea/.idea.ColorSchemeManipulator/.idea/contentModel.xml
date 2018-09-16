@@ -26,11 +26,8 @@
         </e>
         <e p="Colors" t="Include">
           <e p="Color.cs" t="Include" />
-          <e p="ColorBase.cs" t="Include" />
           <e p="ColorConversions.cs" t="Include" />
-          <e p="Hsl.cs" t="Include" />
-          <e p="Hsv.cs" t="Include" />
-          <e p="Rgb.cs" t="Include" />
+          <e p="HexRgb.cs" t="Include" />
           <e p="Rgb8Bit.cs" t="Include" />
         </e>
         <e p="ColorSchemeManipulator.csproj" t="IncludeRecursive" />

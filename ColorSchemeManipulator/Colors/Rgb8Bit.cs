@@ -3,6 +3,7 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
+    [Obsolete]
     public class Rgb8Bit
     {
         public byte Red8 { get; set; }
@@ -36,25 +37,25 @@ namespace ColorSchemeManipulator.Colors
             Alpha8 = (byte) (color.Alpha.Clamp(0.0, 1.0) * 255);
         }
         
-        [Obsolete]
+        /*[Obsolete]
         public Rgb8Bit(Rgb rgb)
         {
             Red8 = (byte) (rgb.Red.Clamp(0.0, 1.0) * 255);
             Green8 = (byte) (rgb.Green.Clamp(0.0, 1.0) * 255);
             Blue8 = (byte) (rgb.Blue.Clamp(0.0, 1.0) * 255);
             Alpha8 = (byte) (rgb.Alpha.Clamp(0.0, 1.0) * 255);
-        }
+        }*/
 
         public Color ToColor()
         {
             return Color.FromRgb8(Red8, Green8, Blue8, Alpha8);
         }
 
-        [Obsolete]
+        /*[Obsolete]
         public Rgb ToRgb()
         {
             return new Rgb(Red8 / 255.0, Green8 / 255.0, Blue8 / 255.0, Alpha8 / 255.0);
-        }
+        }*/
 
         public override string ToString()
         {

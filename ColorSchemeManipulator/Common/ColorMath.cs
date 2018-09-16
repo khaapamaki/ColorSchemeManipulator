@@ -94,10 +94,10 @@ namespace ColorSchemeManipulator.Common
             return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
         }
 
-        public static double RgbPerceivedBrightness(Rgb rgb)
+        /*public static double RgbPerceivedBrightness(Rgb rgb)
         {
             return RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
-        }
+        }*/
         
         public static double RgbPerceivedBrightness(double red, double green, double blue)
         {

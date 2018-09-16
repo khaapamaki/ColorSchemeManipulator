@@ -198,6 +198,13 @@ namespace ColorSchemeManipulator.Colors
             return color;
         }
 
+        // public static Color FromRgb8(Rgb8Bit rgb8)
+        // {
+        //     Color color = new Color();
+        //     color.SetRgb(rgb8.Red8/ 255.0, rgb8.Green8 / 255.0, rgb8.Blue8 / 255.0, rgb8.Alpha8/ 255.0);
+        //     return color;
+        // }
+
         public static Color FromHsl(double h, double s, double l, double a = 1.0)
         {
             Color color = new Color();
@@ -303,6 +310,13 @@ namespace ColorSchemeManipulator.Colors
             return this;
         }
 
+        // [Obsolete]
+        // public string ToRgbString(string hexFormat)
+        // {
+        //     Rgb8Bit rgb8 = new Rgb8Bit(this);
+        //     return rgb8.ToRgbString(hexFormat);
+        // }
+
         // public string ToRgbString(string rgbHexFormat)
         // {
         //     return ToRgb8Bit().ToRgbString(rgbHexFormat);
@@ -367,7 +381,6 @@ namespace ColorSchemeManipulator.Colors
 
             return (_hueHsv, _saturationHsv, _value);
         }
-
 
         private bool CalcRgb()
         {

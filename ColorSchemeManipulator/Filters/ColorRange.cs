@@ -35,6 +35,8 @@ namespace ColorSchemeManipulator.Filters
             return result;
         }
         
+        /*
+        [Obsolete]
         public double InRangeFactor(ColorBase color)
         {
             double result = 1.0;
@@ -96,6 +98,7 @@ namespace ColorSchemeManipulator.Filters
         {
             return ValueRange != null;
         }
+        */
 
         public override string ToString()
         {
