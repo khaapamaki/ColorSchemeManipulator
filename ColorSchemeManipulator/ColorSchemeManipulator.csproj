@@ -60,7 +60,6 @@
     <Compile Include="Filters\FilterUtils.cs" />
     <Compile Include="Filters\HslFilter.cs" />
     <Compile Include="Filters\HsvFilter.cs" />
-    <Compile Include="Filters\LoopingRange.cs" />
     <Compile Include="Filters\ParameterRange.cs" />
     <Compile Include="Filters\RgbFilter.cs" />
     <Compile Include="ImageProcessor.cs" />
