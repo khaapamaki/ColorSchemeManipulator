@@ -26,7 +26,7 @@ namespace ColorSchemeManipulator.Filters
         {
             var sb = new StringBuilder();
             foreach (var argument in Arguments) {
-                sb.Append(argument.ToString() + " ");
+                sb.Append(argument + " ");
             }
 
             return FilterDelegate.Method.Name + " " + sb;

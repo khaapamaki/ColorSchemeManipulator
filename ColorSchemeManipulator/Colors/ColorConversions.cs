@@ -1,12 +1,10 @@
 using System;
-using System.Drawing;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
     public static class ColorConversions
     {
-
         public static (double, double, double) RgbToHsl(double r, double g, double b)
         {
             double h, s, l;
@@ -38,7 +36,7 @@ namespace ColorSchemeManipulator.Colors
                 h = hue * 360.0;
             }
 
-            return (h,s, l); 
+            return (h, s, l);
         }
 
         public static (double, double, double) HslToRgb(double h, double s, double l)
@@ -53,7 +51,7 @@ namespace ColorSchemeManipulator.Colors
 
                 v2 = l < 0.5
                     ? l * (1 + s)
-                    : l + s - l *s;
+                    : l + s - l * s;
                 v1 = 2 * l - v2;
 
                 r = HueToRgb(v1, v2, hue + 1.0 / 3);
@@ -61,9 +59,9 @@ namespace ColorSchemeManipulator.Colors
                 b = HueToRgb(v1, v2, hue - 1.0 / 3);
             }
 
-            return (r, g, b); 
+            return (r, g, b);
         }
-        
+
         private static double HueToRgb(double v1, double v2, double vH)
         {
             if (vH < 0)
@@ -183,79 +181,31 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color SystemColorToColor(System.Drawing.Color sysColor)
         {
-            var rgb8 = new Rgb8Bit(sysColor.R, sysColor.G, sysColor.B, sysColor.A);
-            return rgb8.ToColor();
+            return Color.FromRgb(sysColor.R, sysColor.G, sysColor.B, sysColor.A);
         }
-        
+
         public static System.Drawing.Color ColorToSystemColor(Color color)
         {
-            var rgb8 = new Rgb8Bit(color);
-            return System.Drawing.Color.FromArgb(rgb8.Alpha8, rgb8.Red8, rgb8.Green8, rgb8.Blue8);
+            return System.Drawing.Color.FromArgb(
+                (byte) (color.Alpha * 255),
+                (byte) (color.Red * 255),
+                (byte) (color.Green * 255),
+                (byte) (color.Blue * 255));
         }
-        
+
         // Todo algorithm that directly converts from hsv to hsl
         public static (double, double, double) HsvToHsl(double h, double s, double v)
         {
             (double r, double g, double b) = HsvToRgb(h, s, v);
             return RgbToHsl(r, g, b);
         }
-        
+
         // Todo algorithm that directly converts from hsl to hsv
         public static (double, double, double) HslToHsv(double h, double s, double l)
         {
             (double r, double g, double b) = HslToRgb(h, s, l);
             return RgbToHsv(r, g, b);
         }
-        
-        /*
-        [Obsolete]
-        public static Hsl RgbToHsl(Rgb rgb)
-        {
-            (double h, double s, double l) = RgbToHsl(rgb.Red, rgb.Green, rgb.Red);
-            return new Hsl(h, s, l, rgb.Alpha);
-        }    
-        [Obsolete]
-        public static Rgb HslToRgb(Hsl hsl)
-        {
-            (double r, double g, double b) = HslToRgb(hsl.Hue, hsl.Saturation, hsl.Lightness);
-            return new Rgb(r, g, b, hsl.Alpha);
-        }
-        [Obsolete]
-        public static Hsv RgbToHsv(Rgb rgb)
-        {
-            (double h, double s, double v) = RgbToHsv(rgb.Red, rgb.Green, rgb.Red);
-            return new Hsv(h, s, v, rgb.Alpha);
-        }    
-        [Obsolete]
-        public static Rgb HsvToRgb(Hsv hsv)
-        {
-            (double r, double g, double b) = HslToRgb(hsv.Hue, hsv.Saturation, hsv.Value);
-            return new Rgb(r, g, b, hsv.Alpha);
-        }   
-        [Obsolete]
-        public static Hsv HslToHsv(Hsl hsl)
-        {
-            (double hue, double s, double v) = HslToHsv(hsl.Hue, hsl.Saturation, hsl.Lightness);
-            return new Hsv(hue, s, v, hsl.Alpha);
-        }
-        [Obsolete]
-        public static Hsl HsvToHsl(Hsv hsv)
-        {
-            (double hue, double s, double l) = HsvToHsl(hsv.Hue, hsv.Saturation, hsv.Value);
-            return new Hsl(hue, s, l, hsv.Alpha);
-        }
-        [Obsolete]
-        public static Rgb SystemColorToRgb(System.Drawing.Color sysColor)
-        {
-            var rgb8 = new Rgb8Bit(sysColor.R, sysColor.G, sysColor.B, sysColor.A);
-            return new Rgb(rgb8);
-        }
-        [Obsolete]
-        public static System.Drawing.Color RgbToSystemColor(Rgb rgb)
-        {
-            var rgb8 = new Rgb8Bit(rgb);
-            return System.Drawing.Color.FromArgb(rgb8.Alpha8, rgb8.Red8, rgb8.Green8, rgb8.Blue8);
-        }
-    */
+
     }
 }

@@ -65,9 +65,6 @@ namespace ColorSchemeManipulator.Filters
         }
 
         public static (double, double, double, double, double) ParseLevelsParameters(object[] args)
-
-            // double rangeFactor, double inputBlack, double inputWhite,
-            // double gamma, double outputBlack, double outputWhite)
         {
             if (args.Length >= 5) {
                 double inputBlack = TryParseDouble(args[0]) ?? 0.0;
@@ -81,7 +78,6 @@ namespace ColorSchemeManipulator.Filters
 
             return (0, 1, 1, 0, 1);
         }
-
 
         public static double CalcLevels(double value, double rangeFactor, object[] args)
         {

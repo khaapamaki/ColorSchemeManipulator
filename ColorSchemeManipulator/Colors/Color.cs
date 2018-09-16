@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
@@ -289,18 +287,6 @@ namespace ColorSchemeManipulator.Colors
             return this;
         }
 
-        // [Obsolete]
-        // public string ToRgbString(string hexFormat)
-        // {
-        //     Rgb8Bit rgb8 = new Rgb8Bit(this);
-        //     return rgb8.ToRgbString(hexFormat);
-        // }
-
-        // public string ToRgbString(string rgbHexFormat)
-        // {
-        //     return ToRgb8Bit().ToRgbString(rgbHexFormat);
-        // }
-
         public override string ToString()
         {
             return string.Format($"Red: {Red}, Green: {Green}, Blue: {Blue}, Alpha: {Alpha}");
@@ -309,7 +295,7 @@ namespace ColorSchemeManipulator.Colors
         public string ToString(string format)
         {
             if (format.ToUpper() == "X2") {
-                return string.Format($"Red8: 0x{Red*255:X2}, Green8: 0x{Green*255:X2}, Blue8: 0x{Blue*255:X2}  Alpha8: 0x{Alpha*255:X2}");
+                return string.Format($"Red: 0x{Red*255:X2}, Green: 0x{Green*255:X2}, Blue: 0x{Blue*255:X2}  Alpha: 0x{Alpha*255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
             }

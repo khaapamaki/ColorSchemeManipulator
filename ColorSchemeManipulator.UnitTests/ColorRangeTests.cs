@@ -1,4 +1,3 @@
-using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
 using NUnit.Framework;
 

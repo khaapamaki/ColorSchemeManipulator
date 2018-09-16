@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
 using Color = ColorSchemeManipulator.Colors.Color;

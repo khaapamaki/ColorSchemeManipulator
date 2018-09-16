@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;

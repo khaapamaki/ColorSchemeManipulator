@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.SchemeFileSupport;
 

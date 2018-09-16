@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using ColorSchemeManipulator.CLI;
-using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.SchemeFileSupport;
 

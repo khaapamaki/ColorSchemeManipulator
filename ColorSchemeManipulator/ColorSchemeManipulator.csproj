@@ -48,7 +48,6 @@
     <Compile Include="ColorSchemeProcessor.cs" />
     <Compile Include="Colors\ColorConversions.cs" />
     <Compile Include="Colors\HexRgb.cs" />
-    <Compile Include="Colors\Rgb8Bit.cs" />
     <Compile Include="Colors\Color.cs" />
     <Compile Include="Common\ColorMath.cs" />
     <Compile Include="Common\DoubleExtensions.cs" />

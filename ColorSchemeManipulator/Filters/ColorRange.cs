@@ -1,6 +1,5 @@
 using System.Text;
 using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
@@ -35,71 +34,6 @@ namespace ColorSchemeManipulator.Filters
             return result;
         }
         
-        /*
-        [Obsolete]
-        public double InRangeFactor(ColorBase color)
-        {
-            double result = 1.0;
-            if (HslOrHsvProcessingNeeded()) {
-                result = HslFactors(color.ToHsl(), result);
-            }
-
-            if (HsvProcessingNeeded()) {
-                result = HsvFactors(color.ToHsv(), result);
-            }
-
-            if (RgbProcessingNeeded()) {
-                result = RgbFactors(color.ToRgb(), result);
-            }
-
-            return result;
-        }
-
-        private double RgbFactors(Rgb rgb, double result = 1.0)
-        {
-            result *= RedRange?.InRangeFactor(rgb.Red) ?? 1;
-            result *= GreenRange?.InRangeFactor(rgb.Green) ?? 1;
-            result *= BlueRange?.InRangeFactor(rgb.Blue) ?? 1;
-            result *= BrightnessRange?.InRangeFactor(
-                          ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue)) ?? 1;
-            return result;
-        }
-
-        private double HsvFactors(Hsv hsv, double result = 1.0)
-        {
-            result *= ValueRange?.InRangeFactor(hsv.Value) ?? 1;
-            return result;
-        }
-
-        private double HslFactors(Hsl hsl, double result = 1.0)
-        {
-            result *= HueRange?.InRangeFactor(hsl.Hue) ?? 1;
-            result *= SaturationRange?.InRangeFactor(hsl.Saturation) ?? 1;
-            result *= LightnessRange?.InRangeFactor(hsl.Lightness) ?? 1;
-            return result;
-        }
-
-        private bool RgbProcessingNeeded()
-        {
-            return RedRange != null || GreenRange != null || BlueRange != null || BrightnessRange != null;
-        }
-
-        private bool HslOrHsvProcessingNeeded()
-        {
-            return SaturationRange != null || HueRange != null || LightnessRange != null || ValueRange != null;
-        }
-
-        private bool HslProcessingNeeded()
-        {
-            return LightnessRange != null;
-        }
-
-        private bool HsvProcessingNeeded()
-        {
-            return ValueRange != null;
-        }
-        */
-
         public override string ToString()
         {
             var sb = new StringBuilder();

@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
-    // Todo Fix issue: parameter list that has comma at beginning is not propeperly handled causing slow prosessing (images)
+    // Todo Fix issue: parameter list that has comma at beginning is not properly handled causing slow prosessing (images)
     // arguments are empty string that will get default values but parsing with exception handling makes it slow
     // Todo Better argument validation could be the answer
     // other option would be pre-parsing to correct type and not parsing again when the filter is reapplied.
@@ -95,7 +94,6 @@ namespace ColorSchemeManipulator.Filters
                 }
             }
         }
-
 
         #region "Invert"
 
