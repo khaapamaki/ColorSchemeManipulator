@@ -41,7 +41,7 @@ Available Filters:
   -cv   --contrast-value           @ContrastValue
   -cs   --contrast-saturation      @ContrastHslSaturation
   -cS   --contrast-hsv-saturation  @ContrastHsvSaturation
-  -ga   --gamma                    @GammaRgb
+  -ga   --gamma                    Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99
   -gar  --gamma-red                @GammaRed
   -gag  --gamma-green              @GammaGreen
   -gab  --gamma-blue               @GammaBlue
@@ -58,11 +58,17 @@ Available Filters:
   -les  --levels-saturation        @LevelsHslSaturation
   -leS  --levels-hsv-saturation    @LevelsHsvSaturation
   -i    --invert-rgb               @InvertRgb
-  -ib   --invert-brightness        Inverts perceived brightness - experimental
+        --bypass                   @ByBass
   -il   --invert-lightness         @InvertLightness
   -iv   --invert-value             @InvertValue
-  -ilv  --invert-lightness-value   @InvertMixedLightnessAndValue
   -gsb  --grayscale-brightness     Converts to gray scale based on perceived brightness
+  
+Experimental:
+  -ib   --invert-brightness        Inverts perceived brightness - experimental
+  -ilv  --invert-lightness-value   Inverts colors using both lightness and value, by mixing the result - experimental
+  -b2l  --brightness-to-lightness  @BrightnessToLightness
+  -b2v  --brightness-to-value      @BrightnessToValue
+        --tolight                  @ToLight
 
 
 Usage example:
@@ -77,8 +83,6 @@ Using filter with color range defined with four points: (attribute: min1, min2, 
 Using filter with color range with slope parameters: (attribute: min/slope - max/slope)
   colschman  "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
     
-
-Note: Some filters are purely for experimental purposes!
 ```
 
 #### Issues

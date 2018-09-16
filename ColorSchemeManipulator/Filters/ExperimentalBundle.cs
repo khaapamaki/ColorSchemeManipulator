@@ -32,12 +32,12 @@ namespace ColorSchemeManipulator.Filters
                 desc: "Inverts perceived brightness - experimental");
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
                 desc: "Inverts colors using both lightness and value, by mixing the result - experimental");
-            CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0,
-                desc: null);
-            CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0,
-                desc: null);
-            CliArgs.Register(new List<string> { "--tolight"}, ToLight, 0, 0,
-                desc: null);
+            CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0
+               );
+            CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0
+                );
+            CliArgs.Register(new List<string> { "--tolight"}, ToLight, 0, 0
+                );
 
             GetInstance()._isRegistered = true;
         }
