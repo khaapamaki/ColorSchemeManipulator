@@ -181,6 +181,18 @@ namespace ColorSchemeManipulator.Colors
             return (r, g, b);
         }
 
+        public static Color SystemColorToColor(System.Drawing.Color sysColor)
+        {
+            var rgb8 = new Rgb8Bit(sysColor.R, sysColor.G, sysColor.B, sysColor.A);
+            return rgb8.ToColor();
+        }
+        
+        public static System.Drawing.Color ColorToSystemColor(Color color)
+        {
+            var rgb8 = new Rgb8Bit(color);
+            return System.Drawing.Color.FromArgb(rgb8.Alpha8, rgb8.Red8, rgb8.Green8, rgb8.Blue8);
+        }
+        
         // Todo algorithm that directly converts from hsv to hsl
         public static (double, double, double) HsvToHsl(double h, double s, double v)
         {
@@ -240,7 +252,7 @@ namespace ColorSchemeManipulator.Colors
         public static System.Drawing.Color RgbToSystemColor(Rgb rgb)
         {
             var rgb8 = new Rgb8Bit(rgb);
-            return System.Drawing.Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);
+            return System.Drawing.Color.FromArgb(rgb8.Alpha8, rgb8.Red8, rgb8.Green8, rgb8.Blue8);
         }
     }
 }

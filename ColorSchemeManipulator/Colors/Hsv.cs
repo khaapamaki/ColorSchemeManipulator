@@ -3,7 +3,7 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Hsv : Color
+    public class Hsv : ColorBase
     {
         
         private double _hue = 0.0;
@@ -36,7 +36,7 @@ namespace ColorSchemeManipulator.Colors
             Alpha = hsv.Alpha;
         }
 
-        public Hsv(Color color)
+        public Hsv(ColorBase color)
         {
             CopyFrom(color.ToHsv());
         }
@@ -50,7 +50,7 @@ namespace ColorSchemeManipulator.Colors
 
         public override string ToString()
         {
-            return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Value: {Value}, Alpha: {Alpha}");
+            return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Value: {Value}, Alpha8: {Alpha}");
         }
 
         public string ToString(string format)

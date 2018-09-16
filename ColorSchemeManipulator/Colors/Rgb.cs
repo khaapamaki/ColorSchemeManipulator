@@ -4,7 +4,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Rgb : Color
+    public class Rgb : ColorBase
     {
         public double Red { get; set; }
         public double Green { get; set; }
@@ -23,10 +23,10 @@ namespace ColorSchemeManipulator.Colors
 
         public Rgb(Rgb8Bit rgb8Bit)
         {
-            Red = rgb8Bit.Red / 255.0;
-            Green = rgb8Bit.Green / 255.0;
-            Blue = rgb8Bit.Blue / 255.0;
-            Alpha = rgb8Bit.Alpha / 255.0;
+            Red = rgb8Bit.Red8 / 255.0;
+            Green = rgb8Bit.Green8 / 255.0;
+            Blue = rgb8Bit.Blue8 / 255.0;
+            Alpha = rgb8Bit.Alpha8 / 255.0;
         }
 
         public Rgb(Rgb rgb)
@@ -34,7 +34,7 @@ namespace ColorSchemeManipulator.Colors
             CopyFrom(rgb);
         }
         
-        public Rgb(Color color)
+        public Rgb(ColorBase color)
         {
             CopyFrom(color.ToRgb());
         }
@@ -109,16 +109,16 @@ namespace ColorSchemeManipulator.Colors
 
         public override string ToString()
         {
-            return string.Format($"Red: {Red}, Green: {Green}, Blue: {Blue}, Alpha: {Alpha}");
+            return string.Format($"Red8: {Red}, Green8: {Green}, Blue8: {Blue}, Alpha8: {Alpha}");
         }
 
         public string ToString(string format)
         {
             if (format.ToUpper() == "X2") {
-                return string.Format($"Red: 0x{Red * 255:X2}, " +
-                                     $"Green: 0x{Green * 255:X2}, " +
-                                     $"Blue: 0x{Blue * 255:X2} " +
-                                     $"Alpha: 0x{Alpha * 255:X2}");
+                return string.Format($"Red8: 0x{Red * 255:X2}, " +
+                                     $"Green8: 0x{Green * 255:X2}, " +
+                                     $"Blue8: 0x{Blue * 255:X2} " +
+                                     $"Alpha8: 0x{Alpha * 255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
             }

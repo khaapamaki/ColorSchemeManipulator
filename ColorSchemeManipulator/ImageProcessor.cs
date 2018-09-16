@@ -36,7 +36,7 @@ namespace ColorSchemeManipulator
         {
             for (int y = 0; y < bitmap.Height; y++) {
                 for (int x = 0; x < bitmap.Width; x++) {
-                    yield return ColorConversions.SystemColorToRgb(bitmap.GetPixel(x, y));
+                    yield return ColorConversions.SystemColorToColor(bitmap.GetPixel(x, y));
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace ColorSchemeManipulator
             foreach (Color color in colors) {
                 if (y >= original.Height || x >= original.Width)
                     break;
-                original.SetPixel(x, y, color.ToSystemColor());
+                original.SetPixel(x, y, ColorConversions.ColorToSystemColor(color));
                 x++;
                 if (x >= original.Width) {
                     x = 0;

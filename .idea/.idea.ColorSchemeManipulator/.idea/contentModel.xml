@@ -26,6 +26,7 @@
         </e>
         <e p="Colors" t="Include">
           <e p="Color.cs" t="Include" />
+          <e p="ColorBase.cs" t="Include" />
           <e p="ColorConversions.cs" t="Include" />
           <e p="Hsl.cs" t="Include" />
           <e p="Hsv.cs" t="Include" />

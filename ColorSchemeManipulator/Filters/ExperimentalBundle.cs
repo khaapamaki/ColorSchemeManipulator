@@ -28,20 +28,20 @@ namespace ColorSchemeManipulator.Filters
             if (GetInstance()._isRegistered)
                 return;
             
-            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
-                desc: "Inverts perceived brightness - experimental");
-            CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
-                desc: "Inverts colors using both lightness and value, by mixing the result - experimental");
-            CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0,
-                desc: null);
-            CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0,
-                desc: null);
-            CliArgs.Register(new List<string> { "--tolight"}, ToLight, 0, 0,
-                desc: null);
+            // CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
+            //     desc: "Inverts perceived brightness - experimental");
+            // CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
+            //     desc: "Inverts colors using both lightness and value, by mixing the result - experimental");
+            // CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0,
+            //     desc: null);
+            // CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0,
+            //     desc: null);
+            // CliArgs.Register(new List<string> { "--tolight"}, ToLight, 0, 0,
+            //     desc: null);
 
             GetInstance()._isRegistered = true;
         }
-
+/*
         public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors,
             params object[] filterParams)
         {
@@ -52,27 +52,27 @@ namespace ColorSchemeManipulator.Filters
                 var rgb = color.ToRgb();
                 var rangeFactor = FilterUtils.GetRangeFactor(range, hsl);
 
-                var brightness = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+                var brightness = ColorMath.RgbPerceivedBrightness(rgb.Red8, rgb.Green8, rgb.Blue8);
                 var targetBrightness = (1 - brightness).Clamp(0, 1);
 
                 // using brightness as lightness is not accurate but we can correct this later
                 // how ever it seems that completely correct value produces worse outcome
                 // so we may use something in between
-                Hsl invertedHsl = new Hsl(hsl.Hue, hsl.Saturation, targetBrightness, hsl.Alpha);
+                Hsl invertedHsl = new Hsl(hsl.Hue, hsl.Saturation, targetBrightness, hsl.Alpha8);
 
                 var invertedRgb = invertedHsl.ToRgb();
                 var newBrightness =
-                    ColorMath.RgbPerceivedBrightness(invertedRgb.Red, invertedRgb.Green, invertedRgb.Blue);
+                    ColorMath.RgbPerceivedBrightness(invertedRgb.Red8, invertedRgb.Green8, invertedRgb.Blue8);
 
                 //var delta = targetBrightness / newBrightness - 1;
                 var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1) / 4;
 
 
-                var corrected = new Rgb(invertedRgb.Red * corr, invertedRgb.Green * corr,
-                    invertedRgb.Blue * corr, rgb.Alpha);
+                var corrected = new Rgb(invertedRgb.Red8 * corr, invertedRgb.Green8 * corr,
+                    invertedRgb.Blue8 * corr, rgb.Alpha8);
 
-                // var correctedBrightness = ColorMath.RgbPerceivedBrightness(corrected.Red,
-                //     corrected.Green, corrected.Blue);
+                // var correctedBrightness = ColorMath.RgbPerceivedBrightness(corrected.Red8,
+                //     corrected.Green8, corrected.Blue8);
 
                 yield return rgb.Interpolate(corrected, rangeFactor);
             }
@@ -116,7 +116,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = color.ToHsl();
 
                 if (filterParams.Any()) {
-                    var br = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+                    var br = ColorMath.RgbPerceivedBrightness(rgb.Red8, rgb.Green8, rgb.Blue8);
                     filtered.Lightness = br.Clamp(0, 1);
                     // filtered.Saturation = 0;
                     yield return rgb.Interpolate(filtered.ToRgb(), rangeFactor);
@@ -134,7 +134,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = color.ToHsv();
 
                 if (filterParams.Any()) {
-                    var br = ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue);
+                    var br = ColorMath.RgbPerceivedBrightness(rgb.Red8, rgb.Green8, rgb.Blue8);
                     filtered.Value = br.Clamp(0, 1);
                     // filtered.Saturation = 0;
                     yield return rgb.Interpolate(filtered.ToRgb(), rangeFactor);
@@ -162,5 +162,6 @@ namespace ColorSchemeManipulator.Filters
         
             return filterSet.ApplyTo(colors);
         }
+        */
     }
 }

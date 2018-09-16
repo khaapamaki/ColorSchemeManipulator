@@ -4,7 +4,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public class Hsl : Color
+    public class Hsl : ColorBase
     {
         private double _hue = 0.0;
 
@@ -33,7 +33,7 @@ namespace ColorSchemeManipulator.Colors
             CopyFrom(hsl);
         }
 
-        public Hsl(Color color)
+        public Hsl(ColorBase color)
         {
             CopyFrom(color.ToHsl());
         }
@@ -55,7 +55,7 @@ namespace ColorSchemeManipulator.Colors
         
         public override string ToString()
         {
-            return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Lightness: {Lightness}, Alpha: {Alpha}");
+            return string.Format($"Hue: {Hue}, Saturation: {Saturation}, Lightness: {Lightness}, Alpha8: {Alpha}");
         }
 
         public string ToString(string format)

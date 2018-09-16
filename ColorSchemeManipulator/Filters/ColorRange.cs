@@ -21,8 +21,21 @@ namespace ColorSchemeManipulator.Filters
         public ParameterRange BrightnessRange { get; set; } = null;
 
 
-        
         public double InRangeFactor(Color color)
+        {
+            double result = 1.0;
+            result *= RedRange?.InRangeFactor(color.Red) ?? 1;
+            result *= GreenRange?.InRangeFactor(color.Green) ?? 1;
+            result *= BlueRange?.InRangeFactor(color.Blue) ?? 1;
+            result *= LightnessRange?.InRangeFactor(color.Lightness) ?? 1;
+            result *= SaturationRange?.InRangeFactor(color.Saturation) ?? 1;
+            result *= HueRange?.InRangeFactor(color.Hue) ?? 1;
+            result *= ValueRange?.InRangeFactor(color.Value) ?? 1;
+            result *= BrightnessRange?.InRangeFactor(color.GetBrightness()) ?? 1;
+            return result;
+        }
+        
+        public double InRangeFactor(ColorBase color)
         {
             double result = 1.0;
             if (HslOrHsvProcessingNeeded()) {
