@@ -110,7 +110,7 @@ namespace ColorSchemeManipulator.Colors
                    + a.ToString("X2");
         }
 
-        private static bool IsValidHexString(string str)
+        public static bool IsValidHexString(string str)
         {
             const string validHex = "0123456789abcdefABCDEF";
             foreach (var c in str) {
