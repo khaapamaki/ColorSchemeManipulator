@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Remoting.Messaging;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
@@ -33,7 +34,6 @@ namespace ColorSchemeManipulator.Colors
                 _red = value;
                 ResetFlags(ColorFormat.Rgb);
             }
-
         }
 
         public double Green
@@ -106,7 +106,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcHsl();
-               _saturation = value;
+                _saturation = value;
                 ResetFlags(ColorFormat.Hsl);
             }
         }
@@ -295,13 +295,14 @@ namespace ColorSchemeManipulator.Colors
         public string ToString(string format)
         {
             if (format.ToUpper() == "X2") {
-                return string.Format($"Red: 0x{Red*255:X2}, Green: 0x{Green*255:X2}, Blue: 0x{Blue*255:X2}  Alpha: 0x{Alpha*255:X2}");
+                return string.Format(
+                    $"Red: 0x{Red * 255:X2}, Green: 0x{Green * 255:X2}, Blue: 0x{Blue * 255:X2}  Alpha: 0x{Alpha * 255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
             }
         }
-        
-        
+
+
         public double GetBrightness()
         {
             (double r, double g, double b) = GetRgbComponents();
@@ -405,7 +406,34 @@ namespace ColorSchemeManipulator.Colors
 
             return _hasHsv;
         }
+
+        public bool EqualTo(Color color)
+        {
+            if (!_alpha.AboutEqual(color._alpha))
+                return false;
+
+            if (_hasRgb) {
+                return _red.AboutEqual(color.Red)
+                       && _green.AboutEqual(color.Green)
+                       && _blue.AboutEqual(color.Blue);
+            }
+
+            if (_hasHsl) {
+                return _lightness.AboutEqual(color.Lightness)
+                       && _saturation.AboutEqual(color.Saturation)
+                       && _hue.AboutEqual(color.Hue);
+            }
+
+            if (_hasHsv) {
+                return _hueHsv.AboutEqual(color.HueHsv)
+                       && _saturationHsv.AboutEqual(color.SaturationHsv)
+                       && _value.AboutEqual(color.Value);
+            }
+
+            return false;
+        }
     }
+
 
     public enum ColorFormat
     {
