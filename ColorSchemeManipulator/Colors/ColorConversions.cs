@@ -206,49 +206,49 @@ namespace ColorSchemeManipulator.Colors
             (double r, double g, double b) = HslToRgb(h, s, l);
             return RgbToHsv(r, g, b);
         }
-        
+        [Obsolete]
         public static Hsl RgbToHsl(Rgb rgb)
         {
             (double h, double s, double l) = RgbToHsl(rgb.Red, rgb.Green, rgb.Red);
             return new Hsl(h, s, l, rgb.Alpha);
         }    
-        
+        [Obsolete]
         public static Rgb HslToRgb(Hsl hsl)
         {
             (double r, double g, double b) = HslToRgb(hsl.Hue, hsl.Saturation, hsl.Lightness);
             return new Rgb(r, g, b, hsl.Alpha);
         }
-
+        [Obsolete]
         public static Hsv RgbToHsv(Rgb rgb)
         {
             (double h, double s, double v) = RgbToHsv(rgb.Red, rgb.Green, rgb.Red);
             return new Hsv(h, s, v, rgb.Alpha);
         }    
-
+        [Obsolete]
         public static Rgb HsvToRgb(Hsv hsv)
         {
             (double r, double g, double b) = HslToRgb(hsv.Hue, hsv.Saturation, hsv.Value);
             return new Rgb(r, g, b, hsv.Alpha);
         }   
-      
+        [Obsolete]
         public static Hsv HslToHsv(Hsl hsl)
         {
             (double hue, double s, double v) = HslToHsv(hsl.Hue, hsl.Saturation, hsl.Lightness);
             return new Hsv(hue, s, v, hsl.Alpha);
         }
-
+        [Obsolete]
         public static Hsl HsvToHsl(Hsv hsv)
         {
             (double hue, double s, double l) = HsvToHsl(hsv.Hue, hsv.Saturation, hsv.Value);
             return new Hsl(hue, s, l, hsv.Alpha);
         }
-
+        [Obsolete]
         public static Rgb SystemColorToRgb(System.Drawing.Color sysColor)
         {
             var rgb8 = new Rgb8Bit(sysColor.R, sysColor.G, sysColor.B, sysColor.A);
             return new Rgb(rgb8);
         }
-
+        [Obsolete]
         public static System.Drawing.Color RgbToSystemColor(Rgb rgb)
         {
             var rgb8 = new Rgb8Bit(rgb);

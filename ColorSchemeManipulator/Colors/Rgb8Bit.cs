@@ -36,6 +36,7 @@ namespace ColorSchemeManipulator.Colors
             Alpha8 = (byte) (color.Alpha.Clamp(0.0, 1.0) * 255);
         }
         
+        [Obsolete]
         public Rgb8Bit(Rgb rgb)
         {
             Red8 = (byte) (rgb.Red.Clamp(0.0, 1.0) * 255);
@@ -49,7 +50,7 @@ namespace ColorSchemeManipulator.Colors
             return Color.FromRgb8(Red8, Green8, Blue8, Alpha8);
         }
 
-        
+        [Obsolete]
         public Rgb ToRgb()
         {
             return new Rgb(Red8 / 255.0, Green8 / 255.0, Blue8 / 255.0, Alpha8 / 255.0);
