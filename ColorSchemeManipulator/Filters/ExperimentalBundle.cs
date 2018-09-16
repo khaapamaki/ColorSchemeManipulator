@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
@@ -63,10 +64,14 @@ namespace ColorSchemeManipulator.Filters
 
                 //var delta = targetBrightness / newBrightness - 1;
                 var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1) / 4;
-
-
-                var corrected = Color.FromRgb(inverted.Red * corr, inverted.Green * corr,
-                    inverted.Blue * corr, color.Alpha);
+                //corr = 1;
+                double r = inverted.Red * corr;
+                double g = inverted.Green * corr;
+                double b = inverted.Blue * corr;
+                r = r.Clamp(0, 1);
+                g = g.Clamp(0, 1);
+                b = b.Clamp(0, 1);
+                var corrected = Color.FromRgb(r, g, b, color.Alpha);
 
                 // var correctedBrightness = ColorMath.RgbPerceivedBrightness(corrected.Red,
                 //     corrected.Green, corrected.Blue);
