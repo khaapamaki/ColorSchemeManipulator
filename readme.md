@@ -7,26 +7,6 @@ Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color s
 
 Added option to convert colors on png-files for quick testing.
 
-#### What's new in version 0.2 and 0.3
-
-##### Version 0.2
-
-+ ColorFilter is not more abtract base class, but the only filter type replacing HslFilter, RgbFilter and HsvFilter
-+ ColorBase class is renamed simply to Color
-+ Filter delegate signature changed. All filters must handle set of colors provided in IEnumerable\<Color>.
-New delegate signature is:
-   
-```C#
-Func<IEnumerable<Color>, object[], IEnumerable<Color>>
-```
-
-##### Version 0.3
-
-+ The whole new Color class replaces all other color representations. Color class can hold all RGB, HSL and HSL color 
-attributes, and it makes conversion only on demand and automatically without user knowing nothing of it
-+ HexRgb class provides methods to conveting hex strings to color. Rgb8Bit is removed along with other old color formats.
-
-
 #### Currently available filters and corresponding CLI options
 ```
 Available Filters:
@@ -88,6 +68,28 @@ Using filter with color range with slope parameters: (attribute: min/slope - max
 #### Issues
 
 Hunting for them...
+
+
+### For developers
+
+#### What's new in version 0.2 and 0.3
+
+##### Version 0.2
+
++ ColorFilter is not more abtract base class, but the only filter type replacing HslFilter, RgbFilter and HsvFilter
++ ColorBase class is renamed simply to Color
++ Filter delegate signature changed. All filters must handle set of colors provided in IEnumerable\<Color>.
+New delegate signature is:
+   
+```C#
+Func<IEnumerable<Color>, object[], IEnumerable<Color>>
+```
+
+##### Version 0.3
+
++ The whole new Color class replaces all other color representations. Color class can hold all RGB, HSL and HSL color 
+attributes, and it makes conversion only on demand and automatically without user knowing nothing of it
++ HexRgb class provides methods to conveting hex strings to color. Rgb8Bit is removed along with other old color formats.
 
 
 #### ToDo
