@@ -6,22 +6,19 @@ namespace ColorSchemeManipulator.Colors
 {
     public static class ColorConversions
     {
-        public static Hsl RgbtoHsl(Rgb rgb)
+
+        public static (double, double, double) RgbToHsl(double r, double g, double b)
         {
-            var hsl = new Hsl();
-            hsl.Alpha = rgb.Alpha;
-            double r = rgb.Red;
-            double g = rgb.Green;
-            double b = rgb.Blue;
+            double h, s, l;
             double min = Math.Min(Math.Min(r, g), b);
             double max = Math.Max(Math.Max(r, g), b);
             double delta = max - min;
-            hsl.Lightness = (max + min) / 2.0;
+            l = (max + min) / 2.0;
             if (delta <= 0.0001) {
-                hsl.Hue = 0.0;
-                hsl.Saturation = 0.0;
+                h = 0.0;
+                s = 0.0;
             } else {
-                hsl.Saturation = hsl.Lightness <= 0.5 ? delta / (max + min) : delta / (2.0 - max - min);
+                s = l <= 0.5 ? delta / (max + min) : delta / (2.0 - max - min);
 
                 double hue;
 
@@ -38,37 +35,35 @@ namespace ColorSchemeManipulator.Colors
                 if (hue > 1.0)
                     hue -= 1.0;
 
-                hsl.Hue = hue * 360.0;
+                h = hue * 360.0;
             }
 
-            return hsl;
+            return (h,s, l); 
         }
 
-        public static Rgb HsltoRgb(Hsl hsl)
+        public static (double, double, double) HslToRgb(double h, double s, double l)
         {
-            double r = 0;
-            double g = 0;
-            double b = 0;
+            double r, g, b;
 
-            if (hsl.Saturation <= 0.001) {
-                r = g = b = hsl.Lightness;
+            if (s <= 0.001) {
+                r = g = b = l;
             } else {
                 double v1, v2;
-                double hue = hsl.Hue / 360.0;
+                double hue = h / 360.0;
 
-                v2 = hsl.Lightness < 0.5
-                    ? hsl.Lightness * (1 + hsl.Saturation)
-                    : hsl.Lightness + hsl.Saturation - hsl.Lightness * hsl.Saturation;
-                v1 = 2 * hsl.Lightness - v2;
+                v2 = l < 0.5
+                    ? l * (1 + s)
+                    : l + s - l *s;
+                v1 = 2 * l - v2;
 
                 r = HueToRgb(v1, v2, hue + 1.0 / 3);
                 g = HueToRgb(v1, v2, hue);
                 b = HueToRgb(v1, v2, hue - 1.0 / 3);
             }
 
-            return new Rgb(r, g, b, hsl.Alpha);
+            return (r, g, b); 
         }
-
+        
         private static double HueToRgb(double v1, double v2, double vH)
         {
             if (vH < 0)
@@ -89,12 +84,12 @@ namespace ColorSchemeManipulator.Colors
             return v1;
         }
 
-        public static Hsv RgbtoHsv(Rgb rgb)
+        public static (double, double, double) RgbToHsv(double r, double g, double b)
         {
             double delta, min;
             double h = 0.0, s, v;
-            min = Math.Min(Math.Min(rgb.Red, rgb.Green), rgb.Blue);
-            v = Math.Max(Math.Max(rgb.Red, rgb.Green), rgb.Blue);
+            min = Math.Min(Math.Min(r, g), b);
+            v = Math.Max(Math.Max(r, g), b);
             delta = v - min;
             if (v <= 0.001)
                 s = 0.0;
@@ -104,12 +99,12 @@ namespace ColorSchemeManipulator.Colors
             if (s <= 0.001)
                 h = 0.0;
             else {
-                if (rgb.Red.AboutEqual(v))
-                    h = (rgb.Green - rgb.Blue) / delta;
-                else if (rgb.Green.AboutEqual(v))
-                    h = 2.0 + (rgb.Blue - rgb.Red) / delta;
-                else if (rgb.Blue.AboutEqual(v))
-                    h = 4.0 + (rgb.Red - rgb.Green) / delta;
+                if (r.AboutEqual(v))
+                    h = (g - b) / delta;
+                else if (g.AboutEqual(v))
+                    h = 2.0 + (b - r) / delta;
+                else if (b.AboutEqual(v))
+                    h = 4.0 + (r - g) / delta;
 
                 h *= 60.0;
 
@@ -117,87 +112,123 @@ namespace ColorSchemeManipulator.Colors
                     h = h + 360.0;
             }
 
-            return new Hsv(h, s, v, rgb.Alpha);
+            return (h, s, v);
         }
 
-        public static Rgb HsvtoRgb(Hsv hsv)
+        public static (double, double, double) HsvToRgb(double h, double s, double v)
         {
             double r = 0, g = 0, b = 0;
 
-            if (hsv.Saturation <= 0.001) {
-                r = hsv.Value;
-                g = hsv.Value;
-                b = hsv.Value;
+            if (s <= 0.001) {
+                r = v;
+                g = v;
+                b = v;
             } else {
                 int i;
                 double f, p, q, t;
 
-                if (hsv.Hue >= 360)
-                    hsv.Hue = hsv.Hue - 360;
+                if (h >= 360)
+                    h = h - 360;
                 else
-                    hsv.Hue = hsv.Hue / 60;
+                    h = h / 60;
 
-                i = (int) Math.Truncate(hsv.Hue);
-                f = hsv.Hue - i;
+                i = (int) Math.Truncate(h);
+                f = h - i;
 
-                p = hsv.Value * (1.0 - hsv.Saturation);
-                q = hsv.Value * (1.0 - hsv.Saturation * f);
-                t = hsv.Value * (1.0 - hsv.Saturation * (1.0 - f));
+                p = v * (1.0 - s);
+                q = v * (1.0 - s * f);
+                t = v * (1.0 - s * (1.0 - f));
 
                 switch (i) {
                     case 0:
-                        r = hsv.Value;
+                        r = v;
                         g = t;
                         b = p;
                         break;
 
                     case 1:
                         r = q;
-                        g = hsv.Value;
+                        g = v;
                         b = p;
                         break;
 
                     case 2:
                         r = p;
-                        g = hsv.Value;
+                        g = v;
                         b = t;
                         break;
 
                     case 3:
                         r = p;
                         g = q;
-                        b = hsv.Value;
+                        b = v;
                         break;
 
                     case 4:
                         r = t;
                         g = p;
-                        b = hsv.Value;
+                        b = v;
                         break;
 
                     default:
-                        r = hsv.Value;
+                        r = v;
                         g = p;
                         b = q;
                         break;
                 }
             }
 
-            return new Rgb(r, g, b, hsv.Alpha);
-        }
-
-        // Todo algorithm that directly converts from hsl to hsv
-        public static Hsv HsltoHsv(Hsl hsl)
-        {
-            Rgb rgb = new Rgb(hsl);
-            return rgb.ToHsv();
+            return (r, g, b);
         }
 
         // Todo algorithm that directly converts from hsv to hsl
+        public static (double, double, double) HsvToHsl(double h, double s, double v)
+        {
+            (double r, double g, double b) = HsvToRgb(h, s, v);
+            return RgbToHsl(r, g, b);
+        }
+        
+        // Todo algorithm that directly converts from hsl to hsv
+        public static (double, double, double) HslToHsv(double h, double s, double l)
+        {
+            (double r, double g, double b) = HslToRgb(h, s, l);
+            return RgbToHsv(r, g, b);
+        }
+        
+        public static Hsl RgbtoHsl(Rgb rgb)
+        {
+            (double h, double s, double l) = RgbToHsl(rgb.Red, rgb.Green, rgb.Red);
+            return new Hsl(h, s, l, rgb.Alpha);
+        }    
+        
+        public static Rgb HsltoRgb(Hsl hsl)
+        {
+            (double r, double g, double b) = HslToRgb(hsl.Hue, hsl.Saturation, hsl.Lightness);
+            return new Rgb(r, g, b, hsl.Alpha);
+        }
+
+        public static Hsv RgbtoHsv(Rgb rgb)
+        {
+            (double h, double s, double v) = RgbToHsv(rgb.Red, rgb.Green, rgb.Red);
+            return new Hsv(h, s, v, rgb.Alpha);
+        }    
+
+        public static Rgb HsvtoRgb(Hsv hsv)
+        {
+            (double r, double g, double b) = HslToRgb(hsv.Hue, hsv.Saturation, hsv.Value);
+            return new Rgb(r, g, b, hsv.Alpha);
+        }   
+      
+        public static Hsv HsltoHsv(Hsl hsl)
+        {
+            (double hue, double s, double v) = HslToHsv(hsl.Hue, hsl.Saturation, hsl.Lightness);
+            return new Hsv(hue, s, v, hsl.Alpha);
+        }
+
         public static Hsl HsvtoHsl(Hsv hsv)
         {
-            Rgb rgb = new Rgb(hsv);
-            return rgb.ToHsl();
+            (double hue, double s, double l) = HsvToHsl(hsv.Hue, hsv.Saturation, hsv.Value);
+            return new Hsl(hue, s, l, hsv.Alpha);
         }
 
         public static Rgb SystemColorToRgb(Color color)
