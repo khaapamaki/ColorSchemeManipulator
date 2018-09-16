@@ -92,7 +92,7 @@ namespace ColorSchemeManipulator.Filters
                 return (value - MinStart) / (MinEnd - MinStart);
             // in max slope range
             if (value > MaxStart && value <= MaxEnd)
-                return (value - MaxStart) / (MaxEnd - MaxStart);
+                return (MaxEnd - value) / (MaxEnd - MaxStart);
 
             return 0;
         }
