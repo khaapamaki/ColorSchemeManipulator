@@ -57,10 +57,7 @@ namespace ColorSchemeManipulator
             _filteredColors = _filters.ApplyTo(colorSet).ToList();
             _matchReplaceLoopIndex = 0;
             text = Regex.Replace(text, _regExPattern, new MatchEvaluator(MatchReplace));
-            Console.WriteLine($"{_filteredColors.Count} colors found, {_matchReplaceLoopIndex} colors replaced");
-            for (int i = _matchReplaceLoopIndex; i < _filteredColors.Count; i++) {
-                Console.WriteLine(_filteredColors[i].ToString());
-            }
+
             return text;
         }
 
@@ -73,7 +70,7 @@ namespace ColorSchemeManipulator
 
                 if (Utils.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
                     string filteredRgbString =  HexRgb.ToRgbString(_filteredColors[_matchReplaceLoopIndex++], _hexFormat);
-                    Console.WriteLine(rgbString + " -> " + filteredRgbString);
+                    // Console.WriteLine(rgbString + " -> " + filteredRgbString);
                     return m.Groups[1]
                            + filteredRgbString
                            + m.Groups[3];

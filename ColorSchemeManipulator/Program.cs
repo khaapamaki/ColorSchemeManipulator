@@ -58,7 +58,7 @@ namespace ColorSchemeManipulator
             string sourceFileName = @"HappyDays_Complete.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
             // sourceFileName = "HappyDays.png";
-            // sourceFileName = "photo.png";
+            sourceFileName = "photo.png";
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
             targetFile = Path.GetFullPath(Path.Combine(baseDir,
@@ -85,12 +85,14 @@ namespace ColorSchemeManipulator
                 if (File.Exists(sourceFile)) {
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
+                    Console.WriteLine("Done.");
                 } else {
                     Console.Error.WriteLine(sourceFileName + " does not exist");
                 }
             } else if (schemeFormat == SchemeFormat.Image) {
                 ImageProcessor processor = new ImageProcessor();
                 processor.ProcessFile(sourceFile, targetFile, filterSet);
+                Console.WriteLine("Done.");
             } else {
                 Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
             }
