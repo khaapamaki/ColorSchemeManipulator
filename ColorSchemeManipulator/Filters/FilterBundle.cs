@@ -177,7 +177,7 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.Saturation = filtered.Saturation * gain;
+                    filtered.SaturationHsv = filtered.SaturationHsv * gain;
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -348,7 +348,7 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-                    filtered.Saturation = ColorMath.Gamma(color.Saturation, gamma);
+                    filtered.SaturationHsv = ColorMath.Gamma(color.SaturationHsv, gamma);
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -461,7 +461,7 @@ namespace ColorSchemeManipulator.Filters
                         midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
                     }
 
-                    filtered.Saturation = ColorMath.SSpline(color.Saturation, strength, midpoint);
+                    filtered.SaturationHsv = ColorMath.SSpline(color.SaturationHsv, strength, midpoint);
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -527,24 +527,6 @@ namespace ColorSchemeManipulator.Filters
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
-
-                if (filterParams.Any()) {
-                    double hueShift = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    filtered.Hue = color.Hue + hueShift;
-                }
-
-                yield return color.InterpolateWith(filtered, rangeFactor);
-            }
-        }
-
-        public static IEnumerable<Color> ShiftHsvHue(IEnumerable<Color> colors, params object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-            foreach (var color in colors) {
-                
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double hueShift = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
@@ -700,7 +682,7 @@ namespace ColorSchemeManipulator.Filters
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Saturation = ColorMath.Levels(color.Saturation, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.SaturationHsv = ColorMath.Levels(color.SaturationHsv, inBlack, inWhite, gamma, outBlack, outWhite);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
