@@ -289,14 +289,14 @@ namespace ColorSchemeManipulator.Colors
 
         public override string ToString()
         {
-            return string.Format($"Red: {Red}, Green: {Green}, Blue: {Blue}, Alpha: {Alpha}");
+            return string.Format($"R:{Red:F3}, G:{Green:F3}, B:{Blue:F3}, H:{Hue:F1}, S:{Saturation:F3}, L:{Lightness:F3}, H2:{HueHsv:F1} S2:{SaturationHsv:F3}, V:{Value:F3}, A:{Alpha:F2}");
         }
 
         public string ToString(string format)
         {
             if (format.ToUpper() == "X2") {
                 return string.Format(
-                    $"Red: 0x{Red * 255:X2}, Green: 0x{Green * 255:X2}, Blue: 0x{Blue * 255:X2}  Alpha: 0x{Alpha * 255:X2}");
+                    $"R: 0x{Red * 255:X2}, G: 0x{Green * 255:X2}, B: 0x{Blue * 255:X2}  A: 0x{Alpha * 255:X2}");
             } else {
                 throw new FormatException("Invalid Format String: " + format);
             }
@@ -370,7 +370,7 @@ namespace ColorSchemeManipulator.Colors
                 if (_hasHsl) {
                     SetRgb(ColorConversions.HslToRgb(_hue, _saturation, _lightness), _alpha, false);
                 } else if (_hasHsv) {
-                    SetRgb(ColorConversions.HslToRgb(_hueHsv, _saturationHsv, _value), _alpha, false);
+                    SetRgb(ColorConversions.HsvToRgb(_hueHsv, _saturationHsv, _value), _alpha, false);
                 }
             }
 
