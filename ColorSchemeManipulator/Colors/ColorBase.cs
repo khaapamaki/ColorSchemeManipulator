@@ -4,6 +4,7 @@ using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.Colors
 {
+    [Obsolete]
     public abstract class ColorBase
     {
         public Rgb ToRgb()

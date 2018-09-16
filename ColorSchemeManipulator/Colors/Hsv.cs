@@ -3,6 +3,7 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
+    [Obsolete]
     public class Hsv : ColorBase
     {
         
