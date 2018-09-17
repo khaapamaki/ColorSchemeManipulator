@@ -15,9 +15,9 @@ namespace ColorSchemeManipulator.Filters
 
             if (IsNumber(obj)) {
                 try {
-                    return (double) obj;
+                    return Convert.ToDouble(obj);
                 } catch (Exception) {
-                    return null;
+                    throw new Exception("Cannot convert " + obj + " to double");
                 }
             }
 
@@ -78,6 +78,21 @@ namespace ColorSchemeManipulator.Filters
 
             return (0, 1, 1, 0, 1);
         }
+        
+        public static (double, double, double) ParseAutoLevelParameters(object[] args)
+        {
+            if (args.Length >= 2) {
+                double outputBlack = TryParseDouble(args[0]) ?? 0.0;
+                double outputWhite = TryParseDouble(args[1]) ?? 1.0;
+                double gamma = 1;
+                if (args.Length >= 3) {
+                    gamma = TryParseDouble(args[2]) ?? 1.0;
+                }
+                return (outputBlack, outputWhite, gamma);
+            }
+
+            return (0, 1, 1);
+        }
 
         public static double CalcLevels(double value, double rangeFactor, object[] args)
         {
@@ -96,6 +111,25 @@ namespace ColorSchemeManipulator.Filters
             }
 
             return result;
+        }
+
+        public static (double, double) GetLowestAndHighestLightness(IEnumerable<Color> colors)
+        {
+            bool some = false;
+            double hi = 0.0;
+            double lo = 1.0;
+            foreach (var color in colors) {
+                if (color.Lightness > hi) hi = color.Lightness;
+                if (color.Lightness < lo) lo = color.Lightness;
+                some = true;
+            }
+
+            return some ? (lo, hi) : (0, 1);
+        }
+
+        public static double GetHighestLightness(IEnumerable<Color> colors)
+        {
+            throw new NotImplementedException();
         }
     }
 }
