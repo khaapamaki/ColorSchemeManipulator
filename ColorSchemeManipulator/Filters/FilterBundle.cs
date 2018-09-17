@@ -69,6 +69,8 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5);
             CliArgs.Register(new List<string> {"-leb", "--levels-blue"}, LevelsBlue, 5);
             CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5);
+            CliArgs.Register(new List<string> {"-all", "--autolevels-lightness"}, AutoLevelsLightness, 0, 3
+            );
             CliArgs.Register(new List<string> {"-lev", "--levels-value"}, LevelsValue, 5);
             CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5);
             CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
@@ -215,9 +217,9 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.Red = ColorMath.Gain(color.Red, gain);
-                    filtered.Green = ColorMath.Gain(color.Green, gain);
-                    filtered.Blue = ColorMath.Gain(color.Blue, gain);
+                    filtered.Red = ColorMath.Gain(color.Red, gain).Clamp(0,1);
+                    filtered.Green = ColorMath.Gain(color.Green, gain).Clamp(0,1);
+                    filtered.Blue = ColorMath.Gain(color.Blue, gain).Clamp(0,1);
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -234,7 +236,7 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.Lightness = filtered.Lightness * gain;
+                    filtered.Lightness = (filtered.Lightness * gain).Clamp(0,1);
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -251,7 +253,7 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.Value = filtered.Value * gain;
+                    filtered.Value = (filtered.Value * gain).Clamp(0,1);
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -684,9 +686,28 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
+        
+        public static IEnumerable<Color> AutoLevelsLightness(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(colors);
 
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                (double outBlack, double outWhite, double gamma) =
+                    FilterUtils.ParseAutoLevelParameters(filterParams);
+
+                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
         #endregion
-
+  
         #region "Misc"
 
         public static IEnumerable<Color> BrightnessToGrayScale(IEnumerable<Color> colors,
