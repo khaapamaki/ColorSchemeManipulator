@@ -23,7 +23,7 @@ namespace ColorSchemeManipulator.CLI
             }
         }
 
-        private List<CliArg> Items { get; set; } = new List<CliArg>();
+        private List<CliArg> Items { get; } = new List<CliArg>();
 
         // ---- API Methods --------
 
@@ -31,6 +31,12 @@ namespace ColorSchemeManipulator.CLI
         {
             return GetInstance().Items[index];
         }
+        
+        public static List<CliArg> GetItems()
+        {
+            return GetInstance().Items;
+        }
+        
 
         public static void Register(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
             byte maxParams = 0, string desc = "")

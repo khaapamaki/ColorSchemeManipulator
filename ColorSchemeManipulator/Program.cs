@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.SchemeFileSupport;
@@ -22,12 +24,17 @@ namespace ColorSchemeManipulator
 #endif
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
+            int filterCount = CliArgs.GetItems().Count();
             ExperimentalBundle.RegisterCliOptions();
-            
+            int experimFilterCount = CliArgs.GetItems().Count() - filterCount;
+
+
+            Console.WriteLine(
+                "Color Scheme Manipulator " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
             // print help
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
-                Console.WriteLine("Available Filters:");
-                Console.WriteLine(CliArgs.ToString());
+                PrintHelp(filterCount, experimFilterCount);
+
                 return;
             }
 
@@ -40,7 +47,7 @@ namespace ColorSchemeManipulator
 
 
             // PARSE other than filter options here, and remove them from remainingOptArgs array 
-           
+
 
             // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
@@ -64,7 +71,7 @@ namespace ColorSchemeManipulator
             targetFile = Path.GetFullPath(Path.Combine(baseDir,
                 Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
                                                              + Path.GetExtension(sourceFile)));
-           
+
             // get source and target from CLI args
             if (remainingArgs.Length == 1) {
                 sourceFile = remainingArgs[0];
@@ -94,6 +101,26 @@ namespace ColorSchemeManipulator
                 Console.WriteLine("Done.");
             } else {
                 Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
+            }
+        }
+
+        private static void PrintHelp(int filterCount = -1, int expermFilterCount = -1)
+        {
+            Console.WriteLine("Available Filters:");
+            if (filterCount == -1 || expermFilterCount == -1) {
+                Console.WriteLine(CliArgs.ToString());
+                return;
+            }
+                
+            for (int i = 0; i < filterCount; i++) {
+                Console.WriteLine("  " + CliArgs.GetItem(i).ToString());
+            }
+
+            if (expermFilterCount > 0) {
+                Console.WriteLine("Experimental Filters:");
+                for (int i = filterCount; i < filterCount + expermFilterCount; i++) {
+                    Console.WriteLine("  " + CliArgs.GetItem(i).ToString());
+                }
             }
         }
 
