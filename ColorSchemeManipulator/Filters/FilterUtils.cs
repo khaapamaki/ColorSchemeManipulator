@@ -13,6 +13,9 @@ namespace ColorSchemeManipulator.Filters
             if (obj is double)
                 return (double) obj;
 
+            if (obj is int)
+                return Convert.ToDouble(obj);
+     
             if (IsNumber(obj)) {
                 try {
                     return Convert.ToDouble(obj);

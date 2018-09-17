@@ -39,7 +39,11 @@ namespace ColorSchemeManipulator.Filters
             foreach (var filterDelegate in _filters) {
                 colors = filterDelegate.ApplyTo(colors);
             }
-
+            
+            foreach (var color in colors) {
+                color.ClampExceedingColors();
+            }
+            
             return colors;
         }
 
