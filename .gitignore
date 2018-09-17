@@ -2,3 +2,4 @@ bin/
 obj/
 ColorSchemeManipulator.UnitTests/
 ColorSchemes/
+workspace.xml
