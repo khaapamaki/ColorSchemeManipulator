@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
+    /// <summary>
+    /// A set of predefined filters for experimental purposes
+    /// </summary>
     public sealed class ExperimentalBundle
-
     {
         private static ExperimentalBundle _instance;
         private static readonly object Padlock = new object();
@@ -28,21 +31,22 @@ namespace ColorSchemeManipulator.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
+            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corrected"},
+                InvertPerceivedBrightnessWithCorrection, 0, 0,
                 desc: "Inverts perceived brightness - experimental");
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
                 desc: "Inverts colors using both lightness and value, by mixing the result - experimental");
             CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0
-               );
+            );
             CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0
-                );
-            CliArgs.Register(new List<string> { "--tolight"}, ToLight, 0, 0
-                );
+            );
+            CliArgs.Register(new List<string> {"--tolight"}, ToLight, 0, 0
+            );
 
             GetInstance()._isRegistered = true;
         }
 
-        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors,
+        public static IEnumerable<Color> InvertPerceivedBrightnessWithCorrection(IEnumerable<Color> colors,
             params object[] filterParams)
         {
             ColorRange range;
@@ -63,7 +67,7 @@ namespace ColorSchemeManipulator.Filters
 
                 //var delta = targetBrightness / newBrightness - 1;
                 var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1) / 4;
-                //corr = 1;
+                corr = 1;
                 double r = inverted.Red * corr;
                 double g = inverted.Green * corr;
                 double b = inverted.Blue * corr;
@@ -146,15 +150,25 @@ namespace ColorSchemeManipulator.Filters
                     .Add(FilterBundle.GainLightness, 0.6,
                         new ColorRange().Brightness(0.7, 1, 0.15, 0)
                             .Saturation(0.7, 1, 0.1, 0)) // dampen "neon" rgb before so don't get too dark
-                    .Add(ExperimentalBundle.InvertPerceivedBrightness) // invert image
-                    .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1) // add some brightness
-                    .Add(FilterBundle.GammaRgb, 1.7,
-                        new ColorRange()
-                            .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                    .Add(FilterBundle.GainHslSaturation, 1.7,
-                        new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                    .Add(FilterBundle.GammaHslSaturation, 1.4,
-                        new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7)) // add saturation for weak rgb
+                    .Add(FilterBundle.InvertPerceivedBrightness) // invert image
+                    .Add(FilterBundle.AutoLevelsLightness, 0.15, 1, 1.2) // add some brightness
+                    .Add(FilterBundle.GammaHslSaturation, 1.3,
+                        
+                    new ColorRange().Saturation4P(0.1, 0.1, 1,1)
+                    )
+//                    .Add(FilterBundle.GammaRgb, 1.7,
+//                        new ColorRange()
+//                            .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+//                    .Add(FilterBundle.GainHslSaturation, 1.7,
+//                        new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                    .Add(FilterBundle.GainRgb, 1.3
+                       ,
+                        new ColorRange().Saturation4P(0.1, 0.3, 0.6, 0.9)
+                        .Lightness4P(0,0,0.4,0.7)
+                       ) // add saturation for weak rgb
+                    .Add(FilterBundle.GainHslSaturation, 2,
+                        new ColorRange().Saturation4P(0.1, 0.1, 0.3, 0.7)
+                            .Lightness4P(0,0,0.3,0.7)) // add saturation for weak rgb
                 ;
 
             return filterSet.ApplyTo(colors);
