@@ -7,7 +7,7 @@ namespace ColorSchemeManipulator.Filters
 {
     /// <summary>
     /// A collection class for storing multiple ColoFilters that
-    /// are meant to be processed sequentally
+    /// are meant to be processed sequentially
     /// </summary>
     public class FilterSet
     {
