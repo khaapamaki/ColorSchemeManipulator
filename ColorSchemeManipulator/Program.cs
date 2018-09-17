@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ColorSchemeManipulator.CLI;
+using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.SchemeFileSupport;
 
@@ -25,7 +26,7 @@ namespace ColorSchemeManipulator
                 "Color Scheme Manipulator " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
             // print help
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
-                PrintHelp(filterCount, experimFilterCount);
+                Utils.PrintHelp(filterCount, experimFilterCount);
                 return;
             }
 
@@ -92,26 +93,6 @@ namespace ColorSchemeManipulator
                 Console.WriteLine("Done.");
             } else {
                 Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
-            }
-        }
-
-        private static void PrintHelp(int filterCount = -1, int expermFilterCount = -1)
-        {
-            Console.WriteLine("Available Filters:");
-            if (filterCount == -1 || expermFilterCount == -1) {
-                Console.WriteLine(CliArgs.ToString());
-                return;
-            }
-                
-            for (int i = 0; i < filterCount; i++) {
-                Console.WriteLine("  " + CliArgs.GetItem(i).ToString());
-            }
-
-            if (expermFilterCount > 0) {
-                Console.WriteLine("Experimental Filters:");
-                for (int i = filterCount; i < filterCount + expermFilterCount; i++) {
-                    Console.WriteLine("  " + CliArgs.GetItem(i).ToString());
-                }
             }
         }
 
