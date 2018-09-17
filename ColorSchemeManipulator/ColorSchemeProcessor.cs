@@ -28,7 +28,6 @@ namespace ColorSchemeManipulator
             string text = File.ReadAllText(sourceFile);
             string convertedText;
 
-
             try {
                 convertedText = ApplyFilters(text, filters);
             } catch (Exception ex) {
@@ -98,30 +97,5 @@ namespace ColorSchemeManipulator
             }
         }
         
-        // Todo move to FilterUtils
-        private (double, double) GetMaxAndMinLightness(IEnumerable<Color> colors)
-        {
-            double? max = null, min = null;
-            foreach (var color in colors) {
-                double br = color.Lightness;
-                if (min == null || br < min) min = br;
-                if (max == null || br > max) max = br;
-            }
-
-            return (min ?? 0, max ?? 1);
-        }
-        
-        // Todo move to FilterUtils
-        private (double, double) GetMaxAndMinBrightness(IEnumerable<Color> colors)
-        {
-            double? max = null, min = null;
-            foreach (var color in colors) {
-                double br = color.GetBrightness();
-                if (min == null || br < min) min = br;
-                if (max == null || br > max) max = br;
-            }
-
-            return (min ?? 0, max ?? 1);
-        }
     }
 }

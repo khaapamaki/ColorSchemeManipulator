@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Net.Mail;
 using ColorSchemeManipulator.Common;
 
 // Todo thread safety

@@ -1,8 +1,6 @@
 using System;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
-using ColorSchemeManipulator.Filters;
-using System.Collections;
 using NUnit.Framework;
 
 namespace ColorSchemeManipulator.UnitTests
