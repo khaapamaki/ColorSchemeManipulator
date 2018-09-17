@@ -15,9 +15,11 @@ namespace ColorSchemeManipulator
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
             int filterCount = CliArgs.GetItems().Count();
+            int experimFilterCount = 0;
+            
+            // Comment out these if you want to exclude experimental filters
             ExperimentalBundle.RegisterCliOptions();
-            int experimFilterCount = CliArgs.GetItems().Count() - filterCount;
-
+            experimFilterCount = CliArgs.GetItems().Count() - filterCount;
 
             Console.WriteLine(
                 "Color Scheme Manipulator " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
