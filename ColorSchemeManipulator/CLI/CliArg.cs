@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.CLI
 {
@@ -51,7 +53,21 @@ namespace ColorSchemeManipulator.CLI
             }
 
             string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
-            return $"{opt1,-5} {opt2,-26} {desc}";
+            StringBuilder sb = new StringBuilder();
+            List<string> lines = Utils.WordWrap(desc, 64);
+            foreach (var line in lines) {
+                //Console.WriteLine("/"+line.Trim()+"/");
+            }
+            for (var index = 0; index < lines.Count; index++) {
+                var line = lines[index].Trim();
+                sb.Append($"  {opt1,-5} {opt2,-30} {line}");
+                opt1 = "";
+                opt2 = "";
+                if (index < lines.Count-1)
+                    sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
     }
 }

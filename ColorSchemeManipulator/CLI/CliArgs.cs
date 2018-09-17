@@ -37,7 +37,6 @@ namespace ColorSchemeManipulator.CLI
             return GetInstance().Items;
         }
         
-
         public static void Register(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
             byte maxParams = 0, string desc = "")
         {
@@ -102,7 +101,7 @@ namespace ColorSchemeManipulator.CLI
             return (otherArgList.ToArray(), optList.ToArray());
         }
 
-        public static string ToString(string delimiter = "\n", string prefix = "  ")
+        public static string ToString(string delimiter = "\n", string prefix = "")
         {
             var sb = new StringBuilder();
 

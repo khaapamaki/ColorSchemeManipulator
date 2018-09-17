@@ -61,6 +61,7 @@ namespace ColorSchemeManipulator
             return text;
         }
 
+        // Todo If there's any better way to batch replace by enumerated filtering results, do so. This is ugly...
         private int _matchReplaceLoopIndex = 0;
         private string MatchReplace(Match m)
         {
@@ -83,6 +84,7 @@ namespace ColorSchemeManipulator
             // return m.Groups[0].ToString();  // alternative for throwing
         }
 
+        [Obsolete]
         private IEnumerable<Color> GetAllColors(string text)
         {
             MatchCollection matches = Regex.Matches(text, _regExPattern);
@@ -95,7 +97,8 @@ namespace ColorSchemeManipulator
                 }
             }
         }
-
+        
+        // Todo move to FilterUtils
         private (double, double) GetMaxAndMinLightness(IEnumerable<Color> colors)
         {
             double? max = null, min = null;
@@ -107,7 +110,8 @@ namespace ColorSchemeManipulator
 
             return (min ?? 0, max ?? 1);
         }
-
+        
+        // Todo move to FilterUtils
         private (double, double) GetMaxAndMinBrightness(IEnumerable<Color> colors)
         {
             double? max = null, min = null;

@@ -5,6 +5,10 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
+    /// <summary>
+    /// A collection class for storing multiple ColoFilters that
+    /// are meant to be processed sequentially
+    /// </summary>
     public class FilterSet
     {
         private readonly List<ColorFilter> _filters = new List<ColorFilter>();
@@ -32,16 +36,17 @@ namespace ColorSchemeManipulator.Filters
         
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
-            foreach (var filter in _filters) {
-                colors = ApplyFilter(colors, filter);
+            foreach (var filterDelegate in _filters) {
+                colors = filterDelegate.ApplyTo(colors);
             }
 
             return colors;
         }
 
-        private IEnumerable<Color> ApplyFilter(IEnumerable<Color> colors, ColorFilter filter)
+        [Obsolete]
+        private IEnumerable<Color> ApplyFilter(IEnumerable<Color> colors, ColorFilter colorFilter)
         {
-            return filter.ApplyTo(colors);
+            return colorFilter.ApplyTo(colors);
         }
 
         public string ToString(string delimiter = "\n", string prefix = "   ")
@@ -49,7 +54,7 @@ namespace ColorSchemeManipulator.Filters
             var sb = new StringBuilder();
 
             for (var i = 0; i < _filters.Count; i++) {
-                sb.Append(prefix + _filters[i].ToString());
+                sb.Append(prefix + _filters[i]);
                 if (i != _filters.Count - 1)
                     sb.Append(delimiter);
             }
