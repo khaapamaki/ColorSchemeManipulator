@@ -57,15 +57,14 @@ namespace ColorSchemeManipulator
             // Test files for debugging
             string sourceFileName = @"HappyDays_Complete.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
-            // sourceFileName = "HappyDays.png";
+            sourceFileName = "HappyDays.png";
             sourceFileName = "photo.png";
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
             targetFile = Path.GetFullPath(Path.Combine(baseDir,
                 Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
                                                              + Path.GetExtension(sourceFile)));
-
-            
+           
             // get source and target from CLI args
             if (remainingArgs.Length == 1) {
                 sourceFile = remainingArgs[0];

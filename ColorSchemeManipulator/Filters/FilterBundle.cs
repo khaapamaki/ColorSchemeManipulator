@@ -44,15 +44,15 @@ namespace ColorSchemeManipulator.Filters
                 desc: "HSV value multiplier. Accepts single parameter 0..x");
             CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1,
                 desc: "HSV saturation multiplier. Accepts single parameter 0..x");
-            
+
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2);
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2);
             CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1, 2);
             CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1, 2);
             CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation"}, ContrastHsvSaturation, 1, 2);
-            
+
             CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1, 1,
-                desc:"Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99");
+                desc: "Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99");
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1);
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1);
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1);
@@ -60,7 +60,7 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-gav", "--gamma-value"}, GammaValue, 1);
             CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHslSaturation, 1);
             CliArgs.Register(new List<string> {"-gaS", "--gamma-hsv-saturation"}, GammaHsvSaturation, 1);
-            
+
             CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5);
             CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5);
             CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5);
@@ -74,7 +74,9 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
-            
+            CliArgs.Register(new List<string> {"-ib2", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
+                desc: "Inverts perceived brightness");
+
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness");
 
@@ -121,7 +123,7 @@ namespace ColorSchemeManipulator.Filters
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
 
                 var filtered = new Color(color);
-                    
+
                 filtered.Lightness = ColorMath.Invert(filtered.Lightness);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -133,13 +135,32 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
                 filtered.Value = ColorMath.Invert(color.Value);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors,
+            params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+
+                var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                var targetBrightness = (1 - brightness).Clamp(0, 1);
+
+                // using brightness as lightness is not accurate but we can correct this later
+                // how ever it seems that completely correct value produces worse outcome
+                // so we may use something in between
+                var inverted = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
+
+                yield return color.InterpolateWith(inverted, rangeFactor);
             }
         }
 
@@ -152,13 +173,12 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.Saturation = filtered.Saturation * gain;
+                    filtered.Saturation = (filtered.Saturation * gain).Clamp(0, 1);
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -170,13 +190,12 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
                     double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0).LimitLow(0.0);
-                    filtered.SaturationHsv = filtered.SaturationHsv * gain;
+                    filtered.SaturationHsv = (filtered.SaturationHsv * gain).Clamp(0, 1);
                 }
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
@@ -188,7 +207,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -208,7 +226,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -226,7 +243,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -248,7 +264,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -268,7 +283,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -286,7 +300,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -305,7 +318,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -323,7 +335,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -341,7 +352,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -359,7 +369,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -377,7 +386,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -399,7 +407,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -425,7 +432,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -449,7 +455,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -472,7 +477,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -495,7 +499,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -522,7 +525,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -545,7 +547,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -565,7 +566,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -583,7 +583,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -601,7 +600,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -619,7 +617,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -637,7 +634,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -656,7 +652,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
@@ -674,14 +669,14 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.SaturationHsv = ColorMath.Levels(color.SaturationHsv, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.SaturationHsv =
+                    ColorMath.Levels(color.SaturationHsv, inBlack, inWhite, gamma, outBlack, outWhite);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
@@ -697,16 +692,14 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
             foreach (var color in colors) {
-                
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
-                if (filterParams.Any()) {
-                    var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                    filtered.Red = br;
-                    filtered.Green = br;
-                    filtered.Blue = br;
-                }
+
+                var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                filtered.Red = br;
+                filtered.Green = br;
+                filtered.Blue = br;
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
