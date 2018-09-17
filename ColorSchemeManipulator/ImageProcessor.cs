@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
-<<<<<<< HEAD
-=======
 using Color = ColorSchemeManipulator.Colors.Color;
->>>>>>> staging
 
 namespace ColorSchemeManipulator
 {

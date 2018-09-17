@@ -59,11 +59,6 @@
     <Compile Include="Filters\FilterSet.cs" />
     <Compile Include="Filters\ColorRange.cs" />
     <Compile Include="Filters\FilterUtils.cs" />
-<<<<<<< HEAD
-    <Compile Include="Filters\HslFilter.cs" />
-    <Compile Include="Filters\HsvFilter.cs" />
-=======
->>>>>>> staging
     <Compile Include="Filters\ParameterRange.cs" />
     <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />
@@ -72,11 +67,6 @@
     <Compile Include="SchemeFileSupport\SchemeFormatUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Content Include="..\readme.md">
-      <Link>readme.md</Link>
-    </Content>
-=======
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
@@ -94,11 +84,7 @@
     <Content Include="bin\Debug\HappyDays_converted.png" />
     <Content Include="bin\Debug\photo.png" />
     <Content Include="bin\Debug\photo_converted.png" />
->>>>>>> staging
     <Content Include="SchemeFileSupport\Notes.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

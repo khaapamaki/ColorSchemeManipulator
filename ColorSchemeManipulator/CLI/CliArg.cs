@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
-=======
 using System.Linq;
->>>>>>> staging
 using System.Text;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
