@@ -30,7 +30,10 @@ namespace ColorSchemeManipulator.Filters
         {
             if (GetInstance()._isRegistered)
                 return;
-
+            CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5);
+            CliArgs.Register(new List<string> {"-lev", "--levels-value"}, LevelsValue, 5);
+            CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5);
+            CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
             CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corrected"},
                 InvertPerceivedBrightnessWithCorrection, 0, 0,
                 desc: "Inverts perceived brightness - experimental");
@@ -56,7 +59,7 @@ namespace ColorSchemeManipulator.Filters
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
 
                 var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                var targetBrightness = (1 - brightness).Clamp(0, 1);
+                var targetBrightness = (1 - brightness);
 
                 // using brightness as lightness is not accurate but we can correct this later
                 // how ever it seems that completely correct value produces worse outcome
@@ -72,9 +75,7 @@ namespace ColorSchemeManipulator.Filters
                 double r = inverted.Red * corr;
                 double g = inverted.Green * corr;
                 double b = inverted.Blue * corr;
-                r = r.Clamp(0, 1);
-                g = g.Clamp(0, 1);
-                b = b.Clamp(0, 1);
+
                 var corrected = Color.FromRgb(r, g, b, color.Alpha);
 
                 // var correctedBrightness = ColorMath.RgbPerceivedBrightness(corrected.Red,
@@ -93,7 +94,7 @@ namespace ColorSchemeManipulator.Filters
 
             double mix = 0.333333;
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
-                mix = (FilterUtils.TryParseDouble(filterParams[0]) ?? 0.5).LimitLow(0.0);
+                mix = (FilterUtils.TryParseDouble(filterParams[0]) ?? 0.5).Clamp(0,1);
             }
 
             foreach (var color in colors) {
@@ -120,7 +121,7 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     var br = color.GetBrightness();
-                    filtered.Lightness = br.Clamp(0, 1);
+                    filtered.Lightness = br;
                     // filtered.Saturation = 0;
                     yield return color.InterpolateWith(filtered, rangeFactor);
                 }
@@ -138,7 +139,7 @@ namespace ColorSchemeManipulator.Filters
 
                 if (filterParams.Any()) {
                     var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                    filtered.Value = br.Clamp(0, 1);
+                    filtered.Value = br;
                     // filtered.Saturation = 0;
                     yield return color.InterpolateWith(filtered, rangeFactor);
                 }
@@ -152,7 +153,7 @@ namespace ColorSchemeManipulator.Filters
                         new ColorRange().Brightness(0.7, 1, 0.15, 0)
                             .Saturation(0.7, 1, 0.1, 0)) // dampen "neon" rgb before so don't get too dark
                     .Add(FilterBundle.InvertPerceivedBrightness) // invert image
-                    .Add(FilterBundle.AutoLevelsLightness, 0.15, 1, 1.2) // add some brightness
+                    .Add(FilterBundle.AutoLevelsRgb, 0.15, 1, 1.2) // add some brightness
                     .Add(FilterBundle.GammaHslSaturation, 1.3,
                         
                     new ColorRange().Saturation4P(0.1, 0.1, 1,1)
@@ -174,6 +175,77 @@ namespace ColorSchemeManipulator.Filters
 
             return filterSet.ApplyTo(colors);
         }
+        
+                public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
+                    FilterUtils.ParseLevelsParameters(filterParams);
+
+                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        public static IEnumerable<Color> LevelsValue(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
+                    FilterUtils.ParseLevelsParameters(filterParams);
+
+                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        public static IEnumerable<Color> LevelsHslSaturation(IEnumerable<Color> colors,
+            params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
+                    FilterUtils.ParseLevelsParameters(filterParams);
+
+                filtered.Saturation = ColorMath.Levels(color.Saturation, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        public static IEnumerable<Color> LevelsHsvSaturation(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
+                    FilterUtils.ParseLevelsParameters(filterParams);
+
+                filtered.SaturationHsv =
+                    ColorMath.Levels(color.SaturationHsv, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
         
         public static IEnumerable<Color> ByBass(IEnumerable<Color> colors, params object[] filterParams)
         {
