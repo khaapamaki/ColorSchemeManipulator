@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
 using System;
 using System.Collections.Generic;
 using System.Text;
->>>>>>> staging
 using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
