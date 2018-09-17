@@ -76,7 +76,7 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
-            CliArgs.Register(new List<string> {"-ib2", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
+            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
                 desc: "Inverts perceived brightness");
 
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
