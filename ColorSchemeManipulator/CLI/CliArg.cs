@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.CLI
 {
@@ -53,7 +54,7 @@ namespace ColorSchemeManipulator.CLI
 
             string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
             StringBuilder sb = new StringBuilder();
-            List<string> lines = WordWrap(desc, 64);
+            List<string> lines = Utils.WordWrap(desc, 64);
             foreach (var line in lines) {
                 //Console.WriteLine("/"+line.Trim()+"/");
             }
@@ -67,31 +68,6 @@ namespace ColorSchemeManipulator.CLI
             }
 
             return sb.ToString();
-        }
-
-        private static List<string> WordWrap(string sentence, int columnWidth)
-        {
-            List<string> lines = new List<string>(3);
-            string[] words = sentence.Split(' ');
-
-            StringBuilder newSentence = new StringBuilder();
-
-            string line = "";
-            foreach (string word in words)
-            {
-                if ((line + word).Length > columnWidth)
-                {
-                    lines.Add(line);
-                    line = "";
-                }
-
-                line += $"{word} ";
-            }
-
-            if (line.Length > 0)
-                lines.Add(line);
-
-            return lines;
         }
     }
 }

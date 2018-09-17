@@ -20,7 +20,6 @@ namespace ColorSchemeManipulator.CLI
             return (cliFilters, remainingArgs.ToArray());
         }
 
-
         private static (FilterSet, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
             FilterSet filters = null, List<string> remainingArgs = null)
         {
