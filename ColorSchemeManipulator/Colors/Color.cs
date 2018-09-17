@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
     public class Color
     {
+        private const Clamping InputClamping = Clamping.LowHigh;
+
         private bool _hasRgb = false;
         private bool _hasHsl = false;
         private bool _hasHsv = false;
@@ -30,7 +33,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcRgb();
-                _red = value;
+                _red = ClampInput(value);
                 ResetFlags(ColorFormat.Rgb);
             }
         }
@@ -45,7 +48,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcRgb();
-                _green = value;
+                _green = ClampInput(value);
                 ResetFlags(ColorFormat.Rgb);
             }
         }
@@ -60,7 +63,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcRgb();
-                _blue = value;
+                _blue = ClampInput(value);
                 ResetFlags(ColorFormat.Rgb);
             }
         }
@@ -90,7 +93,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcHsv();
-                _hueHsv = value;
+                _hueHsv = value.NormalizeLoopingValue(360);
                 ResetFlags(ColorFormat.Hsv);
             }
         }
@@ -105,7 +108,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcHsl();
-                _saturation = value;
+                _saturation = ClampInput(value);
                 ResetFlags(ColorFormat.Hsl);
             }
         }
@@ -120,7 +123,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcHsl();
-                _lightness = value;
+                _lightness = ClampInput(value);
                 ResetFlags(ColorFormat.Hsl);
             }
         }
@@ -135,7 +138,7 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcHsv();
-                _saturationHsv = value;
+                _saturationHsv = ClampInput(value);
                 ResetFlags(ColorFormat.Hsv);
             }
         }
@@ -150,12 +153,16 @@ namespace ColorSchemeManipulator.Colors
             set
             {
                 CalcHsv();
-                _value = value;
+                _value = ClampInput(value);
                 ResetFlags(ColorFormat.Hsv);
             }
         }
 
-        public double Alpha => _alpha;
+        public double Alpha
+        {
+            get { return _alpha; }
+            set { _alpha = value.Clamp(0, 1); }
+        }
 
         public Color() { }
 
@@ -288,7 +295,8 @@ namespace ColorSchemeManipulator.Colors
 
         public override string ToString()
         {
-            return string.Format($"R:{Red:F3}, G:{Green:F3}, B:{Blue:F3}, H:{Hue:F1}, S:{Saturation:F3}, L:{Lightness:F3}, H2:{HueHsv:F1} S2:{SaturationHsv:F3}, V:{Value:F3}, A:{Alpha:F2}");
+            return string.Format(
+                $"R:{Red:F3}, G:{Green:F3}, B:{Blue:F3}, H:{Hue:F1}, S:{Saturation:F3}, L:{Lightness:F3}, H2:{HueHsv:F1} S2:{SaturationHsv:F3}, V:{Value:F3}, A:{Alpha:F2}");
         }
 
         public string ToString(string format)
@@ -431,6 +439,17 @@ namespace ColorSchemeManipulator.Colors
 
             return false;
         }
+
+        private double ClampInput(double input)
+        {
+            if (InputClamping == Clamping.Low)
+                return input.Clamp(0, 1);
+
+            if (InputClamping == Clamping.LowHigh)
+                return input.LimitLow(0);
+
+            return input;
+        }
     }
 
 
@@ -439,6 +458,13 @@ namespace ColorSchemeManipulator.Colors
         Rgb,
         Hsl,
         Hsv,
+        None
+    }
+
+    public enum Clamping
+    {
+        LowHigh,
+        Low,
         None
     }
 }
