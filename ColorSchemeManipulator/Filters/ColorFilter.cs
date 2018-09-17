@@ -5,27 +5,31 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
+    /// <summary>
+    /// A class that encapsulates a filter delegate and it's parameters
+    /// It also invokes the delegate via ApplyTo() method with a set of colors
+    /// </summary>
     public class ColorFilter
     {
         private Func<IEnumerable<Color>, object[], IEnumerable<Color>> FilterDelegate { get; }
-        private object[] Arguments { get; }
+        private object[] Parameters { get; }
 
         public ColorFilter(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate,
-            params object[] args)
+            params object[] filterParams)
         {
             FilterDelegate = filterDelegate;
-            Arguments = args;
+            Parameters = filterParams;
         }
 
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
-            return FilterDelegate(colors, Arguments);
+            return FilterDelegate(colors, Parameters);
         }
 
         public override string ToString()
         {
             var sb = new StringBuilder();
-            foreach (var argument in Arguments) {
+            foreach (var argument in Parameters) {
                 sb.Append(argument + " ");
             }
 

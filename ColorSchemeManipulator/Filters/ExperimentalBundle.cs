@@ -6,8 +6,10 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
+    /// <summary>
+    /// A set of predefined filters for experimental purposes
+    /// </summary>
     public sealed class ExperimentalBundle
-
     {
         private static ExperimentalBundle _instance;
         private static readonly object Padlock = new object();

@@ -11,6 +11,9 @@ namespace ColorSchemeManipulator.Filters
     // Todo Better argument validation could be the answer
     // other options would be pre-parsing to correct type and not parsing again when the filter is reapplied.
 
+    /// <summary>
+    /// A set of predefined filters
+    /// </summary>
     public sealed class FilterBundle
     {
         private static FilterBundle _instance;

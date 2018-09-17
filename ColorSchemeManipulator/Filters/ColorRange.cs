@@ -19,7 +19,6 @@ namespace ColorSchemeManipulator.Filters
         public ParameterRange HueRange { get; set; } = null;
         public ParameterRange BrightnessRange { get; set; } = null;
 
-
         public double InRangeFactor(Color color)
         {
             double result = 1.0;
