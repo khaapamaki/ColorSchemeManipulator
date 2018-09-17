@@ -52,6 +52,7 @@
     <Compile Include="Common\ColorMath.cs" />
     <Compile Include="Common\DoubleExtensions.cs" />
     <Compile Include="Common\GenericExtensions.cs" />
+    <Compile Include="Common\Utils.cs" />
     <Compile Include="Filters\ExperimentalBundle.cs" />
     <Compile Include="Filters\ColorFilter.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
