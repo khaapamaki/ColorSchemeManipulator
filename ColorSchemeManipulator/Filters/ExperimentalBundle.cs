@@ -30,7 +30,7 @@ namespace ColorSchemeManipulator.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
+            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corrected"}, InvertPerceivedBrightnessWithCorrection, 0, 0,
                 desc: "Inverts perceived brightness - experimental");
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
                 desc: "Inverts colors using both lightness and value, by mixing the result - experimental");
@@ -44,7 +44,7 @@ namespace ColorSchemeManipulator.Filters
             GetInstance()._isRegistered = true;
         }
 
-        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors,
+        public static IEnumerable<Color> InvertPerceivedBrightnessWithCorrection(IEnumerable<Color> colors,
             params object[] filterParams)
         {
             ColorRange range;
@@ -65,7 +65,7 @@ namespace ColorSchemeManipulator.Filters
 
                 //var delta = targetBrightness / newBrightness - 1;
                 var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1) / 4;
-                //corr = 1;
+                corr = 1;
                 double r = inverted.Red * corr;
                 double g = inverted.Green * corr;
                 double b = inverted.Blue * corr;
@@ -148,7 +148,7 @@ namespace ColorSchemeManipulator.Filters
                     .Add(FilterBundle.GainLightness, 0.6,
                         new ColorRange().Brightness(0.7, 1, 0.15, 0)
                             .Saturation(0.7, 1, 0.1, 0)) // dampen "neon" rgb before so don't get too dark
-                    .Add(ExperimentalBundle.InvertPerceivedBrightness) // invert image
+                    .Add(FilterBundle.InvertPerceivedBrightness) // invert image
                     .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1) // add some brightness
                     .Add(FilterBundle.GammaRgb, 1.7,
                         new ColorRange()
