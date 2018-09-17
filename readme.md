@@ -1,27 +1,11 @@
-<<<<<<< HEAD
-##### ** WORK IN PROGRESS **
-=======
 ## Color Scheme Manipulator
->>>>>>> staging
-
-### Color Scheme Manipulator
 
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
 Added option to convert colors on png-files for quick testing.
 
-<<<<<<< HEAD
-### Important notes on using Production branch version
-
-+ Function delegate signature will be changed
-+ All color formats eg. Rgb, HSl, Hsv are going ot be replaced with single Color class
-
-
-### Currently available filters and corresponding CLI options
-=======
 #### Currently available filters and corresponding CLI options
->>>>>>> staging
 ```
 Available Filters:
   -h    --hue                          Hue shift. Accepts single parameter as degrees -360..360
@@ -87,8 +71,6 @@ Using filter with color range with slope parameters: (attribute: min/slope - max
 Hunting for them...
 
 
-<<<<<<< HEAD
-=======
 ### For developers
 
 #### What's new in version 0.2 and 0.3
@@ -121,7 +103,6 @@ attributes, and it makes conversion only on demand and automatically without use
 + Support for CSS and HTML files
 + Proper HSV<->HSL conversions, now done by converting to RGB first
 
->>>>>>> staging
 
 #### Manually filtering (no using CLI arguments)
 
@@ -209,8 +190,6 @@ namespace ColorSchemeInverter
     }
 }
 ```
-<<<<<<< HEAD
-=======
 
 #### Creating a filter delegate that uses range system
 
@@ -245,4 +224,3 @@ CliArgs.Register(
     maxParams: 1,
     desc: "Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99");
 ```
->>>>>>> staging
