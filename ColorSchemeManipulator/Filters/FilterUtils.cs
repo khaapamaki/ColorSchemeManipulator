@@ -78,7 +78,7 @@ namespace ColorSchemeManipulator.Filters
 
             return (0, 1, 1, 0, 1);
         }
-        
+
         public static (double, double, double) ParseAutoLevelParameters(object[] args)
         {
             if (args.Length >= 2) {
@@ -88,6 +88,7 @@ namespace ColorSchemeManipulator.Filters
                 if (args.Length >= 3) {
                     gamma = TryParseDouble(args[2]) ?? 1.0;
                 }
+
                 return (outputBlack, outputWhite, gamma);
             }
 
@@ -112,6 +113,37 @@ namespace ColorSchemeManipulator.Filters
 
             return result;
         }
+
+        public static (double, double) GetLowestAndHighestRgb(IEnumerable<Color> colors)
+        {
+            bool some = false;
+            double hi = 0.0;
+            double lo = 1.0;
+            foreach (var color in colors) {
+                double val = ColorMath.AverageRgb(color.Red, color.Green, color.Blue);
+                if (val > hi) hi = val;
+                if (val < lo) lo = val;
+                some = true;
+            }
+
+            return some ? (lo, hi) : (0, 1);
+        }
+
+        public static (double, double) GetLowestAndHighestBrightness(IEnumerable<Color> colors)
+        {
+            bool some = false;
+            double hi = 0.0;
+            double lo = 1.0;
+            foreach (var color in colors) {
+                double val = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                if (val > hi) hi = val;
+                if (val < lo) lo = val;
+                some = true;
+            }
+
+            return some ? (lo, hi) : (0, 1);
+        }
+
 
         public static (double, double) GetLowestAndHighestLightness(IEnumerable<Color> colors)
         {
