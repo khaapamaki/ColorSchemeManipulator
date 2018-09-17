@@ -50,7 +50,6 @@
     <Compile Include="FilterUtilsTests.cs" />
     <Compile Include="MiscTests.cs" />
     <Compile Include="ParameterRangeTests.cs" />
-    <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
