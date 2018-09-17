@@ -6,9 +6,6 @@
     <e p="E:\00-DEVELOPMENT\ColorSchemeManipulator" t="IncludeFlat">
       <e p=".gitignore" t="Include" />
       <e p="ColorSchemeManipulator" t="IncludeRecursive">
-<<<<<<< HEAD
-        <e p="bin" t="ExcludeRecursive" />
-=======
         <e p="bin" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="Cobalt.icls" t="Include" />
@@ -24,7 +21,6 @@
             <e p="photo_converted.png" t="Include" />
           </e>
         </e>
->>>>>>> staging
         <e p="CLI" t="Include">
           <e p="CliArg.cs" t="Include" />
           <e p="CliArgs.cs" t="Include" />
@@ -50,11 +46,6 @@
           <e p="FilterBundle.cs" t="Include" />
           <e p="FilterSet.cs" t="Include" />
           <e p="FilterUtils.cs" t="Include" />
-<<<<<<< HEAD
-          <e p="HslFilter.cs" t="Include" />
-          <e p="HsvFilter.cs" t="Include" />
-=======
->>>>>>> staging
           <e p="ParameterRange.cs" t="Include" />
         </e>
         <e p="ImageProcessor.cs" t="Include" />
@@ -72,18 +63,6 @@
       <e p="ColorSchemeManipulator.sln" t="IncludeFlat" />
       <e p="ColorSchemeManipulator.UnitTests" t="IncludeRecursive">
         <e p="ColorSchemeManipulator.UnitTests.csproj" t="IncludeRecursive" />
-<<<<<<< HEAD
-        <e p="ExtensionsTests.cs" t="Include" />
-        <e p="FilterUtilsTests.cs" t="Include" />
-        <e p="MiscTests.cs" t="Include" />
-        <e p="obj" t="ExcludeRecursive" />
-        <e p="ParameterRangeTests.cs" t="Include" />
-        <e p="Properties" t="Include">
-          <e p="AssemblyInfo.cs" t="Include" />
-        </e>
-        <e p="Tests.cs" t="Include" />
-=======
->>>>>>> staging
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="readme.md" t="Include" />
