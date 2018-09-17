@@ -12,12 +12,12 @@ namespace ColorSchemeManipulator.Filters
         {
             if (obj is double)
                 return (double) obj;
-            
+
             if (IsNumber(obj)) {
                 try {
-                    return (double) obj;
+                    return Convert.ToDouble(obj);
                 } catch (Exception) {
-                    return null;
+                    throw new Exception("Cannot convert " + obj + " to double");
                 }
             }
 
@@ -59,28 +59,39 @@ namespace ColorSchemeManipulator.Filters
             return (null, args);
         }
 
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Rgb rgb, object[] filterParams)
+        public static double GetRangeFactor(ColorRange range, Color color)
         {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
-
-            return (range?.InRangeFactor(rgb) ?? 1.0, filterParams);
+            return range?.InRangeFactor(color) ?? 1.0;
         }
 
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsl hsl, object[] filterParams)
+        public static (double, double, double, double, double) ParseLevelsParameters(object[] args)
         {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
+            if (args.Length >= 5) {
+                double inputBlack = TryParseDouble(args[0]) ?? 0.0;
+                double inputWhite = TryParseDouble(args[1]) ?? 1.0;
+                double gamma = TryParseDouble(args[2]) ?? 1.0;
+                double outputBlack = TryParseDouble(args[3]) ?? 0.0;
+                double outputWhite = TryParseDouble(args[4]) ?? 1.0;
 
-            return (range?.InRangeFactor(hsl) ?? 1.0, filterParams);
+                return (inputBlack, inputWhite, gamma, outputBlack, outputWhite);
+            }
+
+            return (0, 1, 1, 0, 1);
         }
-
-        public static (double, object[]) GetRangeFactorAndRemainingParams(Hsv hsv, object[] filterParams)
+        
+        public static (double, double, double) ParseAutoLevelParameters(object[] args)
         {
-            ColorRange range;
-            (range, filterParams) = GetRangeAndRemainingParams(filterParams);
+            if (args.Length >= 2) {
+                double outputBlack = TryParseDouble(args[0]) ?? 0.0;
+                double outputWhite = TryParseDouble(args[1]) ?? 1.0;
+                double gamma = 1;
+                if (args.Length >= 3) {
+                    gamma = TryParseDouble(args[2]) ?? 1.0;
+                }
+                return (outputBlack, outputWhite, gamma);
+            }
 
-            return (range?.InRangeFactor(hsv) ?? 1.0, filterParams);
+            return (0, 1, 1);
         }
 
         public static double CalcLevels(double value, double rangeFactor, object[] args)
@@ -100,6 +111,25 @@ namespace ColorSchemeManipulator.Filters
             }
 
             return result;
+        }
+
+        public static (double, double) GetLowestAndHighestLightness(IEnumerable<Color> colors)
+        {
+            bool some = false;
+            double hi = 0.0;
+            double lo = 1.0;
+            foreach (var color in colors) {
+                if (color.Lightness > hi) hi = color.Lightness;
+                if (color.Lightness < lo) lo = color.Lightness;
+                some = true;
+            }
+
+            return some ? (lo, hi) : (0, 1);
+        }
+
+        public static double GetHighestLightness(IEnumerable<Color> colors)
+        {
+            throw new NotImplementedException();
         }
     }
 }

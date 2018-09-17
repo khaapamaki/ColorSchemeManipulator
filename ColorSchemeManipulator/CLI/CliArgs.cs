@@ -7,7 +7,7 @@ using ColorSchemeManipulator.Filters;
 namespace ColorSchemeManipulator.CLI
 {
     /// <summary>
-    /// A singleton class to store and handle command line arguments relating to filters and filterDelegate paramters
+    /// A singleton class to store and handle command line arguments relating to filters and filter paramters
     /// </summary>
     public sealed class CliArgs
     {
@@ -23,7 +23,7 @@ namespace ColorSchemeManipulator.CLI
             }
         }
 
-        private List<CliArg> Items { get; set; } = new List<CliArg>();
+        private List<CliArg> Items { get; } = new List<CliArg>();
 
         // ---- API Methods --------
 
@@ -31,43 +31,24 @@ namespace ColorSchemeManipulator.CLI
         {
             return GetInstance().Items[index];
         }
-
-        public static void Register(string option, Func<Rgb, object[], Rgb> filterDelegate, byte minParams,
+        
+        public static List<CliArg> GetItems()
+        {
+            return GetInstance().Items;
+        }
+        
+        public static void Register(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
             byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(option, filter, minParams, maxParams, desc));
         }
 
-        public static void Register(List<string> option, Func<Rgb, object[], Rgb> filterDelegate, byte minParams,
+        public static void Register(List<string> options, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
             byte maxParams = 0, string desc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(options, filter, minParams, maxParams, desc));
         }
-
-        public static void Register(string option, Func<Hsl, object[], Hsl> filterDelegate, byte minParams,
-            byte maxParams = 0, string desc = "")
-        {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
-        }
-
-        public static void Register(List<string> option, Func<Hsl, object[], Hsl> filterDelegate, byte minParams,
-            byte maxParams = 0, string desc = "")
-        {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
-        }
-
-        public static void Register(string option, Func<Hsv, object[], Hsv> filterDelegate, byte minParams,
-            byte maxParams = 0, string desc = "")
-        {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
-        }
-
-        public static void Register(List<string> option, Func<Hsv, object[], Hsv> filterDelegate, byte minParams,
-            byte maxParams = 0, string desc = "")
-        {
-            GetInstance().Items.Add(new CliArg(option, filterDelegate, minParams, maxParams, desc));
-        }
-
+ 
         /// <summary>
         /// Parses command line arguments, creates a FilterSet from them and returns it together with
         /// remaining arguments that should include source and target files
@@ -80,7 +61,7 @@ namespace ColorSchemeManipulator.CLI
         }
 
         /// <summary>
-        /// Gets matching filterDelegate delegate function and given arguments for given command line option
+        /// Gets matching filter delegate function and given arguments for given command line options
         /// Filter must be registered in CliArgs class.
         /// </summary>
         /// <param name="option"></param>
@@ -91,13 +72,13 @@ namespace ColorSchemeManipulator.CLI
             string rangeString;
             (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
             ColorRange range = CliUtils.ParseRange(rangeString);
-            foreach (var cliArg in GetInstance().Items) {
-                if (cliArg.OptionArgs.Contains(option)) {
+            foreach (var BatchCliArg in GetInstance().Items) {
+                if (BatchCliArg.OptionArgs.Contains(option)) {
                     List<object> filterParams = CliUtils.ExtractParams(paramString);
-                    if (filterParams.Count >= cliArg.MinParams) {
+                    if (filterParams.Count >= BatchCliArg.MinParams) {
                         if (range != null)
                             filterParams.Add(range);
-                        return (cliArg.FilterDelegate, filterParams);
+                        return (BatchCliArg.FilterDelegate, filterParams);
                     }
                 }
             }
@@ -120,7 +101,7 @@ namespace ColorSchemeManipulator.CLI
             return (otherArgList.ToArray(), optList.ToArray());
         }
 
-        public static string ToString(string delimiter = "\n", string prefix = "  ")
+        public static string ToString(string delimiter = "\n", string prefix = "")
         {
             var sb = new StringBuilder();
 

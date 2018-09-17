@@ -4,20 +4,36 @@
     <e p="C:\Users\Kati\.Rider2018.2\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\Kati\.Rider2018.2\system\resharper-host\local\Transient\ReSharperHost\v182\SolutionCaches\_ColorSchemeManipulator.988356361.00" t="ExcludeRecursive" />
     <e p="E:\00-DEVELOPMENT\ColorSchemeManipulator" t="IncludeFlat">
+      <e p=".gitignore" t="Include" />
       <e p="ColorSchemeManipulator" t="IncludeRecursive">
+<<<<<<< HEAD
         <e p="bin" t="ExcludeRecursive" />
+=======
+        <e p="bin" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="Cobalt.icls" t="Include" />
+            <e p="colschman.exe" t="Include" />
+            <e p="colschman.pdb" t="Include" />
+            <e p="darcula-vs-2017.vstheme" t="Include" />
+            <e p="HappyDays.icls" t="Include" />
+            <e p="HappyDays.png" t="Include" />
+            <e p="HappyDays_Complete.icls" t="Include" />
+            <e p="HappyDays_Complete_converted.icls" t="Include" />
+            <e p="HappyDays_converted.png" t="Include" />
+            <e p="photo.png" t="Include" />
+            <e p="photo_converted.png" t="Include" />
+          </e>
+        </e>
+>>>>>>> staging
         <e p="CLI" t="Include">
           <e p="CliArg.cs" t="Include" />
           <e p="CliArgs.cs" t="Include" />
           <e p="CliUtils.cs" t="Include" />
         </e>
         <e p="Colors" t="Include">
-          <e p="ColorBase.cs" t="Include" />
+          <e p="Color.cs" t="Include" />
           <e p="ColorConversions.cs" t="Include" />
-          <e p="Hsl.cs" t="Include" />
-          <e p="Hsv.cs" t="Include" />
-          <e p="Rgb.cs" t="Include" />
-          <e p="Rgb8Bit.cs" t="Include" />
+          <e p="HexRgb.cs" t="Include" />
         </e>
         <e p="ColorSchemeManipulator.csproj" t="IncludeRecursive" />
         <e p="ColorSchemeProcessor.cs" t="Include" />
@@ -25,17 +41,21 @@
           <e p="ColorMath.cs" t="Include" />
           <e p="DoubleExtensions.cs" t="Include" />
           <e p="GenericExtensions.cs" t="Include" />
+          <e p="Utils.cs" t="Include" />
         </e>
         <e p="Filters" t="Include">
           <e p="ColorFilter.cs" t="Include" />
           <e p="ColorRange.cs" t="Include" />
+          <e p="ExperimentalBundle.cs" t="Include" />
           <e p="FilterBundle.cs" t="Include" />
           <e p="FilterSet.cs" t="Include" />
           <e p="FilterUtils.cs" t="Include" />
+<<<<<<< HEAD
           <e p="HslFilter.cs" t="Include" />
           <e p="HsvFilter.cs" t="Include" />
+=======
+>>>>>>> staging
           <e p="ParameterRange.cs" t="Include" />
-          <e p="RgbFilter.cs" t="Include" />
         </e>
         <e p="ImageProcessor.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
@@ -48,16 +68,11 @@
           <e p="SchemeFormat.cs" t="Include" />
           <e p="SchemeFormatUtil.cs" t="Include" />
         </e>
-        <e p="Utils.cs" t="Include" />
       </e>
       <e p="ColorSchemeManipulator.sln" t="IncludeFlat" />
       <e p="ColorSchemeManipulator.UnitTests" t="IncludeRecursive">
-        <e p="bin" t="ExcludeRecursive" />
-        <e p="CliTests.cs" t="Include" />
-        <e p="ColorConversionsTests.cs" t="Include" />
-        <e p="ColorMathTests.cs" t="Include" />
-        <e p="ColorRangeTests.cs" t="Include" />
         <e p="ColorSchemeManipulator.UnitTests.csproj" t="IncludeRecursive" />
+<<<<<<< HEAD
         <e p="ExtensionsTests.cs" t="Include" />
         <e p="FilterUtilsTests.cs" t="Include" />
         <e p="MiscTests.cs" t="Include" />
@@ -67,6 +82,8 @@
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
         <e p="Tests.cs" t="Include" />
+=======
+>>>>>>> staging
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="readme.md" t="Include" />

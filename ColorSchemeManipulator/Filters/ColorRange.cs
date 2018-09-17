@@ -1,6 +1,5 @@
 using System.Text;
 using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
@@ -20,120 +19,20 @@ namespace ColorSchemeManipulator.Filters
         public ParameterRange HueRange { get; set; } = null;
         public ParameterRange BrightnessRange { get; set; } = null;
 
-        // private double _minHue = 0.0;
-        // private double _maxHue = 360.0;
-        // private double _minHueSlope = 0.0;
-        // private double _maxHueSlope = 0.0;
-        // private bool _hueRange = false;
-
-        // public ColorRange Hue(double min, double max, double minSlope = 0.0, double maxSlope = 0.0)
-        // {
-        //     _minHue = min.NormalizeLoopingValue(360.0);
-        //     _maxHue = max.NormalizeLoopingValue(360.0);
-        //     _minHueSlope = minSlope;
-        //     _maxHueSlope = maxSlope;
-        //     _hueRange = true;
-        //     return this;
-        // }
-        public double InRangeFactor(Rgb rgb)
+        public double InRangeFactor(Color color)
         {
             double result = 1.0;
-            if (HslOrHsvProcessingNeeded()) {
-                result = HslFactors(rgb.ToHsl(), result);
-            }
-
-            if (HsvProcessingNeeded()) {
-                result = HsvFactors(rgb.ToHsv(), result);
-            }
-
-            if (RgbProcessingNeeded()) {
-                result = RgbFactors(rgb, result);
-            }
-
+            result *= RedRange?.InRangeFactor(color.Red) ?? 1;
+            result *= GreenRange?.InRangeFactor(color.Green) ?? 1;
+            result *= BlueRange?.InRangeFactor(color.Blue) ?? 1;
+            result *= LightnessRange?.InRangeFactor(color.Lightness) ?? 1;
+            result *= SaturationRange?.InRangeFactor(color.Saturation) ?? 1;
+            result *= HueRange?.InRangeFactor(color.Hue) ?? 1;
+            result *= ValueRange?.InRangeFactor(color.Value) ?? 1;
+            result *= BrightnessRange?.InRangeFactor(color.GetBrightness()) ?? 1;
             return result;
         }
-
-        private double RgbFactors(Rgb rgb, double result = 1.0)
-        {
-            result *= RedRange?.InRangeFactor(rgb.Red) ?? 1;
-            result *= GreenRange?.InRangeFactor(rgb.Green) ?? 1;
-            result *= BlueRange?.InRangeFactor(rgb.Blue) ?? 1;
-            result *= BrightnessRange?.InRangeFactor(
-                          ColorMath.RgbPerceivedBrightness(rgb.Red, rgb.Green, rgb.Blue)) ?? 1;
-            return result;
-        }
-
-        private double HsvFactors(Hsv hsv, double result = 1.0)
-        {
-            result *= ValueRange?.InRangeFactor(hsv.Value) ?? 1;
-            return result;
-        }
-
-        private double HslFactors(Hsl hsl, double result = 1.0)
-        {
-            result *= HueRange?.InRangeFactor(hsl.Hue) ?? 1;
-            result *= SaturationRange?.InRangeFactor(hsl.Saturation) ?? 1;
-            result *= LightnessRange?.InRangeFactor(hsl.Lightness) ?? 1;
-            return result;
-        }
-
-        public double InRangeFactor(Hsl hsl)
-        {
-            double result = 1.0;
-            if (HslOrHsvProcessingNeeded()) {
-                result = HslFactors(hsl, result);
-            }
-
-            if (HsvProcessingNeeded()) {
-                result = HsvFactors(hsl.ToHsv(), result);
-            }
-
-            if (RgbProcessingNeeded()) {
-                result = RgbFactors(hsl.ToRgb(), result);
-            }
-
-            return result;
-        }
-
-
-        public double InRangeFactor(Hsv hsv)
-        {
-            double result = 1.0;
-            if (HslOrHsvProcessingNeeded()) {
-                result = HslFactors(hsv.ToHsl(), result);
-            }
-
-            if (HsvProcessingNeeded()) {
-                result = HsvFactors(hsv, result);
-            }
-
-            if (RgbProcessingNeeded()) {
-                result = RgbFactors(hsv.ToRgb(), result);
-            }
-
-            return result;
-        }
-
-        private bool RgbProcessingNeeded()
-        {
-            return RedRange != null || GreenRange != null || BlueRange != null || BrightnessRange != null;
-        }
-
-        private bool HslOrHsvProcessingNeeded()
-        {
-            return SaturationRange != null || HueRange != null || LightnessRange != null || ValueRange != null;
-        }
-
-        private bool HslProcessingNeeded()
-        {
-            return LightnessRange != null;
-        }
-
-        private bool HsvProcessingNeeded()
-        {
-            return ValueRange != null;
-        }
-
+        
         public override string ToString()
         {
             var sb = new StringBuilder();

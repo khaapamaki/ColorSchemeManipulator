@@ -1,12 +1,18 @@
 using System;
+<<<<<<< HEAD
 using System.Drawing;
+=======
+>>>>>>> staging
 using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
     public static class ColorConversions
     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> staging
         public static (double, double, double) RgbToHsl(double r, double g, double b)
         {
             double h, s, l;
@@ -38,7 +44,11 @@ namespace ColorSchemeManipulator.Colors
                 h = hue * 360.0;
             }
 
+<<<<<<< HEAD
             return (h,s, l); 
+=======
+            return (h, s, l);
+>>>>>>> staging
         }
 
         public static (double, double, double) HslToRgb(double h, double s, double l)
@@ -53,7 +63,11 @@ namespace ColorSchemeManipulator.Colors
 
                 v2 = l < 0.5
                     ? l * (1 + s)
+<<<<<<< HEAD
                     : l + s - l *s;
+=======
+                    : l + s - l * s;
+>>>>>>> staging
                 v1 = 2 * l - v2;
 
                 r = HueToRgb(v1, v2, hue + 1.0 / 3);
@@ -61,7 +75,11 @@ namespace ColorSchemeManipulator.Colors
                 b = HueToRgb(v1, v2, hue - 1.0 / 3);
             }
 
+<<<<<<< HEAD
             return (r, g, b); 
+=======
+            return (r, g, b);
+>>>>>>> staging
         }
         
         private static double HueToRgb(double v1, double v2, double vH)
@@ -181,6 +199,7 @@ namespace ColorSchemeManipulator.Colors
             return (r, g, b);
         }
 
+<<<<<<< HEAD
         // Todo algorithm that directly converts from hsv to hsl
         public static (double, double, double) HsvToHsl(double h, double s, double v)
         {
@@ -229,18 +248,35 @@ namespace ColorSchemeManipulator.Colors
         {
             (double hue, double s, double l) = HsvToHsl(hsv.Hue, hsv.Saturation, hsv.Value);
             return new Hsl(hue, s, l, hsv.Alpha);
+=======
+        public static Color SystemColorToColor(System.Drawing.Color sysColor)
+        {
+            return Color.FromRgb(sysColor.R, sysColor.G, sysColor.B, sysColor.A);
         }
 
-        public static Rgb SystemColorToRgb(Color color)
+        public static System.Drawing.Color ColorToSystemColor(Color color)
         {
-            var rgb8 = new Rgb8Bit(color.R, color.G, color.B, color.A);
-            return new Rgb(rgb8);
+            return System.Drawing.Color.FromArgb(
+                (byte) (color.Alpha * 255),
+                (byte) (color.Red * 255),
+                (byte) (color.Green * 255),
+                (byte) (color.Blue * 255));
+>>>>>>> staging
         }
 
-        public static Color RgbToSystemColor(Rgb rgb)
+        // Todo algorithm that directly converts from hsv to hsl
+        public static (double, double, double) HsvToHsl(double h, double s, double v)
         {
-            var rgb8 = new Rgb8Bit(rgb);
-            return Color.FromArgb(rgb8.Alpha, rgb8.Red, rgb8.Green, rgb8.Blue);
+            (double r, double g, double b) = HsvToRgb(h, s, v);
+            return RgbToHsl(r, g, b);
         }
+
+        // Todo algorithm that directly converts from hsl to hsv
+        public static (double, double, double) HslToHsv(double h, double s, double l)
+        {
+            (double r, double g, double b) = HslToRgb(h, s, l);
+            return RgbToHsv(r, g, b);
+        }
+
     }
 }

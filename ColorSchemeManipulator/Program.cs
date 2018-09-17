@@ -1,6 +1,13 @@
 ﻿using System;
 using System.IO;
+<<<<<<< HEAD
 using ColorSchemeManipulator.CLI;
+=======
+using System.Linq;
+using System.Reflection;
+using ColorSchemeManipulator.CLI;
+using ColorSchemeManipulator.Common;
+>>>>>>> staging
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.SchemeFileSupport;
 
@@ -10,15 +17,30 @@ namespace ColorSchemeManipulator
     {
         public static void Main(string[] args)
         {
+<<<<<<< HEAD
 
+=======
+>>>>>>> staging
             // Make FilterBundle filters available for CLI
             FilterBundle.RegisterCliOptions();
+            int filterCount = CliArgs.GetItems().Count();
+            int experimFilterCount = 0;
+            
+            // Comment out these if you want to exclude experimental filters
+            ExperimentalBundle.RegisterCliOptions();
+            experimFilterCount = CliArgs.GetItems().Count() - filterCount;
 
+            Console.WriteLine(
+                "Color Scheme Manipulator " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
             // print help
             if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
+<<<<<<< HEAD
                 Console.WriteLine("Available Filters:");
                 Console.WriteLine(CliArgs.ToString());
                 // todo print usage examples
+=======
+                Utils.PrintHelp(filterCount, experimFilterCount);
+>>>>>>> staging
                 return;
             }
 
@@ -29,8 +51,15 @@ namespace ColorSchemeManipulator
             string[] remainingOptArgs;
             (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
 
+<<<<<<< HEAD
             // PARSE other than filter options here, and remove them from remainingOptArgs array
    
+=======
+
+            // PARSE other than filter options here, and remove them from remainingOptArgs array 
+
+
+>>>>>>> staging
             // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
                 Console.WriteLine("Illegal argument: " + remainingOptArgs[0]);
@@ -41,6 +70,7 @@ namespace ColorSchemeManipulator
             Console.WriteLine(filterSet.ToString());
 
             string sourceFile, targetFile;
+<<<<<<< HEAD
             
             // get source and target from CLI args
 
@@ -53,17 +83,48 @@ namespace ColorSchemeManipulator
             }
 
             var schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
+=======
+
+
+            // Test files for debugging
+            string sourceFileName = @"HappyDays_Complete.icls";
+            // sourceFileName = "darcula-vs-2017.vstheme";
+            sourceFileName = "HappyDays.png";
+            // sourceFileName = "photo.png";
+            string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
+            sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
+            targetFile = Path.GetFullPath(Path.Combine(baseDir,
+                Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
+                                                             + Path.GetExtension(sourceFile)));
+
+            // get source and target from CLI args
+            if (remainingArgs.Length == 1) {
+                sourceFile = remainingArgs[0];
+                targetFile = Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
+                                                                          + Path.GetExtension(sourceFile);
+            } else if (remainingArgs.Length == 2) {
+                sourceFile = remainingArgs[0];
+                targetFile = remainingArgs[1];
+            } else {
+                Console.WriteLine("No source file specified");
+                return;
+            }
+
+            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
+>>>>>>> staging
 
             if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
                 if (File.Exists(sourceFile)) {
                     var processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
+                    Console.WriteLine("Done.");
                 } else {
                     Console.Error.WriteLine(sourceFile + " does not exist");
                 }
             } else if (schemeFormat == SchemeFormat.Image) {
                 var processor = new ImageProcessor();
                 processor.ProcessFile(sourceFile, targetFile, filterSet);
+                Console.WriteLine("Done.");
             } else {
                 Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
             }
