@@ -43,15 +43,6 @@ Available Filters:
   -ib   --invert-brightness            Inverts perceived brightness
   -gsb  --grayscale-brightness         Converts to gray scale based on perceived brightness
 
-Experimental Filters:
-  -ibc  --invert-brightness-corrected  Inverts perceived brightness - experimental
-  -ilv  --invert-lightness-value       Inverts colors using both lightness and value, by mixing the
-                                       result - experimental
-  -b2l  --brightness-to-lightness      @BrightnessToLightness
-  -b2v  --brightness-to-value          @BrightnessToValue
-        --tolight                      @ToLight
-
-
 Usage example:
   colschman -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
     
@@ -63,7 +54,6 @@ Using filter with color range defined with four points: (attribute: min1, min2, 
     
 Using filter with color range with slope parameters: (attribute: min/slope - max/slope)
   colschman "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
-    
 ```
 
 ### Issues
