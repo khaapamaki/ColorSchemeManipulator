@@ -102,7 +102,7 @@ namespace ColorSchemeManipulator.CLI
             return (otherArgList.ToArray(), optList.ToArray());
         }
 
-        public static string ToString(string delimiter = "\n", string prefix = "  ")
+        public static string ToString(string delimiter = "\n", string prefix = "")
         {
             var sb = new StringBuilder();
 

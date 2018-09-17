@@ -76,7 +76,6 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
 
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
-            CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
             CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
@@ -86,21 +85,6 @@ namespace ColorSchemeManipulator.Filters
                 desc: "Converts to gray scale based on perceived brightness");
 
             GetInstance()._isRegistered = true;
-        }
-
-        public static IEnumerable<Color> ByBass(IEnumerable<Color> colors, params object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-            foreach (var color in colors) {
-                if (filterParams.Any()) {
-                    (double h, double s, double l) = color.GetHslComponents();
-                    var newColor = Color.FromHsl(h, s, l, color.Alpha);
-                    yield return newColor;
-                } else {
-                    yield return color;
-                }
-            }
         }
 
         #region "Invert"

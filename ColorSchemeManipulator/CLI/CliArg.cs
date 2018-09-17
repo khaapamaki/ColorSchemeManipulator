@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 
@@ -51,7 +52,46 @@ namespace ColorSchemeManipulator.CLI
             }
 
             string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
-            return $"{opt1,-5} {opt2,-26} {desc}";
+            StringBuilder sb = new StringBuilder();
+            List<string> lines = WordWrap(desc, 64);
+            foreach (var line in lines) {
+                //Console.WriteLine("/"+line.Trim()+"/");
+            }
+            for (var index = 0; index < lines.Count; index++) {
+                var line = lines[index].Trim();
+                sb.Append($"  {opt1,-5} {opt2,-30} {line}");
+                opt1 = "";
+                opt2 = "";
+                if (index < lines.Count-1)
+                    sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
+        private static List<string> WordWrap(string sentence, int columnWidth)
+        {
+            List<string> lines = new List<string>(3);
+            string[] words = sentence.Split(' ');
+
+            StringBuilder newSentence = new StringBuilder();
+
+            string line = "";
+            foreach (string word in words)
+            {
+                if ((line + word).Length > columnWidth)
+                {
+                    lines.Add(line);
+                    line = "";
+                }
+
+                line += $"{word} ";
+            }
+
+            if (line.Length > 0)
+                lines.Add(line);
+
+            return lines;
         }
     }
 }
