@@ -33,11 +33,11 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-lev", "--levels-value"}, LevelsValue, 5);
             CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5);
             CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5);
-            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corrected"},
-                InvertPerceivedBrightnessWithCorrection, 0, 0,
-                desc: "Inverts perceived brightness - experimental");
+            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corr"},
+                InvertPerceivedBrightnessWithCorrection, 0, 1,
+                desc: "Inverts perceived brightness");
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
-                desc: "Inverts colors using both lightness and value, by mixing the result - experimental");
+                desc: "Inverts colors using both lightness and value, by mixing the result");
             CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0
             );
             CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0

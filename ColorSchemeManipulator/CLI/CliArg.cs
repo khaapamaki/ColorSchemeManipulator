@@ -53,13 +53,13 @@ namespace ColorSchemeManipulator.CLI
 
             string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
             StringBuilder sb = new StringBuilder();
-            List<string> lines = Utils.WordWrap(desc, 64);
+            List<string> lines = Utils.WordWrap(desc, 68);
             foreach (var line in lines) {
                 //Console.WriteLine("/"+line.Trim()+"/");
             }
             for (var index = 0; index < lines.Count; index++) {
                 var line = lines[index].Trim();
-                sb.Append($"  {opt1,-5} {opt2,-30} {line}");
+                sb.Append($"  {opt1,-5} {opt2,-26} {line}");
                 opt1 = "";
                 opt2 = "";
                 if (index < lines.Count-1)

@@ -17,7 +17,7 @@ namespace ColorSchemeManipulator.UnitTests
             Console.WriteLine(color.ToString());
             color.Saturation /= 2;
             Console.WriteLine(color.ToString());
-            Assert.True(color.EqualTo(sourceColor));
+            Assert.True(color.Equals(sourceColor));
            
         }
         

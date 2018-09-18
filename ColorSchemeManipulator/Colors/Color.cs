@@ -1,7 +1,7 @@
 using System;
 using ColorSchemeManipulator.Common;
 
-// Todo thread safety
+// Todo Thread safety
 
 namespace ColorSchemeManipulator.Colors
 {
@@ -23,11 +23,12 @@ namespace ColorSchemeManipulator.Colors
     public class Color
     {
         private const Clamping InputClamping = Clamping.None;
+        
         private int _calcLock = 0;
 
-        private bool _hasRgb = false;
-        private bool _hasHsl = false;
-        private bool _hasHsv = false;
+        private bool _rgbValid = false;
+        private bool _hslValid = false;
+        private bool _hsvValid = false;
 
         private double _red;
         private double _green;
@@ -219,9 +220,9 @@ namespace ColorSchemeManipulator.Colors
             _hueHsv = color._hueHsv;
             _saturationHsv = color._saturationHsv;
             _value = color._value;
-            _hasRgb = color._hasRgb;
-            _hasHsl = color._hasHsl;
-            _hasHsv = color._hasHsv;
+            _rgbValid = color._rgbValid;
+            _hslValid = color._hslValid;
+            _hsvValid = color._hsvValid;
             _alpha = color._alpha;
 
             _calcLock--;
@@ -341,10 +342,6 @@ namespace ColorSchemeManipulator.Colors
             if (_saturation > 1 || _saturation < 0 || _lightness < 0 || _lightness > 1) {
                 _calcLock++;
 
-                if (_saturation > 1) {
-                    int stophereanddebug = 1;
-                }
-
                 _hue = _hue.NormalizeLoopingValue(360);
                 _saturation = _saturation.Clamp(0, 1);
                 _lightness = _lightness.Clamp(0, 1);
@@ -357,20 +354,24 @@ namespace ColorSchemeManipulator.Colors
 
             if (_saturationHsv > 1 || _value > 1 || _saturationHsv < 0 || _value < 0) {
                 _calcLock++;
+                
                 _saturationHsv = _saturationHsv.Clamp(0, 1);
                 _value = _value.Clamp(0, 1);
                 ResetFlags(ColorFormat.Hsv);
+                
                 _calcLock--;
             }
 
             CalcRgb();
+            // todo rgb clamping could be smoother, if this ever occurs?
             if (_red < 0 || _red > 1 || _green < 0 || _green > 1 || _blue < 0 || _blue > 1) {
-                // todo rgb clamping could be smoother
                 _calcLock++;
+                
                 _red = _red.Clamp(0, 1);
                 _green = _green.Clamp(0, 1);
                 _blue = _blue.Clamp(0, 1);
                 ResetFlags(ColorFormat.Rgb);
+                
                 _calcLock--;
             }
         }
@@ -412,7 +413,6 @@ namespace ColorSchemeManipulator.Colors
             }
         }
 
-
         public double GetBrightness()
         {
             (double r, double g, double b) = GetRgbComponents();
@@ -440,19 +440,19 @@ namespace ColorSchemeManipulator.Colors
 
         private void ResetFlags(ColorFormat cf)
         {
-            _hasRgb = cf == ColorFormat.Rgb;
-            _hasHsl = cf == ColorFormat.Hsl;
-            _hasHsv = cf == ColorFormat.Hsv;
+            _rgbValid = cf == ColorFormat.Rgb;
+            _hslValid = cf == ColorFormat.Hsl;
+            _hsvValid = cf == ColorFormat.Hsv;
         }
 
         private bool HasValue()
         {
-            return _hasRgb || _hasHsl || _hasHsv;
+            return _rgbValid || _hslValid || _hsvValid;
         }
 
         public (double, double, double) GetRgbComponents()
         {
-            if (!_hasRgb) {
+            if (!_rgbValid) {
                 if (!CalcRgb()) {
                     throw new Exception("Color has no value");
                 }
@@ -463,7 +463,7 @@ namespace ColorSchemeManipulator.Colors
 
         public (double, double, double) GetHslComponents()
         {
-            if (!_hasHsl) {
+            if (!_hslValid) {
                 if (!CalcHsl()) {
                     throw new Exception("Color has no value");
                 }
@@ -474,7 +474,7 @@ namespace ColorSchemeManipulator.Colors
 
         public (double, double, double) GetHsvComponents()
         {
-            if (!_hasHsv) {
+            if (!_hsvValid) {
                 if (!CalcHsv()) {
                     throw new Exception("Color has no value");
                 }
@@ -486,75 +486,75 @@ namespace ColorSchemeManipulator.Colors
         private bool CalcRgb()
         {
             if (_calcLock > 0)
-                return _hasRgb;
+                return _rgbValid;
 
             if (!HasValue())
                 throw new Exception("Color has no value");
-            if (!_hasRgb) {
-                if (_hasHsl) {
+            if (!_rgbValid) {
+                if (_hslValid) {
                     SetRgb(ColorConversions.HslToRgb(_hue, _saturation, _lightness), _alpha, false);
-                } else if (_hasHsv) {
+                } else if (_hsvValid) {
                     SetRgb(ColorConversions.HsvToRgb(_hueHsv, _saturationHsv, _value), _alpha, false);
                 }
             }
 
-            return _hasRgb;
+            return _rgbValid;
         }
 
         private bool CalcHsl()
         {
             if (_calcLock > 0)
-                return _hasHsl;
+                return _hslValid;
 
             if (!HasValue())
                 throw new Exception("Color has no value");
-            if (!_hasHsl) {
-                if (_hasRgb) {
+            if (!_hslValid) {
+                if (_rgbValid) {
                     SetHsl(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha, false);
-                } else if (_hasHsv) {
+                } else if (_hsvValid) {
                     SetHsl(ColorConversions.HsvToHsl(_hueHsv, _saturationHsv, _value), _alpha, false);
                 }
             }
 
-            return _hasHsl;
+            return _hslValid;
         }
 
         private bool CalcHsv()
         {
             if (_calcLock > 0)
-                return _hasHsv;
+                return _hsvValid;
 
             if (!HasValue())
                 throw new Exception("Color has no value");
-            if (!_hasHsv) {
-                if (_hasRgb) {
+            if (!_hsvValid) {
+                if (_rgbValid) {
                     SetHsv(ColorConversions.RgbToHsv(_red, _green, _blue), _alpha, false);
-                } else if (_hasHsl) {
+                } else if (_hslValid) {
                     SetHsv(ColorConversions.HslToHsv(_hue, _saturation, _lightness), _alpha, false);
                 }
             }
 
-            return _hasHsv;
+            return _hsvValid;
         }
 
-        public bool EqualTo(Color color)
+        public bool Equals(Color color)
         {
             if (!_alpha.AboutEqual(color._alpha))
                 return false;
 
-            if (_hasRgb) {
+            if (_rgbValid) {
                 return _red.AboutEqual(color.Red)
                        && _green.AboutEqual(color.Green)
                        && _blue.AboutEqual(color.Blue);
             }
 
-            if (_hasHsl) {
+            if (_hslValid) {
                 return _lightness.AboutEqual(color.Lightness)
                        && _saturation.AboutEqual(color.Saturation)
                        && _hue.AboutEqual(color.Hue);
             }
 
-            if (_hasHsv) {
+            if (_hsvValid) {
                 return _hueHsv.AboutEqual(color.HueHsv)
                        && _saturationHsv.AboutEqual(color.SaturationHsv)
                        && _value.AboutEqual(color.Value);

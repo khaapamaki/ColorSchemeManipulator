@@ -25,9 +25,9 @@ namespace ColorSchemeManipulator.UnitTests
             Color hsl = Color.FromHsl(180, 0.7, 0.8);
             List list = new List();
             List result = FilterBundle.InvertLightness(hsl);
-            Assert.That(result.Hue, Is.EqualTo(hsl.Hue).Within(0.00001));
-            Assert.That(result.Saturation, Is.EqualTo(hsl.Saturation).Within(0.00001));
-            Assert.That(result.Lightness, Is.EqualTo(0.2).Within(0.00001));
+            Assert.That(result.Hue, Is.Equals(hsl.Hue).Within(0.00001));
+            Assert.That(result.Saturation, Is.Equals(hsl.Saturation).Within(0.00001));
+            Assert.That(result.Lightness, Is.Equals(0.2).Within(0.00001));
         }
 
   */             
@@ -39,7 +39,7 @@ namespace ColorSchemeManipulator.UnitTests
             Color rgb2 = Color.FromHsl(rgb1.Hue, rgb1.Saturation, rgb1.Lightness);
             Console.WriteLine(rgb1.ToString());
             Console.WriteLine(rgb2.ToString());
-            Assert.True(rgb1.EqualTo(rgb2));
+            Assert.True(rgb1.Equals(rgb2));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace ColorSchemeManipulator.UnitTests
             Color rgb2 = Color.FromHsv(rgb1.HueHsv, rgb1.SaturationHsv, rgb1.Value);
             Console.WriteLine(rgb1.ToString());
             Console.WriteLine(rgb2.ToString());
-            Assert.True(rgb1.EqualTo(rgb2));
+            Assert.True(rgb1.Equals(rgb2));
         }
         
         [Test]
@@ -63,7 +63,7 @@ namespace ColorSchemeManipulator.UnitTests
                     (byte) rnd.Next(0, 255),
                     (byte) rnd.Next(0, 255));
                 Color rgb2 = Color.FromHsl(rgb1.Hue, rgb1.Saturation, rgb1.Lightness, rgb1.Alpha);
-                Assert.True(rgb1.EqualTo(rgb2));
+                Assert.True(rgb1.Equals(rgb2));
             }
         }
 
