@@ -35,24 +35,19 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
 
-        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping = true)
         {
+            // Process all filters in chain
             foreach (var filterDelegate in _filters) {
                 colors = filterDelegate.ApplyTo(colors);
             }
 
             // Final clamping after last filter in chain
-            Func<IEnumerable<Color>, object[], IEnumerable<Color>> clamp = FilterBundle.Clamp;
-            colors = clamp.Invoke(colors, null);
-            //colors = clamp(colors, null);
-
-            return colors;
-        }
-
-        [Obsolete]
-        private IEnumerable<Color> ApplyFilter(IEnumerable<Color> colors, ColorFilter colorFilter)
-        {
-            return colorFilter.ApplyTo(colors);
+            foreach (var color in colors) {
+                if (outputClamping)
+                    color.ClampExceedingColors();
+                yield return color;
+            }
         }
 
         public string ToString(string delimiter = "\n", string prefix = "   ")

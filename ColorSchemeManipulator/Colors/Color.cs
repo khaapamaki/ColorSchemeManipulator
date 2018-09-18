@@ -22,7 +22,8 @@ namespace ColorSchemeManipulator.Colors
 
     public class Color
     {
-        private const Clamping InputClamping = Clamping.None;
+        // Clamping automation is off by default. In derived subclasses you may want to set it on.
+        protected Clamping InputInputClamping = Clamping.None;
         
         private int _calcLock = 0;
 
@@ -41,6 +42,17 @@ namespace ColorSchemeManipulator.Colors
         private double _value;
         private double _alpha = 1.0;
 
+
+        public Color()
+        {
+            
+        }
+
+        public Color(Color color)
+        {
+            CopyFrom(color);
+        }
+        
         public double Red
         {
             get
@@ -200,29 +212,29 @@ namespace ColorSchemeManipulator.Colors
             set { _alpha = value.Clamp(0, 1); }
         }
 
-        public Color() { }
-
-        public Color(Color color)
+        
+        protected void CopyFrom(Color color)
         {
-            CopyFrom(color);
+            CopyFrom(color, InputInputClamping);
         }
-
-        private void CopyFrom(Color color)
+        
+        protected void CopyFrom(Color color, Clamping clamping)
         {
             _calcLock++;
 
-            _hue = color._hue;
-            _saturation = color._saturation;
-            _lightness = color._lightness;
-            _red = color._red;
-            _green = color._green;
-            _blue = color._blue;
-            _hueHsv = color._hueHsv;
-            _saturationHsv = color._saturationHsv;
-            _value = color._value;
+            _hue = clamping != Clamping.None ? color._hue.NormalizeLoopingValue(360) : color._hue;
+            _saturation = ClampValue(color._saturation,clamping);
+            _lightness = ClampValue(color._lightness, clamping);
+            _red = ClampValue(color._red, clamping);
+            _green = ClampValue(color._green, clamping);
+            _blue = ClampValue(color._blue, clamping);
+            _hueHsv = clamping != Clamping.None ? color._hueHsv.NormalizeLoopingValue(360) : color._hueHsv;
+            _saturationHsv = ClampValue(color._saturationHsv, clamping);
+            _value = ClampValue(color._value, clamping);
             _rgbValid = color._rgbValid;
             _hslValid = color._hslValid;
             _hsvValid = color._hsvValid;
+                
             _alpha = color._alpha;
 
             _calcLock--;
@@ -232,6 +244,7 @@ namespace ColorSchemeManipulator.Colors
         {
             Color color = new Color();
             color.SetRgb(r, g, b, a);
+            
             return color;
         }
 
@@ -239,6 +252,7 @@ namespace ColorSchemeManipulator.Colors
         {
             Color color = new Color();
             color.SetRgb(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
+            
             return color;
         }
 
@@ -246,6 +260,7 @@ namespace ColorSchemeManipulator.Colors
         {
             Color color = new Color();
             color.SetHsl(h, s, l, a);
+            
             return color;
         }
 
@@ -253,9 +268,10 @@ namespace ColorSchemeManipulator.Colors
         {
             Color color = new Color();
             color.SetHsv(h, s, v, a);
+            
             return color;
         }
-
+        
         public void SetRgb(double r, double g, double b, double a = 1.0, bool resetFlags = true)
         {
             _calcLock++;
@@ -429,15 +445,20 @@ namespace ColorSchemeManipulator.Colors
 
         private double ClampInput(double input)
         {
-            if (InputClamping == Clamping.LowHigh)
+            return ClampValue(input, InputInputClamping);
+        }
+
+        private double ClampValue(double input, Clamping clamping)
+        {
+            if (clamping == Clamping.LowHigh)
                 return input.Clamp(0, 1);
 
-            if (InputClamping == Clamping.Low)
+            if (clamping == Clamping.Low)
                 return input.LimitLow(0);
 
             return input;
         }
-
+        
         private void ResetFlags(ColorFormat cf)
         {
             _rgbValid = cf == ColorFormat.Rgb;

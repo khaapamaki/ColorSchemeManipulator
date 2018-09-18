@@ -72,7 +72,6 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-al", "--auto-levels"}, AutoLevelsRgb, 0, 3
             );
 
-
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0);
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0);
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0);
