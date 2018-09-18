@@ -139,7 +139,7 @@ namespace ColorSchemeManipulator.CLI
                 colorRange.ValueRange = range.Copy();
             }
 
-            range = TryParseRangeForRangeParam(rangeString, "b|bri|brightness");
+            range = TryParseRangeForRangeParam(rangeString, "bri|bright|brightness");
             if (range != null) {
                 colorRange.BrightnessRange = range.Copy();
             }

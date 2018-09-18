@@ -61,16 +61,15 @@ Usage:
   colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]
 
 Example:
-  colschman -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
-    
-Example using filter with color range:
-  colschman "--gamma(sat: 0.5-1, l: 0-0.5) = 1.5" <sourcefile> <targetfile>
-    
-Example using filter with color range defined with four points: (attribute: min1, min2, max1, max2)
-  colschman "--gamma(sat: 0.4, 0.5, 1, 1, lightness:0, 0, 0.5, 0.7) = 1.5" <sourcefile> <targetfile>
-    
-Example using filter with color range with slope parameters: (attribute: min/slope - max/slope)
-  colschman "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
+  colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls
+
+Range attributes:
+  h, hue        Hue           |  r, red        Red
+  s, sat        Saturation    |  g, green      Green
+  l, light      Lightness     |  b, blue       Blue
+  v, value      Value         |  bri, bright   Brightness
+  
+  
 ```
 
 #### Issues
