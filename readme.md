@@ -5,71 +5,77 @@
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
-Added option to convert colors on png-files for quick testing.
+Also has option to filter png-files for quick testing.
 
 #### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-  -h    --hue                          Hue shift. Accepts single parameter as degrees -360..360
-  -s    --saturation                   HSL saturation multiplier. Accepts single parameter 0..x
-  -g    --gain                         RGB multiplier. Accepts single parameter 0..x
-  -l    --lightness                    HSL lightness multiplier. Accepts single parameter 0..x
-  -v    --value                        HSV value multiplier. Accepts single parameter 0..x
-  -S    --hsv-saturation               HSV saturation multiplier. Accepts single parameter 0..x
-  -c    --contrast                     @ContrastRgb
-  -cl   --contrast-lightness           @ContrastLightness
-  -cv   --contrast-value               @ContrastValue
-  -cs   --contrast-saturation          @ContrastHslSaturation
-  -cS   --contrast-hsv-saturation      @ContrastHsvSaturation
-  -ga   --gamma                        Adjusts gamma of all RGB channels equally. Accepts single
-                                       parameter 0.01..9.99
-  -gar  --gamma-red                    @GammaRed
-  -gag  --gamma-green                  @GammaGreen
-  -gab  --gamma-blue                   @GammaBlue
-  -gal  --gamma-lightness              @GammaLightness
-  -gav  --gamma-value                  @GammaValue
-  -gas  --gamma-saturation             @GammaHslSaturation
-  -gaS  --gamma-hsv-saturation         @GammaHsvSaturation
-  -le   --levels                       @LevelsRgb
-  -ler  --levels-red                   @LevelsRed
-  -leg  --levels-green                 @LevelsGreen
-  -leb  --levels-blue                  @LevelsBlue
-  -lel  --levels-lightness             @LevelsLightness
-  -all  --autolevels-lightness         @AutoLevelsLightness
-  -lev  --levels-value                 @LevelsValue
-  -les  --levels-saturation            @LevelsHslSaturation
-  -leS  --levels-hsv-saturation        @LevelsHsvSaturation
-  -i    --invert-rgb                   @InvertRgb
-  -il   --invert-lightness             @InvertLightness
-  -iv   --invert-value                 @InvertValue
-  -ib   --invert-brightness            Inverts perceived brightness
-  -gsb  --grayscale-brightness         Converts to gray scale based on perceived brightness
+  -h    --hue                      Hue shift. Accepts single parameter as degrees -360..360
+  -s    --saturation               HSL saturation multiplier. Accepts single parameter 0..x
+  -g    --gain                     RGB multiplier. Accepts single parameter 0..x
+  -l    --lightness                HSL lightness multiplier. Accepts single parameter 0..x
+  -v    --value                    HSV value multiplier. Accepts single parameter 0..x
+  -S    --hsv-saturation           HSV saturation multiplier. Accepts single parameter 0..x
+  -c    --contrast                 @ContrastRgb
+  -cl   --contrast-lightness       @ContrastLightness
+  -cv   --contrast-value           @ContrastValue
+  -cs   --contrast-saturation      @ContrastHslSaturation
+  -cS   --contrast-hsv-saturation  @ContrastHsvSaturation
+  -ga   --gamma                    Adjusts gamma of all RGB channels equally. Accepts single parameter
+                                   0.01..9.99
+  -gar  --gamma-red                @GammaRed
+  -gag  --gamma-green              @GammaGreen
+  -gab  --gamma-blue               @GammaBlue
+  -gal  --gamma-lightness          @GammaLightness
+  -gav  --gamma-value              @GammaValue
+  -gas  --gamma-saturation         @GammaHslSaturation
+  -gaS  --gamma-hsv-saturation     @GammaHsvSaturation
+  -le   --levels                   @LevelsRgb
+  -ler  --levels-red               @LevelsRed
+  -leg  --levels-green             @LevelsGreen
+  -leb  --levels-blue              @LevelsBlue
+  -al   --auto-levels              @AutoLevelsRgb
+  -i    --invert-rgb               @InvertRgb
+  -il   --invert-lightness         @InvertLightness
+  -iv   --invert-value             @InvertValue
+  -ib   --invert-brightness        Inverts perceived brightness
+  -gsb  --grayscale-brightness     Converts to gray scale based on perceived brightness
+        --clamp                    @Clamp
 
 Experimental Filters:
-  -ibc  --invert-brightness-corrected  Inverts perceived brightness - experimental
-  -ilv  --invert-lightness-value       Inverts colors using both lightness and value, by mixing the
-                                       result - experimental
-  -b2l  --brightness-to-lightness      @BrightnessToLightness
-  -b2v  --brightness-to-value          @BrightnessToValue
-        --tolight                      @ToLight
+  -lel  --levels-lightness         @LevelsLightness
+  -lev  --levels-value             @LevelsValue
+  -les  --levels-saturation        @LevelsHslSaturation
+  -leS  --levels-hsv-saturation    @LevelsHsvSaturation
+  -ibc  --invert-brightness-corr   Inverts perceived brightness
+  -ilv  --invert-lightness-value   Inverts colors using both lightness and value, by mixing the result
+  -b2l  --brightness-to-lightness  @BrightnessToLightness
+  -b2v  --brightness-to-value      @BrightnessToValue
+        --tolight                  @ToLight
 
+Usage:
+  colschman [-filter] <sourcefile> [<targerfile>]
+  colschman [-filter][=param1][,param2][,param3] <sourcefile> [<targerfile>]
+  colschman [-filter1] [-filter2] <sourcefile> [<targerfile>]
+  colschman [-filter][(rangeattr1:min-max,rangeattr2=min/slope-max/slope)[=param] <sourcefile> [<targerfile>]
+  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targerfile>]
 
-Usage example:
+Example:
   colschman -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
     
-Using filter with color range:
+Example using filter with color range:
   colschman "--gamma(sat: 0.5-1, l: 0-0.5) = 1.5" <sourcefile> <targetfile>
     
-Using filter with color range defined with four points: (attribute: min1, min2, max1, max2)
+Example using filter with color range defined with four points: (attribute: min1, min2, max1, max2)
   colschman "--gamma(sat: 0.4, 0.5, 1, 1, lightness:0, 0, 0.5, 0.7) = 1.5" <sourcefile> <targetfile>
     
-Using filter with color range with slope parameters: (attribute: min/slope - max/slope)
+Example using filter with color range with slope parameters: (attribute: min/slope - max/slope)
   colschman "--gamma(sat: 0.5/0.1 - 0.9/0.1, l: 0.1/0.1- 0.5/0.1) = 1.5" <sourcefile> <targetfile>
 ```
 
 #### Issues
 
-Hunting for them...
+Adding lightness or value gain on dark colors causes saturated colors
 
 
 ### For developers
@@ -92,6 +98,11 @@ Func<IEnumerable<Color>, object[], IEnumerable<Color>>
 + The whole new Color class replaces all other color representations. Color class can hold all RGB, HSL and HSL color 
 attributes, and it makes conversion only on demand and automatically without user knowing nothing of it
 + HexRgb class provides methods to conveting hex strings to color. Rgb8Bit is removed along with other old color formats.
+
+##### Version 0.3.2
+
++ HDR color processing internally. Colors are only clamped to legal values at the end of filter chain
++ A bunch of bug fixes
 
 
 #### ToDo
@@ -124,17 +135,22 @@ namespace ColorSchemeInverter
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
             
             var filters = new FilterSet()
+                // dampen "neon" colors before inversion so don't get too dark
                 .Add(FilterBundle.GainLightness, 0.6, 
-                    new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0)) // dampen "neon" colors before inversion so don't get too dark
-                .Add(FilterBundle.InvertPerceivedBrightness)  // invert image
-                .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1) // adjust levels
+                    new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0)) 
+                 // invert image
+                .Add(FilterBundle.InvertPerceivedBrightness)
+                 // adjust levels
+                .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1)
+                 // yellow-neon green boost
                 .Add(FilterBundle.GammaRgb, 1.7, 
-                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2))
+                // yellow-neon green boost
                 .Add(FilterBundle.GainHslSaturation, 1.7, 
-                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
+                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2))
+                // add saturation for weak colors
                 .Add(FilterBundle.GammaHslSaturation, 1.4, 
-                    new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7)) // add saturation for weak colors
-                ;
+                    new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7));
             
             ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
             p.ProcessFile(sourceFile, targetFile, filters);
