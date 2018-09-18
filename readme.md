@@ -52,11 +52,11 @@ Experimental Filters:
         --tolight                  @ToLight
 
 Usage:
-  colschman [-filter] <sourcefile> [<targerfile>]
-  colschman [-filter][=param1][,param2][,param3] <sourcefile> [<targerfile>]
-  colschman [-filter1] [-filter2] <sourcefile> [<targerfile>]
-  colschman [-filter][(rangeattr1:min-max,rangeattr2=min/slope-max/slope)[=param] <sourcefile> [<targerfile>]
-  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targerfile>]
+  colschman [-filter] <sourcefile> [<targetfile>]
+  colschman [-filter][=param1][,param2][,param3] <sourcefile> [<targetfile>]
+  colschman [-filter1] [-filter2] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr1:min-max,rangeattr2=min/slope-max/slope)[=param] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]
 
 Example:
   colschman -il -gs=1.1 --contrast=0.2,0.6 <sourcefile> <targetfile>
