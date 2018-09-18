@@ -48,6 +48,7 @@
     <Compile Include="ColorRangeTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="FilterUtilsTests.cs" />
+    <Compile Include="HdrColorTests.cs" />
     <Compile Include="MiscTests.cs" />
     <Compile Include="ParameterRangeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

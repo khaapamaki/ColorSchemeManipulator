@@ -203,7 +203,7 @@ namespace ColorSchemeManipulator.Filters
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                     FilterUtils.ParseLevelsParameters(filterParams);
 
-                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+                filtered.Value = ColorMath.Levels(color.Value, inBlack, inWhite, gamma, outBlack, outWhite);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }

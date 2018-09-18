@@ -258,78 +258,78 @@ namespace ColorSchemeManipulator.Colors
         public void SetRgb(double r, double g, double b, double a = 1.0, bool resetFlags = true)
         {
             _calcLock++;
-            
+
             _red = r;
             _green = g;
             _blue = b;
             _alpha = a;
             if (resetFlags) ResetFlags(ColorFormat.Rgb);
-            
+
             _calcLock--;
         }
 
         public void SetHsl((double, double, double) hsl, double a = 1.0, bool resetFlags = true)
         {
             _calcLock++;
-            
+
             _hue = hsl.Item1.NormalizeLoopingValue(360);
             _saturation = hsl.Item2;
             _lightness = hsl.Item3;
             _alpha = a;
             if (resetFlags) ResetFlags(ColorFormat.Hsl);
-            
+
             _calcLock--;
         }
 
         public void SetHsv((double, double, double) hsv, double a = 1.0, bool resetFlags = true)
         {
             _calcLock++;
-            
+
             _hueHsv = hsv.Item1.NormalizeLoopingValue(360);
             _saturationHsv = hsv.Item2;
             _value = hsv.Item3;
             _alpha = a;
             if (resetFlags) ResetFlags(ColorFormat.Hsv);
-            
+
             _calcLock--;
         }
 
         public void SetRgb((double, double, double) rgb, double a = 1.0, bool resetFlags = true)
         {
             _calcLock++;
-            
+
             _red = rgb.Item1;
             _green = rgb.Item2;
             _blue = rgb.Item3;
             _alpha = a;
             if (resetFlags) ResetFlags(ColorFormat.Rgb);
-            
+
             _calcLock--;
         }
 
         public void SetHsl(double h, double s, double l, double a = 1.0, bool resetFlags = true)
         {
             _calcLock++;
-            
+
             _hue = h.NormalizeLoopingValue(360);
             _saturation = s;
             _lightness = l;
             _alpha = a;
             if (resetFlags) ResetFlags(ColorFormat.Hsl);
-            
+
             _calcLock--;
         }
 
         public void SetHsv(double h, double s, double v, double a = 1.0, bool resetFlags = true)
         {
             _calcLock++;
-            
+
             _hueHsv = h.NormalizeLoopingValue(360);
             _saturationHsv = s;
             _value = v;
             _alpha = a;
             if (resetFlags) ResetFlags(ColorFormat.Hsv);
-            
+
             _calcLock--;
         }
 
@@ -338,34 +338,41 @@ namespace ColorSchemeManipulator.Colors
         public void ClampExceedingColors()
         {
             CalcHsl();
-            
-            _calcLock++;
-            
-            if (_saturation > 1) {
-                int stophereanddebug = 1;
+            if (_saturation > 1 || _saturation < 0 || _lightness < 0 || _lightness > 1) {
+                _calcLock++;
+
+                if (_saturation > 1) {
+                    int stophereanddebug = 1;
+                }
+
+                _hue = _hue.NormalizeLoopingValue(360);
+                _saturation = _saturation.Clamp(0, 1);
+                _lightness = _lightness.Clamp(0, 1);
+
+                ResetFlags(ColorFormat.Hsl);
+                _calcLock--;
             }
 
-            _hue = _hue.NormalizeLoopingValue(360);
-            _saturation = _saturation.Clamp(0, 1);
-            _lightness = _lightness.Clamp(0, 1);
-            
-            ResetFlags(ColorFormat.Hsl);
-            _calcLock--;
-            
             CalcHsv();
-            CalcHsl();
+
+            if (_saturationHsv > 1 || _value > 1 || _saturationHsv < 0 || _value < 0) {
+                _calcLock++;
+                _saturationHsv = _saturationHsv.Clamp(0, 1);
+                _value = _value.Clamp(0, 1);
+                ResetFlags(ColorFormat.Hsv);
+                _calcLock--;
+            }
+
             CalcRgb();
-            
-            if (_saturationHsv > 1 || _value > 1) {
-                throw new Exception("Clamping failed");
+            if (_red < 0 || _red > 1 || _green < 0 || _green > 1 || _blue < 0 || _blue > 1) {
+                // todo rgb clamping could be smoother
+                _calcLock++;
+                _red = _red.Clamp(0, 1);
+                _green = _green.Clamp(0, 1);
+                _blue = _blue.Clamp(0, 1);
+                ResetFlags(ColorFormat.Rgb);
+                _calcLock--;
             }
-
-            if (_saturation > 1 || _lightness > 1) {
-                throw new Exception("Clamping failed");
-            }
-
-            if (_red < 0 || _red > 1 || _green < 0 || _green > 1 || _blue < 0 || _blue > 1)
-                throw new Exception("Clamping failed");
         }
 
         public static Color Interpolate(Color color1, Color color2, double factor)
@@ -480,7 +487,7 @@ namespace ColorSchemeManipulator.Colors
         {
             if (_calcLock > 0)
                 return _hasRgb;
-            
+
             if (!HasValue())
                 throw new Exception("Color has no value");
             if (!_hasRgb) {
@@ -498,7 +505,7 @@ namespace ColorSchemeManipulator.Colors
         {
             if (_calcLock > 0)
                 return _hasHsl;
-            
+
             if (!HasValue())
                 throw new Exception("Color has no value");
             if (!_hasHsl) {

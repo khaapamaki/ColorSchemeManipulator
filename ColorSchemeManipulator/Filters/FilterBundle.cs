@@ -82,6 +82,7 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness");
 
+            CliArgs.Register(new List<string> {"--clamp"}, Clamp, 0);
             GetInstance()._isRegistered = true;
         }
 
@@ -619,9 +620,10 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-       
-        
-        public static IEnumerable<Color> AutoLevelsRgbByBrightness(IEnumerable<Color> colors, params object[] filterParams)
+
+
+        public static IEnumerable<Color> AutoLevelsRgbByBrightness(IEnumerable<Color> colors,
+            params object[] filterParams)
         {
             ColorRange range;
             (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
@@ -641,9 +643,9 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         #endregion
-  
+
         #region "Misc"
 
         public static IEnumerable<Color> BrightnessToGrayScale(IEnumerable<Color> colors,
@@ -662,6 +664,14 @@ namespace ColorSchemeManipulator.Filters
                 filtered.Blue = br;
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        public static IEnumerable<Color> Clamp(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            foreach (var color in colors) {
+                color.ClampExceedingColors();
+                yield return color;
             }
         }
 

@@ -15,7 +15,7 @@ namespace ColorSchemeManipulator.Filters
 
         public FilterSet() { }
 
-        
+
         public FilterSet Add(ColorFilter filter)
         {
             _filters.Add(filter);
@@ -28,22 +28,24 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
 
-        public FilterSet Add(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, params object[] args)
+        public FilterSet Add(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate,
+            params object[] args)
         {
             _filters.Add(new ColorFilter(filterDelegate, args));
             return this;
         }
-        
+
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             foreach (var filterDelegate in _filters) {
                 colors = filterDelegate.ApplyTo(colors);
             }
-            
-            foreach (var color in colors) {
-                color.ClampExceedingColors();
-            }
-            
+
+            // Final clamping after last filter in chain
+            Func<IEnumerable<Color>, object[], IEnumerable<Color>> clamp = FilterBundle.Clamp;
+            colors = clamp.Invoke(colors, null);
+            //colors = clamp(colors, null);
+
             return colors;
         }
 
