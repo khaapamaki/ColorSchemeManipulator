@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Common
 {
@@ -33,5 +35,13 @@ namespace ColorSchemeManipulator.Common
         {
             return val.CompareTo(max) < 0 ? max : val;
         }
+        
+        public static void ForEach<T>(this IEnumerable<T> sequence, Action<T> action)
+        {
+            // argument null checking omitted
+            foreach (var item in sequence)
+                action(item);
+        }
+        
     }
 }

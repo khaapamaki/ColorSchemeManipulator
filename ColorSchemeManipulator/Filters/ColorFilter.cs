@@ -35,5 +35,17 @@ namespace ColorSchemeManipulator.Filters
 
             return FilterDelegate.Method.Name + " " + sb;
         }
+        
+        private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping)
+        {
+            colors = FilterDelegate(colors, Parameters);
+
+            // Final clamping after last filter in chain
+            foreach (var color in colors) {
+                if (outputClamping)
+                    color.ClampExceedingColors();
+                yield return color;
+            }
+        }
     }
 }

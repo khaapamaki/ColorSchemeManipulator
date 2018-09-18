@@ -97,6 +97,11 @@ namespace ColorSchemeManipulator.Common
         {
             return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
         }
+        
+        public static double AverageRgb(double red, double green, double blue)
+        {
+            return red / 3  + green  / 3+  blue / 3;
+        }
 
         public static double LinearInterpolation(double x, double y0, double y1)
         {
