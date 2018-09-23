@@ -162,9 +162,5 @@ namespace ColorSchemeManipulator.Filters
             return some ? (lo, hi) : (0, 1);
         }
 
-        public static double GetHighestLightness(IEnumerable<Color> colors)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

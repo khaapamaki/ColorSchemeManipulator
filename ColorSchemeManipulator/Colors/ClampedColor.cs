@@ -1,5 +1,8 @@
 namespace ColorSchemeManipulator.Colors
 {
+    /// <summary>
+    /// This is just an example of Color subclass with auto clamping turned on
+    /// </summary>
     public class ClampedColor : Color
     {
    
