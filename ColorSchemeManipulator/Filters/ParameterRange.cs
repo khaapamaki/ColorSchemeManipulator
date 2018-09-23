@@ -16,7 +16,7 @@ namespace ColorSchemeManipulator.Filters
 
         public double LoopMax
         {
-            get { return _loopMax; }
+            get => _loopMax;
             set
             {
                 _loopMax = value;

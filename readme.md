@@ -10,48 +10,132 @@ Also has option to filter png-files for quick testing.
 #### Currently available filters and corresponding CLI options
 ```
 Available Filters:
-  -h    --hue                      Hue shift. Accepts single parameter as degrees -360..360
-  -s    --saturation               HSL saturation multiplier. Accepts single parameter 0..x
-  -g    --gain                     RGB multiplier. Accepts single parameter 0..x
-  -l    --lightness                HSL lightness multiplier. Accepts single parameter 0..x
-  -v    --value                    HSV value multiplier. Accepts single parameter 0..x
-  -S    --hsv-saturation           HSV saturation multiplier. Accepts single parameter 0..x
-  -c    --contrast                 @ContrastRgb
-  -cl   --contrast-lightness       @ContrastLightness
-  -cv   --contrast-value           @ContrastValue
-  -cs   --contrast-saturation      @ContrastHslSaturation
-  -cS   --contrast-hsv-saturation  @ContrastHsvSaturation
-  -ga   --gamma                    Adjusts gamma of all RGB channels equally. Accepts single parameter
-                                   0.01..9.99
-  -gar  --gamma-red                @GammaRed
-  -gag  --gamma-green              @GammaGreen
-  -gab  --gamma-blue               @GammaBlue
-  -gal  --gamma-lightness          @GammaLightness
-  -gav  --gamma-value              @GammaValue
-  -gas  --gamma-saturation         @GammaHslSaturation
-  -gaS  --gamma-hsv-saturation     @GammaHsvSaturation
-  -le   --levels                   @LevelsRgb
-  -ler  --levels-red               @LevelsRed
-  -leg  --levels-green             @LevelsGreen
-  -leb  --levels-blue              @LevelsBlue
-  -al   --auto-levels              @AutoLevelsRgb
-  -i    --invert-rgb               @InvertRgb
-  -il   --invert-lightness         @InvertLightness
-  -iv   --invert-value             @InvertValue
-  -ib   --invert-brightness        Inverts perceived brightness
-  -gsb  --grayscale-brightness     Converts to gray scale based on perceived brightness
-        --clamp                    @Clamp
+  -h    --hue                      Hue shift. Takes single parameter as degrees (-360..360)
+
+  -s    --saturation               HSL saturation multiplier. Takes single parameter (0..x)
+
+  -g    --gain                     RGB multiplier. Takes single parameter (0..x)
+
+  -l    --lightness                HSL lightness multiplier. Takes single parameter (0..x)
+
+  -v    --value                    HSV value multiplier. Takes single parameter (0..x)
+
+  -S    --hsv-saturation           HSV saturation multiplier. Takes single parameter (0..x)
+
+  -c    --contrast                 Adjusts contrast. Takes one mandatory and one optional parameter,
+                                   curve strength (-1..1), inflection point (0..1 default 0.5)
+
+  -cs   --contrast-saturation      Adjusts contrast of saturation. Takes one mandatory and one optional
+                                   parameter, curve strength (-1..1), inflection point (0..1 default
+                                   0.5)
+
+  -ga   --gamma                    Adjusts gamma of all RGB channels equally. Takes single parameter
+                                   (0.01..9.99)
+
+  -gar  --gamma-red                Adjusts gamma of red channel. Takes single parameter (0.01..9.99)
+
+  -gag  --gamma-green              Adjusts gamma of green channel. Takes single parameter (0.01..9.99)
+
+  -gab  --gamma-blue               Adjusts gamma of blue channel. Takes single parameter (0.01..9.99)
+
+  -gal  --gamma-lightness          Adjusts gamma of HSL lightness. Takes single parameter (0.01..9.99)
+
+  -gav  --gamma-value              Adjusts gamma of HSV value. Takes single parameter (0.01..9.99)
+
+  -gas  --gamma-saturation         Adjusts gamma of saturation. Takes single parameter (0.01..9.99)
+
+  -le   --levels                   Adjusts levels of all RGB channels. Takes five parameters: input
+                                   black (0..1), input white (0..1), gamma (0.01..9.99), output black
+                                   (0..1), output white (0..1)
+
+  -ler  --levels-red               Adjusts levels of red channel. Takes five parameters: input black
+                                   (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1),
+                                   output white (0..1)
+
+  -leg  --levels-green             Adjusts levels of red channel. Takes five parameters: input black
+                                   (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1),
+                                   output white (0..1)
+
+  -leb  --levels-blue              Adjusts levels of red channel. Takes five parameters: input black
+                                   (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1),
+                                   output white (0..1)
+
+  -al   --auto-levels              Adjusts levels of RGB channels by normalizing levels so that darkest
+                                   color will be black and lightest color max bright. Takes three
+                                   parameters: output black (0..1), output white (0..1), gamma
+                                   (0.01..9.99)
+
+  -les  --levels-saturation        @LevelsHslSaturation
+
+  -i    --invert-rgb               Inverts RGB channels. Takes no parameter.
+
+  -il   --invert-lightness         Inverts HSL lightness. Takes no parameter.
+
+  -iv   --invert-value             Inverts HSV value. Takes no parameter.
+
+  -ib   --invert-brightness        Inverts perceived brightness. Takes no parameter.
+
+  -gsb  --grayscale-brightness     Converts to gray scale based on perceived brightness. Takes no
+                                   parameter.
+
+        --clamp                    Clamps color values to normal range of 0..1. Tries to preserve hue.
+                                   Takes no parameter. This is automatically done as last filter.
+
 
 Experimental Filters:
-  -lel  --levels-lightness         @LevelsLightness
-  -lev  --levels-value             @LevelsValue
-  -les  --levels-saturation        @LevelsHslSaturation
-  -leS  --levels-hsv-saturation    @LevelsHsvSaturation
-  -ibc  --invert-brightness-corr   Inverts perceived brightness
+  -lel  --levels-lightness         Adjusts levels of HSL lightness. Takes five parameters: input black
+                                   (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1),
+                                   output white (0..1)
+
+  -lev  --levels-value             Adjusts levels of HSV value. Takes five parameters: input black
+                                   (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1),
+                                   output white (0..1)
+
+  -ibc  --invert-brightness-corr   Inverts perceived brightness with correction parameter (0..1)
+
   -ilv  --invert-lightness-value   Inverts colors using both lightness and value, by mixing the result
+                                   by parameter (0..1)
+
   -b2l  --brightness-to-lightness  @BrightnessToLightness
+
   -b2v  --brightness-to-value      @BrightnessToValue
-        --tolight                  @ToLight
+
+  -cl   --contrast-lightness       Adjusts contrast of HSL lightness. Takes one mandatory and one
+                                   optional parameter, curve strength (-1..1), inflection point (0..1
+                                   default 0.5) Strength adjustments below zero will cause erroneuos
+                                   coloring of dark tones
+
+  -cv   --contrast-value           Adjusts contrast of HSV value. Takes one mandatory and one optional
+                                   parameter, curve strength (-1..1), inflection point (0..1 default
+                                   0.5) Strength adjustments below zero will cause erroneuos coloring
+                                   of dark tones
+
+  -cS   --contrast-hsv-saturation  Adjusts contrast of HSV saturation. Takes one mandatory and one
+                                   optional parameter, curve strength (-1..1), inflection point (0..1
+                                   default 0.5)
+
+  -gaS  --gamma-hsv-saturation     Adjusts gamma of HSV saturation. Takes a single parameter
+                                   (0.01..9.99)
+
+        --tolight                  A preset with multiple filters to convert dark scheme to light
+
+Usage:
+  colschman [-filter] <sourcefile> [<targetfile>]
+  colschman [-filter][=param1][,param2][,param3] <sourcefile> [<targetfile>]
+  colschman [-filter1] [--filter2] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr1:min-max,rangeattr2:min-max)[=param] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr:min/slope-max/slope)[=param] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]
+
+Example:
+  colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls
+
+Range attributes:
+  h, hue        Hue           |  r, red        Red
+  s, sat        Saturation    |  g, green      Green
+  l, light      Lightness     |  b, blue       Blue
+  v, value      Value         |  bri, bright   Brightness
+
 
 Usage:
   colschman [-filter] <sourcefile> [<targetfile>]

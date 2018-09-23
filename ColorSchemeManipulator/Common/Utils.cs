@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using ColorSchemeManipulator.CLI;
 
 namespace ColorSchemeManipulator.Common
@@ -10,18 +11,20 @@ namespace ColorSchemeManipulator.Common
         {
             Console.WriteLine("Available Filters:");
             if (filterCount == -1 || expermFilterCount == -1) {
-                Console.WriteLine(CliArgs.ToString());
+                Console.WriteLine(CliArgs.ToString("\n\n"));
                 return;
             }
 
             for (int i = 0; i < filterCount; i++) {
                 Console.WriteLine(CliArgs.GetItem(i).ToString());
+                Console.WriteLine();
             }
 
             if (expermFilterCount > 0) {
                 Console.WriteLine("\nExperimental Filters:");
                 for (int i = filterCount; i < filterCount + expermFilterCount; i++) {
                     Console.WriteLine(CliArgs.GetItem(i).ToString());
+                    Console.WriteLine();
                 }
             }
 

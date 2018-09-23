@@ -72,13 +72,13 @@ namespace ColorSchemeManipulator.CLI
             string rangeString;
             (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
             ColorRange range = CliUtils.ParseRange(rangeString);
-            foreach (var BatchCliArg in GetInstance().Items) {
-                if (BatchCliArg.OptionArgs.Contains(option)) {
+            foreach (var batchCliArg in GetInstance().Items) {
+                if (batchCliArg.OptionArgs.Contains(option)) {
                     List<object> filterParams = CliUtils.ExtractParams(paramString);
-                    if (filterParams.Count >= BatchCliArg.MinParams) {
+                    if (filterParams.Count >= batchCliArg.MinParams) {
                         if (range != null)
                             filterParams.Add(range);
-                        return (BatchCliArg.FilterDelegate, filterParams);
+                        return (batchCliArg.FilterDelegate, filterParams);
                     }
                 }
             }

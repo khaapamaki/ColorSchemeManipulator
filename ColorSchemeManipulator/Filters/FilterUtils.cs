@@ -10,8 +10,8 @@ namespace ColorSchemeManipulator.Filters
     {
         public static double? TryParseDouble(object obj)
         {
-            if (obj is double)
-                return (double) obj;
+            if (obj is double d)
+                return d;
 
             if (obj is int)
                 return Convert.ToDouble(obj);
