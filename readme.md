@@ -10,6 +10,7 @@ Also has option to filter png-files for quick testing.
 #### Currently available filters and corresponding CLI options
 ```
 Available Filters:
+
   -h    --hue                      Hue shift. Takes single parameter as degrees (-360..360)
 
   -s    --saturation               HSL saturation multiplier. Takes single parameter (0..x)
@@ -81,8 +82,8 @@ Available Filters:
         --clamp                    Clamps color values to normal range of 0..1. Tries to preserve hue.
                                    Takes no parameter. This is automatically done as last filter.
 
-
 Experimental Filters:
+
   -lel  --levels-lightness         Adjusts levels of HSL lightness. Takes five parameters: input black
                                    (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1),
                                    output white (0..1)
@@ -134,26 +135,7 @@ Range attributes:
   h, hue        Hue           |  r, red        Red
   s, sat        Saturation    |  g, green      Green
   l, light      Lightness     |  b, blue       Blue
-  v, value      Value         |  bri, bright   Brightness
-
-
-Usage:
-  colschman [-filter] <sourcefile> [<targetfile>]
-  colschman [-filter][=param1][,param2][,param3] <sourcefile> [<targetfile>]
-  colschman [-filter1] [-filter2] <sourcefile> [<targetfile>]
-  colschman [-filter][(rangeattr1:min-max,rangeattr2=min/slope-max/slope)[=param] <sourcefile> [<targetfile>]
-  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]
-
-Example:
-  colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls
-
-Range attributes:
-  h, hue        Hue           |  r, red        Red
-  s, sat        Saturation    |  g, green      Green
-  l, light      Lightness     |  b, blue       Blue
-  v, value      Value         |  bri, bright   Brightness
-  
-  
+  v, value      Value         |  bri, bright   Brightness  
 ```
 
 #### Issues
