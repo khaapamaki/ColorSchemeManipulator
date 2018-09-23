@@ -36,7 +36,6 @@ namespace ColorSchemeManipulator.CLI
 
         public new string ToString()
         {
-            // todo formatted output that can be used in cmd line help
             var opts = new StringBuilder();
             OptionArgs.ForEach(c => opts.Append(c + "  "));
             string opt1 = "", opt2 = "";

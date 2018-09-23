@@ -5,11 +5,8 @@ namespace ColorSchemeManipulator.Filters
 {
     public class ColorRange
     {
-        // Todo constructors
-        // Todo CLI system for ranges
-        // Todo implement slopes value
-
         public ColorRange() { }
+        
         public ParameterRange SaturationRange { get; set; } = null;
         public ParameterRange LightnessRange { get; set; } = null;
         public ParameterRange ValueRange { get; set; } = null;
