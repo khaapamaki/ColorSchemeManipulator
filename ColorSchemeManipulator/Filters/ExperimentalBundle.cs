@@ -29,61 +29,50 @@ namespace ColorSchemeManipulator.Filters
         {
             if (GetInstance()._isRegistered)
                 return;
-            CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5,
-                paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
-                desc:
-                "Adjusts levels of HSL lightness. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
-            
-            CliArgs.Register(new List<string> {"-lev", "--levels-value"}, LevelsValue, 5,
-                paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
-                desc:
-                "Adjusts levels of HSV value. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
 
             // CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5,
             //     desc:
             //     "Adjusts levels of HSV saturation. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
-            
-            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corr"}, InvertPerceivedBrightnessWithCorrection, 0, 1,
+
+            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corr"},
+                InvertPerceivedBrightnessWithCorrection, 0, 1,
                 paramList: "[=<corr>]",
-                desc: "Inverts perceived brightness with correction parameter (0..1)");
-            
+                desc: "Inverts perceived brightness with correction parameter.",
+                paramDesc: "<corr> is value between 0..1, 0 is safest conversion, 1 is closest to truth but also causes clipping of some colors.");
+
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
                 paramList: "=<mix>",
-                desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)");
-            
-            CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0
-            );
-            
-            CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0
-            );
-            
-            CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2,
-                paramList: "=<c>[,<ip>]",
-                desc:
-                "Adjusts contrast of HSL lightness. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)"
-                + " Strength adjustments below zero will cause erroneuos coloring of dark tones");
-            
-            CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1, 2,
-            paramList: "=<c>[,<ip>]",
-                desc:
-                "Adjusts contrast of HSV value. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)"
-                + " Strength adjustments below zero will cause erroneuos coloring of dark tones");
+                desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)",
+                paramDesc:"<mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is full value inversion.");
 
-            CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation"}, ContrastHsvSaturation, 1, 2,
-                paramList: "=<c>[,<ip>]",
+            CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0,
+                desc: "Translates perceived brightness to lightness."
+            );
+
+            CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0,
+                desc: "Translates perceived brightness to value."
+            );
+
+            CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-sat"}, ContrastHsvSaturation, 1, 2,
+                paramList: "=<contrast>[,<ip>]",
                 desc:
-                "Adjusts contrast of HSV saturation. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)");
-            
-            CliArgs.Register(new List<string> {"-gaS", "--gamma-hsv-saturation"}, GammaHsvSaturation, 1,
-                paramList: "=<g>",
-                desc: "Adjusts gamma of HSV saturation. Takes a single parameter (0.01..9.99)");
-            
-            CliArgs.Register(new List<string> {"--tolight"}, ToLight, 0, 0,
-                desc: "A preset with multiple filters to convert dark scheme to light");
-            
+                "Applies contrast curve to HSV saturation.",
+                paramDesc: "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
+
+
+            CliArgs.Register(new List<string> {"-gaS", "--gamma-hsv-sat"}, GammaHsvSaturation, 1,
+                paramList: "=<gamma>",
+                desc: "Adjusts gamma of HSV saturation.",
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
+
+
             CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1,
                 paramList: "=<value>",
-                desc: "HSV saturation multiplier. Takes single parameter (0..x)");
+                desc: "HSV saturation gain.",
+                paramDesc: "<value> is multiplier in range of 0..10 (1.0)");
+
+            CliArgs.Register(new List<string> {"--tolight"}, ToLight, 0, 0,
+                desc: "A preset with multiple filters to convert dark scheme to light");
             
             // CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
 
@@ -184,7 +173,7 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> BrightnessToValue(IEnumerable<Color> colors, params object[] filterParams)
         {
             ColorRange range;
@@ -231,40 +220,6 @@ namespace ColorSchemeManipulator.Filters
             return filterSet.ApplyTo(colors);
         }
 
-        public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, params object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
-
-                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
-                    FilterUtils.ParseLevelsParameters(filterParams);
-
-                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
-
-                yield return color.InterpolateWith(filtered, rangeFactor);
-            }
-        }
-
-        public static IEnumerable<Color> LevelsValue(IEnumerable<Color> colors, params object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
-
-                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
-                    FilterUtils.ParseLevelsParameters(filterParams);
-
-                filtered.Value = ColorMath.Levels(color.Value, inBlack, inWhite, gamma, outBlack, outWhite);
-
-                yield return color.InterpolateWith(filtered, rangeFactor);
-            }
-        }
-
         public static IEnumerable<Color> LevelsHsvSaturation(IEnumerable<Color> colors, params object[] filterParams)
         {
             ColorRange range;
@@ -306,49 +261,6 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> ContrastLightness(IEnumerable<Color> colors, params object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
-
-                if (filterParams.Any()) {
-                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    double midpoint = 0.5;
-                    if (filterParams.Length >= 2) {
-                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                    }
-
-                    filtered.Lightness = ColorMath.SSpline(color.Lightness, strength, midpoint);
-                }
-
-                yield return color.InterpolateWith(filtered, rangeFactor);
-            }
-        }
-
-        public static IEnumerable<Color> ContrastValue(IEnumerable<Color> colors, params object[] filterParams)
-        {
-            ColorRange range;
-            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
-
-                if (filterParams.Any()) {
-                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    double midpoint = 0.5;
-                    if (filterParams.Length >= 2) {
-                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                    }
-
-                    filtered.Value = ColorMath.SSpline(color.Value, strength, midpoint);
-                }
-
-                yield return color.InterpolateWith(filtered, rangeFactor);
-            }
-        }
 
         public static IEnumerable<Color> GammaHsvSaturation(IEnumerable<Color> colors, params object[] filterParams)
         {

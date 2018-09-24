@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
@@ -42,40 +43,29 @@ namespace ColorSchemeManipulator.CLI
 
         public new string ToString()
         {
-            // var opts = new StringBuilder();
-            // OptionArgs.ForEach(c => opts.Append(c + "  "));
-            // string opt1 = "", opt2 = "";
-            // if (OptionArgs.Count == 2) {
-            //     opt1 = OptionArgs[0];
-            //     opt2 = OptionArgs[1];
-            // } else if (OptionArgs.Count == 1) {
-            //     if (OptionArgs[0].StartsWith("--")) {
-            //         opt2 = OptionArgs[0];
-            //     } else {
-            //         opt1 = OptionArgs[0];
-            //     }
-            // }
 
-            string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
+            string description = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
             
             List<string> optLines = new List<string>(4);
             for (var i = 0; i < OptionArgs.Count; i++) {
                 var option = i == 0 ? OptionArgs[i] + ParamList : OptionArgs[i] + (ParamList != "" ? "=..." : "") ;
-                List<string> argParts = Utils.ParamsWrap(option, 32);
+                List<string> argParts = Utils.ParamsWrap(option, 28);
                 for (var index = 0; index < argParts.Count; index++) {
                     var argPart = argParts[index];
                     optLines.Add(index > 0 ? "    " + argPart : argPart);
                 }
             }
-
+            
+            List<string> descLines = new List<string>();
+            Utils.WordWrap(description, 65).ForEach(l => descLines.Add(l));
+            Utils.WordWrap(ParamDesc, 65).ForEach(l => descLines.Add(l));
+            
             var sb = new StringBuilder();
-            List<string> lines = Utils.WordWrap(desc, 65);
-
-            int lineMaxCount = lines.Count.Max(optLines.Count);
+            int lineMaxCount = descLines.Count.Max(optLines.Count);
             for (var index = 0; index < lineMaxCount; index++) {
-                var line = index < lines.Count ? lines[index].Trim() : "";
-                string opt = index < optLines.Count ? optLines[index] : "";
-                sb.Append($"  {opt,-33} {line}");
+                var opt = index < optLines.Count ? optLines[index].TrimEnd() : "";
+                var desc = index < descLines.Count ? descLines[index].Trim() : "";
+                sb.Append($"  {opt,-31} {desc}");
                 if (index < lineMaxCount-1)
                     sb.AppendLine();
             }

@@ -38,96 +38,111 @@ namespace ColorSchemeManipulator.Filters
                 return;
 
             CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1,
-                paramList: "=<value>",
+                paramList: "=<offset>",
                 desc: "Hue shift",
-                paramDesc:"<value> is hue offset -360..360 (0)");
+                paramDesc:"<offset> is hue offset in range of -360..360 (0)");
 
             CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1,
-                paramList: "=<value>",
+                paramList: "=<gain>",
                 desc: "Saturation gain.",
-                paramDesc: "<value> is multiplier 0..4 (1.0)");
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
 
             CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1,
-                paramList: "=<value>",
+                paramList: "=<gain>",
                 desc: "RGB gain.", 
-                paramDesc: "<value> is multiplier 0..4 (1.0)");
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
 
             CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1,
-                paramList: "=<value>",
+                paramList: "=<gain>",
                 desc: "Lightness gain.",
-                paramDesc: "<value> is multiplier 0..4 (1.0)");
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
 
             CliArgs.Register(new List<string> {"-v", "--value"}, GainValue, 1,
-                paramList: "=<value>",
+                paramList: "=<gain>",
                 desc: "Value gain.", 
-                paramDesc: "<value> is multiplier 0..4 (1.0)");
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
 
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2,
-                paramList: "=<value>[,<ip>]",
+                paramList: "=<contrast>[,<ip>]",
                 desc: "Contrast.",
-                paramDesc: "<value> is curvature strength -1..1 (0.0), <ip> is inflection point 0..1 (0.5)");
+                paramDesc: "<contrast> is curvature strength in range of -1..1 (0.0), <ip> is inflection point in range of 0..1 (0.5)");
 
+            CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2,
+                paramList: "=<contrast>[,<ip>]",
+                desc:
+                "Applies contrast curve to lightness.",
+                paramDesc: "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
+
+
+            CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1, 2,
+                paramList: "=<contrast>[,<ip>]",
+                desc:
+                "Applies contrast curve to value.",
+                paramDesc: "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
+            
             CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1, 2,
-                paramList: "=<value>[,<ip>]",
+                paramList: "=<contrast>[,<ip>]",
                 desc:
                 "Applies contrast curve to saturation.",
-                paramDesc: "<value> is curvature strength -1..1 (0), <ip> is inflection point 0..1 (0.5)");
+                paramDesc: "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
 
             CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1, 1,
-                paramList: "=<value>",
+                paramList: "=<gamma>",
                 desc: "Gamma correction for all RGB channels equally.",
-                paramDesc: "<value> is gamma 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1,
-                paramList: "=<value>",
+                paramList: "=<gamma>",
                 desc: "Adjusts gamma of red channel.", 
-                paramDesc: "<value> is gamma 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1,
-                paramList: "=<value>",
+                paramList: "=<gamma>",
                 desc: "Adjusts gamma of green channel.", 
-                paramDesc: "<value> is gamma 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1,
-                paramList: "=<value>",
+                paramList: "=<gamma>",
                 desc: "Adjusts gamma of blue channel.",
-                paramDesc: "<value> is gamma 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gal", "--gamma-lightness"}, GammaLightness, 1,
-                paramList: "=<value>",
+                paramList: "=<gamma>",
                 desc: "Adjusts gamma of lightness.", 
-                paramDesc: "<value> is gamma 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gav", "--gamma-value"}, GammaValue, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of value.",
-                paramDesc: "<value> is gamma 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHslSaturation, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of saturation.", 
-                paramDesc: "<value> is gamma 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
-            CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5,
+            CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc:
                 "Adjusts levels of all RGB channels.",
                 paramDesc:
                 "<ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
 
-            CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5,
+            CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc:
                 "Adjusts levels of red channel.",
                 paramDesc:
                 "<ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
-            CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5,
+
+            CliArgs.Register(new List<string> {"-leg", "--levels-green"}, LevelsGreen, 5, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc:
                 "Adjusts levels of red channel.",
                 paramDesc:
                 "<ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
-            CliArgs.Register(new List<string> {"-leb", "--levels-blue"}, LevelsBlue, 5,
+
+            CliArgs.Register(new List<string> {"-leb", "--levels-blue"}, LevelsBlue, 5, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc:
                 "Adjusts levels of red channel.",
@@ -140,6 +155,21 @@ namespace ColorSchemeManipulator.Filters
                 "Adjusts levels of RGB channels by normalizing levels so that darkest color will be black and lightest color max bright.",
                 paramDesc: "<ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g> is gamma 0.01..9.99 (1)");
 
+            CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5,
+                paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
+                desc:
+                "Adjusts levels of lightness.",
+                paramDesc:
+                "<ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
+            
+            CliArgs.Register(new List<string> {"-lev", "--levels-value"}, LevelsValue, 5,
+                paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
+                desc:
+                "Adjusts levels of value.",
+                paramDesc:
+                "<ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
+            
+            
             CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc: "Adjusts levels of saturation.",
@@ -462,6 +492,50 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
+        public static IEnumerable<Color> ContrastLightness(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                if (filterParams.Any()) {
+                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
+                    double midpoint = 0.5;
+                    if (filterParams.Length >= 2) {
+                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
+                    }
+
+                    filtered.Lightness = ColorMath.SSpline(color.Lightness, strength, midpoint);
+                }
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        public static IEnumerable<Color> ContrastValue(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                if (filterParams.Any()) {
+                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
+                    double midpoint = 0.5;
+                    if (filterParams.Length >= 2) {
+                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
+                    }
+
+                    filtered.Value = ColorMath.SSpline(color.Value, strength, midpoint);
+                }
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
         public static IEnumerable<Color> ContrastHslSaturation(IEnumerable<Color> colors,
             params object[] filterParams)
         {
@@ -602,6 +676,41 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
+        public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
+                    FilterUtils.ParseLevelsParameters(filterParams);
+
+                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        public static IEnumerable<Color> LevelsValue(IEnumerable<Color> colors, params object[] filterParams)
+        {
+            ColorRange range;
+            (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var filtered = new Color(color);
+
+                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
+                    FilterUtils.ParseLevelsParameters(filterParams);
+
+                filtered.Value = ColorMath.Levels(color.Value, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+
+        
         public static IEnumerable<Color> LevelsHslSaturation(IEnumerable<Color> colors,
             params object[] filterParams)
         {
@@ -619,6 +728,7 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
+        
 
         #endregion
 
