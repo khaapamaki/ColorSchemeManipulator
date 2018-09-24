@@ -109,7 +109,7 @@ namespace ColorSchemeManipulator
             
             foreach (var match in colorMatches) {
                 text = text.ReplaceWithin(match.Index, match.Length, match.ReplacementString);
-                Console.WriteLine(match.MatchingString + " -> " +  match.ReplacementString);
+                //Console.WriteLine(match.MatchingString + " -> " +  match.ReplacementString);
             }
 
             return text;
