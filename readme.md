@@ -174,7 +174,7 @@ Example:
 
 #### Issues
 
-Adding lightness or value gain on dark colors causes saturated colors
+Hunting for them...
 
 
 ### For developers
@@ -210,8 +210,11 @@ attributes, and it makes conversion only on demand and automatically without use
 + SchemeFormat specific extra processing
     + IntelliJ: switch parent scheme based on light/dark background setting
 + More Unit tests
-+ Support for Visual Studio Code
++ Support for Visual Studio Code (implemented partially, not tested)
 + Proper HSV<->HSL conversions, now done by converting to RGB first
++ More customizable padding of short hex strings
++ Separation of ParameterRange and double[] filter parameters (now all are included in object[] args)
++ Brief help in addition to current verbose one
 
 
 #### Manually filtering (no using CLI arguments)
