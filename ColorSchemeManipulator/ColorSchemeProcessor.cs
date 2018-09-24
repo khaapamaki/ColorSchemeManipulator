@@ -14,15 +14,20 @@ using ColorSchemeManipulator.SchemeFileSupport;
 namespace ColorSchemeManipulator
 {
 
+    /// <summary>
+    /// Processes text based color scheme files
+    /// </summary>
     public class ColorSchemeProcessor
     {
-        // private readonly SchemeFormat _schemeFormat;
         private readonly string _hexFormat;
         private readonly string _regExPattern;
 
+        /// <summary>
+        /// A constructor that sets rgb hex format and regex pattern by the scheme format
+        /// </summary>
+        /// <param name="schemeFormat"></param>
         public ColorSchemeProcessor(SchemeFormat schemeFormat)
         {
-            // _schemeFormat = schemeFormat;
             _hexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
             _regExPattern = SchemeFormatUtil.GetRegEx(schemeFormat);
         }
@@ -42,17 +47,15 @@ namespace ColorSchemeManipulator
             File.WriteAllText(targetFile, convertedText, Encoding.Default);
         }
 
-        /*
-        // filters need to be stored for MatchEvaluator since it doesn't take parameters
-        private FilterSet _filters;
-        private List<Color> _filteredColors;
-        */
+        /// <summary>
+        /// Finds all color strings in a string using regex and applies filters to all of them
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="filters"></param>
+        /// <returns>A string representing new scheme file with replaced colors</returns>
         private string ApplyFilters(string text, FilterSet filters)
-        {
-            
-            //_filters = filters;
-            
-            // Collect all colors from file to colorSet
+        {      
+            // Collect all colors from file to a list of colors
             List<Color> colorSet = new List<Color>();
             MatchCollection matches = Regex.Matches(text, _regExPattern);
             
@@ -61,9 +64,8 @@ namespace ColorSchemeManipulator
                 colorSet.Add(HexRgb.FromRgbString(rgbString, _hexFormat));
             }
             
-            // Apply filters to colorSet
+            // Apply filters to the list of colors
             List<Color> filteredColors = filters.ApplyTo(colorSet).ToList();
-            //_filteredColors = filteredColors;
             
             // Encapsulate filtered colors and regex matches within list of ColorMatch'es
             int i = 0;
@@ -74,79 +76,47 @@ namespace ColorSchemeManipulator
 
                 colorMatches.Add(new ColorMatch()
                 {
-                    index = match.Groups[2].Index,
-                    length = match.Groups[2].Length,
-                    matchingString = rgbString,
-                    replacementString = filteredRgbString
+                    Index = match.Groups[2].Index,
+                    Length = match.Groups[2].Length,
+                    MatchingString = rgbString,
+                    ReplacementString = filteredRgbString
                 });
             }
 
             // Make replacements
             text = BatchReplace(text, colorMatches);
-            
-            //_matchReplaceLoopIndex = 0;            
-            //text = Regex.Replace(text, _regExPattern, new MatchEvaluator(MatchReplace));
 
             return text;
         }
 
-        private string BatchReplace(string text, List<ColorMatch> colorMatches)
+        /// <summary>
+        /// Performs manual replacement for matches with processed color replacement strings
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="colorMatches"></param>
+        /// <returns></returns>
+        private static string BatchReplace(string text, List<ColorMatch> colorMatches)
         {
             // matches must be in reverse order by indexes, otherwise replacing with strings
             // of which lengths differ from original's will make latter indexes invalid
-            colorMatches = colorMatches.OrderByDescending(m => m.index).ToList();
+            colorMatches = colorMatches.OrderByDescending(m => m.Index).ToList();
             
             foreach (var match in colorMatches) {
-                text = text.ReplaceWithin(match.index, match.length, match.replacementString);
+                text = text.ReplaceWithin(match.Index, match.Length, match.ReplacementString);
             }
 
             return text;
         }
         
-        /*
-        // If there's any better way to batch replace by enumerated filtering results, do so. This is ugly...
-        private int _matchReplaceLoopIndex = 0;
-        private string MatchReplace(Match m)
-        {
-            if (m.Groups.Count == 4) {
-                // the second capture group of the regex pattern must be the one that contains color data
-                string rgbString = m.Groups[2].ToString();
-
-                if (HexRgb.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
-                    string filteredRgbString =  HexRgb.ToRgbString(_filteredColors[_matchReplaceLoopIndex++], _hexFormat);
-                    // Console.WriteLine(rgbString + " -> " + filteredRgbString);
-                    return m.Groups[1]
-                           + filteredRgbString
-                           + m.Groups[3];
-                } else {
-                    Console.WriteLine("Invalid RGB string: " + rgbString);
-                }
-            }
-            
-            throw new Exception("Regular Expression Mismatch");
-            // return m.Groups[0].ToString();  // alternative for throwing
-        }
-
-        [Obsolete]
-        private IEnumerable<Color> GetAllColors(string text)
-        {
-            MatchCollection matches = Regex.Matches(text, _regExPattern);
-            foreach (var obj in matches) {
-                if (obj is Match m) {
-                    string rgbString = m.Groups[2].ToString();
-                    if (HexRgb.IsValidHexString(rgbString) && rgbString.Length <= _hexFormat.Length) {
-                        yield return HexRgb.FromRgbString(rgbString, _hexFormat);
-                    }
-                }
-            }
-        }
-*/
+        /// <summary>
+        /// Holds information of regex match to make replacements later
+        /// </summary>
         private class ColorMatch
         {
-            public int index;
-            public int length;
-            public string matchingString;
-            public string replacementString;
+            public int Index;
+            public int Length;
+            public string MatchingString;
+            public string ReplacementString;
         }
     }
 }

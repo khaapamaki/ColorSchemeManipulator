@@ -7,6 +7,9 @@ using Color = ColorSchemeManipulator.Colors.Color;
 
 namespace ColorSchemeManipulator
 {
+    /// <summary>
+    /// Processes colors of bit map images
+    /// </summary>
     public class ImageProcessor
     {
         public ImageProcessor() { }
@@ -30,7 +33,7 @@ namespace ColorSchemeManipulator
             convertedImage.Save(targetFile);
         }
 
-        public static IEnumerable<Color> Enumerate(Bitmap bitmap)
+        private static IEnumerable<Color> Enumerate(Bitmap bitmap)
         {
             for (int y = 0; y < bitmap.Height; y++) {
                 for (int x = 0; x < bitmap.Width; x++) {
@@ -39,11 +42,11 @@ namespace ColorSchemeManipulator
             }
         }
 
-        public static void SetPixels(Bitmap original, IEnumerable<Color> colors)
+        private static void SetPixels(Bitmap original, IEnumerable<Color> colors)
         {
             int x = 0;
             int y = 0;
-            foreach (Color color in colors) {
+            foreach (var color in colors) {
                 if (y >= original.Height || x >= original.Width)
                     break;
                 original.SetPixel(x, y, ColorConversions.ColorToSystemColor(color));
@@ -55,7 +58,7 @@ namespace ColorSchemeManipulator
             }
         }
 
-        public Bitmap ApplyFilters(Bitmap bitmap, FilterSet filters)
+        private static Bitmap ApplyFilters(Bitmap bitmap, FilterSet filters)
         {
             SetPixels(bitmap, filters.ApplyTo(Enumerate(bitmap)));
             return bitmap;
