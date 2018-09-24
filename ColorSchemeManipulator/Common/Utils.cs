@@ -11,7 +11,7 @@ namespace ColorSchemeManipulator.Common
     {
         public static void PrintHelp(int filterCount = -1, int expermFilterCount = -1)
         {
-            Console.WriteLine("Available Filters:");
+            Console.WriteLine("Available Filters:\n");
             if (filterCount == -1 || expermFilterCount == -1) {
                 Console.WriteLine(CliArgs.ToString("\n\n"));
                 return;
@@ -23,7 +23,7 @@ namespace ColorSchemeManipulator.Common
             }
 
             if (expermFilterCount > 0) {
-                Console.WriteLine("\nExperimental Filters:");
+                Console.WriteLine("\nExperimental Filters:\n");
                 for (int i = filterCount; i < filterCount + expermFilterCount; i++) {
                     Console.WriteLine(CliArgs.GetItem(i).ToString());
                     Console.WriteLine();
