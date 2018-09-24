@@ -12,12 +12,16 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 extension = extension.Substring(1);
             }
 
-            switch (extension) {
+            switch (extension.ToLower()) {
                 case "icls":
                     return SchemeFormat.Idea;
                 case "vstheme":
                     return SchemeFormat.VisualStudio;
                 case "png":
+                    return SchemeFormat.Image;
+                case "jpg":
+                    return SchemeFormat.Image;
+                case "jpeg":
                     return SchemeFormat.Image;
                 default:
                     return SchemeFormat.Generic;

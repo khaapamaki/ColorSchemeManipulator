@@ -183,8 +183,7 @@ namespace ColorSchemeManipulator.Filters
                     //                            .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
                     //                    .Add(FilterBundle.GainHslSaturation, 1.7,
                     //                        new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                    .Add(FilterBundle.GainRgb, 1.3
-                        ,
+                    .Add(FilterBundle.GainRgb, 1.3,
                         new ColorRange().Saturation4P(0.1, 0.3, 0.6, 0.9)
                             .Lightness4P(0, 0, 0.4, 0.7)
                     ) // add saturation for weak rgb

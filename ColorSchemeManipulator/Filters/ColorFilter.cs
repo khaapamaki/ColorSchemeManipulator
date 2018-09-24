@@ -21,21 +21,22 @@ namespace ColorSchemeManipulator.Filters
             Parameters = filterParams;
         }
 
+        /// <summary>
+        /// Applies the filter for a color enumeration
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <returns></returns>
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             return FilterDelegate(colors, Parameters);
         }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            foreach (var argument in Parameters) {
-                sb.Append(argument + " ");
-            }
-
-            return FilterDelegate.Method.Name + " " + sb;
-        }
         
+        /// <summary>
+        /// Applies the filter for a color enumeration with final color clamping.
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <param name="outputClamping"></param>
+        /// <returns></returns>
         private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping)
         {
             colors = FilterDelegate(colors, Parameters);
@@ -46,6 +47,16 @@ namespace ColorSchemeManipulator.Filters
                     color.ClampExceedingColors();
                 yield return color;
             }
+        }
+        
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            foreach (var argument in Parameters) {
+                sb.Append(argument + " ");
+            }
+
+            return FilterDelegate.Method.Name + " " + sb;
         }
     }
 }
