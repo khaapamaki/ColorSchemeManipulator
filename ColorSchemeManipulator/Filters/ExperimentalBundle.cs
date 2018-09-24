@@ -30,9 +30,12 @@ namespace ColorSchemeManipulator.Filters
             if (GetInstance()._isRegistered)
                 return;
             CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5,
+                paramDesc: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc:
                 "Adjusts levels of HSL lightness. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
+            
             CliArgs.Register(new List<string> {"-lev", "--levels-value"}, LevelsValue, 5,
+                paramDesc: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc:
                 "Adjusts levels of HSV value. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
 
@@ -40,31 +43,43 @@ namespace ColorSchemeManipulator.Filters
             //     desc:
             //     "Adjusts levels of HSV saturation. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
             
-            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corr"},
-                InvertPerceivedBrightnessWithCorrection, 0, 1,
+            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corr"}, InvertPerceivedBrightnessWithCorrection, 0, 1,
+                paramDesc: "[=<corr>]",
                 desc: "Inverts perceived brightness with correction parameter (0..1)");
+            
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
+                paramDesc: "=<mix>",
                 desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)");
+            
             CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0
             );
+            
             CliArgs.Register(new List<string> {"-b2v", "--brightness-to-value"}, BrightnessToValue, 0, 0
             );
+            
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2,
+                paramDesc: "=<c>[,<ip>]",
                 desc:
                 "Adjusts contrast of HSL lightness. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)"
                 + " Strength adjustments below zero will cause erroneuos coloring of dark tones");
+            
             CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1, 2,
+            paramDesc: "=<c>[,<ip>]",
                 desc:
                 "Adjusts contrast of HSV value. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)"
                 + " Strength adjustments below zero will cause erroneuos coloring of dark tones");
 
             CliArgs.Register(new List<string> {"-cS", "--contrast-hsv-saturation"}, ContrastHsvSaturation, 1, 2,
+                paramDesc: "=<c>[,<ip>]",
                 desc:
                 "Adjusts contrast of HSV saturation. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)");
+            
             CliArgs.Register(new List<string> {"-gaS", "--gamma-hsv-saturation"}, GammaHsvSaturation, 1,
+                paramDesc: "=<g>",
                 desc: "Adjusts gamma of HSV saturation. Takes a single parameter (0.01..9.99)");
+            
             CliArgs.Register(new List<string> {"--tolight"}, ToLight, 0, 0,
-            desc: "A preset with multiple filters to convert dark scheme to light");
+                desc: "A preset with multiple filters to convert dark scheme to light");
             
             // CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
 

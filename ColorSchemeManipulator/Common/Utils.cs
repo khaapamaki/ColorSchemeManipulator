@@ -71,5 +71,28 @@ namespace ColorSchemeManipulator.Common
 
             return lines;
         }
+        
+
+        public static List<string> ParamsWrap(string sentence, int columnWidth)
+        {
+            List<string> lines = new List<string>(4);
+            // todo make this to retain separators
+            string[] words = sentence.Split(' ','=',',');
+
+            string line = "";
+            foreach (string word in words) {
+                if ((line + word).Length > columnWidth) {
+                    lines.Add(line);
+                    line = "";
+                }
+
+                line += $"{word} ";
+            }
+
+            if (line.Length > 0)
+                lines.Add(line);
+
+            return lines;
+        }
     }
 }
