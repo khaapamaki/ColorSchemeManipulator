@@ -4,6 +4,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
     {
         VisualStudio,
         Idea,
+        VSCode,
         Image,
         Generic
     }

@@ -2,9 +2,10 @@ namespace ColorSchemeManipulator.SchemeFileSupport
 {
     public static class SchemeFormatUtil
     {
-        private const string PatternHex8 = "([0-9abcdefABCDEF]{8})";
-        private const string PatternHex6 = "([0-9abcdefABCDEF]{6})";
-        private const string PatternHex2to6 = "([0-9abcdefABCDEF]{2,6})";
+        private const string PatternHex8 = "(?<hex>[0-9abcdefABCDEF]{8})";
+        private const string PatternHex6 = "(?<hex>[0-9abcdefABCDEF]{6})";
+        private const string PatternHex6or8= "(?<hex>[0-9abcdefABCDEF]{8}|[0-9abcdefABCDEF]{6})";
+        private const string PatternHex2to6 = "(?<hex>[0-9abcdefABCDEF]{2,6})";
 
         public static SchemeFormat GetFormatFromExtension(string extension)
         {
@@ -17,6 +18,8 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                     return SchemeFormat.Idea;
                 case "vstheme":
                     return SchemeFormat.VisualStudio;
+                case "json":
+                    return SchemeFormat.VSCode;
                 case "png":
                     return SchemeFormat.Image;
                 case "jpg":
@@ -36,6 +39,8 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                     return "(<option name=\".+\" value=\")" + PatternHex2to6 + "(\"\\s?\\/>)";
                 case SchemeFormat.VisualStudio:
                     return "(ground Type=\".+\" Source=\")" + PatternHex8 + "(\" *\\/>)";
+                case SchemeFormat.VSCode:
+                    return "ground\":\\s*\"#" + PatternHex6or8 + "\"";
                 case SchemeFormat.Generic:
                 default:
                     return "(#)" + PatternHex6 + "(.*)";
@@ -49,6 +54,8 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                     return "rrggbb";
                 case SchemeFormat.VisualStudio:
                     return "AARRGGBB";
+                case SchemeFormat.VSCode:
+                    return "rrggbb"; // todo change to rrggbbaa when padding system implemented
                 default:
                     return "RRGGBB";
             }

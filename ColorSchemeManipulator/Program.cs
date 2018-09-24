@@ -65,7 +65,7 @@ namespace ColorSchemeManipulator
             // Test files for debugging
             string sourceFileName = @"HappyDays_Complete.icls";
             // sourceFileName = "darcula-vs-2017.vstheme";
-            sourceFileName = "HappyDays.png";
+            // sourceFileName = "HappyDays.png";
             // sourceFileName = "photo.png";
             string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
@@ -88,7 +88,9 @@ namespace ColorSchemeManipulator
 
             SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
 
-            if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
+            if (schemeFormat == SchemeFormat.Idea
+                || schemeFormat == SchemeFormat.VisualStudio
+                || schemeFormat == SchemeFormat.VSCode) {
                 if (File.Exists(sourceFile)) {
                     ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
                     processor.ProcessFile(sourceFile, targetFile, filterSet);

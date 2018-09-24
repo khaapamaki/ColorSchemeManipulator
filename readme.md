@@ -177,7 +177,6 @@ attributes, and it makes conversion only on demand and automatically without use
     + IntelliJ: switch parent scheme based on light/dark background setting
 + More Unit tests
 + Support for Visual Studio Code
-+ Support for CSS and HTML files
 + Proper HSV<->HSL conversions, now done by converting to RGB first
 
 

@@ -60,7 +60,13 @@ namespace ColorSchemeManipulator
             MatchCollection matches = Regex.Matches(text, _regExPattern);
             
             foreach (Match match in matches) {
-                string rgbString = match.Groups[2].ToString();
+                string rgbString = match.Groups["hex"].ToString();
+                
+                // todo better way to handle shorter of longer hex codes
+                // this is needed for VS Code
+                if (rgbString.Length > _hexFormat.Length)
+                    rgbString = rgbString.Substring(0, _hexFormat.Length);
+                
                 colorSet.Add(HexRgb.FromRgbString(rgbString, _hexFormat));
             }
             
@@ -71,13 +77,13 @@ namespace ColorSchemeManipulator
             int i = 0;
             List<ColorMatch> colorMatches = new List<ColorMatch>();
             foreach (Match match in matches) {
-                string rgbString = match.Groups[2].ToString();
+                string rgbString = match.Groups["hex"].ToString(); 
                 string filteredRgbString = HexRgb.ToRgbString(filteredColors[i++], _hexFormat);
 
                 colorMatches.Add(new ColorMatch()
                 {
-                    Index = match.Groups[2].Index,
-                    Length = match.Groups[2].Length,
+                    Index = match.Groups["hex"].Index,
+                    Length = match.Groups["hex"].Length,
                     MatchingString = rgbString,
                     ReplacementString = filteredRgbString
                 });
@@ -103,6 +109,7 @@ namespace ColorSchemeManipulator
             
             foreach (var match in colorMatches) {
                 text = text.ReplaceWithin(match.Index, match.Length, match.ReplacementString);
+                Console.WriteLine(match.MatchingString + " -> " +  match.ReplacementString);
             }
 
             return text;

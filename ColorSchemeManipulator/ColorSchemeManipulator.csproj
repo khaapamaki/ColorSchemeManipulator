@@ -91,7 +91,9 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
-    <Content Include="..\ColorSchemes\classic.json" />
+    <EmbeddedResource Include="..\ColorSchemes\classic.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>
