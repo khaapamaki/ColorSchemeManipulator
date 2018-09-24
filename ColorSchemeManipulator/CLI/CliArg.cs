@@ -60,8 +60,8 @@ namespace ColorSchemeManipulator.CLI
             }
             
             List<string> descLines = new List<string>();
-            Utils.WordWrap(description, 65).ForEach(l => descLines.Add(l));
-            Utils.WordWrap(ParamDesc, 65).ForEach(l => descLines.Add(l));
+            Utils.WordWrap(description, 70).ForEach(l => descLines.Add(l));
+            Utils.WordWrap(ParamDesc, 70).ForEach(l => descLines.Add(l));
             
             var sb = new StringBuilder();
             int lineMaxCount = descLines.Count.Max(optLines.Count);

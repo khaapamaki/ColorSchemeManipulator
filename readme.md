@@ -7,8 +7,17 @@ Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color s
 
 Also has option to filter png-files for quick testing.
 
-#### Currently available filters and corresponding CLI options
+#### Usage and currently available filters
 ```
+Usage:
+  colschman [-filter] <sourcefile> [<targetfile>]
+  colschman [-filter][=param1][,param2][,param3] <sourcefile> [<targetfile>]
+  colschman [-filter1] [--filter2] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr1:min-max,rangeattr2:min-max)[=param] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr:min/slope-max/slope)[=param] <sourcefile> [<targetfile>]
+  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]
+
+
 Available Filters:
 
   -h=<offset>                     Hue shift.
@@ -64,44 +73,44 @@ Available Filters:
   --gamma-saturation=<gamma>      <gamma> is value in range of 0.01..9.99 (1.0)
 
   -le=<ib>,<iw>,<g>,<ob>,<ow>     Adjusts levels of all RGB channels.
-  --levels=...                    <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g>
-                                  is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
-                                  output white 0..1 (1)
+  --levels=...                    <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is
+                                  gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output
+                                  white 0..1 (1)
 
   -ler=<ib>,<iw>,<g>,<ob>,<ow>    Adjusts levels of red channel.
-  --levels-red=...                <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g>
-                                  is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
-                                  output white 0..1 (1)
+  --levels-red=...                <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is
+                                  gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output
+                                  white 0..1 (1)
 
   -leg=<ib>,<iw>,<g>,<ob>,<ow>    Adjusts levels of red channel.
-  --levels-green=...              <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g>
-                                  is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
-                                  output white 0..1 (1)
+  --levels-green=...              <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is
+                                  gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output
+                                  white 0..1 (1)
 
   -leb=<ib>,<iw>,<g>,<ob>,<ow>    Adjusts levels of red channel.
-  --levels-blue=...               <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g>
-                                  is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
-                                  output white 0..1 (1)
+  --levels-blue=...               <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is
+                                  gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output
+                                  white 0..1 (1)
 
-  -al=<ob>,<ow>,<g>               Adjusts levels of RGB channels by normalizing levels so that
-  --auto-levels=<ob>,<ow>,<g>     darkest color will be black and lightest color max bright.
-                                  <ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g>
-                                  is gamma 0.01..9.99 (1)
+  -al=<ob>,<ow>,<g>               Adjusts levels of RGB channels by normalizing levels so that darkest
+  --auto-levels=<ob>,<ow>,<g>     color will be black and lightest color max bright.
+                                  <ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g> is
+                                  gamma 0.01..9.99 (1)
 
   -lel=<ib>,<iw>,<g>,<ob>,<ow>    Adjusts levels of lightness.
-  --levels-lightness=...          <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g>
-                                  is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
-                                  output white 0..1 (1)
+  --levels-lightness=...          <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is
+                                  gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output
+                                  white 0..1 (1)
 
   -lev=<ib>,<iw>,<g>,<ob>,<ow>    Adjusts levels of value.
-  --levels-value=...              <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g>
-                                  is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
-                                  output white 0..1 (1)
+  --levels-value=...              <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is
+                                  gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output
+                                  white 0..1 (1)
 
   -les=<ib>,<iw>,<g>,<ob>,<ow>    Adjusts levels of saturation.
-  --levels-saturation=...         <ib> is input black 0..1 (0), <iw> is input white (1), <g> is
-                                  gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
-                                  output white 0..1 (1)
+  --levels-saturation=...         <ib> is input black 0..1 (0), <iw> is input white (1), <g> is gamma
+                                  0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white
+                                  0..1 (1)
 
   -i                              Inverts RGB channels.
   --invert-rgb
@@ -118,19 +127,20 @@ Available Filters:
   -gsb                            Converts to gray scale based on perceived brightness.
   --grayscale-brightness
 
-  --clamp                         Clamps color values to normal range of 0..1. Tries to preserve
-                                  hue. This is automatically done as last filter.
+  --clamp                         Clamps color values to normal range of 0..1. Tries to preserve hue.
+                                  This is automatically done as last filter.
+
 
 Experimental Filters:
 
   -ibc[=<corr>]                   Inverts perceived brightness with correction parameter.
-  --invert-brightness-corr=...    <corr> is value between 0..1, 0 is safest conversion, 1 is
-                                  closest to truth but also causes clipping of some colors.
+  --invert-brightness-corr=...    <corr> is value between 0..1, 0 is safest conversion, 1 is closest to
+                                  truth but also causes clipping of some colors.
 
-  -ilv=<mix>                      Inverts colors using both lightness and value, by mixing the
-  --invert-lightness-value=...    result by parameter (0..1)
-                                  <mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is
-                                  full value inversion.
+  -ilv=<mix>                      Inverts colors using both lightness and value, by mixing the result by
+  --invert-lightness-value=...    parameter (0..1)
+                                  <mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is full
+                                  value inversion.
 
   -b2l                            Translates perceived brightness to lightness.
   --brightness-to-lightness
@@ -151,22 +161,15 @@ Experimental Filters:
   --tolight                       A preset with multiple filters to convert dark scheme to light
 
 
-Usage:
-  colschman [-filter] <sourcefile> [<targetfile>]
-  colschman [-filter][=param1][,param2][,param3] <sourcefile> [<targetfile>]
-  colschman [-filter1] [--filter2] <sourcefile> [<targetfile>]
-  colschman [-filter][(rangeattr1:min-max,rangeattr2:min-max)[=param] <sourcefile> [<targetfile>]
-  colschman [-filter][(rangeattr:min/slope-max/slope)[=param] <sourcefile> [<targetfile>]
-  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]
-
-Example:
-  colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls
-
 Range attributes:
   h, hue        Hue           |  r, red        Red
   s, sat        Saturation    |  g, green      Green
   l, light      Lightness     |  b, blue       Blue
   v, value      Value         |  bri, bright   Brightness  
+
+
+Example:
+  colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls
 ```
 
 #### Issues
