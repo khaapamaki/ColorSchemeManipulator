@@ -23,7 +23,7 @@ namespace ColorSchemeManipulator.Common
             }
 
             if (expermFilterCount > 0) {
-                Console.WriteLine("\nExperimental Filters:\n");
+                Console.WriteLine("Experimental Filters:\n");
                 for (int i = filterCount; i < filterCount + expermFilterCount; i++) {
                     Console.WriteLine(CliArgs.GetItem(i).ToString());
                     Console.WriteLine();

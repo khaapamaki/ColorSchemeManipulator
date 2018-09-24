@@ -39,7 +39,7 @@ namespace ColorSchemeManipulator.Filters
 
             CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1,
                 paramList: "=<offset>",
-                desc: "Hue shift",
+                desc: "Hue shift.",
                 paramDesc:"<offset> is hue offset in range of -360..360 (0)");
 
             CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1,
