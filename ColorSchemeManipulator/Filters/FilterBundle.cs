@@ -38,69 +38,69 @@ namespace ColorSchemeManipulator.Filters
                 return;
 
             CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1,
-                paramDesc: "=<h>",
+                paramDesc: "=<value>",
                 desc: "Hue shift. Takes single parameter as degrees (-360..360)");
             
             CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1,
-                paramDesc: "=<s>",
+                paramDesc: "=<value>",
                 desc: "HSL saturation multiplier. Takes single parameter (0..x)");
             
             CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<value>",
                 desc: "RGB multiplier. Takes single parameter (0..x)");
             
             CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1,
-                paramDesc: "=<l>",
+                paramDesc: "=<value>",
                 desc: "HSL lightness multiplier. Takes single parameter (0..x)");
             
             CliArgs.Register(new List<string> {"-v", "--value"}, GainValue, 1,
-                paramDesc: "=<v>",
+                paramDesc: "=<value>",
                 desc: "HSV value multiplier. Takes single parameter (0..x)");
             
             CliArgs.Register(new List<string> {"-S", "--hsv-saturation"}, GainHsvSaturation, 1,
-                paramDesc: "=<s>",
+                paramDesc: "=<value>",
                 desc: "HSV saturation multiplier. Takes single parameter (0..x)");
 
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2,
-                paramDesc: "=<c>[,<ip>]",
+                paramDesc: "=<value>[,<ip>]",
                 desc: "Adjusts contrast. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)");
 
             CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1, 2,
-                paramDesc: "=<c>[,<ip>]",
+                paramDesc: "=<value>[,<ip>]",
                 desc: "Adjusts contrast of saturation. Takes one mandatory and one optional parameter, curve strength (-1..1), inflection point (0..1 default 0.5)");
 
 
             CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<gamma>",
                 desc: "Adjusts gamma of all RGB channels equally. Takes single parameter (0.01..9.99)");
             
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<gamma>",
                 desc: "Adjusts gamma of red channel. Takes single parameter (0.01..9.99)");
             
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<gamma>",
                 desc: "Adjusts gamma of green channel. Takes single parameter (0.01..9.99)");
             
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<gamma>",
                 desc: "Adjusts gamma of blue channel. Takes single parameter (0.01..9.99)");
             
             CliArgs.Register(new List<string> {"-gal", "--gamma-lightness"}, GammaLightness, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<gamma>",
                 desc: "Adjusts gamma of HSL lightness. Takes single parameter (0.01..9.99)");
             
             CliArgs.Register(new List<string> {"-gav", "--gamma-value"}, GammaValue, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<gamma>",
                 desc: "Adjusts gamma of HSV value. Takes single parameter (0.01..9.99)");
             
             CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHslSaturation, 1,
-                paramDesc: "=<g>",
+                paramDesc: "=<gamma>",
                 desc: "Adjusts gamma of saturation. Takes single parameter (0.01..9.99)");
 
 
             CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5,
-                paramDesc: "=<ib>,<iw>,<g>,<ob>,<ow>",
+                paramDesc: "=<in1>,<in2>,<gamma>,<out1>,<out2>",
                 desc:
                 "Adjusts levels of all RGB channels. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
             CliArgs.Register(new List<string> {"-ler", "--levels-red"}, LevelsRed, 5,
@@ -117,7 +117,7 @@ namespace ColorSchemeManipulator.Filters
                 "Adjusts levels of red channel. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
 
             CliArgs.Register(new List<string> {"-al", "--auto-levels"}, AutoLevelsRgb, 0, 3,
-                paramDesc: "=<ob>,<ow>,<g>",
+                paramDesc: "=<out1>,<out2>,<gamma>",
                 desc:
                 "Adjusts levels of RGB channels by normalizing levels so that darkest color will be black and lightest color max bright." +
                 " Takes three parameters: output black (0..1), output white (0..1), gamma (0.01..9.99)");

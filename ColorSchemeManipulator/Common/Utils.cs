@@ -1,6 +1,8 @@
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using ColorSchemeManipulator.CLI;
 
 namespace ColorSchemeManipulator.Common
@@ -30,7 +32,7 @@ namespace ColorSchemeManipulator.Common
 
             const int col1 = -13;
             const int col2 = -14;
-                
+
             string usage =
                 "Usage:\n"
                 + "  colschman [-filter] <sourcefile> [<targetfile>]\n"
@@ -71,13 +73,13 @@ namespace ColorSchemeManipulator.Common
 
             return lines;
         }
-        
+
 
         public static List<string> ParamsWrap(string sentence, int columnWidth)
         {
             List<string> lines = new List<string>(4);
             // todo make this to retain separators
-            string[] words = sentence.Split(' ','=',',');
+            string[] words = SplitArgument(sentence);
 
             string line = "";
             foreach (string word in words) {
@@ -86,13 +88,67 @@ namespace ColorSchemeManipulator.Common
                     line = "";
                 }
 
-                line += $"{word} ";
+                line += $"{word}";
             }
 
             if (line.Length > 0)
                 lines.Add(line);
 
             return lines;
+        }
+
+        private static string[] SplitArgument(string sentence)
+        {
+            List<string> lines = new List<string>(12);
+            var sb = new StringBuilder(20);
+            char prev = ' ';
+            foreach (var c in sentence) {
+                if (c == ' ')
+                    CutAfter(ref lines, ref sb, c);
+                else if (c == '=') {
+                    // sb.Append(' ');
+                    CutBefore(ref lines, ref sb, c);
+                    // sb.Append(' ');
+                } else if (c == '[')
+                    CutBefore(ref lines, ref sb, c);
+                else if (c == ',' && prev != '[' || c == ']')
+                    CutAfter(ref lines, ref sb, c);
+                else
+                    sb.Append(c);
+
+                prev = c;
+            }
+
+            if (sb.ToString().Trim().Length > 0) {
+                lines.Add(sb.ToString().Trim());
+            }
+
+            return lines.ToArray();
+        }
+
+        private static void CutAndRemove(ref List<string> lines, ref StringBuilder sb)
+        {
+            if (sb.Length > 0) {
+                lines.Add(sb.ToString());
+                sb.Clear();
+            }
+        }
+
+        private static void CutAfter(ref List<string> lines, ref StringBuilder sb, char c)
+        {
+            sb.Append(c);
+            lines.Add(sb.ToString());
+            sb.Clear();
+        }
+
+        private static void CutBefore(ref List<string> lines, ref StringBuilder sb, char c)
+        {
+            if (sb.Length > 0) {
+                lines.Add(sb.ToString());
+                sb.Clear();
+            }
+
+            sb.Append(c);
         }
     }
 }

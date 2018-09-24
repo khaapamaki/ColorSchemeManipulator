@@ -56,25 +56,26 @@ namespace ColorSchemeManipulator.CLI
             string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
             
             List<string> optLines = new List<string>(4);
-            foreach (var option in OptionArgs) {
-                List<string> argParts = Utils.ParamsWrap(option + ParamDesc, 25);
+            for (var i = 0; i < OptionArgs.Count; i++) {
+                var option = i == 0 ? OptionArgs[i] + ParamDesc : OptionArgs[i] + (ParamDesc != "" ? "=..." : "") ;
+                List<string> argParts = Utils.ParamsWrap(option, 32);
                 for (var index = 0; index < argParts.Count; index++) {
                     var argPart = argParts[index];
                     optLines.Add(index > 0 ? "    " + argPart : argPart);
                 }
             }
-            
+
             var sb = new StringBuilder();
-            List<string> lines = Utils.WordWrap(desc, 68);
+            List<string> lines = Utils.WordWrap(desc, 65);
 
             
             
             int lineMaxCount = lines.Count.Max(optLines.Count);
             for (var index = 0; index < lineMaxCount; index++) {
                 var line = index < lines.Count ? lines[index].Trim() : "";
-                string opt = index < OptionArgs.Count ? optLines[index] : "";
-                sb.Append($"  {opt,-30} {line}");
-                if (index < lines.Count-1)
+                string opt = index < optLines.Count ? optLines[index] : "";
+                sb.Append($"  {opt,-33} {line}");
+                if (index < lineMaxCount-1)
                     sb.AppendLine();
             }
 
