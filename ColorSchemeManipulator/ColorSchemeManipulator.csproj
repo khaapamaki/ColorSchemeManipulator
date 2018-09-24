@@ -91,6 +91,7 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
+    <Content Include="..\ColorSchemes\classic.json" />
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>
