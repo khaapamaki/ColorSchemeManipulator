@@ -12,22 +12,22 @@ Also has option to filter png-files for quick testing.
 Available Filters:
 
   -h=<offset>                     Hue shift.
-  --hue=...                       <offset> is hue offset in range of -360..360 (0)
+  --hue=<offset>                  <offset> is hue offset in range of -360..360 (0)
 
   -s=<gain>                       Saturation gain.
-  --saturation=...                <gain> is multiplier in range of 0..10 (1.0)
+  --saturation=<gain>             <gain> is multiplier in range of 0..10 (1.0)
 
   -g=<gain>                       RGB gain.
-  --gain=...                      <gain> is multiplier in range of 0..10 (1.0)
+  --gain=<gain>                   <gain> is multiplier in range of 0..10 (1.0)
 
   -l=<gain>                       Lightness gain.
-  --lightness=...                 <gain> is multiplier in range of 0..10 (1.0)
+  --lightness=<gain>              <gain> is multiplier in range of 0..10 (1.0)
 
   -v=<gain>                       Value gain.
-  --value=...                     <gain> is multiplier in range of 0..10 (1.0)
+  --value=<gain>                  <gain> is multiplier in range of 0..10 (1.0)
 
   -c=<contrast>[,<ip>]            Contrast.
-  --contrast=...                  <contrast> is curvature strength in range of -1..1 (0.0), <ip> is
+  --contrast=<contrast>[,<ip>]    <contrast> is curvature strength in range of -1..1 (0.0), <ip> is
                                   inflection point in range of 0..1 (0.5)
 
   -cl=<contrast>[,<ip>]           Applies contrast curve to lightness.
@@ -43,25 +43,25 @@ Available Filters:
                                   inflection point in range of 0..1 (0.5)
 
   -ga=<gamma>                     Gamma correction for all RGB channels equally.
-  --gamma=...                     <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma=<gamma>                 <gamma> is value in range of 0.01..9.99 (1.0)
 
   -gar=<gamma>                    Adjusts gamma of red channel.
-  --gamma-red=...                 <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma-red=<gamma>             <gamma> is value in range of 0.01..9.99 (1.0)
 
   -gag=<gamma>                    Adjusts gamma of green channel.
-  --gamma-green=...               <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma-green=<gamma>           <gamma> is value in range of 0.01..9.99 (1.0)
 
   -gab=<gamma>                    Adjusts gamma of blue channel.
-  --gamma-blue=...                <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma-blue=<gamma>            <gamma> is value in range of 0.01..9.99 (1.0)
 
   -gal=<gamma>                    Adjusts gamma of lightness.
-  --gamma-lightness=...           <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma-lightness=<gamma>       <gamma> is value in range of 0.01..9.99 (1.0)
 
   -gav=<gamma>                    Adjusts gamma of value.
-  --gamma-value=...               <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma-value=<gamma>           <gamma> is value in range of 0.01..9.99 (1.0)
 
   -gas=<gamma>                    Adjusts gamma of saturation.
-  --gamma-saturation=...          <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma-saturation=<gamma>      <gamma> is value in range of 0.01..9.99 (1.0)
 
   -le=<ib>,<iw>,<g>,<ob>,<ow>     Adjusts levels of all RGB channels.
   --levels=...                    <ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g>
@@ -84,7 +84,7 @@ Available Filters:
                                   output white 0..1 (1)
 
   -al=<ob>,<ow>,<g>               Adjusts levels of RGB channels by normalizing levels so that
-  --auto-levels=...               darkest color will be black and lightest color max bright.
+  --auto-levels=<ob>,<ow>,<g>     darkest color will be black and lightest color max bright.
                                   <ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g>
                                   is gamma 0.01..9.99 (1)
 
@@ -103,21 +103,20 @@ Available Filters:
                                   gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is
                                   output white 0..1 (1)
 
-  -i                              Inverts RGB channels. Takes no parameter.
+  -i                              Inverts RGB channels.
   --invert-rgb
 
-  -il                             Inverts lightness. Takes no parameter.
+  -il                             Inverts lightness.
   --invert-lightness
 
-  -iv                             Inverts value. Takes no parameter.
+  -iv                             Inverts value.
   --invert-value
 
-  -ib                             Inverts perceived brightness. Takes no parameter.
+  -ib                             Inverts perceived brightness.
   --invert-brightness
 
-  -gsb                            Converts to gray scale based on perceived brightness. Takes no
-  --grayscale-brightness          parameter.
-
+  -gsb                            Converts to gray scale based on perceived brightness.
+  --grayscale-brightness
 
   --clamp                         Clamps color values to normal range of 0..1. Tries to preserve
                                   hue. This is automatically done as last filter.
@@ -144,10 +143,10 @@ Experimental Filters:
                                   inflection point in range of 0..1 (0.5)
 
   -gaS=<gamma>                    Adjusts gamma of HSV saturation.
-  --gamma-hsv-sat=...             <gamma> is value in range of 0.01..9.99 (1.0)
+  --gamma-hsv-sat=<gamma>         <gamma> is value in range of 0.01..9.99 (1.0)
 
   -S=<value>                      HSV saturation gain.
-  --hsv-saturation=...            <value> is multiplier in range of 0..10 (1.0)
+  --hsv-saturation=<value>        <value> is multiplier in range of 0..10 (1.0)
 
   --tolight                       A preset with multiple filters to convert dark scheme to light
 

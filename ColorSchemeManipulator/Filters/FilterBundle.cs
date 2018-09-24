@@ -177,19 +177,19 @@ namespace ColorSchemeManipulator.Filters
                 "<ib> is input black 0..1 (0), <iw> is input white (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
 
             CliArgs.Register(new List<string> {"-i", "--invert-rgb"}, InvertRgb, 0, 0,
-                desc: "Inverts RGB channels. Takes no parameter.");
+                desc: "Inverts RGB channels.");
 
             CliArgs.Register(new List<string> {"-il", "--invert-lightness"}, InvertLightness, 0, 0,
-                desc: "Inverts lightness. Takes no parameter.");
+                desc: "Inverts lightness.");
 
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0, 0,
-                desc: "Inverts value. Takes no parameter.");
+                desc: "Inverts value.");
 
             CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
-                desc: "Inverts perceived brightness. Takes no parameter.");
+                desc: "Inverts perceived brightness.");
 
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
-                desc: "Converts to gray scale based on perceived brightness. Takes no parameter.");
+                desc: "Converts to gray scale based on perceived brightness.");
 
             CliArgs.Register(new List<string> {"--clamp"}, Clamp, 0, 0,
                 desc:

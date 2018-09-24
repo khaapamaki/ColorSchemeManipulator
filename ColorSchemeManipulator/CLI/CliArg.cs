@@ -48,7 +48,10 @@ namespace ColorSchemeManipulator.CLI
             
             List<string> optLines = new List<string>(4);
             for (var i = 0; i < OptionArgs.Count; i++) {
-                var option = i == 0 ? OptionArgs[i] + ParamList : OptionArgs[i] + (ParamList != "" ? "=..." : "") ;
+                string option = OptionArgs[i] + ParamList;
+                if (i != 0 && option.Length > 28 && ParamList != null) {
+                    option = OptionArgs[i] + "=...";
+                } 
                 List<string> argParts = Utils.ParamsWrap(option, 28);
                 for (var index = 0; index < argParts.Count; index++) {
                     var argPart = argParts[index];
