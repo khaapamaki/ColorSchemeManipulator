@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.ComTypes;
 using ColorSchemeManipulator.Common;
 using NUnit.Framework;
 

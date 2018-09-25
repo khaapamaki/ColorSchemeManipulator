@@ -1,6 +1,4 @@
-using System.Runtime.InteropServices;
 using System.Text;
-using PARAMDESC = System.Runtime.InteropServices.ComTypes.PARAMDESC;
 
 namespace ColorSchemeManipulator.Common
 {

@@ -3,7 +3,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Serialization.Advanced;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;

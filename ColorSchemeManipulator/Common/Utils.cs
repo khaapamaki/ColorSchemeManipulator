@@ -1,7 +1,5 @@
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
 using ColorSchemeManipulator.CLI;
 

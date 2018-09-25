@@ -1,7 +1,4 @@
 using System;
-using System.Reflection;
-using System.Text;
-using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
