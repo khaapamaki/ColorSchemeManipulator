@@ -7,9 +7,9 @@ using Color = ColorSchemeManipulator.Colors.Color;
 
 namespace ColorSchemeManipulator
 {
-    /// <summary>
-    /// Processes colors of bit map images
-    /// </summary>
+
+
+    [Obsolete]
     public class ImageProcessor
     {
         public ImageProcessor() { }

@@ -41,7 +41,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             }
         }
 
-        public static IColorDataHandler<string> GetHandlerByFormat(SchemeFormat schemeFormat)
+        public static IColorFileHandler<string> GetHandlerByFormat(SchemeFormat schemeFormat)
         {
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
@@ -205,7 +205,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
         /// <param name="text"></param>
         /// <param name="colorMatches"></param>
         /// <returns></returns>
-        public static string BatchReplace(string text, List<ColorMatch> colorMatches)
+        public static string BatchReplace(string text, List<RegexMatch> colorMatches)
         {
             // matches must be in reverse order by indexes, otherwise replacing with strings
             // of which lengths differ from original's will make latter indexes invalid

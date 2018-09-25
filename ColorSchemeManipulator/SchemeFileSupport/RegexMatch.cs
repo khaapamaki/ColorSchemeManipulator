@@ -3,7 +3,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
     /// <summary>
     /// Holds information of regex match to make replacements later
     /// </summary>
-    public class ColorMatch
+    public class RegexMatch
     {
         public int Index;
         public int Length;

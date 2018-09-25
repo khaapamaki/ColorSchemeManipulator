@@ -19,12 +19,12 @@ namespace ColorSchemeManipulator
     /// </summary>
     public class ColorSchemeProcessor<T>
     {
-        private readonly IColorDataHandler<T> _handler;
+        private readonly IColorFileHandler<T> _handler;
 
         /// <summary>
         /// A constructor that sets rgb hex format and regex pattern by the scheme format
         /// </summary>
-        public ColorSchemeProcessor(IColorDataHandler<T> handler)
+        public ColorSchemeProcessor(IColorFileHandler<T> handler)
         {
             _handler = handler;
         }
@@ -52,12 +52,11 @@ namespace ColorSchemeManipulator
         /// <returns>A string representing new scheme file with replaced colors</returns>
         private T ApplyFilters(T source, FilterSet filters)
         {      
-            // Collect all colors from file to a list of colors
-            // test before converting to IEnumerable!
-            List<Color> colors = _handler.GetColors(source);
+            // test IEnumerable!
+            IEnumerable<Color> colors = _handler.GetColors(source);
             
             // Apply filters to the list of colors
-            List<Color> filteredColors = filters.ApplyTo(colors).ToList();
+            IEnumerable<Color> filteredColors = filters.ApplyTo(colors);
   
             return _handler.ReplaceColors(source, filteredColors);
         }
