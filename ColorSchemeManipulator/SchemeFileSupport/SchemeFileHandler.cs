@@ -19,7 +19,6 @@ namespace ColorSchemeManipulator.SchemeFileSupport
         public string ReadFile(string sourceFile)
         {
             return File.ReadAllText(sourceFile);
-            ;
         }
 
         public void WriteFile(string text, string targetFile)
