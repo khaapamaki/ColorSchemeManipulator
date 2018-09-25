@@ -1,6 +1,7 @@
 using System;
+using ColorSchemeManipulator.Common;
 
-namespace ColorSchemeManipulator.Common
+namespace ColorSchemeManipulator.Colors
 {
     public static class ColorMath
     {

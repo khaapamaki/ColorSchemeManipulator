@@ -49,9 +49,9 @@
     <Compile Include="ColorFileProcessor.cs" />
     <Compile Include="Colors\ClampedColor.cs" />
     <Compile Include="Colors\ColorConversions.cs" />
+    <Compile Include="Colors\ColorMath.cs" />
     <Compile Include="Colors\HexRgb.cs" />
     <Compile Include="Colors\Color.cs" />
-    <Compile Include="Common\ColorMath.cs" />
     <Compile Include="Common\DoubleExtensions.cs" />
     <Compile Include="Common\GenericExtensions.cs" />
     <Compile Include="Common\StringExtensions.cs" />

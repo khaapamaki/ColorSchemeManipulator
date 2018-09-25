@@ -1,3 +1,4 @@
+using ColorSchemeManipulator.Colors;
 using NUnit.Framework;
 using ColorSchemeManipulator.Common;
 
