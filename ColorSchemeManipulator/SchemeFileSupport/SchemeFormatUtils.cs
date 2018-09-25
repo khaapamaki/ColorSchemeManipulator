@@ -9,6 +9,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
 {
     public static class SchemeFormatUtils
     {
+        [Obsolete] // copy stuff before deleting
         private const string PatternHex8 = "(?<hex>[0-9abcdefABCDEF]{8})";
         private const string PatternHex6 = "(?<hex>[0-9abcdefABCDEF]{6})";
         private const string PatternHex3or6 = "(?<hex>[0-9abcdefABCDEF]{6}|[0-9abcdefABCDEF]{3})";
@@ -45,18 +46,19 @@ namespace ColorSchemeManipulator.SchemeFileSupport
         {
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
-                    return null;
+                    return new IdeaSchemeFileHandler();
                 case SchemeFormat.VisualStudio:
-                    return null;
+                    return new VisualStudioSchemeFileHandler();
                 case SchemeFormat.VSCode:
-                    return new VsCodeHandler();
+                    return new VsCodeSchemeFileHandler();
                 case SchemeFormat.CSS:
-                    return null;                
+                    return new CssFileHandler();                
                 default:
                     return null;
             }
         }
         
+        [Obsolete] // copy stuff before deleting
         public static string GetRegEx(SchemeFormat schemeFormat)
         {
             // Group that matches actual rgb hex pattern must be named as "hex"
@@ -74,24 +76,8 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             }
         }
 
-        [Obsolete]
-        public static string GetRgbHexFormat(SchemeFormat schemeFormat)
-        {
-            switch (schemeFormat) {
-                case SchemeFormat.Idea:
-                    return "rrggbb";
-                case SchemeFormat.VisualStudio:
-                    return "AARRGGBB";
-                case SchemeFormat.VSCode:
-                    return "rrggbbaa";
-                case SchemeFormat.CSS:
-                    return "rrggbb";
-                default:
-                    return "rrggbb";
-            }
-        }
-
-        private static RgbHexFormatSpecs[] GetRgbHexFormats(SchemeFormat schemeFormat)
+        [Obsolete] // copy stuff before deleting
+        private static PaddableHexFormat[] GetRgbHexFormats(SchemeFormat schemeFormat)
         {
             // Note: if multiple formats are used at the same time and padding is in use,
             // shorter formats must be defined first
@@ -100,9 +86,9 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 {
                     return new[]
                     {
-                        new RgbHexFormatSpecs()
+                        new PaddableHexFormat()
                         {
-                            RgbHexFormat = "rrggbb",
+                            HexFormat = "rrggbb",
                             Padding = "000000",
                             PaddingDirection = PaddingDirection.Left
                         }
@@ -112,9 +98,9 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 {
                     return new[]
                     {
-                        new RgbHexFormatSpecs()
+                        new PaddableHexFormat()
                         {
-                            RgbHexFormat = "AARRGGBB",
+                            HexFormat = "AARRGGBB",
                             Padding = null,
                             PaddingDirection = PaddingDirection.None
                         }
@@ -124,9 +110,9 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 {
                     return new[]
                     {
-                        new RgbHexFormatSpecs()
+                        new PaddableHexFormat()
                         {
-                            RgbHexFormat = "rrggbbaa",
+                            HexFormat = "rrggbbaa",
                             Padding = "000000ff",
                             PaddingDirection = PaddingDirection.Right
                         }
@@ -137,15 +123,15 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 {
                     return new[]
                     {
-                        new RgbHexFormatSpecs()
+                        new PaddableHexFormat()
                         {
-                            RgbHexFormat = "rgb",
+                            HexFormat = "rgb",
                             Padding = null,
                             PaddingDirection = PaddingDirection.None
                         },
-                        new RgbHexFormatSpecs()
+                        new PaddableHexFormat()
                         {
-                            RgbHexFormat = "rrggbb",
+                            HexFormat = "rrggbb",
                             Padding = null,
                             PaddingDirection = PaddingDirection.None
                         }
@@ -158,19 +144,16 @@ namespace ColorSchemeManipulator.SchemeFileSupport
         /// Converts RGB hex string to Color. Applies padding to short strings by the color scheme padding rules.
         /// </summary>
         /// <param name="rgbString"></param>
-        /// <param name="schemeFormat"></param>
+        /// <param name="formats"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static Color FromHexString(string rgbString, SchemeFormat schemeFormat)
+        public static Color FromHexString(string rgbString, IEnumerable<PaddableHexFormat> formats)
         {
-            //string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
-            //(string padding, PaddingDirection padDir) = SchemeFormatUtil.GetRgbHexPadding(schemeFormat);
-            RgbHexFormatSpecs[] formats = SchemeFormatUtils.GetRgbHexFormats(schemeFormat);
 
             foreach (var format in formats) {
-                string rgbHexFormat = format.RgbHexFormat;
-                if (format.Padding != null && format.Padding.Length != format.RgbHexFormat.Length) {
-                    throw new Exception("RGB hex string misconfiguration: " + format.RgbHexFormat + " with padding " +
+                string rgbHexFormat = format.HexFormat;
+                if (format.Padding != null && format.Padding.Length != format.HexFormat.Length) {
+                    throw new Exception("RGB hex string misconfiguration: " + format.HexFormat + " with padding " +
                                         format.Padding);
                 }
 
@@ -198,14 +181,13 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             throw new Exception("Invalid color string: " + rgbString);
         }
         
-        
         /// <summary>
         /// Performs manual replacement for matches with processed color replacement strings
         /// </summary>
         /// <param name="text"></param>
         /// <param name="colorMatches"></param>
         /// <returns></returns>
-        public static string BatchReplace(string text, List<RegexMatch> colorMatches)
+        public static string BatchReplace(string text, List<RegexReplacement> colorMatches)
         {
             // matches must be in reverse order by indexes, otherwise replacing with strings
             // of which lengths differ from original's will make latter indexes invalid
@@ -222,9 +204,9 @@ namespace ColorSchemeManipulator.SchemeFileSupport
     }
 
 
-    public class RgbHexFormatSpecs
+    public class PaddableHexFormat
     {
-        public string RgbHexFormat { get; set; }
+        public string HexFormat { get; set; }
         public string Padding { get; set; }
         public PaddingDirection PaddingDirection { get; set; }
     }
@@ -233,8 +215,6 @@ namespace ColorSchemeManipulator.SchemeFileSupport
     {
         Left,
         Right,
-
-        // Middle,
         None
     }
 }

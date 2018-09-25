@@ -9,7 +9,7 @@ using Color = ColorSchemeManipulator.Colors.Color;
 
 namespace ColorSchemeManipulator.SchemeFileSupport
 {
-    public class BitmapHandler : IColorFileHandler<Bitmap>
+    public class ImageFileHandler : IColorFileHandler<Bitmap>
     {
         public Bitmap ReadFile(string sourceFile)
         {
@@ -22,28 +22,17 @@ namespace ColorSchemeManipulator.SchemeFileSupport
         }
         
         public IEnumerable<Color> GetColors(Bitmap source)
-        {            
-            // List<Color> colors = new List<Color>();
-            
+        {                       
             for (int y = 0; y < source.Height; y++) {
                 for (int x = 0; x < source.Width; x++) {
                     yield return ColorConversions.SystemColorToColor(source.GetPixel(x, y));
                 }
             }
-
-            // for (int y = 0; y < source.Height; y++) {
-            //     for (int x = 0; x < source.Width; x++) {
-            //         colors.Add(ColorConversions.SystemColorToColor(source.GetPixel(x, y)));
-            //     }
-            // }
-            //
-            // return colors;
         }
         
 
         public Bitmap ReplaceColors(Bitmap source, IEnumerable<Color> colors)
-        {
-            
+        {        
             int x = 0;
             int y = 0;
             foreach (var color in colors) {
@@ -59,6 +48,5 @@ namespace ColorSchemeManipulator.SchemeFileSupport
 
             return source;
         }
-        
     }
 }

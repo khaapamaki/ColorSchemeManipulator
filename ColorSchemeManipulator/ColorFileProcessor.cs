@@ -17,21 +17,23 @@ namespace ColorSchemeManipulator
     /// <summary>
     /// Processes text based color scheme files
     /// </summary>
-    public class ColorSchemeProcessor<T>
+    public class ColorFileProcessor<T>
     {
         private readonly IColorFileHandler<T> _handler;
 
         /// <summary>
         /// A constructor that sets rgb hex format and regex pattern by the scheme format
         /// </summary>
-        public ColorSchemeProcessor(IColorFileHandler<T> handler)
+        public ColorFileProcessor(IColorFileHandler<T> handler)
         {
             _handler = handler;
         }
 
+        private ColorFileProcessor() { }
+        
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
-            T data = _handler.ReadFile(sourceFile);
+            var data = _handler.ReadFile(sourceFile);
             T filteredData;
 
             try {

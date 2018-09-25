@@ -94,7 +94,7 @@ namespace ColorSchemeManipulator
             if (File.Exists(sourceFile)) {
                 if (schemeFormat == SchemeFormat.Image) {
                     // var processor = new ImageProcessor();
-                    var processor = new ColorSchemeProcessor<Bitmap>(new BitmapHandler());
+                    var processor = new ColorFileProcessor<Bitmap>(new ImageFileHandler());
                     
                     Console.WriteLine("Applying filters:");
                     Console.WriteLine(filterSet.ToString());
@@ -104,7 +104,7 @@ namespace ColorSchemeManipulator
                 } else {
                     var parser = SchemeFormatUtils.GetHandlerByFormat(schemeFormat);
                     if (parser != null) {
-                        var processor = new ColorSchemeProcessor<string>(SchemeFormatUtils.GetHandlerByFormat(schemeFormat));
+                        var processor = new ColorFileProcessor<string>(SchemeFormatUtils.GetHandlerByFormat(schemeFormat));
                         
                         Console.WriteLine("Applying filters:");
                         Console.WriteLine(filterSet.ToString());
