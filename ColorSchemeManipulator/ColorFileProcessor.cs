@@ -6,9 +6,9 @@ using ColorSchemeManipulator.SchemeFormats.Handlers;
 
 namespace ColorSchemeManipulator
 {
-
     /// <summary>
-    /// Generic processor for any supported file type. Uses IColorFileHandler class to perform all needed actions.
+    /// Generic processor for any supported file type. Uses external handler class
+    /// that that implements IColorFileHandler to perform all needed actions.
     /// </summary>
     public class ColorFileProcessor<T>
     {
@@ -38,12 +38,13 @@ namespace ColorSchemeManipulator
 
         private T ApplyFilters(T source, FilterSet filters)
         {      
-            // test IEnumerable!
+            // Fetch all colors
             IEnumerable<Color> colors = _handler.GetColors(source);
             
-            // Apply filters to the list of colors
+            // Apply filters
             IEnumerable<Color> filteredColors = filters.ApplyTo(colors);
-  
+            
+            // replace original colors with filtered ones
             return _handler.ReplaceColors(source, filteredColors);
         }
    
