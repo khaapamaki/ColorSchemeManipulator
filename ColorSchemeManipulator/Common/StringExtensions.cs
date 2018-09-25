@@ -1,4 +1,6 @@
+using System.Runtime.InteropServices;
 using System.Text;
+using PARAMDESC = System.Runtime.InteropServices.ComTypes.PARAMDESC;
 
 namespace ColorSchemeManipulator.Common
 {
@@ -11,6 +13,22 @@ namespace ColorSchemeManipulator.Common
             builder.Append(replacement);
             builder.Append(s.Substring(index + length));
             return builder.ToString();
+        }
+
+        public static string PadLeft(this string str, string padding)
+        {
+            if (str.Length >= padding.Length)
+                return str;
+
+            return padding.Substring(0, padding.Length - str.Length) + str;
+        }
+        
+        public static string PadRight(this string str, string padding)
+        {
+            if (str.Length >= padding.Length)
+                return str;
+
+            return str + padding.Substring(str.Length);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace ColorSchemeManipulator
     {
         private readonly string _hexFormat;
         private readonly string _regExPattern;
+        private readonly SchemeFormat _schemeFormat;
 
         /// <summary>
         /// A constructor that sets rgb hex format and regex pattern by the scheme format
@@ -28,6 +29,7 @@ namespace ColorSchemeManipulator
         /// <param name="schemeFormat"></param>
         public ColorSchemeProcessor(SchemeFormat schemeFormat)
         {
+            _schemeFormat = schemeFormat;
             _hexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
             _regExPattern = SchemeFormatUtil.GetRegEx(schemeFormat);
         }
@@ -67,7 +69,7 @@ namespace ColorSchemeManipulator
                 if (rgbString.Length > _hexFormat.Length)
                     rgbString = rgbString.Substring(0, _hexFormat.Length);
                 
-                colorSet.Add(HexRgb.FromRgbString(rgbString, _hexFormat));
+                colorSet.Add(HexRgb.FromRgbString(rgbString, _schemeFormat));
             }
             
             // Apply filters to the list of colors

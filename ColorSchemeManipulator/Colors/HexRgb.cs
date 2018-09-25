@@ -1,124 +1,183 @@
 using System;
+using System.Reflection;
+using System.Text;
+using ColorSchemeManipulator.SchemeFileSupport;
+using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Colors
 {
     public static class HexRgb
     {
-        public static Color FromRgbString(string rgbString, string rgbHexFormat)
+        /// <summary>
+        /// Converts RGB hex string to Color. Applies padding to short strings by the color scheme padding rules.
+        /// </summary>
+        /// <param name="rgbString"></param>
+        /// <param name="schemeFormat"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static Color FromRgbString(string rgbString, SchemeFormat schemeFormat)
         {
-            if (IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
-                if (rgbString.Length < rgbHexFormat.Length) {
-                    rgbString = rgbString.PadLeft(rgbHexFormat.Length, '0');
-                }
+            //string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
+            //(string padding, PaddingDirection padDir) = SchemeFormatUtil.GetRgbHexPadding(schemeFormat);
+            RgbHexFormatSpecs[] formats = SchemeFormatUtil.GetRgbHexFormats(schemeFormat);
 
-                switch (rgbHexFormat.ToUpper()) {
-                    case "RRGGBB":
-                        return FromRgbString(rgbString);
-                    case "AARRGGBB":
-                        return FromArgbString(rgbString);
-                    case "RRGGBBAA":
-                        return FromRgbaString(rgbString);
-                    default:
-                        throw new Exception("Incorrect RGB string format: " + rgbHexFormat);
+            foreach (var format in formats) {
+                string rgbHexFormat = format.RgbHexFormat;
+                if (format.Padding != null && format.Padding.Length != format.RgbHexFormat.Length) {
+                    throw new Exception("RGB hex string misconfiguration: " + format.RgbHexFormat + " with padding " + format.Padding);
                 }
+                
+                if (IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
+                    
+                    if (rgbString.Length < rgbHexFormat.Length) {
+                        
+                        if (format.PaddingDirection == PaddingDirection.Left 
+                            || format.PaddingDirection == PaddingDirection.Right) {
+                            switch (format.PaddingDirection) {
+                                case PaddingDirection.Left:
+                                    rgbString = rgbString.PadLeft(format.Padding);
+                                    break;
+                                case PaddingDirection.Right:
+                                    rgbString = rgbString.PadRight(format.Padding);
+                                    break;
+                            }
+                        } 
+                    }
+                    
+                    if (rgbString.Length == rgbHexFormat.Length) {
+                        return FromRgbString(rgbString, rgbHexFormat);
+                    }
+                } 
             }
 
             throw new Exception("Invalid color string: " + rgbString);
+  
         }
 
-        public static Color FromRgbString(string rgbString)
-        {
-            return Color.FromRgb(
-                byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
+        public static Color FromRgbString(string rgbString, string rgbHexFormat)
+            {
+                if (IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
+                    if (rgbString.Length < rgbHexFormat.Length) {
+                        throw new Exception("Invalid color string: " + rgbString);
+                        // rgbString = rgbString.PadLeft(rgbHexFormat.Length, '0');
+                    }
 
-        }
+                    switch (rgbHexFormat.ToUpper()) {
+                        case "RRGGBB":
+                            return FromRgbString(rgbString);
+                        case "RGB":
+                            return FromRgbShortString(rgbString);
+                        case "AARRGGBB":
+                            return FromArgbString(rgbString);
+                        case "RRGGBBAA":
+                            return FromRgbaString(rgbString);
+                        default:
+                            throw new Exception("Incorrect RGB string format: " + rgbHexFormat);
+                    }
+                }
 
-        public static Color FromArgbString(string rgbString)
-        {
-            return Color.FromRgb(
-                byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber));
-            
-        }
-
-        public static Color FromRgbaString(string rgbString)
-        {
-            return Color.FromRgb(
-                byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(rgbString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber));
-        }
-
-        public static string ToRgbString(Color color, string hexFormat)
-        {
-            return ToRgbString(color.Red, color.Green, color.Blue, color.Alpha, hexFormat);
-        }
-
-        public static string ToRgbString(double r, double g, double b, double a, string rgbHexFormat)
-        {
-            return ToRgbString((byte) (r * 255), (byte) (g * 255),(byte) (b * 255), (byte) (a * 255), rgbHexFormat);
-        }
-        
-        
-        public static string ToRgbString(byte r, byte g, byte b, byte a, string rgbHexFormat)
-        {
-            string result;
-            switch (rgbHexFormat.ToUpper()) {
-                case "RRGGBB":
-                    result = ToRgbString(r, g, b);
-                    break;
-                case "AARRGGBB":
-                    result = ToArgbString(r, g, b, a);
-                    break;
-                case "RRGGBBAA":
-                    result = ToRgbaString(r, g, b, a);
-                    break;
-                default:
-                    result = ToRgbString(r, g, b, a);
-                    break;
+                throw new Exception("Invalid color string: " + rgbString);
             }
 
-            bool isUpperCase = rgbHexFormat.ToUpper() == rgbHexFormat;
-            return isUpperCase
-                ? result.ToUpper()
-                : result.ToLower();
-        }
-
-        private static string ToRgbString(byte r, byte g, byte b, byte a = 0xff)
-        {
-            return r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
-        }
-
-        private static string ToArgbString(byte r, byte g, byte b, byte a)
-        {
-            return a.ToString("X2")
-                   + r.ToString("X2")
-                   + g.ToString("X2")
-                   + b.ToString("X2");
-        }
-
-        private static string ToRgbaString(byte r, byte g, byte b, byte a)
-        {
-            return r.ToString("X2")
-                   + g.ToString("X2")
-                   + b.ToString("X2")
-                   + a.ToString("X2");
-        }
-
-        public static bool IsValidHexString(string str)
-        {
-            const string validHex = "0123456789abcdefABCDEF";
-            foreach (var c in str) {
-                if (!validHex.Contains(c.ToString()))
-                    return false;
+            public static Color FromRgbString(string rgbString)
+            {
+                return Color.FromRgb(
+                    byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
+            }
+        
+            public static Color FromRgbShortString(string rgbString)
+            {
+                return Color.FromRgb(
+                    byte.Parse(rgbString.Substring(0, 1) + "0", System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(1, 2) + "0", System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(2, 3) + "0", System.Globalization.NumberStyles.HexNumber));
             }
 
-            return true;
+            public static Color FromArgbString(string rgbString)
+            {
+                return Color.FromRgb(
+                    byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber));
+            }
+
+            public static Color FromRgbaString(string rgbString)
+            {
+                return Color.FromRgb(
+                    byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
+                    byte.Parse(rgbString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber));
+            }
+
+            public static string ToRgbString(Color color, string hexFormat)
+            {
+                return ToRgbString(color.Red, color.Green, color.Blue, color.Alpha, hexFormat);
+            }
+
+            public static string ToRgbString(double r, double g, double b, double a, string rgbHexFormat)
+            {
+                return ToRgbString((byte) (r * 255), (byte) (g * 255), (byte) (b * 255), (byte) (a * 255),
+                    rgbHexFormat);
+            }
+
+            public static string ToRgbString(byte r, byte g, byte b, byte a, string rgbHexFormat)
+            {
+                string result;
+                switch (rgbHexFormat.ToUpper()) {
+                    case "RRGGBB":
+                        result = ToRgbString(r, g, b);
+                        break;
+                    case "AARRGGBB":
+                        result = ToArgbString(r, g, b, a);
+                        break;
+                    case "RRGGBBAA":
+                        result = ToRgbaString(r, g, b, a);
+                        break;
+                    default:
+                        result = ToRgbString(r, g, b, a);
+                        break;
+                }
+
+                bool isUpperCase = rgbHexFormat.ToUpper() == rgbHexFormat;
+                return isUpperCase
+                    ? result.ToUpper()
+                    : result.ToLower();
+            }
+
+            private static string ToRgbString(byte r, byte g, byte b, byte a = 0xff)
+            {
+                return r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
+            }
+
+            private static string ToArgbString(byte r, byte g, byte b, byte a)
+            {
+                return a.ToString("X2")
+                       + r.ToString("X2")
+                       + g.ToString("X2")
+                       + b.ToString("X2");
+            }
+
+            private static string ToRgbaString(byte r, byte g, byte b, byte a)
+            {
+                return r.ToString("X2")
+                       + g.ToString("X2")
+                       + b.ToString("X2")
+                       + a.ToString("X2");
+            }
+
+            public static bool IsValidHexString(string str)
+            {
+                const string validHex = "0123456789abcdefABCDEF";
+                foreach (var c in str) {
+                    if (!validHex.Contains(c.ToString()))
+                        return false;
+                }
+
+                return true;
+            }
         }
     }
-}

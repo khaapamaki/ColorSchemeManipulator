@@ -55,10 +55,10 @@ namespace ColorSchemeManipulator.Common
             Console.Write(help_tail);
         }
 
-        public static List<string> WordWrap(string sentence, int columnWidth)
+        public static List<string> WordWrap(string str, int columnWidth)
         {
             List<string> lines = new List<string>(3);
-            string[] words = sentence.Split(' ');
+            string[] words = str.Split(' ');
 
             string line = "";
             foreach (string word in words) {
@@ -77,11 +77,10 @@ namespace ColorSchemeManipulator.Common
         }
 
 
-        public static List<string> ParamsWrap(string sentence, int columnWidth)
+        public static List<string> ParamsWrap(string argumentStr, int columnWidth)
         {
             List<string> lines = new List<string>(4);
-            // todo make this to retain separators
-            string[] words = SplitArgument(sentence);
+            string[] words = SplitArgument(argumentStr);
 
             string line = "";
             foreach (string word in words) {
@@ -99,12 +98,12 @@ namespace ColorSchemeManipulator.Common
             return lines;
         }
 
-        private static string[] SplitArgument(string sentence)
+        private static string[] SplitArgument(string argumentStr)
         {
             List<string> lines = new List<string>(12);
             var sb = new StringBuilder(20);
             char prev = ' ';
-            foreach (var c in sentence) {
+            foreach (var c in argumentStr) {
                 if (c == ' ')
                     CutAfter(ref lines, ref sb, c);
                 else if (c == '=') {
