@@ -7,6 +7,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
         VSCode,
         CSS,
         Image,
-        Generic
+        Generic,
+        Unknown
     }
 }

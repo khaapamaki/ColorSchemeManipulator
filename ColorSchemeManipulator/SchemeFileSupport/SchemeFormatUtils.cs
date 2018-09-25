@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
@@ -36,10 +37,26 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 case "jpeg":
                     return SchemeFormat.Image;
                 default:
-                    return SchemeFormat.Generic;
+                    return SchemeFormat.Unknown;
             }
         }
 
+        public static IColorSchemeParser<string> GetParserByFormat(SchemeFormat schemeFormat)
+        {
+            switch (schemeFormat) {
+                case SchemeFormat.Idea:
+                    return null;
+                case SchemeFormat.VisualStudio:
+                    return null;
+                case SchemeFormat.VSCode:
+                    return new VSCodeParser();
+                case SchemeFormat.CSS:
+                    return null;
+                default:
+                    return null;
+            }
+        }
+        
         public static string GetRegEx(SchemeFormat schemeFormat)
         {
             // Group that matches actual rgb hex pattern must be named as "hex"
@@ -144,7 +161,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
         /// <param name="schemeFormat"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static Color FromRgbString(string rgbString, SchemeFormat schemeFormat)
+        public static Color FromHexString(string rgbString, SchemeFormat schemeFormat)
         {
             //string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
             //(string padding, PaddingDirection padDir) = SchemeFormatUtil.GetRgbHexPadding(schemeFormat);
@@ -180,6 +197,28 @@ namespace ColorSchemeManipulator.SchemeFileSupport
 
             throw new Exception("Invalid color string: " + rgbString);
         }
+        
+        
+        /// <summary>
+        /// Performs manual replacement for matches with processed color replacement strings
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="colorMatches"></param>
+        /// <returns></returns>
+        public static string BatchReplace(string text, List<ColorMatch> colorMatches)
+        {
+            // matches must be in reverse order by indexes, otherwise replacing with strings
+            // of which lengths differ from original's will make latter indexes invalid
+            colorMatches = colorMatches.OrderByDescending(m => m.Index).ToList();
+            
+            foreach (var match in colorMatches) {
+                text = text.ReplaceWithin(match.Index, match.Length, match.ReplacementString);
+                //Console.WriteLine(match.MatchingString + " -> " +  match.ReplacementString);
+            }
+
+            return text;
+        }
+
     }
 
 

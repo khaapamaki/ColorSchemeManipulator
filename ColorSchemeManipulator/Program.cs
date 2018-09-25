@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization.Advanced;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
@@ -56,9 +57,6 @@ namespace ColorSchemeManipulator
                 return;
             }
 
-            Console.WriteLine("Applying filters:");
-            Console.WriteLine(filterSet.ToString());
-
             string sourceFile, targetFile;
 
 
@@ -87,23 +85,36 @@ namespace ColorSchemeManipulator
             }
 
             SchemeFormat schemeFormat = SchemeFormatUtils.GetFormatFromExtension(Path.GetExtension(sourceFile));
-
-            if (schemeFormat == SchemeFormat.Idea
-                || schemeFormat == SchemeFormat.VisualStudio
-                || schemeFormat == SchemeFormat.VSCode) {
-                if (File.Exists(sourceFile)) {
-                    ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
+            if (schemeFormat == SchemeFormat.Unknown) {
+                Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
+                return;
+            }
+            
+            if (File.Exists(sourceFile)) {
+                if (schemeFormat == SchemeFormat.Image) {
+                    var processor = new ImageProcessor();
+                    
+                    Console.WriteLine("Applying filters:");
+                    Console.WriteLine(filterSet.ToString());
+                    
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
                     Console.WriteLine("Done.");
                 } else {
-                    Console.Error.WriteLine(sourceFileName + " does not exist");
+                    var parser = SchemeFormatUtils.GetParserByFormat(schemeFormat);
+                    if (parser != null) {
+                        var processor = new ColorSchemeProcessor<string>(SchemeFormatUtils.GetParserByFormat(schemeFormat));
+                        
+                        Console.WriteLine("Applying filters:");
+                        Console.WriteLine(filterSet.ToString());
+                        
+                        processor.ProcessFile(sourceFile, targetFile, filterSet);
+                        Console.WriteLine("Done.");
+                    } else {
+                        Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
+                    }
                 }
-            } else if (schemeFormat == SchemeFormat.Image) {
-                ImageProcessor processor = new ImageProcessor();
-                processor.ProcessFile(sourceFile, targetFile, filterSet);
-                Console.WriteLine("Done.");
             } else {
-                Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
+                Console.Error.WriteLine(sourceFileName + " does not exist");
             }
         }
 
