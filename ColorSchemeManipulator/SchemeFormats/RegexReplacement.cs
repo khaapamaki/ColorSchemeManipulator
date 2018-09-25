@@ -1,4 +1,4 @@
-namespace ColorSchemeManipulator.SchemeFileSupport
+namespace ColorSchemeManipulator.SchemeFormats
 {
     /// <summary>
     /// Holds information of regex match to make replacements later

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using ColorSchemeManipulator.Colors;
 
-namespace ColorSchemeManipulator.SchemeFileSupport
+namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public abstract class SchemeFileHandler : IColorFileHandler<string>
     {
@@ -32,14 +32,14 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             _matches = matches;
             foreach (Match match in matches) {
                 string rgbString = match.Groups[MatchGroupName].ToString();
-                yield return SchemeFormatUtils.FromHexString(rgbString, InputHexFormats);
+                yield return SchemeUtils.PaddableHexStringToColor(rgbString, InputHexFormats);
             }
         }
 
         public string ReplaceColors(string text, IEnumerable<Color> colors)
         {
             List<RegexReplacement> colorMatches = GetMatches(text, colors.ToList());
-            return SchemeFormatUtils.BatchReplace(text, colorMatches);
+            return SchemeUtils.BatchReplace(text, colorMatches);
         }
 
         private List<RegexReplacement> GetMatches(string text, IReadOnlyList<Color> colors)

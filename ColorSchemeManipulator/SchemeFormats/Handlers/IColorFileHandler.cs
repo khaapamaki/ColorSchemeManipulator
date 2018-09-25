@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Filters;
 
-namespace ColorSchemeManipulator.SchemeFileSupport
+namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public interface IColorFileHandler<T>
     {

@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
-using ColorSchemeManipulator.SchemeFileSupport;
+using ColorSchemeManipulator.SchemeFormats.Handlers;
 
 namespace ColorSchemeManipulator
 {

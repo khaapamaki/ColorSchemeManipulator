@@ -63,19 +63,19 @@
     <Compile Include="Filters\ColorRange.cs" />
     <Compile Include="Filters\FilterUtils.cs" />
     <Compile Include="Filters\ParameterRange.cs" />
-    <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SchemeFileSupport\ImageFileHandler.cs" />
-    <Compile Include="SchemeFileSupport\CssFileHandler.cs" />
-    <Compile Include="SchemeFileSupport\IdeaSchemeFileHandler.cs" />
-    <Compile Include="SchemeFileSupport\RegexReplacement.cs" />
-    <Compile Include="SchemeFileSupport\IColorFileHandler.cs" />
-    <Compile Include="SchemeFileSupport\SchemeFormat.cs" />
-    <Compile Include="SchemeFileSupport\SchemeFormatUtils.cs" />
-    <Compile Include="SchemeFileSupport\SchemeFileHandler.cs" />
-    <Compile Include="SchemeFileSupport\VsCodeSchemeFileHandler.cs" />
-    <Compile Include="SchemeFileSupport\VisualStudioSchemeFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\CssFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\IColorFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\IdeaSchemeFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\ImageFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\SchemeFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\VisualStudioSchemeFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\VsCodeSchemeFileHandler.cs" />
+    <Compile Include="SchemeFormats\PaddableHexFormat.cs" />
+    <Compile Include="SchemeFormats\RegexReplacement.cs" />
+    <Compile Include="SchemeFormats\SchemeFormat.cs" />
+    <Compile Include="SchemeFormats\SchemeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\ColorSchemes\Cobalt.icls">
@@ -116,7 +116,6 @@
     <Content Include="bin\Debug\HappyDays_converted.png" />
     <Content Include="bin\Debug\photo.png" />
     <Content Include="bin\Debug\photo_converted.png" />
-    <Content Include="SchemeFileSupport\Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

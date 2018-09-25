@@ -1,4 +1,4 @@
-namespace ColorSchemeManipulator.SchemeFileSupport
+namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     // Todo subclassing SchemeFileHandler is not good enough -> make proper css handler
     public class CssFileHandler : SchemeFileHandler

@@ -7,7 +7,8 @@ using System.Xml.Serialization.Advanced;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
-using ColorSchemeManipulator.SchemeFileSupport;
+using ColorSchemeManipulator.SchemeFormats;
+using ColorSchemeManipulator.SchemeFormats.Handlers;
 
 // 2nd best dark to light inversion so far.. last parts is the neon yellow/green fix
 // -ib -lel=0.1,0.9,1,0.1,1 -gas=1.15 -ga(s:0.04-0.3/0.1,l:0-0.2/0.1)=2 -ga(h:40/2-56/20,l:0.04-0.6/0.2)=2 -s(h:40/2-56/20,l:0.04-0.6/0.2)=2 
@@ -85,7 +86,7 @@ namespace ColorSchemeManipulator
                 // return;
             }
 
-            SchemeFormat schemeFormat = SchemeFormatUtils.GetFormatFromExtension(Path.GetExtension(sourceFile));
+            SchemeFormat schemeFormat = SchemeUtils.GetFormatFromExtension(Path.GetExtension(sourceFile));
             if (schemeFormat == SchemeFormat.Unknown) {
                 Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
                 return;
@@ -102,9 +103,9 @@ namespace ColorSchemeManipulator
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
                     Console.WriteLine("Done.");
                 } else {
-                    var parser = SchemeFormatUtils.GetHandlerByFormat(schemeFormat);
+                    var parser = SchemeUtils.GetSchemeHandlerByFormat(schemeFormat);
                     if (parser != null) {
-                        var processor = new ColorFileProcessor<string>(SchemeFormatUtils.GetHandlerByFormat(schemeFormat));
+                        var processor = new ColorFileProcessor<string>(SchemeUtils.GetSchemeHandlerByFormat(schemeFormat));
                         
                         Console.WriteLine("Applying filters:");
                         Console.WriteLine(filterSet.ToString());

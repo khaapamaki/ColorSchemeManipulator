@@ -1,4 +1,4 @@
-namespace ColorSchemeManipulator.SchemeFileSupport
+namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public class IdeaSchemeFileHandler : SchemeFileHandler
     {

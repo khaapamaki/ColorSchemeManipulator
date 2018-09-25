@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using ColorSchemeManipulator.Colors;
 using Color = ColorSchemeManipulator.Colors.Color;
 
 
-namespace ColorSchemeManipulator.SchemeFileSupport
+namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public class ImageFileHandler : IColorFileHandler<Bitmap>
     {
