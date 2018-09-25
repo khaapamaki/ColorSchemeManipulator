@@ -30,8 +30,8 @@ namespace ColorSchemeManipulator
         public ColorSchemeProcessor(SchemeFormat schemeFormat)
         {
             _schemeFormat = schemeFormat;
-            _hexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
-            _regExPattern = SchemeFormatUtil.GetRegEx(schemeFormat);
+            _hexFormat = SchemeFormatUtils.GetRgbHexFormat(schemeFormat);
+            _regExPattern = SchemeFormatUtils.GetRegEx(schemeFormat);
         }
 
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
@@ -69,7 +69,7 @@ namespace ColorSchemeManipulator
                 if (rgbString.Length > _hexFormat.Length)
                     rgbString = rgbString.Substring(0, _hexFormat.Length);
                 
-                colorSet.Add(HexRgb.FromRgbString(rgbString, _schemeFormat));
+                colorSet.Add(SchemeFormatUtils.FromRgbString(rgbString, _schemeFormat));
             }
             
             // Apply filters to the list of colors
@@ -127,5 +127,6 @@ namespace ColorSchemeManipulator
             public string MatchingString;
             public string ReplacementString;
         }
+
     }
 }

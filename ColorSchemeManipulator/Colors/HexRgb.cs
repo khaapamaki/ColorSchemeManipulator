@@ -8,52 +8,6 @@ namespace ColorSchemeManipulator.Colors
 {
     public static class HexRgb
     {
-        /// <summary>
-        /// Converts RGB hex string to Color. Applies padding to short strings by the color scheme padding rules.
-        /// </summary>
-        /// <param name="rgbString"></param>
-        /// <param name="schemeFormat"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static Color FromRgbString(string rgbString, SchemeFormat schemeFormat)
-        {
-            //string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
-            //(string padding, PaddingDirection padDir) = SchemeFormatUtil.GetRgbHexPadding(schemeFormat);
-            RgbHexFormatSpecs[] formats = SchemeFormatUtil.GetRgbHexFormats(schemeFormat);
-
-            foreach (var format in formats) {
-                string rgbHexFormat = format.RgbHexFormat;
-                if (format.Padding != null && format.Padding.Length != format.RgbHexFormat.Length) {
-                    throw new Exception("RGB hex string misconfiguration: " + format.RgbHexFormat + " with padding " + format.Padding);
-                }
-                
-                if (IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
-                    
-                    if (rgbString.Length < rgbHexFormat.Length) {
-                        
-                        if (format.PaddingDirection == PaddingDirection.Left 
-                            || format.PaddingDirection == PaddingDirection.Right) {
-                            switch (format.PaddingDirection) {
-                                case PaddingDirection.Left:
-                                    rgbString = rgbString.PadLeft(format.Padding);
-                                    break;
-                                case PaddingDirection.Right:
-                                    rgbString = rgbString.PadRight(format.Padding);
-                                    break;
-                            }
-                        } 
-                    }
-                    
-                    if (rgbString.Length == rgbHexFormat.Length) {
-                        return FromRgbString(rgbString, rgbHexFormat);
-                    }
-                } 
-            }
-
-            throw new Exception("Invalid color string: " + rgbString);
-  
-        }
-
         public static Color FromRgbString(string rgbString, string rgbHexFormat)
             {
                 if (IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {

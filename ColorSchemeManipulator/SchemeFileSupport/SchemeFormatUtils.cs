@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
+using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.SchemeFileSupport
 {
-    public static class SchemeFormatUtil
+    public static class SchemeFormatUtils
     {
         private const string PatternHex8 = "(?<hex>[0-9abcdefABCDEF]{8})";
         private const string PatternHex6 = "(?<hex>[0-9abcdefABCDEF]{6})";
@@ -40,7 +42,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
 
         public static string GetRegEx(SchemeFormat schemeFormat)
         {
-            // Patterns must have three groups, where 2nd must pure hex RGB without any prefixes!
+            // Group that matches actual rgb hex pattern must be named as "hex"
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
                     return "<option name=\".+\" value=\"" + PatternHex2to6 + "\"\\s?\\/>";
@@ -72,7 +74,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             }
         }
 
-        public static RgbHexFormatSpecs[] GetRgbHexFormats(SchemeFormat schemeFormat)
+        private static RgbHexFormatSpecs[] GetRgbHexFormats(SchemeFormat schemeFormat)
         {
             // Note: if multiple formats are used at the same time and padding is in use,
             // shorter formats must be defined first
@@ -134,7 +136,52 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 }
             }
         }
+
+        /// <summary>
+        /// Converts RGB hex string to Color. Applies padding to short strings by the color scheme padding rules.
+        /// </summary>
+        /// <param name="rgbString"></param>
+        /// <param name="schemeFormat"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static Color FromRgbString(string rgbString, SchemeFormat schemeFormat)
+        {
+            //string rgbHexFormat = SchemeFormatUtil.GetRgbHexFormat(schemeFormat);
+            //(string padding, PaddingDirection padDir) = SchemeFormatUtil.GetRgbHexPadding(schemeFormat);
+            RgbHexFormatSpecs[] formats = SchemeFormatUtils.GetRgbHexFormats(schemeFormat);
+
+            foreach (var format in formats) {
+                string rgbHexFormat = format.RgbHexFormat;
+                if (format.Padding != null && format.Padding.Length != format.RgbHexFormat.Length) {
+                    throw new Exception("RGB hex string misconfiguration: " + format.RgbHexFormat + " with padding " +
+                                        format.Padding);
+                }
+
+                if (HexRgb.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
+                    if (rgbString.Length < rgbHexFormat.Length) {
+                        if (format.PaddingDirection == PaddingDirection.Left
+                            || format.PaddingDirection == PaddingDirection.Right) {
+                            switch (format.PaddingDirection) {
+                                case PaddingDirection.Left:
+                                    rgbString = rgbString.PadLeft(format.Padding);
+                                    break;
+                                case PaddingDirection.Right:
+                                    rgbString = rgbString.PadRight(format.Padding);
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (rgbString.Length == rgbHexFormat.Length) {
+                        return HexRgb.FromRgbString(rgbString, rgbHexFormat);
+                    }
+                }
+            }
+
+            throw new Exception("Invalid color string: " + rgbString);
+        }
     }
+
 
     public class RgbHexFormatSpecs
     {

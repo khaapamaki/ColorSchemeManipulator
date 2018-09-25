@@ -86,7 +86,7 @@ namespace ColorSchemeManipulator
                 // return;
             }
 
-            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
+            SchemeFormat schemeFormat = SchemeFormatUtils.GetFormatFromExtension(Path.GetExtension(sourceFile));
 
             if (schemeFormat == SchemeFormat.Idea
                 || schemeFormat == SchemeFormat.VisualStudio
