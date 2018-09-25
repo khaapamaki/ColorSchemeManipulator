@@ -8,15 +8,12 @@ namespace ColorSchemeManipulator
 {
 
     /// <summary>
-    /// Processes text based color scheme files
+    /// Generic processor for any supported file type. Uses IColorFileHandler class to perform all needed actions.
     /// </summary>
     public class ColorFileProcessor<T>
     {
         private readonly IColorFileHandler<T> _handler;
 
-        /// <summary>
-        /// A constructor that sets rgb hex format and regex pattern by the scheme format
-        /// </summary>
         public ColorFileProcessor(IColorFileHandler<T> handler)
         {
             _handler = handler;
@@ -39,12 +36,6 @@ namespace ColorSchemeManipulator
             _handler.WriteFile(filteredData,targetFile);
         }
 
-        /// <summary>
-        /// Finds all color strings in a string using regex and applies filters to all of them
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="filters"></param>
-        /// <returns>A string representing new scheme file with replaced colors</returns>
         private T ApplyFilters(T source, FilterSet filters)
         {      
             // test IEnumerable!
