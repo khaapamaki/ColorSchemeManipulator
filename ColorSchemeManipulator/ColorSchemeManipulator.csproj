@@ -107,8 +107,6 @@
     </Content>
     <Content Include="bin\Debug\Cobalt.icls" />
     <Content Include="bin\Debug\colschman.exe" />
-    <Content Include="bin\Debug\colschman.pdb" />
-    <Content Include="bin\Debug\darcula-vs-2017.vstheme" />
     <Content Include="bin\Debug\HappyDays.icls" />
     <Content Include="bin\Debug\HappyDays.png" />
     <Content Include="bin\Debug\HappyDays_Complete.icls" />
