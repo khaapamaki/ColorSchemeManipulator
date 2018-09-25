@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -92,7 +93,8 @@ namespace ColorSchemeManipulator
             
             if (File.Exists(sourceFile)) {
                 if (schemeFormat == SchemeFormat.Image) {
-                    var processor = new ImageProcessor();
+                    // var processor = new ImageProcessor();
+                    var processor = new ColorSchemeProcessor<Bitmap>(new BitmapHandler());
                     
                     Console.WriteLine("Applying filters:");
                     Console.WriteLine(filterSet.ToString());
@@ -100,9 +102,9 @@ namespace ColorSchemeManipulator
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
                     Console.WriteLine("Done.");
                 } else {
-                    var parser = SchemeFormatUtils.GetParserByFormat(schemeFormat);
+                    var parser = SchemeFormatUtils.GetHandlerByFormat(schemeFormat);
                     if (parser != null) {
-                        var processor = new ColorSchemeProcessor<string>(SchemeFormatUtils.GetParserByFormat(schemeFormat));
+                        var processor = new ColorSchemeProcessor<string>(SchemeFormatUtils.GetHandlerByFormat(schemeFormat));
                         
                         Console.WriteLine("Applying filters:");
                         Console.WriteLine(filterSet.ToString());

@@ -66,11 +66,12 @@
     <Compile Include="ImageProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemeFileSupport\BitmapHandler.cs" />
     <Compile Include="SchemeFileSupport\ColorMatch.cs" />
-    <Compile Include="SchemeFileSupport\IColorSchemeParser.cs" />
+    <Compile Include="SchemeFileSupport\IColorDataHandler.cs" />
     <Compile Include="SchemeFileSupport\SchemeFormat.cs" />
     <Compile Include="SchemeFileSupport\SchemeFormatUtils.cs" />
-    <Compile Include="SchemeFileSupport\VSCodeParser.cs" />
+    <Compile Include="SchemeFileSupport\VsCodeHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\ColorSchemes\Cobalt.icls">

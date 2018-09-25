@@ -41,7 +41,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             }
         }
 
-        public static IColorSchemeParser<string> GetParserByFormat(SchemeFormat schemeFormat)
+        public static IColorDataHandler<string> GetHandlerByFormat(SchemeFormat schemeFormat)
         {
             switch (schemeFormat) {
                 case SchemeFormat.Idea:
@@ -49,9 +49,9 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 case SchemeFormat.VisualStudio:
                     return null;
                 case SchemeFormat.VSCode:
-                    return new VSCodeParser();
+                    return new VsCodeHandler();
                 case SchemeFormat.CSS:
-                    return null;
+                    return null;                
                 default:
                     return null;
             }

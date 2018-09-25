@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.SchemeFileSupport
 {
-    public class VSCodeParser : IColorSchemeParser<string>
+    public class VsCodeHandler : IColorDataHandler<string>
     {
         private RgbHexFormatSpecs _specs;
         private readonly string _hexFormat;
@@ -16,7 +18,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
 
         private MatchCollection _matches;
         
-        public VSCodeParser()
+        public VsCodeHandler()
         {
             _specs =
                 new RgbHexFormatSpecs() {
@@ -26,6 +28,16 @@ namespace ColorSchemeManipulator.SchemeFileSupport
                 };
         }
 
+        public string ReadFile(string sourceFile)
+        {
+            return File.ReadAllText(sourceFile);;
+        }
+
+        public void WriteFile(string text, string targetFile)
+        {
+            File.WriteAllText(targetFile, text, Encoding.Default);
+        }
+        
         public List<Color> GetColors(string source)
         {            
             List<Color> colors = new List<Color>();
@@ -39,7 +51,7 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             return colors;
         }
         
-        public List<ColorMatch> GetMatches(string text, List<Color> colors)
+        private List<ColorMatch> GetMatches(string text, List<Color> colors)
         {
             // Encapsulate filtered colors and regex matches within list of ColorMatch'es
             MatchCollection matches = _matches ?? Regex.Matches(text, _regExPattern);
@@ -61,8 +73,9 @@ namespace ColorSchemeManipulator.SchemeFileSupport
             return colorMatches;
         }
 
-        public string ReplaceColors(string source, List<ColorMatch> colorMatches)
+        public string ReplaceColors(string source,  List<Color> colors)
         {
+            List<ColorMatch> colorMatches = GetMatches(source, colors);
             return SchemeFormatUtils.BatchReplace(source, colorMatches);
         }
         

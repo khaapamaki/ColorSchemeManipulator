@@ -19,32 +19,29 @@ namespace ColorSchemeManipulator
     /// </summary>
     public class ColorSchemeProcessor<T>
     {
-        // private readonly string _hexFormat;
-        // private readonly string _regExPattern;
-        // private readonly SchemeFormat _schemeFormat;
-        private readonly IColorSchemeParser<T> _parser;
+        private readonly IColorDataHandler<T> _handler;
 
         /// <summary>
         /// A constructor that sets rgb hex format and regex pattern by the scheme format
         /// </summary>
-        public ColorSchemeProcessor(IColorSchemeParser<T> parser)
+        public ColorSchemeProcessor(IColorDataHandler<T> handler)
         {
-            _parser = parser;
+            _handler = handler;
         }
 
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
-            string text = File.ReadAllText(sourceFile);
-            string convertedText;
+            T data = _handler.ReadFile(sourceFile);
+            T filteredData;
 
             try {
-                convertedText = ApplyFilters(text, filters);
+                filteredData = ApplyFilters(data, filters);
             } catch (Exception ex) {
                 Console.WriteLine(GetType().FullName + " : " + ex.Message);
                 throw;
             }
 
-            File.WriteAllText(targetFile, convertedText, Encoding.Default);
+            _handler.WriteFile(filteredData,targetFile);
         }
 
         /// <summary>
@@ -57,13 +54,12 @@ namespace ColorSchemeManipulator
         {      
             // Collect all colors from file to a list of colors
             // test before converting to IEnumerable!
-            List<Color> colors = _parser.GetColors(source);
+            List<Color> colors = _handler.GetColors(source);
             
             // Apply filters to the list of colors
             List<Color> filteredColors = filters.ApplyTo(colors).ToList();
   
-            List<ColorMatch> matches =  _parser.GetMatches(source, filteredColors);
-            return _parser.ReplaceColors(source, matches);
+            return _handler.ReplaceColors(source, filteredColors);
         }
    
     }
