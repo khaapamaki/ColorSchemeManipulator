@@ -47,6 +47,8 @@
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtils.cs" />
     <Compile Include="ColorFileProcessor.cs" />
+    <Compile Include="ColorRange\ColorRange.cs" />
+    <Compile Include="ColorRange\ParameterRange.cs" />
     <Compile Include="Colors\ClampedColor.cs" />
     <Compile Include="Colors\ColorConversions.cs" />
     <Compile Include="Colors\ColorMath.cs" />
@@ -60,9 +62,7 @@
     <Compile Include="Filters\ColorFilter.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
     <Compile Include="Filters\FilterSet.cs" />
-    <Compile Include="Filters\ColorRange.cs" />
     <Compile Include="Filters\FilterUtils.cs" />
-    <Compile Include="Filters\ParameterRange.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeFormats\Handlers\CssFileHandler.cs" />
