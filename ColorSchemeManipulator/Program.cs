@@ -16,19 +16,7 @@ namespace ColorSchemeManipulator
         public static void Main(string[] args)
         {
             //--------------------------------------------------------------------------
-            //    Print help
-            //--------------------------------------------------------------------------
-
-            Console.WriteLine("Color Scheme Manipulator "
-                              + Assembly.GetExecutingAssembly().GetName().Version);
-            if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
-                Utils.PrintHelp(filterCount, experimFilterCount);
-
-                return;
-            }
-
-            //--------------------------------------------------------------------------
-            //    Commmand line parsing
+            //    Command line parsing
             //--------------------------------------------------------------------------
 
             // Register Filters
@@ -46,36 +34,35 @@ namespace ColorSchemeManipulator
             string[] remainingOptArgs;
             (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
 
+            //
+            //  PARSE other than filter options here, and remove them from remainingOptArgs array 
+            //       
 
-            // PARSE other than filter options here, and remove them from remainingOptArgs array 
+            //--------------------------------------------------------------------------
+            //    Print help
+            //--------------------------------------------------------------------------
 
+            Console.WriteLine("Color Scheme Manipulator "
+                              + Assembly.GetExecutingAssembly().GetName().Version);
+            if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
+                Utils.PrintHelp(filterCount, experimFilterCount);
+
+                return;
+            }
 
             // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
                 Console.WriteLine("Illegal argument: " + remainingOptArgs[0]);
                 return;
             }
-#if DEBUG
-            //--------------------------------------------------------------------------
-            //    Debug version auto file choosing, remove when merging to stage/prod
-            //-------------------------------------------------------------------------- 
 
-            // Test files for debugging
-            string sourceFileName = @"HappyDays_Complete.icls";
-            // sourceFileName = "darcula.vstheme";
-            // sourceFileName = "HappyDays.png";
-            // sourceFileName = "photo.png";
-            string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
-            string sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
-            string targetFile;
-#else
             //--------------------------------------------------------------------------
             //    Get source and target paths
             //--------------------------------------------------------------------------
 
             string sourceFile, targetFile;
-#endif
             // get source and target from CLI args
+
             if (remainingArgs.Length == 1) {
                 sourceFile = remainingArgs[0];
                 targetFile = Path.GetFileNameWithoutExtension(sourceFile)
@@ -84,10 +71,25 @@ namespace ColorSchemeManipulator
                 sourceFile = remainingArgs[0];
                 targetFile = remainingArgs[1];
             } else {
+#if DEBUG
+                //--------------------------------------------------------------------------
+                //    Debug version auto file choosing, remove when merging to stage/prod
+                //-------------------------------------------------------------------------- 
+                
+                string sourceFileName = @"HapdpyDays_Complete.icls";
+                // sourceFileName = "darcula.vstheme";
+                // sourceFileName = "HappyDays.png";
+                // sourceFileName = "photo.png";
+                string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
+                sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
+                targetFile = Path.GetFileNameWithoutExtension(sourceFile)
+                             + "_converted" + Path.GetExtension(sourceFile);
+#else
                 Console.WriteLine("No source file specified");
                 return;
+#endif
             }
-
+            
             //--------------------------------------------------------------------------
             //    Get scheme format by file extension
             //--------------------------------------------------------------------------
@@ -126,7 +128,7 @@ namespace ColorSchemeManipulator
                     }
                 }
             } else {
-                Console.Error.WriteLine(sourceFileName + " does not exist");
+                Console.Error.WriteLine(sourceFile + " does not exist");
             }
         }
     }
