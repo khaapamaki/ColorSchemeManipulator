@@ -11,9 +11,10 @@ This can also filter png/jpg-files for quick testing.
 
 + Chainable filters in single run
 + Each filter can have fully customizable color range
- with multiple attributes to narrow color range where a filter affects
+with multiple attributes to narrow color range where a filter affects
++ Color ranges can have smooth slopes
 + Includes a set of basic filters like gain, gamma, levels, contrast, saturation, hue, but also special filters like
-inverting image by its lightness, or applying contrast to saturation channel
+inverting image by its lightness, or adjusting contrast of saturation channel
 + Can process RGB, HSL and HSV channels.
 
 
