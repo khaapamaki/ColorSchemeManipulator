@@ -1,5 +1,5 @@
 
-## Color Scheme Manipulator 0.4
+## Color Scheme Manipulator 0.4.1
 
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
