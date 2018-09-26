@@ -204,8 +204,8 @@ ColorRange is currently provided as last object in object[] arguments
 
 ### Adding support for a new color scheme type
 
-All color files are processed in **ColorFileProcessor** class. It uses handlers that are specific to 
-color scheme format (or any other file). A handler must conform generic **IColorFileHandler** interface where generic type 
+All color files are processed in _ColorFileProcessor_ class. It uses handlers that are specific to 
+color scheme format (or any other file). A handler must conform generic _IColorFileHandler_ interface where generic type 
 T is usually string, but it can also be anything else like Bitmap.
 
 ```c#
@@ -218,9 +218,14 @@ public interface IColorFileHandler<T>
 }
 ```
 
-A new color scheme type must be added in **SchemeFormat** enum. And **SchemeUtils.GetSchemeHandlerByFormat(SchemeFormat format)** 
-must return instance of the handler. And **SchemeUtils.GetFormatFromExtension(string extension)** must 
-return SchemeFormat matching the file extensipn.
+Currently,aA new color scheme format must be added in _SchemeFormat_ enum. And **SchemeUtils.GetSchemeHandlerByFormat(SchemeFormat format)** 
+must return an instance of the handler. And **SchemeUtils.GetFormatFromExtension(string extension)** must 
+return SchemeFormat matching the file extension.
+
+##### NOTE:
+If you are making handler for color scheme that uses simple hex string for color definitions, abstract class **SchemeFileHandler** provides
+useful tools for parsing file with regular expressions.
+
 
 ```c#
     public enum SchemeFormat
