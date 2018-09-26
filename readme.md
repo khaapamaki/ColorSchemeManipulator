@@ -1,13 +1,13 @@
-##### *** You are in development branch ***
+#### *** You are in development branch ***
 
-## Color Scheme Manipulator
+# Color Scheme Manipulator
 
 This is a tiny command line tool for adjusting colors in color schemes.
 Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
 
 Also has option to filter png-files for quick testing.
 
-#### Usage and currently available filters
+### Usage and currently available filters
 ```
 Usage:
   colschman [-filter] <sourcefile> [<targetfile>]
@@ -172,39 +172,11 @@ Example:
   colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls
 ```
 
-#### Issues
+### Issues
 
-Hunting for them...
+Color ranges with slopes has a limiter for too wide slopes. Sometimes slope is reduced too much.
 
-
-### For developers
-
-#### What's new in version 0.2 and 0.3
-
-##### Version 0.2
-
-+ ColorFilter is not more abtract base class, but the only filter type replacing HslFilter, RgbFilter and HsvFilter
-+ ColorBase class is renamed simply to Color
-+ Filter delegate signature changed. All filters must handle set of colors provided in IEnumerable\<Color>.
-New delegate signature is:
-   
-```C#
-Func<IEnumerable<Color>, object[], IEnumerable<Color>>
-```
-
-##### Version 0.3
-
-+ The whole new Color class replaces all other color representations. Color class can hold all RGB, HSL and HSL color 
-attributes, and it makes conversion only on demand and automatically without user knowing nothing of it
-+ HexRgb class provides methods to conveting hex strings to color. Rgb8Bit is removed along with other old color formats.
-
-##### Version 0.3.2
-
-+ HDR color processing internally. Colors are only clamped to legal values at the end of filter chain
-+ A bunch of bug fixes
-
-
-#### ToDo
+### ToDo
 
 + Range parameter validation
 + SchemeFormat specific extra processing
@@ -217,7 +189,82 @@ attributes, and it makes conversion only on demand and automatically without use
 + Brief help in addition to current verbose one
 
 
-#### Manually filtering (no using CLI arguments)
+## For developers
+
+### Coming API changes
+
+Function delegete signature will probably change:
+```c#
+From:
+    Func<IEnumerable<Color>, object[], IEnumerable<Color>>
+To:
+    Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
+```
+ColorRange is currently provided as last object in object[] arguments
+
+### Adding support for a new color scheme type
+
+All color files are processed in **ColorFileProcessor** class. It uses handlers that are specific to 
+color scheme format (or any other file). A handler must conform generic **IColorFileHandler** interface where generic type 
+T is usually string, but it can also be anything else like Bitmap.
+
+```c#
+public interface IColorFileHandler<T>
+{
+    T ReadFile(string sourceFile);
+    void WriteFile(T data, string targetFile);   
+    IEnumerable<Color> GetColors(T source);
+    T ReplaceColors(T source, IEnumerable<Color> colors);
+}
+```
+
+A new color scheme type must be added in **SchemeFormat** enum. And **SchemeUtils.GetSchemeHandlerByFormat(SchemeFormat format)** 
+must return instance of the handler. And **SchemeUtils.GetFormatFromExtension(string extension)** must 
+return SchemeFormat matching the file extensipn.
+
+```c#
+    public enum SchemeFormat
+    {
+        Idea,
+        VisualStudio,
+        Image,
+        XXXX,
+        Unknown
+    }
+    
+    public static class SchemeUtils
+    {
+        public static SchemeFormat GetFormatFromExtension(string extension)
+        {
+            if (extension.StartsWith(".")) {
+                extension = extension.Substring(1);
+            }
+
+            switch (extension.ToLower()) {
+                case "icls":
+                    return SchemeFormat.Idea;
+                case "XXXX":
+                    return SchemeFormat.XXXX;
+                default:
+                    return SchemeFormat.Unknown;
+            }
+        }
+
+        public static IColorFileHandler<string> GetSchemeHandlerByFormat(SchemeFormat schemeFormat)
+        {
+            switch (schemeFormat) {
+                case SchemeFormat.Idea:
+                    return new IdeaSchemeFileHandler();
+                case SchemeFormat.XXXXX:
+                    return new XXXXXFileHandler();                
+                default:
+                    return null;
+            }
+        }
+    }
+```
+
+### Manually filtering (no using CLI arguments)
 
 ```c#
 using System;
@@ -261,7 +308,7 @@ namespace ColorSchemeInverter
 }
 ```
 
-#### Filtering by CLI arguments
+### Filtering by CLI arguments
 
 ```c#
 using System;
@@ -309,7 +356,7 @@ namespace ColorSchemeInverter
 }
 ```
 
-#### Creating a filter delegate that uses range system
+### Creating a filter that uses range system
 
 ```C#
 public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, params object[] filterParams)
