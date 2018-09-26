@@ -2,10 +2,20 @@
 
 ## Color Scheme Manipulator 0.4
 
-This is a tiny command line tool for adjusting colors in color schemes.
-Works currently with JetBrains IDEA (.icls) and Visual Studio (.vstheme) color scheme files.
+This is a tiny command line tool for adjusting colors in color schemes. 
+Works currently with JetBrains IDEA (.icls), Visual Studio (.vstheme) and VS Code color scheme files.
 
-Also has option to filter png-files for quick testing.
+This can also filter png/jpg-files for quick testing.
+
+### Features
+
++ Chainable filters in single run
++ Each filter can have fully customizable color range
+ with multiple attributes to narrow color range where a filter affects
++ Includes a set of basic filters like gain, gamma, levels, contrast, saturation, hue, but also special filters like
+inverting image by its lightness, or applying contrast to saturation channel
++ Can process RGB, HSL and HSV channels.
+
 
 ### Usage and currently available filters
 ```
