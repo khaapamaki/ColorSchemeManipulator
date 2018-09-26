@@ -3,7 +3,7 @@
 ## Color Scheme Manipulator 0.4
 
 This is a tiny command line tool for adjusting colors in color schemes. 
-Works currently with JetBrains IDEA (.icls), Visual Studio (.vstheme) and VS Code color scheme files.
+Works currently with JetBrains IDEA (.icls), Visual Studio (.vstheme) and VS Code color scheme files (.json).
 
 This can also filter png/jpg-files for quick testing.
 
@@ -11,7 +11,7 @@ This can also filter png/jpg-files for quick testing.
 
 + Chainable filters in single run
 + Each filter can have fully customizable color range
-with multiple attributes to narrow color range where a filter affects
+with multiple attributes to narrow the range where the filter affects
 + Color ranges can have smooth slopes
 + Includes a set of basic filters like gain, gamma, levels, contrast, saturation, hue, but also special filters like
 inverting image by its lightness, or adjusting contrast of saturation channel
@@ -185,7 +185,7 @@ Example:
 
 ### Issues
 
-Color ranges with slopes has a limiter for too wide slopes. Sometimes slope is reduced too much.
+Hunting for them...
 
 ### ToDo
 
@@ -202,9 +202,11 @@ Color ranges with slopes has a limiter for too wide slopes. Sometimes slope is r
 
 ## For developers
 
+
 ### Coming API changes
 
-Function delegete signature will probably change:
+Function delegate signature will probably change some time in future:
+
 ```c#
 From:
     Func<IEnumerable<Color>, object[], IEnumerable<Color>>
@@ -212,6 +214,7 @@ To:
     Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
 ```
 ColorRange is currently provided as last object in object[] arguments
+
 
 ### Adding support for a new color scheme type
 
@@ -229,13 +232,13 @@ public interface IColorFileHandler<T>
 }
 ```
 
-Currently,aA new color scheme format must be added in _SchemeFormat_ enum. And **SchemeUtils.GetSchemeHandlerByFormat(SchemeFormat format)** 
+**NOTE:**
+If you are making a handler for a color scheme that uses simple hex string for color definitions, abstract class **SchemeFileHandler** provides
+useful tools for parsing file with regular expressions, as well as applying filters. Subclass it, adjust some properties and you are good to go.
+
+Currently, a new color scheme format must be added in _SchemeFormat_ enum. And **SchemeUtils.GetSchemeHandlerByFormat(SchemeFormat format)** 
 must return an instance of the handler. And **SchemeUtils.GetFormatFromExtension(string extension)** must 
 return SchemeFormat matching the file extension.
-
-##### NOTE:
-If you are making handler for color scheme that uses simple hex string for color definitions, abstract class **SchemeFileHandler** provides
-useful tools for parsing file with regular expressions.
 
 
 ```c#
