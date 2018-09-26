@@ -44,9 +44,12 @@ namespace ColorSchemeManipulator
 
             Console.WriteLine("Color Scheme Manipulator "
                               + Assembly.GetExecutingAssembly().GetName().Version);
-            if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
-                Utils.PrintHelp(filterCount, experimFilterCount);
-
+            
+            if (args.Length == 0) {
+                Utils.PrintHelp(filterCount, experimFilterCount, verbose: false);
+                return;
+            } else if (args.Length == 1 && args[0].ToLower() == "--help") {
+                Utils.PrintHelp(filterCount, experimFilterCount, verbose: true); 
                 return;
             }
 

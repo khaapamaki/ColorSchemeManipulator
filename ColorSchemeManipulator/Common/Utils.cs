@@ -7,7 +7,7 @@ namespace ColorSchemeManipulator.Common
 {
     public class Utils
     {
-        public static void PrintHelp(int filterCount = -1, int expermFilterCount = -1)
+        public static void PrintHelp(int filterCount = -1, int expFilterCount = -1, bool verbose = true)
         {
             string usage =
                 "\nUsage:\n"
@@ -16,39 +16,61 @@ namespace ColorSchemeManipulator.Common
                 + "  colschman [-filter1] [--filter2] <sourcefile> [<targetfile>]\n"
                 + "  colschman [-filter][(rangeattr1:min-max,rangeattr2:min-max)[=param] <sourcefile> [<targetfile>]\n"
                 + "  colschman [-filter][(rangeattr:min/slope-max/slope)[=param] <sourcefile> [<targetfile>]\n"
-                + "  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]\n\n";
+                + "  colschman [-filter][(rangeattr:minstart,minend,maxstart,maxend)[=param] <sourcefile> [<targetfile>]\n";
+            if (!verbose) {
+                usage += "\nMore detailed help:\n  colschman --help\n";
+            }
 
             Console.WriteLine(usage);
-            
-            Console.WriteLine("Available Filters:\n");
-            if (filterCount == -1 || expermFilterCount == -1) {
-                Console.WriteLine(CliArgs.ToString("\n\n"));
+
+            Console.WriteLine("Available Filters:");
+            if (verbose)
+                Console.WriteLine();
+            if (filterCount == -1 || expFilterCount == -1) {
+                // all filters
+                foreach (var cliArg in CliArgs.GetItems()) {
+                    Console.WriteLine(cliArg.GetDescription(verbose));
+                    if (verbose)
+                        Console.WriteLine();
+                }
+
                 return;
             }
 
+            // non experimental filters
             for (int i = 0; i < filterCount; i++) {
-                Console.WriteLine(CliArgs.GetItem(i).ToString());
-                Console.WriteLine();
+                Console.WriteLine(CliArgs.GetItem(i).GetDescription(verbose));
+                if (verbose && i < filterCount - 1)
+                    Console.WriteLine();
             }
 
-            if (expermFilterCount > 0) {
-                Console.WriteLine("Experimental Filters:\n");
-                for (int i = filterCount; i < filterCount + expermFilterCount; i++) {
-                    Console.WriteLine(CliArgs.GetItem(i).ToString());
+            // experimental filters
+            if (expFilterCount > 0) {
+                Console.WriteLine("Experimental Filters:");
+                if (verbose)
                     Console.WriteLine();
+                for (int i = filterCount; i < filterCount + expFilterCount; i++) {
+                    Console.WriteLine(CliArgs.GetItem(i).GetDescription(verbose));
+                    if (verbose && i < filterCount + expFilterCount - 1)
+                        Console.WriteLine();
+                    ;
                 }
             }
+
+            if (!verbose)
+                Console.WriteLine();
+            ;
 
             const int col1 = -13;
             const int col2 = -14;
 
-             string help_tail = "Range attributes:\n"
-                + $"  {"h, hue",col1} {"Hue",col2}|  {"r, red",col1} {"Red",col2}\n"
-                + $"  {"s, sat",col1} {"Saturation",col2}|  {"g, green",col1} {"Green",col2}\n"
-                + $"  {"l, light",col1} {"Lightness",col2}|  {"b, blue",col1} {"Blue",col2}\n"
-                + $"  {"v, value",col1} {"Value",col2}|  {"bri, bright",col1} {"Brightness",col2}\n\n"
-                + "Example:\n"
-                + "  colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls\n\n";
+            string help_tail = "Range attributes:\n"
+                               + $"  {"h, hue",col1} {"Hue",col2}|  {"r, red",col1} {"Red",col2}\n"
+                               + $"  {"s, sat",col1} {"Saturation",col2}|  {"g, green",col1} {"Green",col2}\n"
+                               + $"  {"l, light",col1} {"Lightness",col2}|  {"b, blue",col1} {"Blue",col2}\n"
+                               + $"  {"v, value",col1} {"Value",col2}|  {"bri, bright",col1} {"Brightness",col2}\n\n"
+                               + "Example:\n"
+                               + "  colschman -al=0.1,0.9 -s(hue:40/10-180/10)=1.2 my_scheme.icls fixed_scheme.icls\n\n";
 
             Console.Write(help_tail);
         }
