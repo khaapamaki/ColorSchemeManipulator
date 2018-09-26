@@ -47,7 +47,6 @@
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtils.cs" />
     <Compile Include="ColorFileProcessor.cs" />
-    <Compile Include="Colors\ClampedColor.cs" />
     <Compile Include="Colors\ColorConversions.cs" />
     <Compile Include="Colors\ColorMath.cs" />
     <Compile Include="Colors\HexRgb.cs" />
