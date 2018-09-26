@@ -1,3 +1,4 @@
+using System;
 using ColorSchemeManipulator.Filters;
 using NUnit.Framework;
 namespace ColorSchemeManipulator.UnitTests
@@ -29,6 +30,21 @@ namespace ColorSchemeManipulator.UnitTests
             Assert.That(factor, Is.EqualTo(expected).Within(0.001));
         }
         
+        [TestCase(0.2, 0.4, 1, 0, 0.2, 0.5)]
+        [TestCase(0.2, 0.4, 1, 0, 0.1, 0.25)]
+        [TestCase(0.2, 0.4, 1, 0, 0.41, 0)]
+        [TestCase(0.2, 0.4, 1, 0, 0.4, 1)]
+        [TestCase(0.2, 0.5, 1, 0.4, 0.4, 1)]
+        [TestCase(0.2, 0.5, 1, 0.4, 0.15, 0.5)]
+        [TestCase(0.2, 0.5, 1, 0.4, 0.55, 0.5)]
+        public void InRangeFactor_SlopeParameters_ReturnsExpectedValues(double min, double max, double minSlope,
+            double maxSlope, double val, double expected)
+        {
+            var range = ParameterRange.Range(min, max, minSlope, maxSlope);
+            Console.WriteLine(range);
+            double factor = range.InRangeFactor(val);
+            Assert.That(factor, Is.EqualTo(expected).Within(0.001));
+        }
         
         [Test]
         [TestCase(10, 240, 40, 40, -20, 0)]

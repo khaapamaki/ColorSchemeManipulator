@@ -48,8 +48,8 @@ namespace ColorSchemeManipulator.Filters
             if (loopMax != null)
                 LoopMax = (double) loopMax;
 
-            minSlope = minSlope.LimitHigh(Math.Abs(min - max));
-            maxSlope = maxSlope.LimitHigh(Math.Abs(min - max));
+            minSlope = minSlope.LimitHigh(Math.Abs(min - max) * 2);
+            maxSlope = maxSlope.LimitHigh(Math.Abs(min - max) * 2);
             if (IsLoopingRange) {
                 min = min.NormalizeLoopingValue(LoopMax);
                 max = max.NormalizeLoopingValue(LoopMax);
@@ -59,6 +59,12 @@ namespace ColorSchemeManipulator.Filters
             MinEnd = min + minSlope / 2;
             MaxStart = max - maxSlope / 2;
             MaxEnd = max + maxSlope / 2;
+            
+            // check for overlapping slopes
+            if (minSlope / 2 + maxSlope / 2 > Math.Abs(min-max)) {
+                MinEnd = (MinEnd + MaxStart) / 2;
+                MaxStart = MinEnd;
+            }
         }
 
         public static ParameterRange Range(double min, double max, double minSlope = 0.0, double maxSlope = 0.0,
@@ -120,7 +126,7 @@ namespace ColorSchemeManipulator.Filters
 
         public override string ToString()
         {
-            return $"{MinStart},{MinEnd}-{MaxStart},{MaxEnd}";
+            return $"{MinStart}, {MinEnd}, {MaxStart}, {MaxEnd}";
         }
 
         private double ShortestDifference(double a, double b)
