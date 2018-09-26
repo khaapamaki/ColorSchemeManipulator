@@ -1,10 +1,12 @@
-namespace ColorSchemeManipulator.SchemeFileSupport
+namespace ColorSchemeManipulator.SchemeFormats
 {
     public enum SchemeFormat
     {
         VisualStudio,
         Idea,
+        VsCode,
+        Css,
         Image,
-        Generic
+        Unknown
     }
 }

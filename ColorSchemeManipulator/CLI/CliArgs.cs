@@ -38,15 +38,15 @@ namespace ColorSchemeManipulator.CLI
         }
         
         public static void Register(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
-            byte maxParams = 0, string desc = "")
+            byte maxParams = 0, string paramList = "", string desc = "", string paramDesc = "")
         {
-            GetInstance().Items.Add(new CliArg(option, filter, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(option, filter, minParams, maxParams, paramList, desc, paramDesc));
         }
 
         public static void Register(List<string> options, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filter, byte minParams,
-            byte maxParams = 0, string desc = "")
+            byte maxParams = 0, string paramList = "", string desc = "", string paramDesc = "")
         {
-            GetInstance().Items.Add(new CliArg(options, filter, minParams, maxParams, desc));
+            GetInstance().Items.Add(new CliArg(options, filter, minParams, maxParams, paramList, desc, paramDesc));
         }
  
         /// <summary>
@@ -70,15 +70,18 @@ namespace ColorSchemeManipulator.CLI
         {
             string paramString;
             string rangeString;
+            
             (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
+            
             ColorRange range = CliUtils.ParseRange(rangeString);
-            foreach (var BatchCliArg in GetInstance().Items) {
-                if (BatchCliArg.OptionArgs.Contains(option)) {
+            
+            foreach (var batchCliArg in GetInstance().Items) {
+                if (batchCliArg.OptionArgs.Contains(option)) {
                     List<object> filterParams = CliUtils.ExtractParams(paramString);
-                    if (filterParams.Count >= BatchCliArg.MinParams) {
+                    if (filterParams.Count >= batchCliArg.MinParams) {
                         if (range != null)
                             filterParams.Add(range);
-                        return (BatchCliArg.FilterDelegate, filterParams);
+                        return (batchCliArg.FilterDelegate, filterParams);
                     }
                 }
             }

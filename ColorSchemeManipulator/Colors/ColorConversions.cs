@@ -12,9 +12,10 @@ namespace ColorSchemeManipulator.Colors
             double max = Math.Max(Math.Max(r, g), b);
             double delta = max - min;
             l = (max + min) / 2.0;
-            if (delta <= 0.0001) {
+            if (delta <= 0.01) {
                 h = 0.0;
-                s = 0.0;
+                // reduce saturation for low lightness colors
+                s = ColorMath.LinearInterpolation(delta, 0.005, 0.01, 0, delta / (max + min));
             } else {
                 s = l <= 0.5 ? delta / (max + min) : delta / (2.0 - max - min);
 
@@ -43,7 +44,7 @@ namespace ColorSchemeManipulator.Colors
         {
             double r, g, b;
 
-            if (s <= 0.001) {
+            if (s <= 0.01) {
                 r = g = b = l;
             } else {
                 double v1, v2;
@@ -89,11 +90,12 @@ namespace ColorSchemeManipulator.Colors
             min = Math.Min(Math.Min(r, g), b);
             v = Math.Max(Math.Max(r, g), b);
             delta = v - min;
-            if (v <= 0.001)
-                s = 0.0;
+            if (v <= 0.12)
+                // reduce saturation for low value colors
+                s = ColorMath.LinearInterpolation(v, 0.005, 0.12, 0, delta / v);
             else
-
                 s = delta / v;
+            
             if (s <= 0.001)
                 h = 0.0;
             else {
@@ -117,7 +119,7 @@ namespace ColorSchemeManipulator.Colors
         {
             double r = 0, g = 0, b = 0;
 
-            if (s <= 0.001) {
+            if (s <= 0.01) {
                 r = v;
                 g = v;
                 b = v;

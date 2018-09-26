@@ -379,8 +379,9 @@ namespace ColorSchemeManipulator.Colors
             }
 
             CalcRgb();
-            // todo rgb clamping could be smoother, if this ever occurs?
+            
             if (_red < 0 || _red > 1 || _green < 0 || _green > 1 || _blue < 0 || _blue > 1) {
+                // this probably never occurs. but if so.. this produces hue shifts.
                 _calcLock++;
                 
                 _red = _red.Clamp(0, 1);

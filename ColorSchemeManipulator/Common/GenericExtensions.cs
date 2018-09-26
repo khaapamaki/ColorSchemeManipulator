@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Common
 {

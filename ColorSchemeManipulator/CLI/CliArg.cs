@@ -13,56 +13,62 @@ namespace ColorSchemeManipulator.CLI
         public byte MinParams { get; set; }
         public byte MaxParams { get; set; }
         public string Description { get; set; }
+        public string ParamList { get; set; }
+        public string ParamDesc { get; set; }
 
         public CliArg(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
-            string desc = "")
+            string paramList = "", string desc = "", string paramDesc = "" )
         {
             OptionArgs = new List<string> {option};
             FilterDelegate = filterDelegate;
             MinParams = minParams;
             MaxParams = minParams < maxParams ? maxParams : minParams;
             Description = desc;
+            ParamList = paramList;
+            ParamDesc = paramDesc;
         }
 
-        public CliArg(List<string> options, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
-            string desc = "")
+        public CliArg(IEnumerable<string> options, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
+            string paramList = "", string desc = "", string paramDesc = "")
         {
             OptionArgs = new List<string>(options);
             FilterDelegate = filterDelegate;
             MinParams = minParams;
             MaxParams = minParams < maxParams ? maxParams : minParams;
             Description = desc;
+            ParamList = paramList;
+            ParamDesc = paramDesc;
         }
 
         public new string ToString()
         {
-            // todo formatted output that can be used in cmd line help
-            var opts = new StringBuilder();
-            OptionArgs.ForEach(c => opts.Append(c + "  "));
-            string opt1 = "", opt2 = "";
-            if (OptionArgs.Count == 2) {
-                opt1 = OptionArgs[0];
-                opt2 = OptionArgs[1];
-            } else if (OptionArgs.Count == 1) {
-                if (OptionArgs[0].StartsWith("--")) {
-                    opt2 = OptionArgs[0];
-                } else {
-                    opt1 = OptionArgs[0];
+
+            string description = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
+            
+            List<string> optLines = new List<string>(4);
+            for (var i = 0; i < OptionArgs.Count; i++) {
+                string option = OptionArgs[i] + ParamList;
+                if (i != 0 && option.Length > 28 && ParamList != null) {
+                    option = OptionArgs[i] + "=...";
+                } 
+                List<string> argParts = Utils.ParamsWrap(option, 28);
+                for (var index = 0; index < argParts.Count; index++) {
+                    var argPart = argParts[index];
+                    optLines.Add(index > 0 ? "    " + argPart : argPart);
                 }
             }
-
-            string desc = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
-            StringBuilder sb = new StringBuilder();
-            List<string> lines = Utils.WordWrap(desc, 68);
-            foreach (var line in lines) {
-                //Console.WriteLine("/"+line.Trim()+"/");
-            }
-            for (var index = 0; index < lines.Count; index++) {
-                var line = lines[index].Trim();
-                sb.Append($"  {opt1,-5} {opt2,-26} {line}");
-                opt1 = "";
-                opt2 = "";
-                if (index < lines.Count-1)
+            
+            List<string> descLines = new List<string>();
+            Utils.WordWrap(description, 70).ForEach(l => descLines.Add(l));
+            Utils.WordWrap(ParamDesc, 70).ForEach(l => descLines.Add(l));
+            
+            var sb = new StringBuilder();
+            int lineMaxCount = descLines.Count.Max(optLines.Count);
+            for (var index = 0; index < lineMaxCount; index++) {
+                var opt = index < optLines.Count ? optLines[index].TrimEnd() : "";
+                var desc = index < descLines.Count ? descLines[index].Trim() : "";
+                sb.Append($"  {opt,-31} {desc}");
+                if (index < lineMaxCount-1)
                     sb.AppendLine();
             }
 

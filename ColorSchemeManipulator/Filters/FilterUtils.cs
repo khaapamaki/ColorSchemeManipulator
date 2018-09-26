@@ -10,8 +10,8 @@ namespace ColorSchemeManipulator.Filters
     {
         public static double? TryParseDouble(object obj)
         {
-            if (obj is double)
-                return (double) obj;
+            if (obj is double d)
+                return d;
 
             if (obj is int)
                 return Convert.ToDouble(obj);
@@ -162,9 +162,5 @@ namespace ColorSchemeManipulator.Filters
             return some ? (lo, hi) : (0, 1);
         }
 
-        public static double GetHighestLightness(IEnumerable<Color> colors)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

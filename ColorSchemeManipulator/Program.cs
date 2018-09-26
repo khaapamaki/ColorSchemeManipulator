@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
-using ColorSchemeManipulator.SchemeFileSupport;
+using ColorSchemeManipulator.SchemeFormats;
+using ColorSchemeManipulator.SchemeFormats.Handlers;
 
 namespace ColorSchemeManipulator
 {
@@ -13,33 +15,40 @@ namespace ColorSchemeManipulator
     {
         public static void Main(string[] args)
         {
-            // Make FilterBundle filters available for CLI
+            //--------------------------------------------------------------------------
+            //    Command line parsing
+            //--------------------------------------------------------------------------
+
+            // Register Filters
             FilterBundle.RegisterCliOptions();
             int filterCount = CliArgs.GetItems().Count();
-            int experimFilterCount = 0;
-            
-            // Comment out these if you want to exclude experimental filters
-            ExperimentalBundle.RegisterCliOptions();
-            experimFilterCount = CliArgs.GetItems().Count() - filterCount;
 
-            Console.WriteLine(
-                "Color Scheme Manipulator " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            // print help
-            if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
-                Utils.PrintHelp(filterCount, experimFilterCount);
-                return;
-            }
+            // Register Experimental Filters
+            ExperimentalBundle.RegisterCliOptions();
+            int experimFilterCount = CliArgs.GetItems().Count() - filterCount;
 
             // Parse CLI args and generate FilterSet of them
-            (FilterSet filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
+            (var filterSet, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
 
             // Extract non-option and remaining option arguments
             string[] remainingOptArgs;
             (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
 
+            //
+            //  PARSE other than filter options here, and remove them from remainingOptArgs array 
+            //       
 
-            // PARSE other than filter options here, and remove them from remainingOptArgs array 
+            //--------------------------------------------------------------------------
+            //    Print help
+            //--------------------------------------------------------------------------
 
+            Console.WriteLine("Color Scheme Manipulator "
+                              + Assembly.GetExecutingAssembly().GetName().Version);
+            if (args.Length == 0 || (args.Length == 1 && args[0].ToLower() == "--help")) {
+                Utils.PrintHelp(filterCount, experimFilterCount);
+
+                return;
+            }
 
             // All remaining option arguments are considered illegal
             if (remainingOptArgs.Length > 0) {
@@ -47,54 +56,80 @@ namespace ColorSchemeManipulator
                 return;
             }
 
-            Console.WriteLine("Applying filters:");
-            Console.WriteLine(filterSet.ToString());
+            //--------------------------------------------------------------------------
+            //    Get source and target paths
+            //--------------------------------------------------------------------------
 
             string sourceFile, targetFile;
-
-
-            // Test files for debugging
-            string sourceFileName = @"HappyDays_Complete.icls";
-            // sourceFileName = "darcula-vs-2017.vstheme";
-            sourceFileName = "HappyDays.png";
-            // sourceFileName = "photo.png";
-            string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
-            sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
-            targetFile = Path.GetFullPath(Path.Combine(baseDir,
-                Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
-                                                             + Path.GetExtension(sourceFile)));
-
             // get source and target from CLI args
+
             if (remainingArgs.Length == 1) {
                 sourceFile = remainingArgs[0];
-                targetFile = Path.GetFileNameWithoutExtension(sourceFile) + "_converted"
-                                                                          + Path.GetExtension(sourceFile);
+                targetFile = Path.GetFileNameWithoutExtension(sourceFile)
+                             + "_converted" + Path.GetExtension(sourceFile);
             } else if (remainingArgs.Length == 2) {
                 sourceFile = remainingArgs[0];
                 targetFile = remainingArgs[1];
             } else {
+#if DEBUG
+                //--------------------------------------------------------------------------
+                //    Debug version auto file choosing, remove when merging to stage/prod
+                //-------------------------------------------------------------------------- 
+                
+                string sourceFileName = @"HapdpyDays_Complete.icls";
+                // sourceFileName = "darcula.vstheme";
+                // sourceFileName = "HappyDays.png";
+                // sourceFileName = "photo.png";
+                string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
+                sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
+                targetFile = Path.GetFileNameWithoutExtension(sourceFile)
+                             + "_converted" + Path.GetExtension(sourceFile);
+#else
                 Console.WriteLine("No source file specified");
+                return;
+#endif
+            }
+            
+            //--------------------------------------------------------------------------
+            //    Get scheme format by file extension
+            //--------------------------------------------------------------------------
+
+            SchemeFormat schemeFormat = SchemeUtils.GetFormatFromExtension(Path.GetExtension(sourceFile));
+            if (schemeFormat == SchemeFormat.Unknown) {
+                Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
                 return;
             }
 
-            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFile));
+            //--------------------------------------------------------------------------
+            //    Process file
+            //--------------------------------------------------------------------------    
 
-            if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
-                if (File.Exists(sourceFile)) {
-                    ColorSchemeProcessor processor = new ColorSchemeProcessor(schemeFormat);
+            if (File.Exists(sourceFile)) {
+                if (schemeFormat == SchemeFormat.Image) {
+                    var processor = new ColorFileProcessor<Bitmap>(new ImageFileHandler());
+
+                    Console.WriteLine("Applying filters:");
+                    Console.WriteLine(filterSet.ToString());
+
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
                     Console.WriteLine("Done.");
                 } else {
-                    Console.Error.WriteLine(sourceFileName + " does not exist");
+                    var handler = SchemeUtils.GetSchemeHandlerByFormat(schemeFormat);
+                    if (handler != null) {
+                        var processor = new ColorFileProcessor<string>(handler);
+
+                        Console.WriteLine("Applying filters:");
+                        Console.WriteLine(filterSet.ToString());
+
+                        processor.ProcessFile(sourceFile, targetFile, filterSet);
+                        Console.WriteLine("Done.");
+                    } else {
+                        Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
+                    }
                 }
-            } else if (schemeFormat == SchemeFormat.Image) {
-                ImageProcessor processor = new ImageProcessor();
-                processor.ProcessFile(sourceFile, targetFile, filterSet);
-                Console.WriteLine("Done.");
             } else {
-                Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
+                Console.Error.WriteLine(sourceFile + " does not exist");
             }
         }
-
     }
 }

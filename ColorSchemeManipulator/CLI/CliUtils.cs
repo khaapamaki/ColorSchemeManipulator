@@ -16,8 +16,8 @@ namespace ColorSchemeManipulator.CLI
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
         public static (FilterSet, string[]) ParseFilterArgs(string[] args)
         {
-            (FilterSet cliFilters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
-            return (cliFilters, remainingArgs.ToArray());
+            (FilterSet filters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
+            return (filters, remainingArgs.ToArray());
         }
 
         private static (FilterSet, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
@@ -44,13 +44,16 @@ namespace ColorSchemeManipulator.CLI
             return (filters, remainingArgs);
         }
 
-        public static object[] TryParseDoubles(object[] filterParams)
+        private static object[] TryParseDoubles(object[] filterParams)
         {
             if (filterParams == null)
                 return null;
+            
             List<object> newList = new List<object>();
+            
             foreach (var param in filterParams) {
                 object newParam = param;
+                
                 if (param is string) {
                     double? d = FilterUtils.TryParseDouble(param);
                     if (d != null) {
@@ -101,7 +104,7 @@ namespace ColorSchemeManipulator.CLI
         {
             if (string.IsNullOrEmpty(rangeString)) return null;
 
-            ColorRange colorRange = new ColorRange();
+            var colorRange = new ColorRange();
 
             ParameterRange range = TryParseRangeForRangeParam(rangeString, "h|hue");
             if (range != null) {
@@ -139,7 +142,7 @@ namespace ColorSchemeManipulator.CLI
                 colorRange.ValueRange = range.Copy();
             }
 
-            range = TryParseRangeForRangeParam(rangeString, "b|bri|brightness");
+            range = TryParseRangeForRangeParam(rangeString, "bri|bright|brightness");
             if (range != null) {
                 colorRange.BrightnessRange = range.Copy();
             }
