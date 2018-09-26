@@ -16,17 +16,17 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
 
         private MatchCollection _matches;
 
-        public string ReadFile(string sourceFile)
+        public virtual string ReadFile(string sourceFile)
         {
             return File.ReadAllText(sourceFile);
         }
 
-        public void WriteFile(string text, string targetFile)
+        public virtual void WriteFile(string text, string targetFile)
         {
             File.WriteAllText(targetFile, text, Encoding.Default);
         }
 
-        public IEnumerable<Color> GetColors(string text)
+        public virtual IEnumerable<Color> GetColors(string text)
         {
             var matches = Regex.Matches(text, RegexPattern);
             _matches = matches;
@@ -36,7 +36,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             }
         }
 
-        public string ReplaceColors(string text, IEnumerable<Color> colors)
+        public virtual string ReplaceColors(string text, IEnumerable<Color> colors)
         {
             List<RegexReplacement> colorMatches = GetMatches(text, colors.ToList());
             return SchemeUtils.BatchReplace(text, colorMatches);
