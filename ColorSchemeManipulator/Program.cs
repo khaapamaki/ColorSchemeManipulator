@@ -71,23 +71,8 @@ namespace ColorSchemeManipulator
                 sourceFile = remainingArgs[0];
                 targetFile = remainingArgs[1];
             } else {
-#if DEBUG
-                //--------------------------------------------------------------------------
-                //    Debug version auto file choosing, remove when merging to stage/prod
-                //-------------------------------------------------------------------------- 
-                
-                string sourceFileName = @"HapdpyDays_Complete.icls";
-                // sourceFileName = "darcula.vstheme";
-                // sourceFileName = "HappyDays.png";
-                // sourceFileName = "photo.png";
-                string baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
-                sourceFile = Path.GetFullPath(Path.Combine(baseDir, sourceFileName));
-                targetFile = Path.GetFileNameWithoutExtension(sourceFile)
-                             + "_converted" + Path.GetExtension(sourceFile);
-#else
                 Console.WriteLine("No source file specified");
                 return;
-#endif
             }
             
             //--------------------------------------------------------------------------

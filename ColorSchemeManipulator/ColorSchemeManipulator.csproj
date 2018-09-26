@@ -78,30 +78,9 @@
     <Compile Include="SchemeFormats\SchemeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\ColorSchemes\Cobalt.icls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\darcula.vstheme">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays.icls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\HappyDays_Complete.icls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\ColorSchemes\photo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
-    <EmbeddedResource Include="..\ColorSchemes\classic.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Content Include="..\readme.md">
       <Link>readme.md</Link>
     </Content>
