@@ -28,22 +28,30 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
 
         protected override string OutputHexFormat => "rrggbb";
 
-        public override string ReplaceColors(string text, IEnumerable<Color> colors)
+        public override string ReplaceColors(string xml, IEnumerable<Color> colors)
         {
-            string converterdText = base.ReplaceColors(text, colors);
-//            XElement xElement = XElement.Parse(text);
-//            string schemeParent;
-//
-//            try {
-//                var elements = xElement.Elements();
-//                var test = xElement.Elements().Where(n => n.Name == "scheme").First();
-//                //Console.WriteLine(schemeParent);
-//            } catch (Exception e) {
-//                Console.WriteLine("error");
-//                throw;
-//            }
+            string convertedText = base.ReplaceColors(xml, colors);
+            return SetParentScheme(convertedText);
+        }
 
-            return converterdText;
+        private static string SetParentScheme(string xml)
+        {
+            var root = XElement.Parse(xml);
+            var textOption = root.Elements("attributes").Descendants("option").First(x => x.Attribute("name")?.Value == "TEXT");
+            string textFG = textOption.Descendants("value").Descendants("option").First(x => x.Attribute("name")?.Value == "FOREGROUND").Attribute("value")?.Value;
+            string textBG = textOption.Descendants("value").Descendants("option").First(x => x.Attribute("name")?.Value == "BACKGROUND").Attribute("value")?.Value;
+            
+            if (!string.IsNullOrEmpty(textFG) && !string.IsNullOrEmpty(textBG) && HexRgb.IsValidHexString(textFG) && HexRgb.IsValidHexString(textBG))
+            {
+                Color fg = HexRgb.FromRgbString(textFG);
+                Color bg = HexRgb.FromRgbString(textBG);
+                var parentScheme = "Default";
+                if (fg.GetBrightness() > bg.GetBrightness())
+                    parentScheme = "Darcula";
+                root.Attribute("parent_scheme")?.SetValue(parentScheme);
+                return root.ToString();
+            }
+            return xml;
         }
     }
 }

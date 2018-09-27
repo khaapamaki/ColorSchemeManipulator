@@ -36,10 +36,10 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             }
         }
 
-        public virtual string ReplaceColors(string text, IEnumerable<Color> colors)
+        public virtual string ReplaceColors(string xml, IEnumerable<Color> colors)
         {
-            List<RegexReplacement> colorMatches = GetMatches(text, colors.ToList());
-            return SchemeUtils.BatchReplace(text, colorMatches);
+            List<RegexReplacement> colorMatches = GetMatches(xml, colors.ToList());
+            return SchemeUtils.BatchReplace(xml, colorMatches);
         }
 
         private List<RegexReplacement> GetMatches(string text, IReadOnlyList<Color> colors)

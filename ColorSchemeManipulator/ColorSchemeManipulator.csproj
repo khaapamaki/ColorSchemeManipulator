@@ -112,6 +112,7 @@
     <Content Include="bin\Debug\HappyDays.png" />
     <Content Include="bin\Debug\HappyDays_Complete.icls" />
     <Content Include="bin\Debug\HappyDays_Complete_converted.icls" />
+    <Content Include="bin\Debug\HappyDays_converted.icls" />
     <Content Include="bin\Debug\HappyDays_converted.png" />
     <Content Include="bin\Debug\photo.png" />
     <Content Include="bin\Debug\photo_converted.png" />

@@ -28,22 +28,22 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
         }
         
 
-        public Bitmap ReplaceColors(Bitmap source, IEnumerable<Color> colors)
+        public Bitmap ReplaceColors(Bitmap xml, IEnumerable<Color> colors)
         {        
             int x = 0;
             int y = 0;
             foreach (var color in colors) {
-                if (y >= source.Height || x >= source.Width)
+                if (y >= xml.Height || x >= xml.Width)
                     break;
-                source.SetPixel(x, y, ColorConversions.ColorToSystemColor(color));
+                xml.SetPixel(x, y, ColorConversions.ColorToSystemColor(color));
                 x++;
-                if (x >= source.Width) {
+                if (x >= xml.Width) {
                     x = 0;
                     y++;
                 }
             }
 
-            return source;
+            return xml;
         }
     }
 }

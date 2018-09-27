@@ -8,6 +8,6 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
         T ReadFile(string sourceFile);
         void WriteFile(T data, string targetFile);   
         IEnumerable<Color> GetColors(T source);
-        T ReplaceColors(T source, IEnumerable<Color> colors);
+        T ReplaceColors(T xml, IEnumerable<Color> colors);
     }
 }
