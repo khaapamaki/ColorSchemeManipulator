@@ -1,7 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
-    // Todo subclassing SchemeFileHandler is not good enough -> make proper css handler
-    public class CssFileHandler : SchemeFileHandler
+    // Todo subclassing HexRgbFileHandler is not good enough -> make proper css handler
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public class CSSFileHandler : HexRgbFileHandler
     {
         private readonly PaddableHexFormat[] _inputHexFormats =
         {

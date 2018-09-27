@@ -13,7 +13,7 @@ namespace ColorSchemeManipulator.UnitTests
         [Test]
         public void Color_MultiplySaturationBy2ToOverSaturateThenDivideBy2_ReturnsOriginalColor()
         {
-            var sourceColor = HexRgb.FromRgbString("2b6ca2", "rrggbb");
+            var sourceColor = HexRgbUtil.HexStringToColor("2b6ca2", "rrggbb");
             var color = new Color(sourceColor);
             color.Saturation *= 2;
             Console.WriteLine(color.ToString());
@@ -26,7 +26,7 @@ namespace ColorSchemeManipulator.UnitTests
         [Test]
         public void ClampedColor_MultiplySaturationBy2ToOverSaturateThenDivideBy2_ReturnsOriginalColor()
         {
-            var sourceColor = HexRgb.FromRgbString("2b6ca2", "rrggbb");
+            var sourceColor = HexRgbUtil.HexStringToColor("2b6ca2", "rrggbb");
             var color = new ClampedColor(sourceColor);
             color.Saturation *= 2;
             Console.WriteLine(color.ToString());
@@ -38,7 +38,7 @@ namespace ColorSchemeManipulator.UnitTests
         [Test]
         public void Color_ClampingManuallyOverSaturatedColor_ReturnsUnchangedHue()
         {
-            var sourceColor = HexRgb.FromRgbString("2b6ca2", "rrggbb");
+            var sourceColor = HexRgbUtil.HexStringToColor("2b6ca2", "rrggbb");
             var color = new Color(sourceColor);
             color.Saturation *= 2;
             Console.WriteLine(color.ToString());

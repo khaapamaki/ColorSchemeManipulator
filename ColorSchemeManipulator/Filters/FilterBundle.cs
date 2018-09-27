@@ -62,7 +62,7 @@ namespace ColorSchemeManipulator.Filters
 
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2,
                 paramList: "=<contrast>[,<ip>]",
-                desc: "Contrast.",
+                desc: "Adjusts contrast by S-spline curve.",
                 paramDesc: "<contrast> is curvature strength in range of -1..1 (0.0), <ip> is inflection point in range of 0..1 (0.5)");
 
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2,

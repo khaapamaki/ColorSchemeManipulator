@@ -18,13 +18,13 @@ namespace ColorSchemeManipulator.SchemeFormats
 
             switch (extension.ToLower()) {
                 case "icls":
-                    return SchemeFormat.Idea;
+                    return SchemeFormat.IDEA;
                 case "vstheme":
                     return SchemeFormat.VisualStudio;
                 case "json":
-                    return SchemeFormat.VsCode;
+                    return SchemeFormat.VSCode;
                 case "css":
-                    return SchemeFormat.Css;
+                    return SchemeFormat.CSS;
                 case "png":
                     return SchemeFormat.Image;
                 case "jpg":
@@ -39,14 +39,14 @@ namespace ColorSchemeManipulator.SchemeFormats
         public static IColorFileHandler<string> GetSchemeHandlerByFormat(SchemeFormat schemeFormat)
         {
             switch (schemeFormat) {
-                case SchemeFormat.Idea:
-                    return new IdeaSchemeFileHandler();
+                case SchemeFormat.IDEA:
+                    return new IDEAFileHandler();
                 case SchemeFormat.VisualStudio:
-                    return new VisualStudioSchemeFileHandler();
-                case SchemeFormat.VsCode:
-                    return new VsCodeSchemeFileHandler();
-                case SchemeFormat.Css:
-                    return new CssFileHandler();                
+                    return new VisualStudioFileHandler();
+                case SchemeFormat.VSCode:
+                    return new VSCodeFileHandler();
+                case SchemeFormat.CSS:
+                    return new CSSFileHandler();                
                 default:
                     return null;
             }
@@ -70,7 +70,7 @@ namespace ColorSchemeManipulator.SchemeFormats
                                         format.Padding);
                 }
 
-                if (HexRgb.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
+                if (HexRgbUtil.IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
                     if (rgbString.Length < rgbHexFormat.Length) {
                         if (format.PaddingDirection == PaddingDirection.Left
                             || format.PaddingDirection == PaddingDirection.Right) {
@@ -86,7 +86,7 @@ namespace ColorSchemeManipulator.SchemeFormats
                     }
 
                     if (rgbString.Length == rgbHexFormat.Length) {
-                        return HexRgb.FromRgbString(rgbString, rgbHexFormat);
+                        return HexRgbUtil.HexStringToColor(rgbString, rgbHexFormat);
                     }
                 }
             }

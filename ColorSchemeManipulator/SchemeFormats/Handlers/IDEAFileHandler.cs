@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Linq;
 using System.Xml.Linq;
@@ -7,7 +8,8 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
-    public class IdeaSchemeFileHandler : SchemeFileHandler
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public class IDEAFileHandler : HexRgbFileHandler
     {
         private readonly PaddableHexFormat[] _inputHexFormats =
         {
@@ -34,6 +36,12 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             return SetParentScheme(convertedText);
         }
 
+        /// <summary>
+        /// Sets builtin parent scheme to Default for light background schemes, and Darcula for dark
+        /// background schemes.
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
         private static string SetParentScheme(string xml)
         {
             var root = XElement.Parse(xml);
@@ -41,10 +49,10 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             string textFG = textOption.Descendants("value").Descendants("option").First(x => x.Attribute("name")?.Value == "FOREGROUND").Attribute("value")?.Value;
             string textBG = textOption.Descendants("value").Descendants("option").First(x => x.Attribute("name")?.Value == "BACKGROUND").Attribute("value")?.Value;
             
-            if (!string.IsNullOrEmpty(textFG) && !string.IsNullOrEmpty(textBG) && HexRgb.IsValidHexString(textFG) && HexRgb.IsValidHexString(textBG))
+            if (!string.IsNullOrEmpty(textFG) && !string.IsNullOrEmpty(textBG) && HexRgbUtil.IsValidHexString(textFG) && HexRgbUtil.IsValidHexString(textBG))
             {
-                Color fg = HexRgb.FromRgbString(textFG);
-                Color bg = HexRgb.FromRgbString(textBG);
+                Color fg = HexRgbUtil.RGBStringToColor(textFG);
+                Color bg = HexRgbUtil.RGBStringToColor(textBG);
                 var parentScheme = "Default";
                 if (fg.GetBrightness() > bg.GetBrightness())
                     parentScheme = "Darcula";

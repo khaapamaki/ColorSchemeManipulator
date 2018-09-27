@@ -1,6 +1,6 @@
 namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
-    public class VisualStudioSchemeFileHandler : SchemeFileHandler
+    public class VisualStudioFileHandler : HexRgbFileHandler
     {   
         private readonly PaddableHexFormat[] _inputHexFormats =
         {

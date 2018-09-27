@@ -1,35 +1,37 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ColorSchemeManipulator.Colors
 {
-    public static class HexRgb
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public static class HexRgbUtil
     {
-        public static Color FromRgbString(string rgbString, string rgbHexFormat)
+        public static Color HexStringToColor(string rgbString, string hexFormat)
             {
-                if (IsValidHexString(rgbString) && rgbString.Length <= rgbHexFormat.Length) {
-                    if (rgbString.Length < rgbHexFormat.Length) {
+                if (IsValidHexString(rgbString) && rgbString.Length <= hexFormat.Length) {
+                    if (rgbString.Length < hexFormat.Length) {
                         throw new Exception("Invalid color string: " + rgbString);
-                        // rgbString = rgbString.PadLeft(rgbHexFormat.Length, '0');
+                        // rgbString = rgbString.PadLeft(hexFormat.Length, '0');
                     }
 
-                    switch (rgbHexFormat.ToUpper()) {
+                    switch (hexFormat.ToUpper()) {
                         case "RRGGBB":
-                            return FromRgbString(rgbString);
+                            return RGBStringToColor(rgbString);
                         case "RGB":
-                            return FromRgbShortString(rgbString);
+                            return ShortRGBStringToColor(rgbString);
                         case "AARRGGBB":
-                            return FromArgbString(rgbString);
+                            return ARGBStringToColor(rgbString);
                         case "RRGGBBAA":
-                            return FromRgbaString(rgbString);
+                            return RGBAStringToColor(rgbString);
                         default:
-                            throw new Exception("Incorrect RGB string format: " + rgbHexFormat);
+                            throw new Exception("Incorrect RGB string format: " + hexFormat);
                     }
                 }
 
                 throw new Exception("Invalid color string: " + rgbString);
             }
 
-            public static Color FromRgbString(string rgbString)
+            public static Color RGBStringToColor(string rgbString)
             {
                 return Color.FromRgb(
                     byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
@@ -37,7 +39,7 @@ namespace ColorSchemeManipulator.Colors
                     byte.Parse(rgbString.Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
             }
         
-            public static Color FromRgbShortString(string rgbString)
+            public static Color ShortRGBStringToColor(string rgbString)
             {
                 return Color.FromRgb(
                     byte.Parse(rgbString.Substring(0, 1) + "0", System.Globalization.NumberStyles.HexNumber),
@@ -45,7 +47,7 @@ namespace ColorSchemeManipulator.Colors
                     byte.Parse(rgbString.Substring(2, 3) + "0", System.Globalization.NumberStyles.HexNumber));
             }
 
-            public static Color FromArgbString(string rgbString)
+            public static Color ARGBStringToColor(string rgbString)
             {
                 return Color.FromRgb(
                     byte.Parse(rgbString.Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
@@ -54,7 +56,7 @@ namespace ColorSchemeManipulator.Colors
                     byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber));
             }
 
-            public static Color FromRgbaString(string rgbString)
+            public static Color RGBAStringToColor(string rgbString)
             {
                 return Color.FromRgb(
                     byte.Parse(rgbString.Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
@@ -63,47 +65,47 @@ namespace ColorSchemeManipulator.Colors
                     byte.Parse(rgbString.Substring(6, 2), System.Globalization.NumberStyles.HexNumber));
             }
 
-            public static string ToRgbString(Color color, string hexFormat)
+            public static string ColorToHexString(Color color, string hexFormat)
             {
-                return ToRgbString(color.Red, color.Green, color.Blue, color.Alpha, hexFormat);
+                return ComponentsToHexString(color.Red, color.Green, color.Blue, color.Alpha, hexFormat);
             }
 
-            public static string ToRgbString(double r, double g, double b, double a, string rgbHexFormat)
+            public static string ComponentsToHexString(double r, double g, double b, double a, string hexFormat)
             {
-                return ToRgbString((byte) (r * 255), (byte) (g * 255), (byte) (b * 255), (byte) (a * 255),
-                    rgbHexFormat);
+                return ComponentsToHexString((byte) (r * 255), (byte) (g * 255), (byte) (b * 255), (byte) (a * 255),
+                    hexFormat);
             }
 
-            public static string ToRgbString(byte r, byte g, byte b, byte a, string rgbHexFormat)
+            public static string ComponentsToHexString(byte r, byte g, byte b, byte a, string hexFormat)
             {
                 string result;
-                switch (rgbHexFormat.ToUpper()) {
+                switch (hexFormat.ToUpper()) {
                     case "RRGGBB":
-                        result = ToRgbString(r, g, b);
+                        result = ComponentsToRGBString(r, g, b);
                         break;
                     case "AARRGGBB":
-                        result = ToArgbString(r, g, b, a);
+                        result = ComponentsToARGBString(r, g, b, a);
                         break;
                     case "RRGGBBAA":
-                        result = ToRgbaString(r, g, b, a);
+                        result = ComponentsToRGBAString(r, g, b, a);
                         break;
                     default:
-                        result = ToRgbString(r, g, b, a);
+                        result = ComponentsToRGBString(r, g, b, a);
                         break;
                 }
 
-                bool isUpperCase = rgbHexFormat.ToUpper() == rgbHexFormat;
+                bool isUpperCase = hexFormat.ToUpper() == hexFormat;
                 return isUpperCase
                     ? result.ToUpper()
                     : result.ToLower();
             }
 
-            private static string ToRgbString(byte r, byte g, byte b, byte a = 0xff)
+            private static string ComponentsToRGBString(byte r, byte g, byte b, byte a = 0xff)
             {
                 return r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
             }
 
-            private static string ToArgbString(byte r, byte g, byte b, byte a)
+            private static string ComponentsToARGBString(byte r, byte g, byte b, byte a)
             {
                 return a.ToString("X2")
                        + r.ToString("X2")
@@ -111,7 +113,7 @@ namespace ColorSchemeManipulator.Colors
                        + b.ToString("X2");
             }
 
-            private static string ToRgbaString(byte r, byte g, byte b, byte a)
+            private static string ComponentsToRGBAString(byte r, byte g, byte b, byte a)
             {
                 return r.ToString("X2")
                        + g.ToString("X2")

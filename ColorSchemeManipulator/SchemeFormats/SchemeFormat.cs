@@ -1,11 +1,12 @@
+// ReSharper disable InconsistentNaming
 namespace ColorSchemeManipulator.SchemeFormats
 {
     public enum SchemeFormat
     {
         VisualStudio,
-        Idea,
-        VsCode,
-        Css,
+        IDEA,
+        VSCode,
+        CSS,
         Image,
         Unknown
     }

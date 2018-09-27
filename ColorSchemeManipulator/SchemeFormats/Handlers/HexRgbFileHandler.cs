@@ -7,7 +7,7 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
-    public abstract class SchemeFileHandler : IColorFileHandler<string>
+    public abstract class HexRgbFileHandler : IColorFileHandler<string>
     {
         protected abstract string RegexPattern { get; }
         protected abstract PaddableHexFormat[] InputHexFormats { get; }
@@ -44,13 +44,13 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
 
         private List<RegexReplacement> GetMatches(string text, IReadOnlyList<Color> colors)
         {
-            // Encapsulate filtered colors and regex matches within list of RegexReplacement'es
+            // Encapsulate filtered colors and regex matches within list of RegexReplacements
             var matches = _matches ?? Regex.Matches(text, RegexPattern);
             int i = 0;
             List<RegexReplacement> colorMatches = new List<RegexReplacement>();
             foreach (Match match in matches) {
                 string rgbString = match.Groups[MatchGroupName].ToString();
-                string filteredRgbString = HexRgb.ToRgbString(colors[i++], OutputHexFormat);
+                string filteredRgbString = HexRgbUtil.ColorToHexString(colors[i++], OutputHexFormat);
 
                 colorMatches.Add(new RegexReplacement()
                 {

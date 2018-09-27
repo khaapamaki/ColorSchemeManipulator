@@ -151,7 +151,6 @@ namespace ColorSchemeManipulator.Filters
                 if (filterParams.Any()) {
                     var br = color.GetBrightness();
                     filtered.Lightness = br;
-                    // filtered.Saturation = 0;
                     yield return color.InterpolateWith(filtered, rangeFactor);
                 }
             }

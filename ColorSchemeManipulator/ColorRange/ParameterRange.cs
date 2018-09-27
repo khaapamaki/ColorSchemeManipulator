@@ -3,8 +3,6 @@ using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
-    // todo bug fix: slope max is calculated incorrectly
-    
     public class ParameterRange
     {
         public double MinStart { get; set; }

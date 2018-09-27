@@ -1,6 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
-    public class VsCodeSchemeFileHandler : SchemeFileHandler
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public class VSCodeFileHandler : HexRgbFileHandler
     {   
         private readonly PaddableHexFormat[] _inputHexFormats =
         {

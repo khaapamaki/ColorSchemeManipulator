@@ -15,7 +15,7 @@ namespace ColorSchemeManipulator.UnitTests
         public void TestRGB()
         {
             Color rgb1 = new Rgb8Bit(0x8A, 0x3B, 0x20).ToRgb();
-            Color rgb2 = Rgb.FromRgbString("8A3B20FF", "RRGGBBAA");
+            Color rgb2 = Rgb.RGBStringToColor("8A3B20FF", "RRGGBBAA");
             Assert.True(rgb1.Equals(rgb2));
         }
 

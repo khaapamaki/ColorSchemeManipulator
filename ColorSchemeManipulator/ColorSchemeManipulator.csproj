@@ -53,7 +53,7 @@
     <Compile Include="Colors\ClampedColor.cs" />
     <Compile Include="Colors\ColorConversions.cs" />
     <Compile Include="Colors\ColorMath.cs" />
-    <Compile Include="Colors\HexRgb.cs" />
+    <Compile Include="Colors\HexRgbUtil.cs" />
     <Compile Include="Colors\Color.cs" />
     <Compile Include="Common\DoubleExtensions.cs" />
     <Compile Include="Common\GenericExtensions.cs" />
@@ -66,13 +66,13 @@
     <Compile Include="Filters\FilterUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SchemeFormats\Handlers\CssFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\CSSFileHandler.cs" />
     <Compile Include="SchemeFormats\Handlers\IColorFileHandler.cs" />
-    <Compile Include="SchemeFormats\Handlers\IdeaSchemeFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\IDEAFileHandler.cs" />
     <Compile Include="SchemeFormats\Handlers\ImageFileHandler.cs" />
-    <Compile Include="SchemeFormats\Handlers\SchemeFileHandler.cs" />
-    <Compile Include="SchemeFormats\Handlers\VisualStudioSchemeFileHandler.cs" />
-    <Compile Include="SchemeFormats\Handlers\VsCodeSchemeFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\HexRgbFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\VisualStudioFileHandler.cs" />
+    <Compile Include="SchemeFormats\Handlers\VSCodeFileHandler.cs" />
     <Compile Include="SchemeFormats\PaddableHexFormat.cs" />
     <Compile Include="SchemeFormats\RegexReplacement.cs" />
     <Compile Include="SchemeFormats\SchemeFormat.cs" />

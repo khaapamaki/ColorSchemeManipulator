@@ -5,7 +5,6 @@ namespace ColorSchemeManipulator.Colors
     /// </summary>
     public class ClampedColor : Color
     {
-   
         public ClampedColor()
         {
             InputInputClamping = Clamping.LowHigh;
