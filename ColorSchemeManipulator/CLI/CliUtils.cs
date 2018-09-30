@@ -30,12 +30,10 @@ namespace ColorSchemeManipulator.CLI
 
             string arg = args[index++];
 
-            (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
+            (var filterDelegate, var colorRange, double[] filterParams) = CliArgs.GetDelegateAndData(arg);
 
-            object[] filterParams = TryParseDoubles(paramList?.ToArray());
-
-            if (filterDelegate is Func<IEnumerable<Color>, object[], IEnumerable<Color>> func) {
-                filters.Add(func, filterParams);
+            if (filterDelegate is Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> func) {
+                filters.Add(func, colorRange, filterParams);
             } else {
                 remainingArgs.Add(arg);
             }
@@ -44,6 +42,7 @@ namespace ColorSchemeManipulator.CLI
             return (filters, remainingArgs);
         }
 
+        
         private static object[] TryParseDoubles(object[] filterParams)
         {
             if (filterParams == null)
@@ -85,6 +84,25 @@ namespace ColorSchemeManipulator.CLI
                 rangeString == "" ? null : rangeString);
         }
 
+        public static double[] ExtractAndParseDoubleParams(string paramString)
+        {
+            var args = new List<double>();
+
+            if (string.IsNullOrEmpty(paramString)) {
+                return args.ToArray();
+            }
+
+            foreach (var s in paramString.Trim('"').Split(',')) {
+                string str = s.Trim();
+                if (double.TryParse(s.Trim(), out double val)) {
+                    args.Add(val);
+                }
+            }
+
+            return args.ToArray();
+        }   
+        
+        [Obsolete]
         public static List<object> ExtractParams(string paramString)
         {
             var args = new List<object>();

@@ -11,13 +11,16 @@ namespace ColorSchemeManipulator.Filters
     /// </summary>
     public class ColorFilter
     {
-        private Func<IEnumerable<Color>, object[], IEnumerable<Color>> FilterDelegate { get; }
-        private object[] Parameters { get; }
+        private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> FilterDelegate { get; }
+        private double[] Parameters { get; }
+        private ColorRange ColorRange { get; }
 
-        public ColorFilter(Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate,
-            params object[] filterParams)
+        public ColorFilter(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate,
+            ColorRange colorColorRange = null,
+            params double[] filterParams)
         {
             FilterDelegate = filterDelegate;
+            ColorRange = colorColorRange;
             Parameters = filterParams;
         }
 
@@ -28,7 +31,7 @@ namespace ColorSchemeManipulator.Filters
         /// <returns></returns>
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
-            return FilterDelegate(colors, Parameters);
+            return FilterDelegate(colors, ColorRange, Parameters);
         }
         
         /// <summary>
@@ -39,7 +42,7 @@ namespace ColorSchemeManipulator.Filters
         /// <returns></returns>
         private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping)
         {
-            colors = FilterDelegate(colors, Parameters);
+            colors = FilterDelegate(colors, ColorRange, Parameters);
 
             // Final clamping after last filter in chain
             foreach (var color in colors) {

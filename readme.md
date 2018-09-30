@@ -209,7 +209,7 @@ Function delegate signature will probably change some time in future:
 
 ```c#
 From:
-    Func<IEnumerable<Color>, object[], IEnumerable<Color>>
+    Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
 To:
     Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
 ```
