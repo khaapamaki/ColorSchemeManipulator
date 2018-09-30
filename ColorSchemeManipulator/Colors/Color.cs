@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using ColorSchemeManipulator.Common;
 
 // Todo Thread safety
@@ -149,7 +150,7 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcHsl();
                 _calcLock++;
-                _saturation = ClampInput(value);
+                _saturation = ClampInput(value).LimitLow(0);
                 ResetFlags(ColorFormat.Hsl);
                 _calcLock--;
             }
@@ -166,7 +167,7 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcHsl();
                 _calcLock++;
-                _lightness = ClampInput(value);
+                _lightness = ClampInput(value).LimitLow(0);
                 ResetFlags(ColorFormat.Hsl);
                 _calcLock--;
             }
@@ -183,7 +184,7 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcHsv();
                 _calcLock++;
-                _saturationHsv = ClampInput(value);
+                _saturationHsv = ClampInput(value).LimitLow(0);
                 ResetFlags(ColorFormat.Hsv);
                 _calcLock--;
             }
@@ -200,7 +201,7 @@ namespace ColorSchemeManipulator.Colors
             {
                 CalcHsv();
                 _calcLock++;
-                _value = ClampInput(value);
+                _value = ClampInput(value).LimitLow(0);
                 ResetFlags(ColorFormat.Hsv);
                 _calcLock--;
             }
@@ -212,6 +213,10 @@ namespace ColorSchemeManipulator.Colors
             set { _alpha = value.Clamp(0, 1); }
         }
 
+        public Color Clone()
+        {
+            return new Color(this);
+        }
         
         protected void CopyFrom(Color color)
         {

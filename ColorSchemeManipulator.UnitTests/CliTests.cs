@@ -80,8 +80,8 @@ namespace ColorSchemeManipulator.UnitTests
         [Test]
         public void ExtractArgs_NullOrEmptyString_ReturnsEmptyList()
         {
-            List<Object> resultNullString = CliUtils.ExtractParams(null);
-            List<Object> resultEmptyString = CliUtils.ExtractParams("");
+            var resultNullString = CliUtils.ExtractAndParseDoubleParams(null);
+            var resultEmptyString = CliUtils.ExtractAndParseDoubleParams("");
             Assert.That(resultNullString, Is.EqualTo(new List<object>()));
             Assert.That(resultEmptyString, Is.EqualTo(new List<object>()));
         }
@@ -90,11 +90,11 @@ namespace ColorSchemeManipulator.UnitTests
         public void ExtractParams_CorrectlyFormattedString_ReturnsExpectedList()
         {
             const string inputString = "2.1, 1.0, 0.1,1 ";
-            var result = CliUtils.ExtractParams(inputString);
-            var expected = new List<object> {"2.1", "1.0", "0.1", "1"};
+            var result = CliUtils.ExtractAndParseDoubleParams(inputString);
+            double[] expected = {2.1, 1.0, 0.1, 1.0};
 
-            if (result.Count == expected.Count) {
-                for (int i = 0; i < expected.Count; i++) {
+            if (result.Length == expected.Length) {
+                for (int i = 0; i < expected.Length; i++) {
                     Assert.That(result[i], Is.EqualTo(expected[i]));
                 }
             } else {
@@ -106,11 +106,11 @@ namespace ColorSchemeManipulator.UnitTests
         public void ExtractParams_StringWithExtraComma_ReturnsListWithEmptyStrings()
         {
             const string inputString = ",2.1, 1.0, 0.1,1, ";
-            var result = CliUtils.ExtractParams(inputString);
-            var expected = new List<object> {"", "2.1", "1.0", "0.1", "1", ""};
+            var result = CliUtils.ExtractAndParseDoubleParams(inputString);
+            double[] expected = {0, 2.1, 1.0, 0.1, 1, 0};
 
-            if (result.Count == expected.Count) {
-                for (int i = 0; i < expected.Count; i++) {
+            if (result.Length == expected.Length) {
+                for (int i = 0; i < expected.Length; i++) {
                     Assert.That(result[i], Is.EqualTo(expected[i]));
                 }
             } else {

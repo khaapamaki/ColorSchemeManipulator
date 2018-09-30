@@ -79,6 +79,7 @@
     <Compile Include="SchemeFormats\SchemeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\smtp_converted.png" />
     <EmbeddedResource Include="..\ColorSchemes\Cobalt.icls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -101,6 +102,9 @@
       <Link>.gitignore</Link>
     </Content>
     <EmbeddedResource Include="..\ColorSchemes\classic.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ColorSchemes\smtp.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="..\readme.md">

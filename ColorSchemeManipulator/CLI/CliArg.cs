@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
+using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.CLI
 {
@@ -16,9 +17,13 @@ namespace ColorSchemeManipulator.CLI
         public string ParamList { get; set; }
         public string ParamDesc { get; set; }
 
-        public CliArg(string option, Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate,
-            byte minParams, byte maxParams = 0,
-            string paramList = "", string desc = "", string paramDesc = "")
+        public CliArg(string option, 
+            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate,
+            byte minParams, 
+            byte maxParams = 0,
+            string paramList = "", 
+            string desc = "", 
+            string paramDesc = "")
         {
             OptionArgs = new List<string> {option};
             FilterDelegate = filterDelegate;
@@ -30,8 +35,12 @@ namespace ColorSchemeManipulator.CLI
         }
 
         public CliArg(IEnumerable<string> options,
-            Func<IEnumerable<Color>, object[], IEnumerable<Color>> filterDelegate, byte minParams, byte maxParams = 0,
-            string paramList = "", string desc = "", string paramDesc = "")
+            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate, 
+            byte minParams,
+            byte maxParams = 0,
+            string paramList = "", 
+            string desc = "", 
+            string paramDesc = "")
         {
             OptionArgs = new List<string>(options);
             FilterDelegate = filterDelegate;

@@ -30,41 +30,16 @@ namespace ColorSchemeManipulator.CLI
 
             string arg = args[index++];
 
-            (Delegate filterDelegate, List<object> paramList) = CliArgs.GetDelegateAndParameters(arg);
+            (var filterDelegate, var colorRange, double[] filterParams) = CliArgs.GetDelegateAndData(arg);
 
-            object[] filterParams = TryParseDoubles(paramList?.ToArray());
-
-            if (filterDelegate is Func<IEnumerable<Color>, object[], IEnumerable<Color>> func) {
-                filters.Add(func, filterParams);
+            if (filterDelegate is Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> func) {
+                filters.Add(func, colorRange, filterParams);
             } else {
                 remainingArgs.Add(arg);
             }
 
             (filters, remainingArgs) = RecursiveParseFilterArgs(args, index, filters, remainingArgs); // recurse
             return (filters, remainingArgs);
-        }
-
-        private static object[] TryParseDoubles(object[] filterParams)
-        {
-            if (filterParams == null)
-                return null;
-            
-            List<object> newList = new List<object>();
-            
-            foreach (var param in filterParams) {
-                object newParam = param;
-                
-                if (param is string) {
-                    double? d = FilterUtils.TryParseDouble(param);
-                    if (d != null) {
-                        newParam = d;
-                    }
-                }
-
-                newList.Add(newParam);
-            }
-
-            return newList.ToArray();
         }
 
         public static (string, string, string) SplitArgIntoPieces(string arg)
@@ -85,21 +60,25 @@ namespace ColorSchemeManipulator.CLI
                 rangeString == "" ? null : rangeString);
         }
 
-        public static List<object> ExtractParams(string paramString)
+        public static double[] ExtractAndParseDoubleParams(string paramString)
         {
-            var args = new List<object>();
+            var args = new List<double>();
 
             if (string.IsNullOrEmpty(paramString)) {
-                return args;
+                return args.ToArray();
             }
 
             foreach (var s in paramString.Trim('"').Split(',')) {
-                args.Add(s.Trim());
+                string str = s.Trim();
+                if (double.TryParse(s.Trim(), out double val)) {
+                    args.Add(val);
+                } else 
+                    args.Add(0);
             }
 
-            return args;
-        }
-
+            return args.ToArray();
+        }   
+        
         public static ColorRange ParseRange(string rangeString)
         {
             if (string.IsNullOrEmpty(rangeString)) return null;
