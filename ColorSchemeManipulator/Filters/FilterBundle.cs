@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
@@ -44,7 +45,7 @@ namespace ColorSchemeManipulator.Filters
                 paramList: "=<gain>",
                 desc: "Saturation gain.",
                 paramDesc: "<gain> is multiplier in colorRange of 0..10 (1.0)");
-
+            
             CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1,
                 paramList: "=<gain>",
                 desc: "RGB gain.",
@@ -193,7 +194,7 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0, 0,
                 desc: "Inverts value.");
 
-            CliArgs.Register(new List<string> {"-ipl", "--invert-perceived-lightness"}, InvertPerceivedLightness, 0, 0,
+            CliArgs.Register(new List<string> {"-ipl", "--invert-perc-lightness"}, InvertPerceivedLightness, 0, 0,
                 desc: "Inverts perceived lightness.");
 
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
@@ -205,6 +206,42 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-gsv", "--grayscale-value"}, ValueToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness.");
 
+            CliArgs.Register(new List<string> {"--min-lightness"}, MinLightness, 1, 1,
+                paramList: "=<min>",
+                desc: "Limits lower end of lightness.",
+                paramDesc: "<min> minimum lightness"
+                );
+
+            CliArgs.Register(new List<string> {"--max-lightness"}, MaxLightness, 1, 1,
+                paramList: "=<max>",
+                desc: "Limits higher end of lightness.",
+                paramDesc: "<max> max lightness"
+            );
+ 
+            CliArgs.Register(new List<string> {"--min-value"}, MinValue, 1, 1,
+                paramList: "=<min>",
+                desc: "Limits lower end of HSV value.",
+                paramDesc: "<min> minimum lightness"
+            );
+
+            CliArgs.Register(new List<string> {"--max-value"}, MaxValue, 1, 1,
+                paramList: "=<max>",
+                desc: "Limits higher end of value.",
+                paramDesc: "<max> max HSV value"
+            );
+ 
+            CliArgs.Register(new List<string> {"--max-saturation"}, MaxHslSaturation, 1, 1,
+                paramList: "=<max>",
+                desc: "Limits higher end of saturation.",
+                paramDesc: "<max> max saturation"
+            );
+            
+            CliArgs.Register(new List<string> {"--max-saturation-hsv"}, MaxHsvSaturation, 1, 1,
+                paramList: "=<max>",
+                desc: "Limits higher end of HSV saturation.",
+                paramDesc: "<max> max saturation"
+            );
+            
             CliArgs.Register(new List<string> {"--clamp"}, Clamp, 0, 0,
                 desc:
                 "Clamps color values to normal colorRange of 0..1. Tries to preserve hue. This is automatically done as last filter.");
@@ -738,6 +775,100 @@ namespace ColorSchemeManipulator.Filters
 
         #endregion
 
+        #region "Limit"
+        
+        public static IEnumerable<Color> MaxLightness(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+                
+                if (filterParams.Any())
+                    filtered.Lightness = color.Lightness.LimitHigh(filterParams[0]); 
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
+        public static IEnumerable<Color> MinLightness(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+                
+                if (filterParams.Any())
+                    filtered.Lightness = color.Lightness.LimitLow(filterParams[0]); 
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
+        public static IEnumerable<Color> MaxValue(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+                
+                if (filterParams.Any())
+                    filtered.Value = color.Value.LimitHigh(filterParams[0]); 
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
+        public static IEnumerable<Color> MinValue(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+                
+                if (filterParams.Any())
+                    filtered.Value = color.Value.LimitLow(filterParams[0]); 
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
+        public static IEnumerable<Color> MaxHslSaturation(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+                
+                if (filterParams.Any())
+                    filtered.Saturation = color.Saturation.LimitHigh(filterParams[0]); 
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
+        public static IEnumerable<Color> MaxHsvSaturation(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+                
+                if (filterParams.Any())
+                    filtered.SaturationHsv = color.SaturationHsv.LimitHigh(filterParams[0]); 
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
+        #endregion
+        
         #region "Misc"
 
         public static IEnumerable<Color> BrightnessToGrayScale(IEnumerable<Color> colors,
