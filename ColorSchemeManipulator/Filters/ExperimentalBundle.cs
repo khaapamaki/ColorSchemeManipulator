@@ -121,7 +121,7 @@ namespace ColorSchemeManipulator.Filters
         {
             double mix = 0.333333;
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
-                mix = (FilterUtils.TryParseDouble(filterParams[0]) ?? 0.5).Clamp(0, 1);
+                mix = (filterParams.Length >= 2 ? filterParams[1] : 0.5).Clamp(0, 1);
             }
 
             foreach (var color in colors) {
@@ -143,7 +143,6 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
-                ;
 
                 if (filterParams.Any()) {
                     var br = color.GetBrightness();
@@ -161,7 +160,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0);
+                    double gain = (filterParams[0]);
                     filtered.SaturationHsv = (filtered.SaturationHsv * gain);
                 }
 
@@ -175,12 +174,10 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
-                ;
 
                 if (filterParams.Any()) {
                     var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
                     filtered.Value = br;
-                    // filtered.Saturation = 0;
                     yield return color.InterpolateWith(filtered, rangeFactor);
                 }
             }
@@ -242,11 +239,8 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    double midpoint = 0.5;
-                    if (filterParams.Length >= 2) {
-                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                    }
+                    double strength = filterParams[0];
+                    double midpoint = filterParams.Length >= 2 ? filterParams[1] : 0.5;
 
                     filtered.SaturationHsv = ColorMath.SSpline(color.SaturationHsv, strength, midpoint);
                 }
@@ -264,7 +258,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gamma = filterParams[0];
                     filtered.SaturationHsv = ColorMath.Gamma(color.SaturationHsv, gamma);
                 }
 
