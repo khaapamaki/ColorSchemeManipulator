@@ -38,12 +38,13 @@ namespace ColorSchemeManipulator.Filters
                 InvertPerceivedBrightnessWithCorrection, 0, 1,
                 paramList: "[=<corr>]",
                 desc: "Inverts perceived brightness with correction parameter.",
-                paramDesc: "<corr> is value between 0..1, 0 is safest conversion, 1 is closest to truth but also causes clipping of some colors.");
+                paramDesc:
+                "<corr> is value between 0..1, 0 is safest conversion, 1 is closest to truth but also causes clipping of some colors.");
 
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
                 paramList: "=<mix>",
                 desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)",
-                paramDesc:"<mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is full value inversion.");
+                paramDesc: "<mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is full value inversion.");
 
             CliArgs.Register(new List<string> {"-b2l", "--brightness-to-lightness"}, BrightnessToLightness, 0, 0,
                 desc: "Translates perceived brightness to lightness."
@@ -57,7 +58,8 @@ namespace ColorSchemeManipulator.Filters
                 paramList: "=<contrast>[,<ip>]",
                 desc:
                 "Applies contrast curve to HSV saturation.",
-                paramDesc: "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
+                paramDesc:
+                "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
 
 
             CliArgs.Register(new List<string> {"-gaS", "--gamma-hsv-sat"}, GammaHsvSaturation, 1,
@@ -73,17 +75,16 @@ namespace ColorSchemeManipulator.Filters
 
             CliArgs.Register(new List<string> {"--tolight"}, ToLight, 0, 0,
                 desc: "A preset with multiple filters to convert dark scheme to light");
-            
+
             // CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
 
             GetInstance()._isRegistered = true;
         }
 
-        public static IEnumerable<Color> InvertPerceivedBrightnessWithCorrection(IEnumerable<Color> colors, 
+        public static IEnumerable<Color> InvertPerceivedBrightnessWithCorrection(IEnumerable<Color> colors,
             ColorRange range,
             params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
 
@@ -114,13 +115,10 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-
         public static IEnumerable<Color> InvertMixedLightnessAndValue(IEnumerable<Color> colors,
             ColorRange range,
             params double[] filterParams)
         {
-            
-
             double mix = 0.333333;
             if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
                 mix = (FilterUtils.TryParseDouble(filterParams[0]) ?? 0.5).Clamp(0, 1);
@@ -139,9 +137,9 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> BrightnessToLightness(IEnumerable<Color> colors, ColorRange range, params double[] filterParams)
+        public static IEnumerable<Color> BrightnessToLightness(IEnumerable<Color> colors, ColorRange range,
+            params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
@@ -155,9 +153,9 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GainHsvSaturation(IEnumerable<Color> colors, ColorRange range, params double[] filterParams)
+        public static IEnumerable<Color> GainHsvSaturation(IEnumerable<Color> colors, ColorRange range,
+            params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
@@ -171,9 +169,9 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> BrightnessToValue(IEnumerable<Color> colors, ColorRange range, params double[] filterParams)
+        public static IEnumerable<Color> BrightnessToValue(IEnumerable<Color> colors, ColorRange range,
+            params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
@@ -188,18 +186,19 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> ToLight(IEnumerable<Color> colors, ColorRange range, params double[] filterParams)
+        public static IEnumerable<Color> ToLight(IEnumerable<Color> colors, ColorRange range,
+            params double[] filterParams)
         {
             var filterSet = new FilterSet()
                     .Add(FilterBundle.GainLightness,
                         new ColorRange().Brightness(0.7, 1, 0.15, 0)
                             .Saturation(0.7, 1, 0.1, 0),
-                         0.6) // dampen "neon" rgb before so don't get too dark
+                        0.6) // dampen "neon" rgb before so don't get too dark
                     .Add(FilterBundle.InvertPerceivedBrightness) // invert image
                     .Add(FilterBundle.AutoLevelsRgb, null, 0.15, 1, 1.2) // add some brightness
-                    .Add(FilterBundle.GammaHslSaturation,new ColorRange().Saturation4P(0.1, 0.1, 1, 1),
+                    .Add(FilterBundle.GammaHslSaturation, new ColorRange().Saturation4P(0.1, 0.1, 1, 1),
                         1.3
-                                   )
+                    )
                     //                    .Add(FilterBundle.GammaRgb, 1.7,
                     //                        new ColorRange()
                     //                            .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
@@ -217,9 +216,9 @@ namespace ColorSchemeManipulator.Filters
             return filterSet.ApplyTo(colors);
         }
 
-        public static IEnumerable<Color> LevelsHsvSaturation(IEnumerable<Color> colors, ColorRange range, params double[] filterParams)
+        public static IEnumerable<Color> LevelsHsvSaturation(IEnumerable<Color> colors, ColorRange range,
+            params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
@@ -238,7 +237,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range,
             params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
@@ -258,9 +256,9 @@ namespace ColorSchemeManipulator.Filters
         }
 
 
-        public static IEnumerable<Color> GammaHsvSaturation(IEnumerable<Color> colors, ColorRange range, params double[] filterParams)
+        public static IEnumerable<Color> GammaHsvSaturation(IEnumerable<Color> colors, ColorRange range,
+            params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
@@ -278,7 +276,6 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range,
             params double[] filterParams)
         {
-            
             (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(colors);
 
             foreach (var color in colors) {
@@ -296,9 +293,9 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> ByBass(IEnumerable<Color> colors, ColorRange range, params double[] filterParams)
+        public static IEnumerable<Color> ByBass(IEnumerable<Color> colors, ColorRange range,
+            params double[] filterParams)
         {
-            
             foreach (var color in colors) {
                 if (filterParams.Any()) {
                     (double h, double s, double l) = color.GetHslComponents();

@@ -243,7 +243,8 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors, ColorRange colorRange = null,
+        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors,
+            ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
