@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,7 +52,12 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             foreach (Match match in matches) {
                 string rgbString = match.Groups[MatchGroupName].ToString();
                 string filteredRgbString = HexRgbUtil.ColorToHexString(colors[i++], OutputHexFormat);
-
+                // if (match.Groups["attr"] != null) {
+                //     Console.WriteLine(match.Groups["attr"].Value);
+                // }
+                //
+                // string subAttr = match.Groups["attr2"]?.Value ?? ""; 
+                // Console.WriteLine($"  {subAttr,-20} {rgbString} -> {filteredRgbString}");
                 colorMatches.Add(new RegexReplacement()
                 {
                     Index = match.Groups[MatchGroupName].Index,
@@ -61,6 +67,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                 });
             }
 
+            Console.WriteLine($"{i} colors affected");
             return colorMatches;
         }
     }

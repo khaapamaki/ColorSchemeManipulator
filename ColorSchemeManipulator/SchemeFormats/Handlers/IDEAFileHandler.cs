@@ -24,7 +24,8 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
         protected override PaddableHexFormat[] InputHexFormats => _inputHexFormats;
 
         protected override string RegexPattern =>
-            "<option name=\".+\" value=\"(?<hex>[0-9abcdefABCDEF]{2,6})\"\\s?\\/>";
+            "(?m)<option\\s+name=\"(?<attr>.*)\"\\s*>\\s*<value>\\s*<option\\s+name=\"(?<attr2>.*)\"\\s+value=\"(?<hex>[0-9abcdefABCDEF]{2,6})\"\\s?\\/>" 
+            + "|<option\\s+name=\"(?<attr2>.*)\"\\s+value=\"(?<hex>[0-9abcdefABCDEF]{2,6})\"\\s?\\/>";
 
         protected override string MatchGroupName => "hex";
 
@@ -33,6 +34,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
         public override string ReplaceColors(string xml, IEnumerable<Color> colors)
         {
             string convertedText = base.ReplaceColors(xml, colors);
+            SetParentScheme(xml);
             return SetParentScheme(convertedText);
         }
 
@@ -51,6 +53,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             
             if (!string.IsNullOrEmpty(textFG) && !string.IsNullOrEmpty(textBG) && HexRgbUtil.IsValidHexString(textFG) && HexRgbUtil.IsValidHexString(textBG))
             {
+                Console.WriteLine($"Background: #{textBG}, Foreground: #{textFG}");
                 Color fg = HexRgbUtil.RGBStringToColor(textFG);
                 Color bg = HexRgbUtil.RGBStringToColor(textBG);
                 var parentScheme = "Default";
