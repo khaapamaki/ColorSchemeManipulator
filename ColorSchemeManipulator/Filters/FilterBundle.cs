@@ -153,16 +153,16 @@ namespace ColorSchemeManipulator.Filters
                 "<ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
 
             CliArgs.Register(new List<string> {"-al", "--auto-levels"}, AutoLevelsRgb, 0, 3,
-                paramList: "=<ob>,<ow>,<g>",
+                paramList: "=<min>,<max>,<g>",
                 desc:
-                "Adjusts levels of RGB channels by normalizing levels so that darkest color will be black and lightest color max bright. Uses HSV value as input value.",
-                paramDesc: "<ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g> is gamma 0.01..9.99 (1)");
+                "Auto levels RGB channels by normalizing them by HSV values to full scale between given minimum and maximum.",
+                paramDesc: "<min> is output min 0..1 (0), <max> is output max 0..1 (1), <g> is gamma 0.01..9.99 (1)");
             
             CliArgs.Register(new List<string> {"-all", "--auto-levels-lightness"}, AutoLevelsLightness, 0, 3,
-                paramList: "=<ob>,<ow>,<g>",
+                paramList: "=<min>,<max>,<g>",
                 desc:
-                "Adjusts lightness by normalizing levels so that darkest color will be black and lightest color max bright.",
-                paramDesc: "<ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g> is gamma 0.01..9.99 (1)");
+                "Auto levels lightness by normalizing values to full scale between given minimum and maximum.",
+                paramDesc: "<min> is output min 0..1 (0), <max> is output max 0..1 (1), <g> is gamma 0.01..9.99 (1)");
 
             CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
