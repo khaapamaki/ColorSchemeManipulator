@@ -202,11 +202,11 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Invert"
 
-        public static IEnumerable<Color> InvertRgb(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> InvertRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var inverted = Color.FromRgb(
                     ColorMath.Invert(color.Red),
                     ColorMath.Invert(color.Green),
@@ -216,11 +216,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> InvertLightness(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> InvertLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
 
                 var filtered = new Color(color);
 
@@ -230,11 +230,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> InvertValue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> InvertValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 filtered.Value = ColorMath.Invert(color.Value);
@@ -243,11 +243,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
 
                 var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
                 var targetBrightness = (1 - brightness);
@@ -265,11 +265,11 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Gain"
 
-        public static IEnumerable<Color> GainHslSaturation(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GainHslSaturation(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -281,11 +281,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GainRgb(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GainRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -299,11 +299,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GainLightness(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GainLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -315,11 +315,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GainValue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GainValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -335,11 +335,11 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Gamma"
 
-        public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -353,11 +353,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GammaRed(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GammaRed(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -369,11 +369,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GammaGreen(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GammaGreen(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
 
@@ -386,11 +386,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GammaBlue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GammaBlue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -402,11 +402,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GammaHslSaturation(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GammaHslSaturation(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -418,11 +418,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GammaLightness(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GammaLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -434,11 +434,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> GammaValue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> GammaValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -477,11 +477,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> ContrastLightness(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> ContrastLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -498,11 +498,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> ContrastValue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> ContrastValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -520,11 +520,11 @@ namespace ColorSchemeManipulator.Filters
         }
 
         public static IEnumerable<Color> ContrastHslSaturation(IEnumerable<Color> colors,
-            ColorRange range,
+            ColorRange colorRange,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
@@ -545,11 +545,11 @@ namespace ColorSchemeManipulator.Filters
 
         #region Hue
 
-        public static IEnumerable<Color> ShiftHslHue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> ShiftHslHue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
 
@@ -566,11 +566,11 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Levels"
 
-        public static IEnumerable<Color> LevelsRgb(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> LevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -584,11 +584,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> LevelsRed(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> LevelsRed(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -600,11 +600,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> LevelsGreen(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> LevelsGreen(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -616,11 +616,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> LevelsBlue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> LevelsBlue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -632,13 +632,13 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(colors);
 
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double outBlack, double outWhite, double gamma) =
@@ -652,11 +652,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -668,11 +668,11 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> LevelsValue(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> LevelsValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -686,11 +686,11 @@ namespace ColorSchemeManipulator.Filters
 
 
         public static IEnumerable<Color> LevelsHslSaturation(IEnumerable<Color> colors,
-            ColorRange range,
+            ColorRange colorRange,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -707,11 +707,11 @@ namespace ColorSchemeManipulator.Filters
         #region "Misc"
 
         public static IEnumerable<Color> BrightnessToGrayScale(IEnumerable<Color> colors,
-            ColorRange range,
+            ColorRange colorRange,
             params double[] filterParams)
         {
             foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
                 var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
@@ -723,7 +723,7 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> Clamp(IEnumerable<Color> colors, ColorRange range = null,
+        public static IEnumerable<Color> Clamp(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             foreach (var color in colors) {
