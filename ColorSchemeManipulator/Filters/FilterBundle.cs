@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.Filters
 {
@@ -193,7 +192,7 @@ namespace ColorSchemeManipulator.Filters
 
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness.");
-            
+
             CliArgs.Register(new List<string> {"-gsl", "--grayscale-ligthness"}, LightnessToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness.");
 
@@ -630,10 +629,17 @@ namespace ColorSchemeManipulator.Filters
 
         public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
-        {
-            (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestRgb(colors);
+        {        
+            // This is to avoid multiple enumeration
+            List<Color> cache = colors.ToList();
+            
+            (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestValue(cache);
 
-            foreach (var color in colors) {
+#if DEBUG
+            Console.WriteLine($"Auto levels - source min {inBlack:F3}, max {inWhite:F3}");
+#endif
+
+            foreach (var color in cache) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
 
@@ -734,7 +740,7 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> ValueToGrayScale(IEnumerable<Color> colors,
             ColorRange colorRange,
             params double[] filterParams)
@@ -750,7 +756,7 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> Clamp(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {

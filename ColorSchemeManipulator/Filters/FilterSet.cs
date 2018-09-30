@@ -40,6 +40,7 @@ namespace ColorSchemeManipulator.Filters
         {
             // Process all filters in chain
             foreach (var filterDelegate in _filters) {
+                // Console.WriteLine("  " + filterDelegate);
                 colors = filterDelegate.ApplyTo(colors);
             }
 

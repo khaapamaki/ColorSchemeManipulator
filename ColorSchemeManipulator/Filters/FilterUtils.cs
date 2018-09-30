@@ -40,7 +40,7 @@ namespace ColorSchemeManipulator.Filters
 
         }
 
-        public static (double, double) GetLowestAndHighestRgb(IEnumerable<Color> colors)
+        public static (double, double) GetLowestAndHighestRgb(List<Color> colors)
             {
                 bool some = false;
                 double hi = 0.0;
@@ -70,7 +70,6 @@ namespace ColorSchemeManipulator.Filters
                 return some ? (lo, hi) : (0, 1);
             }
 
-
             public static (double, double) GetLowestAndHighestLightness(IEnumerable<Color> colors)
             {
                 bool some = false;
@@ -79,6 +78,20 @@ namespace ColorSchemeManipulator.Filters
                 foreach (var color in colors) {
                     if (color.Lightness > hi) hi = color.Lightness;
                     if (color.Lightness < lo) lo = color.Lightness;
+                    some = true;
+                }
+
+                return some ? (lo, hi) : (0, 1);
+            }
+        
+            public static (double, double) GetLowestAndHighestValue(IEnumerable<Color> colors)
+            {
+                bool some = false;
+                double hi = 0.0;
+                double lo = 1.0;
+                foreach (var color in colors) {
+                    if (color.Value > hi) hi = color.Value;
+                    if (color.Value < lo) lo = color.Value;
                     some = true;
                 }
 

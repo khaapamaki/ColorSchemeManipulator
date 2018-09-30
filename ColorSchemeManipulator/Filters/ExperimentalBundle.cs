@@ -256,9 +256,9 @@ namespace ColorSchemeManipulator.Filters
                     //         .Brightness(0.7, 1, 0.2, 0)
                     //         .Saturation(0.7, 1, 0.2, 0),
                     //     0.8) // dampen "neon" rgb before so don't get too dark
-                    .Add(FilterBundle.InvertPerceivedLightness) // invert image
+                    .Add(InvertMixedPerceivedLightnessAndValue, null, 0.4) // invert image
                     // .Add(FilterBundle.Clamp)
-                    .Add(FilterBundle.AutoLevelsRgb, null, 0.14, 0.97, 1.05) // add some brightness
+                    .Add(FilterBundle.AutoLevelsRgb, null, 0.1, 1, 1.05) // add some brightness
                     .Add(FilterBundle.LevelsRgb,
                         new ColorRange()
                             .Saturation4P(0.1, 0.1, 1, 1)
@@ -273,11 +273,11 @@ namespace ColorSchemeManipulator.Filters
                     .Add(FilterBundle.GammaRgb,
                         new ColorRange()
                             .Hue(37, 56, 6, 20)
-                            .Lightness(0.04, 0.6, 0, 0.2), 1.3) // yellow-neon green boost
+                            .Lightness(0.04, 0.6, 0, 0.2), 1.2) // yellow-neon green boost
                     .Add(FilterBundle.GainHslSaturation,
                         new ColorRange()
                             .Hue(37, 56, 6, 20)
-                            .Lightness(0.04, 0.6, 0, 0.2), 1.5) // yellow-neon green boostx
+                            .Lightness(0.04, 0.6, 0, 0.2), 1.3) // yellow-neon green boost
                 ;
 
             return filterSet.ApplyTo(colors);
