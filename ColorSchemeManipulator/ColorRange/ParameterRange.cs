@@ -124,7 +124,7 @@ namespace ColorSchemeManipulator.Filters
 
         public override string ToString()
         {
-            return $"{MinStart}, {MinEnd}, {MaxStart}, {MaxEnd}";
+            return $"{MinStart}/{MinEnd}--{MaxStart}\\{MaxEnd}";
         }
 
         private double ShortestDifference(double a, double b)

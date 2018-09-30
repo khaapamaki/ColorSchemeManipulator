@@ -6,7 +6,7 @@ namespace ColorSchemeManipulator.Filters
     public class ColorRange
     {
         public ColorRange() { }
-        
+
         public ParameterRange SaturationRange { get; set; } = null;
         public ParameterRange LightnessRange { get; set; } = null;
         public ParameterRange ValueRange { get; set; } = null;
@@ -29,17 +29,17 @@ namespace ColorSchemeManipulator.Filters
             result *= BrightnessRange?.InRangeFactor(color.GetBrightness()) ?? 1;
             return result;
         }
-        
+
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append(BrightnessRange != null ? $"h:" + BrightnessRange.ToString() + " " : "");
-            sb.Append(HueRange != null ? $"h:" + HueRange.ToString() + " " : "");
-            sb.Append(SaturationRange != null ? $"s:" + SaturationRange.ToString() + " " : "");
-            sb.Append(LightnessRange != null ? $"l:" + LightnessRange.ToString() + " " : "");
-            sb.Append(RedRange != null ? $"r:" + RedRange.ToString() + " " : "");
-            sb.Append(GreenRange != null ? $"g:" + GreenRange.ToString() + " " : "");
-            sb.Append(BlueRange != null ? $"b:" + BlueRange.ToString() + " " : "");
+            sb.Append(BrightnessRange != null ? $"Bri: " + BrightnessRange : "");
+            sb.Append(HueRange != null ? $"{(sb.Length > 0 ? ", " : "")}Hue: " + HueRange : "");
+            sb.Append(SaturationRange != null ? $"{(sb.Length > 0 ? ", " : "")}Sat: " + SaturationRange : "");
+            sb.Append(LightnessRange != null ? $"{(sb.Length > 0 ? ", " : "")}Lgh: " + LightnessRange : "");
+            sb.Append(RedRange != null ? $"{(sb.Length > 0 ? ", " : "")}Red: " + RedRange : "");
+            sb.Append(GreenRange != null ? $"{(sb.Length > 0 ? ", " : "")}Gre: " + GreenRange: "");
+            sb.Append(BlueRange != null ? $"{(sb.Length > 0 ? ", " : "")}Blu: " + BlueRange : "");
 
             return sb.ToString();
         }

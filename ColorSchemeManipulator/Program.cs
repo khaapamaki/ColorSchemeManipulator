@@ -79,7 +79,7 @@ namespace ColorSchemeManipulator
                 //    Debug version auto file choosing, remove when merging to stage/prod
                 //-------------------------------------------------------------------------- 
                 
-                string sourceFileName = @"HapdpyDays_Complete.icls";
+                string sourceFileName = @"HappyDays_Complete.icls";
                 // sourceFileName = "darcula.vstheme";
                 // sourceFileName = "HappyDays.png";
                 // sourceFileName = "photo.png";
@@ -112,7 +112,7 @@ namespace ColorSchemeManipulator
                     var processor = new ColorFileProcessor<Bitmap>(new ImageFileHandler());
 
                     Console.WriteLine("Applying filters:");
-                    Console.WriteLine(filterSet.ToString());
+                    // output applied filters from ColorFilter
 
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
                     Console.WriteLine("Done.");
@@ -122,8 +122,8 @@ namespace ColorSchemeManipulator
                         var processor = new ColorFileProcessor<string>(handler);
 
                         Console.WriteLine("Applying filters:");
-                        Console.WriteLine(filterSet.ToString());
-
+                        // output applied filters from ColorFilter
+                        
                         processor.ProcessFile(sourceFile, targetFile, filterSet);
                         Console.WriteLine("Done.");
                     } else {

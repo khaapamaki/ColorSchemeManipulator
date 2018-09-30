@@ -447,8 +447,22 @@ namespace ColorSchemeManipulator.Colors
             return Lightness;
         }
 
+        public double CompareValue()
+        {
+            return Lightness;
+        }
+
+        public int CompareTo(Color color)
+        {
+            if (CompareValue() > color.CompareValue())
+                return 1;
+            if (CompareValue() < color.CompareValue())
+                return -1;
+            return 0;
+        }
         // INTERNAL PROCESSING
 
+       
         private double ClampInput(double input)
         {
             return ClampValue(input, InputInputClamping);

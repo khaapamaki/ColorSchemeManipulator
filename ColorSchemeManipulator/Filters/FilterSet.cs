@@ -39,8 +39,7 @@ namespace ColorSchemeManipulator.Filters
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping = true)
         {
             // Process all filters in chain
-            foreach (var filterDelegate in _filters) {
-                // Console.WriteLine("  " + filterDelegate);
+            foreach (var filterDelegate in _filters) {               
                 colors = filterDelegate.ApplyTo(colors);
             }
 

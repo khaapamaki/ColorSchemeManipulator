@@ -258,7 +258,7 @@ namespace ColorSchemeManipulator.Filters
                     //     0.8) // dampen "neon" rgb before so don't get too dark
                     .Add(InvertMixedPerceivedLightnessAndValue, null, 0.4) // invert image
                     // .Add(FilterBundle.Clamp)
-                    .Add(FilterBundle.AutoLevelsRgb, null, 0.1, 1, 1.05) // add some brightness
+                    .Add(FilterBundle.AutoLevelsLightness, null, 0.1, 1, 1.05) // add some brightness
                     .Add(FilterBundle.LevelsRgb,
                         new ColorRange()
                             .Saturation4P(0.1, 0.1, 1, 1)

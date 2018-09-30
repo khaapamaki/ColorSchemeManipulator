@@ -154,7 +154,13 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-al", "--auto-levels"}, AutoLevelsRgb, 0, 3,
                 paramList: "=<ob>,<ow>,<g>",
                 desc:
-                "Adjusts levels of RGB channels by normalizing levels so that darkest color will be black and lightest color max bright.",
+                "Adjusts levels of RGB channels by normalizing levels so that darkest color will be black and lightest color max bright. Uses HSV value as input value.",
+                paramDesc: "<ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g> is gamma 0.01..9.99 (1)");
+            
+            CliArgs.Register(new List<string> {"-all", "--auto-levels-lightness"}, AutoLevelsLightness, 0, 3,
+                paramList: "=<ob>,<ow>,<g>",
+                desc:
+                "Adjusts lightness by normalizing levels so that darkest color will be black and lightest color max bright.",
                 paramDesc: "<ob> is output black 0..1 (0), <ow> is output white 0..1 (1), <g> is gamma 0.01..9.99 (1)");
 
             CliArgs.Register(new List<string> {"-lel", "--levels-lightness"}, LevelsLightness, 5,
@@ -636,7 +642,7 @@ namespace ColorSchemeManipulator.Filters
             (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestValue(cache);
 
 #if DEBUG
-            Console.WriteLine($"Auto levels - source min {inBlack:F3}, max {inWhite:F3}");
+            Console.WriteLine($"  (Auto rgb levels - source min {inBlack:F3}, max {inWhite:F3})");
 #endif
 
             foreach (var color in cache) {
@@ -653,6 +659,32 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
+        
+        public static IEnumerable<Color> AutoLevelsLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
+            params double[] filterParams)
+        {        
+            // This is to avoid multiple enumeration
+            List<Color> cache = colors.ToList();
+            
+            (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(cache);
+
+#if DEBUG
+            Console.WriteLine($"  (Auto lightness levels - source min {inBlack:F3}, max {inWhite:F3})");
+#endif
+
+            foreach (var color in cache) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+
+                (double outBlack, double outWhite, double gamma) =
+                    FilterUtils.GetAutoLevelParameters(filterParams);
+
+                filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
 
         public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)

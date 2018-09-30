@@ -31,6 +31,7 @@ namespace ColorSchemeManipulator.Filters
         /// <returns></returns>
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
+            Console.WriteLine("  " + ToString());
             return FilterDelegate(colors, ColorRange, Parameters);
         }
         
@@ -42,6 +43,7 @@ namespace ColorSchemeManipulator.Filters
         /// <returns></returns>
         private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping)
         {
+            Console.WriteLine("  " + ToString());
             colors = FilterDelegate(colors, ColorRange, Parameters);
 
             // Final clamping after last filter in chain
@@ -56,10 +58,10 @@ namespace ColorSchemeManipulator.Filters
         {
             var sb = new StringBuilder();
             foreach (var argument in Parameters) {
-                sb.Append(argument + " ");
+                sb.Append((sb.Length > 0 ? ", " : "") + argument);
             }
 
-            return FilterDelegate.Method.Name + " " + sb;
+            return FilterDelegate.Method.Name + (sb.Length > 0 ? $"({sb})" : "") + (ColorRange != null ? " ==> " + ColorRange  : "");
         }
     }
 }
