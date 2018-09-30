@@ -553,7 +553,10 @@ namespace ColorSchemeManipulator.Colors
                 if (_rgbValid) {
                     SetHsl(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha, false);
                 } else if (_hsvValid) {
-                    SetHsl(ColorConversions.HsvToHsl(_hueHsv, _saturationHsv, _value), _alpha, false);
+                    SetRgb(ColorConversions.HsvToRgb(_hueHsv, _saturationHsv, _value), _alpha, false);
+                    SetHsv(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha, false);
+                    // Use the one below if true direct hsv<->hsl formula is implemented
+                    // SetHsl(ColorConversions.HsvToHsl(_hueHsv, _saturationHsv, _value), _alpha, false);
                 }
             }
 
@@ -571,7 +574,10 @@ namespace ColorSchemeManipulator.Colors
                 if (_rgbValid) {
                     SetHsv(ColorConversions.RgbToHsv(_red, _green, _blue), _alpha, false);
                 } else if (_hslValid) {
-                    SetHsv(ColorConversions.HslToHsv(_hue, _saturation, _lightness), _alpha, false);
+                    SetRgb(ColorConversions.HslToRgb(_hue, _saturation, _lightness), _alpha, false);
+                    SetHsv(ColorConversions.RgbToHsv(_red, _green, _blue), _alpha, false);
+                    // Use the one below if true direct hsv<->hsl formula is implemented
+                    // SetHsv(ColorConversions.HslToHsv(_hue, _saturation, _lightness), _alpha, false);
                 }
             }
 
