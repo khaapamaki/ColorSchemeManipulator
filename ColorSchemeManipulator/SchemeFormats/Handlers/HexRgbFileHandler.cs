@@ -90,12 +90,12 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                     minmax.Append($"<Result Min {resultColor.CompareValue():F3}> ");
                 
                 
-                if (match.Groups["attr"] != null) {
+                if (match.Groups["attr"] != null && match.Groups["attr"].Value != "") {
                     Console.WriteLine(match.Groups["attr"].Value);
                 }
                 
                 string subAttr = match.Groups["attr2"]?.Value ?? ""; 
-                Console.WriteLine($"  {subAttr,-30} {rgbString} -> {filteredRgbString} {minmax}");
+                Console.WriteLine($"  {subAttr,-30} #{rgbString} -> #{filteredRgbString} {minmax}");
                 
                 colorMatches.Add(new RegexReplacement()
                 {
