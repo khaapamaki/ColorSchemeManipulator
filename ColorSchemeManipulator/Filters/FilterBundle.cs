@@ -274,7 +274,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0);
+                    double gain = filterParams[0];
                     filtered.Saturation = (filtered.Saturation * gain);
                 }
 
@@ -290,7 +290,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0);
+                    double gain = filterParams[0];
                     filtered.Red = ColorMath.Gain(color.Red, gain);
                     filtered.Green = ColorMath.Gain(color.Green, gain);
                     filtered.Blue = ColorMath.Gain(color.Blue, gain);
@@ -308,7 +308,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0);
+                    double gain = filterParams[0];
                     filtered.Lightness = (filtered.Lightness * gain);
                 }
 
@@ -324,7 +324,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gain = (FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0);
+                    double gain = filterParams[0];
                     filtered.Value = (filtered.Value * gain);
                 }
 
@@ -344,7 +344,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gamma = filterParams[0];
                     filtered.Red = ColorMath.Gamma(color.Red, gamma);
                     filtered.Green = ColorMath.Gamma(color.Green, gamma);
                     filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
@@ -362,7 +362,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gain = filterParams[0];
                     filtered.Red = ColorMath.Gamma(color.Red, gain);
                 }
 
@@ -379,7 +379,7 @@ namespace ColorSchemeManipulator.Filters
 
 
                 if (filterParams.Any()) {
-                    double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gain = filterParams[0];
                     filtered.Green = ColorMath.Gamma(color.Green, gain);
                 }
 
@@ -395,7 +395,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gain = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gain = filterParams[0];
                     filtered.Blue = ColorMath.Gamma(color.Blue, gain);
                 }
 
@@ -411,7 +411,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gamma = filterParams[0];
                     filtered.Saturation = ColorMath.Gamma(color.Saturation, gamma);
                 }
 
@@ -427,7 +427,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gamma = filterParams[0];
                     filtered.Lightness = ColorMath.Gamma(color.Lightness, gamma);
                 }
 
@@ -443,7 +443,7 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
+                    double gamma = filterParams[0];
                     filtered.Value = ColorMath.Gamma(color.Value, gamma);
                 }
 
@@ -463,11 +463,8 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    double midpoint = 0.5;
-                    if (filterParams.Length >= 2) {
-                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                    }
+                    double strength = filterParams[0];
+                    double midpoint = filterParams.Length >= 2 ? filterParams[1] : 0.5;
 
                     filtered.Red = ColorMath.SSpline(color.Red, strength, midpoint);
                     filtered.Green = ColorMath.SSpline(color.Green, strength, midpoint);
@@ -486,11 +483,8 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    double midpoint = 0.5;
-                    if (filterParams.Length >= 2) {
-                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                    }
+                    double strength = filterParams[0];
+                    double midpoint = filterParams.Length >= 2 ? filterParams[1] : 0.5;
 
                     filtered.Lightness = ColorMath.SSpline(color.Lightness, strength, midpoint);
                 }
@@ -507,11 +501,8 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    double midpoint = 0.5;
-                    if (filterParams.Length >= 2) {
-                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                    }
+                    double strength = filterParams[0];
+                    double midpoint = filterParams.Length >= 2 ? filterParams[1] : 0.5;
 
                     filtered.Value = ColorMath.SSpline(color.Value, strength, midpoint);
                 }
@@ -529,11 +520,8 @@ namespace ColorSchemeManipulator.Filters
                 var filtered = new Color(color);
 
                 if (filterParams.Any()) {
-                    double strength = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
-                    double midpoint = 0.5;
-                    if (filterParams.Length >= 2) {
-                        midpoint = FilterUtils.TryParseDouble(filterParams[1]) ?? 0.5;
-                    }
+                    double strength = filterParams[0];
+                    double midpoint = filterParams.Length >= 2 ? filterParams[1] : 0.5;
 
                     filtered.Saturation = ColorMath.SSpline(color.Saturation, strength, midpoint);
                 }
@@ -555,7 +543,7 @@ namespace ColorSchemeManipulator.Filters
 
 
                 if (filterParams.Any()) {
-                    double hueShift = FilterUtils.TryParseDouble(filterParams[0]) ?? 0.0;
+                    double hueShift = filterParams[0];
                     filtered.Hue = color.Hue + hueShift;
                 }
 

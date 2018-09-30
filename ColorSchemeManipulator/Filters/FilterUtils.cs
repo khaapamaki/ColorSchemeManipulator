@@ -8,8 +8,10 @@ namespace ColorSchemeManipulator.Filters
 {
     public static class FilterUtils
     {
+        [Obsolete]
         public static double? TryParseDouble(object obj)
         {
+            throw new Exception("Obsolete extra work going on");
             if (obj is double d)
                 return d;
 
