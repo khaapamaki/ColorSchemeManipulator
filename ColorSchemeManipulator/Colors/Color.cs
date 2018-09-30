@@ -554,7 +554,7 @@ namespace ColorSchemeManipulator.Colors
                     SetHsl(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha, false);
                 } else if (_hsvValid) {
                     SetRgb(ColorConversions.HsvToRgb(_hueHsv, _saturationHsv, _value), _alpha, false);
-                    SetHsv(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha, false);
+                    SetHsl(ColorConversions.RgbToHsl(_red, _green, _blue), _alpha, false);
                     // Use the one below if true direct hsv<->hsl formula is implemented
                     // SetHsl(ColorConversions.HsvToHsl(_hueHsv, _saturationHsv, _value), _alpha, false);
                 }
