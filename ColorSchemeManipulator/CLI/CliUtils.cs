@@ -42,30 +42,6 @@ namespace ColorSchemeManipulator.CLI
             return (filters, remainingArgs);
         }
 
-        [Obsolete]
-        private static object[] TryParseDoubles(object[] filterParams)
-        {
-            if (filterParams == null)
-                return null;
-            
-            List<object> newList = new List<object>();
-            
-            foreach (var param in filterParams) {
-                object newParam = param;
-                
-                if (param is string) {
-                    double? d = FilterUtils.TryParseDouble(param);
-                    if (d != null) {
-                        newParam = d;
-                    }
-                }
-
-                newList.Add(newParam);
-            }
-
-            return newList.ToArray();
-        }
-
         public static (string, string, string) SplitArgIntoPieces(string arg)
         {
             string option = null;
@@ -96,28 +72,13 @@ namespace ColorSchemeManipulator.CLI
                 string str = s.Trim();
                 if (double.TryParse(s.Trim(), out double val)) {
                     args.Add(val);
-                }
+                } else 
+                    args.Add(0);
             }
 
             return args.ToArray();
         }   
         
-        [Obsolete]
-        public static List<object> ExtractParams(string paramString)
-        {
-            var args = new List<object>();
-
-            if (string.IsNullOrEmpty(paramString)) {
-                return args;
-            }
-
-            foreach (var s in paramString.Trim('"').Split(',')) {
-                args.Add(s.Trim());
-            }
-
-            return args;
-        }
-
         public static ColorRange ParseRange(string rangeString)
         {
             if (string.IsNullOrEmpty(rangeString)) return null;
