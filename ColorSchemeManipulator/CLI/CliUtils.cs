@@ -42,7 +42,7 @@ namespace ColorSchemeManipulator.CLI
             return (filters, remainingArgs);
         }
 
-        
+        [Obsolete]
         private static object[] TryParseDoubles(object[] filterParams)
         {
             if (filterParams == null)
