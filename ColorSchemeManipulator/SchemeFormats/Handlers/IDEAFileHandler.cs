@@ -55,9 +55,9 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             
             if (!string.IsNullOrEmpty(textFG) && !string.IsNullOrEmpty(textBG) && HexRgbUtil.IsValidHexString(textFG) && HexRgbUtil.IsValidHexString(textBG))
             {
-                Console.WriteLine($"Background #{textBG}, Foreground #{textFG}");
-                Color fg = HexRgbUtil.RGBStringToColor(textFG);
-                Color bg = HexRgbUtil.RGBStringToColor(textBG);
+                var fg = HexRgbUtil.RGBStringToColor(textFG);
+                var bg = HexRgbUtil.RGBStringToColor(textBG);
+                Console.WriteLine($"Background #{textBG} ({bg.CompareValue():F3}), Foreground #{textFG} ({fg.CompareValue():F3})");
                 var parentScheme = "Default";
                 if (fg.GetBrightness() > bg.GetBrightness())
                     parentScheme = "Darcula";

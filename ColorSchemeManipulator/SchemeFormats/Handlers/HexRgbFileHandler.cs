@@ -108,7 +108,9 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                 i++;
             }
 
-            Console.WriteLine($"{i} colors affected");
+            Console.WriteLine($"\n{i} colors affected\n");
+            Console.WriteLine($"SOURCE: Min: {sourceMin:F3} Max: {sourceMax:F3}");
+            Console.WriteLine($"RESULT: Min: {resultMin:F3} Max: {resultMax:F3}");
             return colorMatches;
         }
     }
