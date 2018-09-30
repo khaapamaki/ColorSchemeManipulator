@@ -1,6 +1,6 @@
 #### *** You are in development branch ***
 
-## Color Scheme Manipulator 0.4
+## Color Scheme Manipulator 0.5
 
 This is a tiny command line tool for adjusting colors in color schemes. 
 Works currently with JetBrains IDEA (.icls), Visual Studio (.vstheme) and VS Code color scheme files (.json).
@@ -195,26 +195,10 @@ Hunting for them...
 + More Unit tests
 + Support for Visual Studio Code (implemented partially, not tested)
 + Proper HSV<->HSL conversions, now done by converting to RGB first
-+ More customizable padding of short hex strings
-+ Separation of ParameterRange and double[] filter parameters (now all are included in object[] args)
 + Brief help in addition to current verbose one
 
 
 ## For developers
-
-
-### Coming API changes
-
-Function delegate signature will probably change some time in future:
-
-```c#
-From:
-    Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
-To:
-    Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
-```
-ColorRange is currently provided as last object in object[] arguments
-
 
 ### Adding support for a new color scheme type
 
@@ -303,21 +287,25 @@ namespace ColorSchemeInverter
             
             var filters = new FilterSet()
                 // dampen "neon" colors before inversion so don't get too dark
-                .Add(FilterBundle.GainLightness, 0.6, 
-                    new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0)) 
+                .Add(FilterBundle.GainLightness,
+                    new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0),
+                    0.6) 
                  // invert image
                 .Add(FilterBundle.InvertPerceivedBrightness)
                  // adjust levels
-                .Add(FilterBundle.LevelsLightness, 0.1, 0.9, 1, 0.1, 1)
+                .Add(FilterBundle.LevelsLightness, null, 0.1, 0.9, 1, 0.1, 1)
                  // yellow-neon green boost
-                .Add(FilterBundle.GammaRgb, 1.7, 
-                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2))
+                .Add(FilterBundle.GammaRgb,
+                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2),
+                    1.7)
                 // yellow-neon green boost
-                .Add(FilterBundle.GainHslSaturation, 1.7, 
-                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2))
+                .Add(FilterBundle.GainHslSaturation,
+                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2),
+                    1.7)
                 // add saturation for weak colors
-                .Add(FilterBundle.GammaHslSaturation, 1.4, 
-                    new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7));
+                .Add(FilterBundle.GammaHslSaturation,
+                    new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7),
+                    1.4 );
             
             ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
             p.ProcessFile(sourceFile, targetFile, filters);
@@ -377,34 +365,39 @@ namespace ColorSchemeInverter
 
 ### Creating a filter that uses range system
 
+Filter delegate signature:
+```c#
+    Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
+```
+
+
 ```C#
-public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, params object[] filterParams)
-{
-    ColorRange range;
-    (range, filterParams) = FilterUtils.GetRangeAndRemainingParams(filterParams);
-    foreach (var color in colors) {   
-     
-        var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-        var filtered = new Color(color);
-        
-        if (filterParams.Any()) {
-            double gamma = FilterUtils.TryParseDouble(filterParams[0]) ?? 1.0;
-            filtered.Red = ColorMath.Gamma(color.Red, gamma);
-            filtered.Green = ColorMath.Gamma(color.Green, gamma);
-            filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
+        public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+
+                if (filterParams.Any()) {
+                    double gamma = filterParams[0];
+                    filtered.Red = ColorMath.Gamma(color.Red, gamma);
+                    filtered.Green = ColorMath.Gamma(color.Green, gamma);
+                    filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
+                }
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
         }
-        
-        yield return color.InterpolateWith(filtered, rangeFactor);
-    }
-}
 ```
 
 And registering it to be used from command line 
 ```C#
-CliArgs.Register(
-    options: new List<string> {"-ga", "--gamma"}, 
-    filter: GammaRgb, 
-    minParams: 1, 
-    maxParams: 1,
-    desc: "Adjusts gamma of all RGB channels equally. Accepts single parameter 0.01..9.99");
+            CliArgs.Register(new List<string> {"-ga", "--gamma"}, 
+                GammaRgb, 
+                minParams: 1,
+                maxParams: 1,
+                paramList: "=<gamma>",
+                desc: "Gamma correction for all RGB channels equally.",
+                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
 ```
