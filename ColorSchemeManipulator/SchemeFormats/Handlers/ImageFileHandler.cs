@@ -26,7 +26,6 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                 }
             }
         }
-        
 
         public Bitmap ReplaceColors(Bitmap xml, IEnumerable<Color> colors)
         {        

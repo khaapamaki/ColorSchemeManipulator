@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.SchemeFormats.Handlers;
@@ -43,9 +44,17 @@ namespace ColorSchemeManipulator
             
             // Apply filters
             IEnumerable<Color> filteredColors = filters.ApplyTo(colors);
-            
+#if DEBUG            
+            var watch = new Stopwatch();
+            watch.Start();
+#endif
             // replace original colors with filtered ones
-            return _handler.ReplaceColors(source, filteredColors);
+            var result = _handler.ReplaceColors(source, filteredColors);
+#if DEBUG            
+            watch.Stop();
+            Console.WriteLine("Color processed in " + watch.ElapsedMilliseconds + "ms");
+#endif
+            return result;
         }
    
     }
