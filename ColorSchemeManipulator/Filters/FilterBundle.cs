@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColorSchemeManipulator.CLI;
@@ -187,10 +188,16 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0, 0,
                 desc: "Inverts value.");
 
-            CliArgs.Register(new List<string> {"-ib", "--invert-brightness"}, InvertPerceivedBrightness, 0, 0,
-                desc: "Inverts perceived brightness.");
+            CliArgs.Register(new List<string> {"-ipl", "--invert-perceived-lightness"}, InvertPerceivedLightness, 0, 0,
+                desc: "Inverts perceived lightness.");
 
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
+                desc: "Converts to gray scale based on perceived brightness.");
+            
+            CliArgs.Register(new List<string> {"-gsl", "--grayscale-ligthness"}, LightnessToGrayScale, 0, 0,
+                desc: "Converts to gray scale based on perceived brightness.");
+
+            CliArgs.Register(new List<string> {"-gsv", "--grayscale-value"}, ValueToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness.");
 
             CliArgs.Register(new List<string> {"--clamp"}, Clamp, 0, 0,
@@ -243,7 +250,7 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> InvertPerceivedBrightness(IEnumerable<Color> colors,
+        public static IEnumerable<Color> InvertPerceivedLightness(IEnumerable<Color> colors,
             ColorRange colorRange = null,
             params double[] filterParams)
         {
@@ -624,7 +631,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(colors);
+            (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestRgb(colors);
 
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -712,6 +719,38 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
+        public static IEnumerable<Color> LightnessToGrayScale(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+
+                filtered.Red = color.Lightness;
+                filtered.Green = color.Lightness;
+                filtered.Blue = color.Lightness;
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
+        public static IEnumerable<Color> ValueToGrayScale(IEnumerable<Color> colors,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
+
+                filtered.Red = color.Value;
+                filtered.Green = color.Value;
+                filtered.Blue = color.Value;
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
+            }
+        }
+        
         public static IEnumerable<Color> Clamp(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {

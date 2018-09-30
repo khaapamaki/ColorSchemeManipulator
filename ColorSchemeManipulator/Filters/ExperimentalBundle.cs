@@ -34,14 +34,20 @@ namespace ColorSchemeManipulator.Filters
             //     desc:
             //     "Adjusts levels of HSV saturation. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
 
-            CliArgs.Register(new List<string> {"-ibc", "--invert-brightness-corr"},
-                InvertPerceivedBrightnessWithCorrection, 0, 1,
+            CliArgs.Register(new List<string> {"-ipc", "--invert-perceived-corr"},
+                InvertPerceivedLightnessWithCorrection, 0, 1,
                 paramList: "[=<corr>]",
                 desc: "Inverts perceived brightness with correction parameter.",
                 paramDesc:
                 "<corr> is value between 0..1, 0 is safest conversion, 1 is closest to truth but also causes clipping of some colors.");
 
             CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
+                paramList: "=<mix>",
+                desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)",
+                paramDesc: "<mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is full value inversion.");
+
+            CliArgs.Register(new List<string> {"-ipm", "--invert-perceived-mixed"},
+                InvertMixedPerceivedLightnessAndValue, 0, 1,
                 paramList: "=<mix>",
                 desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)",
                 paramDesc: "<mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is full value inversion.");
@@ -76,12 +82,16 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"--tolight"}, ToLight, 0, 0,
                 desc: "A preset with multiple filters to convert dark scheme to light");
 
+            CliArgs.Register(new List<string> {"-ipv", "--invert-perceived-value"}, InvertPerceivedValue, 0, 0,
+                desc: "Inverts perceived brightness.");
+
             // CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
+
 
             GetInstance()._isRegistered = true;
         }
 
-        public static IEnumerable<Color> InvertPerceivedBrightnessWithCorrection(IEnumerable<Color> colors,
+        public static IEnumerable<Color> InvertPerceivedLightnessWithCorrection(IEnumerable<Color> colors,
             ColorRange range,
             params double[] filterParams)
         {
@@ -100,8 +110,13 @@ namespace ColorSchemeManipulator.Filters
                     ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
 
                 //var delta = targetBrightness / newBrightness - 1;
-                var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1) / 4;
-                corr = 1;
+                var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1); // / 4;
+                if (filterParams.Any())
+                    corr = ColorMath.LinearInterpolation(filterParams[0], 0, 1, 1, corr);
+                else {
+                    corr = 1;
+                }
+
                 double r = inverted.Red * corr;
                 double g = inverted.Green * corr;
                 double b = inverted.Blue * corr;
@@ -115,13 +130,61 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
+        public static IEnumerable<Color> InvertPerceivedValue(IEnumerable<Color> colors,
+            ColorRange colorRange = null,
+            params double[] filterParams)
+        {
+            foreach (var color in colors) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+
+                var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                var targetBrightness = (1 - brightness);
+
+                // using brightness as lightness is not accurate but we can correct this later
+                // how ever it seems that completely correct value produces worse outcome
+                // so we may use something in between
+                var inverted = Color.FromHsv(color.HueHsv, color.SaturationHsv, targetBrightness, color.Alpha);
+
+                yield return color.InterpolateWith(inverted, rangeFactor);
+            }
+        }
+
+
+        public static IEnumerable<Color> InvertMixedPerceivedLightnessAndValue(IEnumerable<Color> colors,
+            ColorRange range,
+            params double[] filterParams)
+        {
+            double mix = 0.5;
+            if (filterParams.Any()) {
+                mix = filterParams[0].Clamp(0, 1);
+            }
+
+            foreach (var color in colors) {
+                var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                var targetBrightness = (1 - brightness);
+
+                // using brightness as lightness is not accurate but we can correct this later
+                // how ever it seems that completely correct value produces worse outcome
+                // so we may use something in between
+                var inverted = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
+
+                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                var hslFiltered = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
+                var hsvFiltered = Color.FromHsv(color.HueHsv, color.SaturationHsv, targetBrightness, color.Alpha);
+                var hsl = color.InterpolateWith(hslFiltered, rangeFactor).Clone();
+                var hsv = color.InterpolateWith(hsvFiltered, rangeFactor).Clone();
+
+                yield return hsl.InterpolateWith(hsv, mix);
+            }
+        }
+
         public static IEnumerable<Color> InvertMixedLightnessAndValue(IEnumerable<Color> colors,
             ColorRange range,
             params double[] filterParams)
         {
-            double mix = 0.333333;
+            double mix = 0.5;
             if (filterParams.Any()) {
-                mix = (filterParams.Length >= 2 ? filterParams[1] : 0.5).Clamp(0, 1);
+                mix = filterParams[0].Clamp(0, 1);
             }
 
             foreach (var color in colors) {
@@ -130,12 +193,13 @@ namespace ColorSchemeManipulator.Filters
                 var hsvFiltered = new Color(color);
                 hslFiltered.Lightness = ColorMath.Invert(color.Lightness);
                 hsvFiltered.Value = ColorMath.Invert(color.Value);
-                var hsl = color.InterpolateWith(hslFiltered, rangeFactor);
-                var hsv = color.InterpolateWith(hsvFiltered, rangeFactor);
+                var hsl = color.InterpolateWith(hslFiltered, rangeFactor).Clone();
+                var hsv = color.InterpolateWith(hsvFiltered, rangeFactor).Clone();
 
                 yield return hsl.InterpolateWith(hsv, mix);
             }
         }
+
 
         public static IEnumerable<Color> BrightnessToLightness(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
@@ -187,27 +251,33 @@ namespace ColorSchemeManipulator.Filters
             params double[] filterParams)
         {
             var filterSet = new FilterSet()
-                    .Add(FilterBundle.GainLightness,
-                        new ColorRange().Brightness(0.7, 1, 0.15, 0)
-                            .Saturation(0.7, 1, 0.1, 0),
-                        0.6) // dampen "neon" rgb before so don't get too dark
-                    .Add(FilterBundle.InvertPerceivedBrightness) // invert image
-                    .Add(FilterBundle.AutoLevelsRgb, null, 0.15, 1, 1.2) // add some brightness
-                    .Add(FilterBundle.GammaHslSaturation, new ColorRange().Saturation4P(0.1, 0.1, 1, 1),
-                        1.3
+                    // .Add(FilterBundle.GainLightness,
+                    //     new ColorRange()
+                    //         .Brightness(0.7, 1, 0.2, 0)
+                    //         .Saturation(0.7, 1, 0.2, 0),
+                    //     0.8) // dampen "neon" rgb before so don't get too dark
+                    .Add(FilterBundle.InvertPerceivedLightness) // invert image
+                    // .Add(FilterBundle.Clamp)
+                    .Add(FilterBundle.AutoLevelsRgb, null, 0.14, 0.97, 1.05) // add some brightness
+                    .Add(FilterBundle.LevelsRgb,
+                        new ColorRange()
+                            .Saturation4P(0.1, 0.1, 1, 1)
+                            .Brightness4P(0, 0, 0.3, 0.5),
+                        0, 1, 1, 0.3, 1)
+                    .Add(FilterBundle.GammaHslSaturation,
+                        new ColorRange()
+                            .Saturation4P(0.1, 0.1, 0.3, 0.6)
+                            .Brightness4P(0, 0.1, 0.4, 0.7),
+                        2.4
                     )
-                    //                    .Add(FilterBundle.GammaRgb, 1.7,
-                    //                        new ColorRange()
-                    //                            .Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                    //                    .Add(FilterBundle.GainHslSaturation, 1.7,
-                    //                        new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2)) // yellow-neon green boost
-                    .Add(FilterBundle.GainRgb,
-                        new ColorRange().Saturation4P(0.1, 0.3, 0.6, 0.9)
-                            .Lightness4P(0, 0, 0.4, 0.7), 1.3
-                    ) // add saturation for weak rgb
+                    .Add(FilterBundle.GammaRgb,
+                        new ColorRange()
+                            .Hue(37, 56, 6, 20)
+                            .Lightness(0.04, 0.6, 0, 0.2), 1.3) // yellow-neon green boost
                     .Add(FilterBundle.GainHslSaturation,
-                        new ColorRange().Saturation4P(0.1, 0.1, 0.3, 0.7)
-                            .Lightness4P(0, 0, 0.3, 0.7), 2) // add saturation for weak rgb
+                        new ColorRange()
+                            .Hue(37, 56, 6, 20)
+                            .Lightness(0.04, 0.6, 0, 0.2), 1.5) // yellow-neon green boostx
                 ;
 
             return filterSet.ApplyTo(colors);
