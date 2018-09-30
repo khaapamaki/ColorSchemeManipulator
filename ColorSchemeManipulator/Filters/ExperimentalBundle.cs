@@ -120,7 +120,7 @@ namespace ColorSchemeManipulator.Filters
             params double[] filterParams)
         {
             double mix = 0.333333;
-            if (filterParams.Any() && FilterUtils.IsNumberOrString(filterParams[0])) {
+            if (filterParams.Any()) {
                 mix = (filterParams.Length >= 2 ? filterParams[1] : 0.5).Clamp(0, 1);
             }
 

@@ -8,69 +8,10 @@ namespace ColorSchemeManipulator.Filters
 {
     public static class FilterUtils
     {
-        [Obsolete]
-        public static double? TryParseDouble(object obj)
-        {
-            throw new Exception("Obsolete extra work going on");
-            if (obj is double d)
-                return d;
-
-            if (obj is int)
-                return Convert.ToDouble(obj);
-
-            if (IsNumber(obj)) {
-                try {
-                    return Convert.ToDouble(obj);
-                } catch (Exception) {
-                    throw new Exception("Cannot convert " + obj + " to double");
-                }
-            }
-
-            if (obj is string s) {
-                try {
-                    return double.Parse(s);
-                } catch (Exception) {
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
-        // This is quite funny. There must be a better way...
-        public static bool IsNumber(object o)
-        {
-            return o is double || o is decimal || o is int || o is byte || o is float
-                   || o is long || o is short || o is uint || o is ulong || o is ushort;
-        }
-
-        public static bool IsNumberOrString(object o)
-        {
-            return IsNumber(o) || o is string;
-        }
-
-        [Obsolete]
-        public static (ColorRange, object[]) GetRangeAndRemainingParams(double[] args)
-        {
-            throw new NotSupportedException();
-            // if (args != null && args.Length > 0) {
-            //     int lastIndex = args.Length - 1;
-            //     var lastArg = args[lastIndex];
-            //     if (lastArg is ColorRange) {
-            //         List<object> temp = args.ToList();
-            //         temp.Remove(lastArg);
-            //         return ((ColorRange) lastArg, temp.ToArray());
-            //     }
-            // }
-            //
-            // return (null, args);
-        }
-
         public static double GetRangeFactor(ColorRange range, Color color)
         {
             return range?.InRangeFactor(color) ?? 1.0;
         }
-
 
         public static (double, double, double, double, double) GetLevelsParameters(double[] args)
         {

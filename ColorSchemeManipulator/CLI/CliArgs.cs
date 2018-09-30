@@ -87,37 +87,6 @@ namespace ColorSchemeManipulator.CLI
             return (null, null, null);
         }
         
-        
-        /// <summary>
-        /// Gets matching filter delegate function and given arguments for given command line options
-        /// Filter must be registered in CliArgs class.
-        /// </summary>
-        /// <param name="option"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public static (Delegate, List<object>) GetDelegateAndParameters(string option)
-        {
-            string paramString;
-            string rangeString;
-            
-            (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
-            
-            ColorRange range = CliUtils.ParseRange(rangeString);
-            
-            foreach (var batchCliArg in GetInstance().Items) {
-                if (batchCliArg.OptionArgs.Contains(option)) {
-                    List<object> filterParams = CliUtils.ExtractParams(paramString);
-                    if (filterParams.Count >= batchCliArg.MinParams) {
-                        if (range != null)
-                            filterParams.Add(range);
-                        return (batchCliArg.FilterDelegate, filterParams);
-                    }
-                }
-            }
-
-            return (null, null);
-        }
-
         public static (string[], string[]) ExtractOptionArguments(string[] args)
         {
             List<string> optList = new List<string>();
