@@ -267,7 +267,7 @@ Register your handler in CliAppRunner.RegisterHandlers
 ```
 
 **NOTE:**
-If you are making a handler for a color scheme that uses simple hex string for color definitions, abstract class **SchemeFileHandler** provides
+If you are making a handler for a color scheme that uses simple hex string for color definitions, abstract class **HexRgbFileHandler** provides
 useful tools for parsing file with regular expressions, as well as applying filters. Subclass it, adjust some properties and you are good to go.
 
 
