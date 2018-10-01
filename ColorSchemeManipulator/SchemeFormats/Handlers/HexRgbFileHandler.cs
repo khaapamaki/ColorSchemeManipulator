@@ -11,17 +11,8 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public abstract class HexRgbFileHandler : IColorFileHandler<string>
     {
-        protected abstract string RegexPattern { get; }
-        protected abstract PaddableHexFormat[] InputHexFormats { get; }
-        protected abstract string MatchGroupName { get; }
-        protected abstract string OutputHexFormat { get; }
 
-        double sourceMin = double.MaxValue;
-        double sourceMax = double.MinValue;
-        double resultMin = double.MaxValue;
-        double resultMax = double.MinValue;
-        
-        private MatchCollection _matches;
+        public abstract bool Accepts(string sourceFile);
 
         public virtual string ReadFile(string sourceFile)
         {
@@ -33,6 +24,17 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             File.WriteAllText(targetFile, text, Encoding.Default);
         }
 
+        protected abstract string RegexPattern { get; }
+        protected abstract PaddableHexFormat[] InputHexFormats { get; }
+        protected abstract string MatchGroupName { get; }
+        protected abstract string OutputHexFormat { get; }
+        
+        
+        private MatchCollection _matches;
+        
+        double sourceMin = double.MaxValue;
+        double sourceMax = double.MinValue;
+
         public virtual IEnumerable<Color> GetColors(string text)
         {
             sourceMin = double.MaxValue;
@@ -42,12 +44,15 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             _matches = matches;
             foreach (Match match in matches) {
                 string rgbString = match.Groups[MatchGroupName].ToString();
-                var color = SchemeUtils.PaddableHexStringToColor(rgbString, InputHexFormats);
+                var color = PaddableHexFormat.PaddableHexStringToColor(rgbString, InputHexFormats);
                 sourceMin = color.CompareValue() < sourceMin ? color.CompareValue() : sourceMin;
                 sourceMax = color.CompareValue() > sourceMax ? color.CompareValue() : sourceMax;
                 yield return color;
             }
         }
+
+        double resultMin = double.MaxValue;
+        double resultMax = double.MinValue;
 
         public virtual string ReplaceColors(string xml, IEnumerable<Color> colors)
         {
@@ -63,7 +68,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             
             List<RegexReplacement> colorMatches = GetMatches(xml, colorList);
                       
-            return SchemeUtils.BatchReplace(xml, colorMatches);
+            return BatchReplace(xml, colorMatches);
         }
 
         private List<RegexReplacement> GetMatches(string text, IReadOnlyList<Color> colors)
@@ -77,7 +82,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                 string rgbString = match.Groups[MatchGroupName].ToString();
                 string filteredRgbString = HexRgbUtil.ColorToHexString(colors[i], OutputHexFormat);
                 
-                var sourceColor = SchemeUtils.PaddableHexStringToColor(rgbString, InputHexFormats);
+                var sourceColor = PaddableHexFormat.PaddableHexStringToColor(rgbString, InputHexFormats);
                 var resultColor = colors[i];
                 var minmax = new StringBuilder();
                 if (sourceColor.CompareValue().AboutEqual(sourceMax))
@@ -112,6 +117,28 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             Console.WriteLine($"SOURCE: Min: {sourceMin:F3} Max: {sourceMax:F3}");
             Console.WriteLine($"RESULT: Min: {resultMin:F3} Max: {resultMax:F3}");
             return colorMatches;
+        }
+        
+        // todo move to Utils or somewhere else to be used with other classes
+        
+        /// <summary>
+        /// Performs manual replacement for matches with processed color replacement strings
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="colorMatches"></param>
+        /// <returns></returns>
+        private static string BatchReplace(string text, List<RegexReplacement> colorMatches)
+        {
+            // matches must be in reverse order by indexes, otherwise replacing with strings
+            // of which lengths differ from original's will make latter indexes invalid
+            colorMatches = colorMatches.OrderByDescending(m => m.Index).ToList();
+            
+            foreach (var match in colorMatches) {
+                text = text.ReplaceWithin(match.Index, match.Length, match.ReplacementString);
+                //Console.WriteLine(match.MatchingString + " -> " +  match.ReplacementString);
+            }
+
+            return text;
         }
     }
 }

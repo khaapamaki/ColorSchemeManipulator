@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq.Expressions;
 using System.Linq;
 using System.Xml.Linq;
@@ -11,6 +12,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class IDEAFileHandler : HexRgbFileHandler
     {
+        
         private readonly PaddableHexFormat[] _inputHexFormats =
         {
             new PaddableHexFormat()
@@ -21,6 +23,12 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             }
         };
 
+        public override bool Accepts(string sourceFile)
+        {
+            string ext= Path.GetExtension(sourceFile)?.ToLower() ?? "";
+            return ext == ".icls";
+        }
+        
         protected override PaddableHexFormat[] InputHexFormats => _inputHexFormats;
 
         protected override string RegexPattern =>
