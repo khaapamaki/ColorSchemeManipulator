@@ -88,8 +88,8 @@ namespace ColorSchemeManipulator
         }
 
 
-        HandlerRegister<string> _schemeHandlerRegister = new HandlerRegister<string>();
-        HandlerRegister<Bitmap> _bitmapHandlerRegister = new HandlerRegister<Bitmap>();
+        private HandlerRegister<string> _schemeHandlerRegister = new HandlerRegister<string>();
+        private HandlerRegister<Bitmap> _bitmapHandlerRegister = new HandlerRegister<Bitmap>();
 
         /// <summary>
         /// 
