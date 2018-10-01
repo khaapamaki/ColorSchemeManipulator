@@ -44,6 +44,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CliAppRunner.cs" />
     <Compile Include="CLI\CliArg.cs" />
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtils.cs" />
