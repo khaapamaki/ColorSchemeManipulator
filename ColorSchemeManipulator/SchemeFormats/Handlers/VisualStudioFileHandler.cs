@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public class VisualStudioFileHandler : HexRgbFileHandler
@@ -11,6 +13,12 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                 PaddingDirection = PaddingDirection.None
             }
         };
+        
+        public override bool Accepts(string sourceFile)
+        {
+            string ext= Path.GetExtension(sourceFile)?.ToLower() ?? "";
+            return ext == ".vstheme";
+        }
         
         protected override PaddableHexFormat[] InputHexFormats => _inputHexFormats;
 

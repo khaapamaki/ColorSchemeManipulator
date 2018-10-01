@@ -24,6 +24,8 @@ namespace ColorSchemeManipulator
         
         public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
         {
+            Console.WriteLine("Applying filters:");
+            
             var data = _handler.ReadFile(sourceFile);
             T filteredData;
 

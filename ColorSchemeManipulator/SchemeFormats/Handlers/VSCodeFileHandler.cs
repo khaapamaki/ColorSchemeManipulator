@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
@@ -14,6 +15,16 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                 PaddingDirection = PaddingDirection.Right
             }
         };
+        
+        public override bool Accepts(string sourceFile)
+        {
+            string ext= Path.GetExtension(sourceFile)?.ToLower() ?? "";
+            if (ext == ".json") {
+              // todo check from contents  
+            }
+
+            return false;
+        }
         
         protected override string RegexPattern => "ground\":\\s*\"#(?<hex>[0-9abcdefABCDEF]{8}|[0-9abcdefABCDEF]{6})\"";
 

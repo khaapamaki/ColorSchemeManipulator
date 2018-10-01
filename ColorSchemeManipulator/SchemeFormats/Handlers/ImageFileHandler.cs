@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Threading;
 using ColorSchemeManipulator.Colors;
 using Color = ColorSchemeManipulator.Colors.Color;
 
@@ -8,6 +10,12 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public class ImageFileHandler : IColorFileHandler<Bitmap>
     {
+        public bool Accepts(string sourceFile)
+        {
+            string ext= Path.GetExtension(sourceFile)?.ToLower() ?? "";
+            return ext == ".png" || ext == ".jpg";
+        }
+        
         public Bitmap ReadFile(string sourceFile)
         {
             return new Bitmap(Image.FromFile(sourceFile));

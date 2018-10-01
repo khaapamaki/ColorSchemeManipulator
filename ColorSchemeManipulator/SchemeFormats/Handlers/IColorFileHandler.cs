@@ -9,5 +9,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
         void WriteFile(T data, string targetFile);   
         IEnumerable<Color> GetColors(T source);
         T ReplaceColors(T xml, IEnumerable<Color> colors);
+        bool Accepts(string sourceFile);
+        
     }
 }

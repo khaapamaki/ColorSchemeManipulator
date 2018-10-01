@@ -66,6 +66,7 @@
     <Compile Include="Filters\FilterUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemeFormats\HandlerRegister.cs" />
     <Compile Include="SchemeFormats\Handlers\CSSFileHandler.cs" />
     <Compile Include="SchemeFormats\Handlers\IColorFileHandler.cs" />
     <Compile Include="SchemeFormats\Handlers\IDEAFileHandler.cs" />

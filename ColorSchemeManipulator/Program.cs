@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +16,17 @@ namespace ColorSchemeManipulator
     {
         public static void Main(string[] args)
         {
+            //--------------------------------------------------------------------------
+            //    Register handlers
+            //--------------------------------------------------------------------------    
+
+            HandlerRegister<string> _schemeHandlerRegister = new HandlerRegister<string>();
+            HandlerRegister<Bitmap> _imageHandlerRegister = new HandlerRegister<Bitmap>();
+            _schemeHandlerRegister.Register(new IDEAFileHandler());
+            _schemeHandlerRegister.Register(new VisualStudioFileHandler());
+            _schemeHandlerRegister.Register(new VSCodeFileHandler());
+            _imageHandlerRegister.Register(new ImageFileHandler());
+
             //--------------------------------------------------------------------------
             //    Command line parsing
             //--------------------------------------------------------------------------
@@ -44,12 +56,12 @@ namespace ColorSchemeManipulator
 
             Console.WriteLine("Color Scheme Manipulator "
                               + Assembly.GetExecutingAssembly().GetName().Version);
-            
+
             if (args.Length == 0) {
                 Utils.PrintHelp(filterCount, experimFilterCount, verbose: false);
                 return;
             } else if (args.Length == 1 && args[0].ToLower() == "--help") {
-                Utils.PrintHelp(filterCount, experimFilterCount, verbose: true); 
+                Utils.PrintHelp(filterCount, experimFilterCount, verbose: true);
                 return;
             }
 
@@ -78,7 +90,7 @@ namespace ColorSchemeManipulator
                 //--------------------------------------------------------------------------
                 //    Debug version auto file choosing, remove when merging to stage/prod
                 //-------------------------------------------------------------------------- 
-                
+
                 string sourceFileName = @"HappyDays_Complete.icls";
                 // sourceFileName = "darcula.vstheme";
                 // sourceFileName = "HappyDays.png";
@@ -92,43 +104,45 @@ namespace ColorSchemeManipulator
                 return;
 #endif
             }
-            
-            //--------------------------------------------------------------------------
-            //    Get scheme format by file extension
-            //--------------------------------------------------------------------------
-
-            SchemeFormat schemeFormat = SchemeUtils.GetFormatFromExtension(Path.GetExtension(sourceFile));
-            if (schemeFormat == SchemeFormat.Unknown) {
-                Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
-                return;
-            }
-
-            //--------------------------------------------------------------------------
-            //    Process file
-            //--------------------------------------------------------------------------    
 
             if (File.Exists(sourceFile)) {
-                if (schemeFormat == SchemeFormat.Image) {
-                    var processor = new ColorFileProcessor<Bitmap>(new ImageFileHandler());
+                //--------------------------------------------------------------------------
+                //    Get handler for the file type
+                //--------------------------------------------------------------------------
 
-                    Console.WriteLine("Applying filters:");
-                    // output applied filters from ColorFilter
+                IColorFileHandler<string> schemeHandler = null;
+                IColorFileHandler<Bitmap> imageHandler = null;
+                try {
+                    schemeHandler = _schemeHandlerRegister.GetHandlerForFile(sourceFile);
+                    imageHandler = _imageHandlerRegister.GetHandlerForFile(sourceFile);
+                } catch (Exception e) {
+                    Console.WriteLine($"Multiple file processing units found for: {sourceFile}");
+                    return;
+                }
 
+                if (schemeHandler == null && imageHandler == null) {
+                    Console.WriteLine($"{sourceFile} is not supported color scheme format");
+                    return;
+                }
+
+                if (schemeHandler != null && imageHandler != null) {
+                    Console.WriteLine($"Multiple file processing units found for: {sourceFile}");
+                    return;
+                }
+
+                //--------------------------------------------------------------------------
+                //    Process file
+                //--------------------------------------------------------------------------    
+
+                if (imageHandler != null) {
+                    var processor = new ColorFileProcessor<Bitmap>(imageHandler);
                     processor.ProcessFile(sourceFile, targetFile, filterSet);
-                    Console.WriteLine("Done.");
+                } else if (schemeHandler != null) {
+                    var processor = new ColorFileProcessor<string>(schemeHandler);
+                    processor.ProcessFile(sourceFile, targetFile, filterSet);
                 } else {
-                    var handler = SchemeUtils.GetSchemeHandlerByFormat(schemeFormat);
-                    if (handler != null) {
-                        var processor = new ColorFileProcessor<string>(handler);
-
-                        Console.WriteLine("Applying filters:");
-                        // output applied filters from ColorFilter
-                        
-                        processor.ProcessFile(sourceFile, targetFile, filterSet);
-                        Console.WriteLine("Done.");
-                    } else {
-                        Console.Error.WriteLine(sourceFile + " is not supported color scheme format");
-                    }
+                    Console.WriteLine($"{sourceFile} is not supported color scheme format");
+                    return;
                 }
             } else {
                 Console.Error.WriteLine(sourceFile + " does not exist");

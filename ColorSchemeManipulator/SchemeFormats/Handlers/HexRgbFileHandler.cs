@@ -11,17 +11,8 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
 {
     public abstract class HexRgbFileHandler : IColorFileHandler<string>
     {
-        protected abstract string RegexPattern { get; }
-        protected abstract PaddableHexFormat[] InputHexFormats { get; }
-        protected abstract string MatchGroupName { get; }
-        protected abstract string OutputHexFormat { get; }
 
-        double sourceMin = double.MaxValue;
-        double sourceMax = double.MinValue;
-        double resultMin = double.MaxValue;
-        double resultMax = double.MinValue;
-        
-        private MatchCollection _matches;
+        public abstract bool Accepts(string sourceFile);
 
         public virtual string ReadFile(string sourceFile)
         {
@@ -32,6 +23,17 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
         {
             File.WriteAllText(targetFile, text, Encoding.Default);
         }
+
+        protected abstract string RegexPattern { get; }
+        protected abstract PaddableHexFormat[] InputHexFormats { get; }
+        protected abstract string MatchGroupName { get; }
+        protected abstract string OutputHexFormat { get; }
+        
+        
+        private MatchCollection _matches;
+        
+        double sourceMin = double.MaxValue;
+        double sourceMax = double.MinValue;
 
         public virtual IEnumerable<Color> GetColors(string text)
         {
@@ -48,6 +50,9 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                 yield return color;
             }
         }
+
+        double resultMin = double.MaxValue;
+        double resultMax = double.MinValue;
 
         public virtual string ReplaceColors(string xml, IEnumerable<Color> colors)
         {
