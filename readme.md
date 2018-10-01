@@ -1,6 +1,6 @@
 #### *** You are in development branch ***
 
-## Color Scheme Manipulator 0.5
+## Color Scheme Manipulator 0.6
 
 This is a tiny command line tool for adjusting colors in color schemes. 
 Works currently with JetBrains IDEA (.icls), Visual Studio (.vstheme) and VS Code color scheme files (.json).
