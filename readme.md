@@ -206,6 +206,7 @@ Experimental Filters:
 
   -ipv                            Inverts perceived brightness.
   --invert-perceived-value
+  
 Range attributes:
   h, hue        Hue           |  r, red        Red
   s, sat        Saturation    |  g, green      Green
@@ -223,12 +224,9 @@ Hunting for them...
 ### ToDo
 
 + Range parameter validation
-+ SchemeFormat specific extra processing
-    + IntelliJ: switch parent scheme based on light/dark background setting
 + More Unit tests
 + Support for Visual Studio Code (implemented partially, not tested)
 + Proper HSV<->HSL conversions, now done by converting to RGB first
-+ Brief help in addition to current verbose one
 
 
 ## For developers
@@ -242,6 +240,7 @@ T is usually string, but it can also be anything else like Bitmap.
 ```c#
 public interface IColorFileHandler<T>
 {
+    bool Accepts(string sourceFile);
     T ReadFile(string sourceFile);
     void WriteFile(T data, string targetFile);   
     IEnumerable<Color> GetColors(T source);
@@ -249,58 +248,30 @@ public interface IColorFileHandler<T>
 }
 ```
 
+Register your handler in CliAppRunner.RegisterHandlers
+
+```c#
+    private HandlerRegister<string> _schemeHandlerRegister = new HandlerRegister<string>();
+    private HandlerRegister<Bitmap> _bitmapHandlerRegister = new HandlerRegister<Bitmap>();
+        
+    public void RegisterHandlers()
+    {
+        // scheme file handlers (text based)
+        _schemeHandlerRegister.Register(new IDEAFileHandler());
+        _schemeHandlerRegister.Register(new VisualStudioFileHandler());
+        _schemeHandlerRegister.Register(new VSCodeFileHandler());
+        // bitmap handlers
+        _bitmapHandlerRegister.Register(new ImageFileHandler());
+    }
+ 
+```
+
 **NOTE:**
 If you are making a handler for a color scheme that uses simple hex string for color definitions, abstract class **SchemeFileHandler** provides
 useful tools for parsing file with regular expressions, as well as applying filters. Subclass it, adjust some properties and you are good to go.
 
-Currently, a new color scheme format must be added in _SchemeFormat_ enum. And **SchemeUtils.GetSchemeHandlerByFormat(SchemeFormat format)** 
-must return an instance of the handler. And **SchemeUtils.GetFormatFromExtension(string extension)** must 
-return SchemeFormat matching the file extension.
 
-
-```c#
-    public enum SchemeFormat
-    {
-        Idea,
-        VisualStudio,
-        Image,
-        XXXX,
-        Unknown
-    }
-    
-    public static class SchemeUtils
-    {
-        public static SchemeFormat GetFormatFromExtension(string extension)
-        {
-            if (extension.StartsWith(".")) {
-                extension = extension.Substring(1);
-            }
-
-            switch (extension.ToLower()) {
-                case "icls":
-                    return SchemeFormat.Idea;
-                case "XXXX":
-                    return SchemeFormat.XXXX;
-                default:
-                    return SchemeFormat.Unknown;
-            }
-        }
-
-        public static IColorFileHandler<string> GetSchemeHandlerByFormat(SchemeFormat schemeFormat)
-        {
-            switch (schemeFormat) {
-                case SchemeFormat.Idea:
-                    return new IdeaSchemeFileHandler();
-                case SchemeFormat.XXXXX:
-                    return new XXXXXFileHandler();                
-                default:
-                    return null;
-            }
-        }
-    }
-```
-
-### Manually filtering (no using CLI arguments)
+### Manually filtering (without using CLI arguments)
 
 ```c#
 using System;
@@ -316,81 +287,35 @@ namespace ColorSchemeInverter
         {    
             [...]
     
-            SchemeFormat schemeFormat = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
+            IColorFileHandler<string> schemeHandler = schemeHandlerRegister.GetHandlerForFile(sourceFile);
             
-            var filters = new FilterSet()
-                // dampen "neon" colors before inversion so don't get too dark
-                .Add(FilterBundle.GainLightness,
-                    new ColorRange().Brightness(0.7, 1, 0.15, 0).Saturation(0.7, 1, 0.1, 0),
-                    0.6) 
-                 // invert image
-                .Add(FilterBundle.InvertPerceivedBrightness)
-                 // adjust levels
-                .Add(FilterBundle.LevelsLightness, null, 0.1, 0.9, 1, 0.1, 1)
-                 // yellow-neon green boost
-                .Add(FilterBundle.GammaRgb,
-                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2),
-                    1.7)
-                // yellow-neon green boost
-                .Add(FilterBundle.GainHslSaturation,
-                    new ColorRange().Hue(37, 56, 6, 20).Lightness(0.04, 0.6, 0, 0.2),
-                    1.7)
-                // add saturation for weak colors
-                .Add(FilterBundle.GammaHslSaturation,
-                    new ColorRange().Saturation4P(0.1, 0.1, 0.5, 0.7),
-                    1.4 );
+            var filterSet = new FilterSet()
+                    .Add(InvertLightness)
+                    .Add(FilterBundle.AutoLevelsLightness, null, 0.1, 1, 1.05)
+                    .Add(FilterBundle.LevelsRgb,
+                        new ColorRange()
+                            .Saturation4P(0.1, 0.1, 1, 1)
+                            .Brightness4P(0, 0, 0.3, 0.5),
+                        0, 1, 1, 0.3, 1)
+                    .Add(FilterBundle.GammaHslSaturation,
+                        new ColorRange()
+                            .Saturation4P(0.1, 0.1, 0.3, 0.6)
+                            .Brightness4P(0, 0.1, 0.4, 0.7),
+                        2.4)
+                    .Add(FilterBundle.GammaRgb,
+                        new ColorRange()
+                            .Hue(37, 56, 6, 20)
+                            .Lightness(0.04, 0.6, 0, 0.2),
+                        1.2)
+                    .Add(FilterBundle.GainHslSaturation,
+                        new ColorRange()
+                            .Hue(37, 56, 6, 20)
+                            .Lightness(0.04, 0.6, 0, 0.2),
+                        1.3);
             
-            ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
-            p.ProcessFile(sourceFile, targetFile, filters);
+            var processor = new ColorFileProcessor<string>(schemeHandler);
+            processor.ProcessFile(sourceFile, targetFile, filters);
             
-        }
-    }
-}
-```
-
-### Filtering by CLI arguments
-
-```c#
-using System;
-using System.IO;
-using ColorSchemeInverter.Filters;
-using ColorSchemeInverter.SchemeFileSupport;
-using ColorSchemeInverter.CLI;
-
-namespace ColorSchemeInverter
-{
-    internal class Program
-    {
-        public static void Main(string[] args)
-        {
-            // Make FilterBundle filters available for CLI
-            FilterBundle.RegisterCliOptions();
-            
-            // Parse CLI args and generate FilterSet from them
-            (FilterSet filters, string[] remainingArgs) = CliArgs.ParseFilterArgs(args);
-            
-            // Extract non-option and remaining option arguments
-            string[] remainingOptArgs;            
-            (remainingArgs, remainingOptArgs) = CliArgs.ExtractOptionArguments(remainingArgs);
-            
-            // PARSE other than filter options here, and remove them from remainingOptArgs array
-            
-            // All remaining option arguments are considered illegal... 
-            
-            SchemeFormat schemeFormat 
-                = SchemeFormatUtil.GetFormatFromExtension(Path.GetExtension(sourceFileName));
-            
-            if (remainingArgs.Length == 2) {
-            
-                sourceFile = args[0];
-                targetFile = args[1];
-                
-                if (schemeFormat == SchemeFormat.Idea || schemeFormat == SchemeFormat.VisualStudio) {
-                    ColorSchemeProcessor p = new ColorSchemeProcessor(schemeFormat);
-                    p.ProcessFile(sourceFile, targetFile, filters);
-                }
-                
-            }        
         }
     }
 }
@@ -405,8 +330,9 @@ Filter delegate signature:
 
 
 ```C#
-        public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
-            params double[] filterParams)
+        public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, 
+                                                    ColorRange colorRange = null,
+                                                    params double[] filterParams)
         {
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
