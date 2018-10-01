@@ -76,8 +76,6 @@
     <Compile Include="SchemeFormats\Handlers\VSCodeFileHandler.cs" />
     <Compile Include="SchemeFormats\PaddableHexFormat.cs" />
     <Compile Include="SchemeFormats\RegexReplacement.cs" />
-    <Compile Include="SchemeFormats\SchemeFormat.cs" />
-    <Compile Include="SchemeFormats\SchemeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\smtp_converted.png" />
