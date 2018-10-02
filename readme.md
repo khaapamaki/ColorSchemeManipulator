@@ -231,39 +231,63 @@ Hunting for them...
 
 ## For developers
 
-### Adding support for a new color scheme type
+### Adding support for a new color scheme format
 
-All color files are processed in _ColorFileProcessor_ class. It uses handlers that are specific to 
-color scheme format (or any other file). A handler must conform generic _IColorFileHandler_ interface where generic type 
-T is usually string, but it can also be anything else like Bitmap.
+All color files are processed in **ColorFileProcessor** class. It uses handlers that are specific to 
+color scheme format (or any other file). A handler must conform generic **IColorFileHandler** interface where generic type 
+**TData** is usually string, but it can also be anything else like **Bitmap**, though when **HandlerRegister<TData>** is used, you need to create
+a new one for your custom data type.
 
 ```c#
-public interface IColorFileHandler<T>
+public interface IColorFileHandler<TData>
 {
+    // Checks a file if can processed with the handler
     bool Accepts(string sourceFile);
-    T ReadFile(string sourceFile);
-    void WriteFile(T data, string targetFile);   
-    IEnumerable<Color> GetColors(T source);
-    T ReplaceColors(T source, IEnumerable<Color> colors);
+    
+    // Read the contents of the file
+    TData ReadFile(string sourceFile);
+    
+    // Write the contents to a file
+    void WriteFile(TData data, string targetFile);
+    
+    // Parses and enumerates all the color from the file
+    IEnumerable<Color> GetColors(TData source);
+    
+    // Replaces original color values from the data with new colors (must be in the same order)
+    // Return altered data
+    TData ReplaceColors(TData data, IEnumerable<Color> colors);
 }
 ```
 
-Register your handler in CliAppRunner.RegisterHandlers
+Register your handler in **CliAppRunner.RegisterHandlers()** metdod. This is only needed if you want to use **HandlerRegister** to 
+automatically find a proper handler by the file extension/contents.
 
 ```c#
-    private HandlerRegister<string> _schemeHandlerRegister = new HandlerRegister<string>();
-    private HandlerRegister<Bitmap> _bitmapHandlerRegister = new HandlerRegister<Bitmap>();
-        
-    public void RegisterHandlers()
+namespace ColorSchemeManipulator
+{
+
+    public class CliAppRunner
     {
-        // scheme file handlers (text based)
-        _schemeHandlerRegister.Register(new IDEAFileHandler());
-        _schemeHandlerRegister.Register(new VisualStudioFileHandler());
-        _schemeHandlerRegister.Register(new VSCodeFileHandler());
-        // bitmap handlers
-        _bitmapHandlerRegister.Register(new ImageFileHandler());
+        [...]
+        
+        private HandlerRegister<string> _schemeHandlerRegister = new HandlerRegister<string>();
+        
+        public void RegisterHandlers()
+        {
+            _schemeHandlerRegister.Register(new IDEAFileHandler());
+            _schemeHandlerRegister.Register(new VisualStudioFileHandler());
+            _schemeHandlerRegister.Register(new VSCodeFileHandler());
+        }
+            
+         [...]       
     }
- 
+}
+```
+
+Get a proper handler for a file.
+
+```c#
+var schemeHandler = _schemeHandlerRegister.GetHandlerForFile(sourceFile);
 ```
 
 **NOTE:**
@@ -273,11 +297,15 @@ useful tools for parsing file with regular expressions, as well as applying filt
 
 ### Manually filtering (without using CLI arguments)
 
+In this example three successive filters are added to a **FilterSet** object and **IDEAFileHandler** is used to convert IDEA color schemes.
+If you want automatically detect file format you can use HandlerRegister object to first register all your handlers and then get the correct handler
+for the current file by invoking `GetHandlerForFile(string sourceFile)` methdod.
+
 ```c#
 using System;
-using System.IO;
 using ColorSchemeInverter.Filters;
-using ColorSchemeInverter.SchemeFileSupport;
+using ColorSchemeInverter.SchemeFormats;
+using ColorSchemeInverter.SchemeFormats.Handlers;
 
 namespace ColorSchemeInverter
 {
@@ -285,34 +313,19 @@ namespace ColorSchemeInverter
     {
         public static void Main(string[] args)
         {    
-            [...]
-    
-            IColorFileHandler<string> schemeHandler = schemeHandlerRegister.GetHandlerForFile(sourceFile);
+            [...]   
             
-            var filterSet = new FilterSet()
-                    .Add(InvertLightness)
-                    .Add(FilterBundle.AutoLevelsLightness, null, 0.1, 1, 1.05)
-                    .Add(FilterBundle.LevelsRgb,
-                        new ColorRange()
-                            .Saturation4P(0.1, 0.1, 1, 1)
-                            .Brightness4P(0, 0, 0.3, 0.5),
-                        0, 1, 1, 0.3, 1)
-                    .Add(FilterBundle.GammaHslSaturation,
-                        new ColorRange()
-                            .Saturation4P(0.1, 0.1, 0.3, 0.6)
-                            .Brightness4P(0, 0.1, 0.4, 0.7),
-                        2.4)
-                    .Add(FilterBundle.GammaRgb,
-                        new ColorRange()
-                            .Hue(37, 56, 6, 20)
-                            .Lightness(0.04, 0.6, 0, 0.2),
-                        1.2)
-                    .Add(FilterBundle.GainHslSaturation,
-                        new ColorRange()
-                            .Hue(37, 56, 6, 20)
-                            .Lightness(0.04, 0.6, 0, 0.2),
-                        1.3);
+            FilterSet filters = new FilterSet()
+                .Add(InvertLightness)
+                .Add(FilterBundle.AutoLevelsLRgb, null, 0.1, 1, 1.05)
+                .Add(FilterBundle.GammaHslSaturation,
+                    new ColorRange()
+                        .Saturation4P(0.1, 0.1, 0.3, 0.6)
+                        .Brightness4P(0, 0.1, 0.4, 0.7),
+                    2.4)
             
+            
+            IColorFileHandler<string> schemeHandler = IDEAFileHandler();
             var processor = new ColorFileProcessor<string>(schemeHandler);
             processor.ProcessFile(sourceFile, targetFile, filters);
             
@@ -325,38 +338,40 @@ namespace ColorSchemeInverter
 
 Filter delegate signature:
 ```c#
-    Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
+Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
 ```
 
+Example of a filter. This maybe defined in **FilterBundle** class or anywhere as long as you register it to **CliArgs**. 
+See below.
 
 ```C#
-        public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, 
-                                                    ColorRange colorRange = null,
-                                                    params double[] filterParams)
-        {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
-                var filtered = new Color(color);
+public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, 
+                                            ColorRange colorRange = null,
+                                            params double[] filterParams)
+{
+    foreach (var color in colors) {
+        var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+        var filtered = new Color(color);
 
-                if (filterParams.Any()) {
-                    double gamma = filterParams[0];
-                    filtered.Red = ColorMath.Gamma(color.Red, gamma);
-                    filtered.Green = ColorMath.Gamma(color.Green, gamma);
-                    filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
-                }
-
-                yield return color.InterpolateWith(filtered, rangeFactor);
-            }
+        if (filterParams.Any()) {
+            double gamma = filterParams[0];
+            filtered.Red = ColorMath.Gamma(color.Red, gamma);
+            filtered.Green = ColorMath.Gamma(color.Green, gamma);
+            filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
         }
+
+        yield return color.InterpolateWith(filtered, rangeFactor);
+    }
+}
 ```
 
 And registering it to be used from command line 
 ```C#
-            CliArgs.Register(new List<string> {"-ga", "--gamma"}, 
-                GammaRgb, 
-                minParams: 1,
-                maxParams: 1,
-                paramList: "=<gamma>",
-                desc: "Gamma correction for all RGB channels equally.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+CliArgs.Register(new List<string> {"-ga", "--gamma"}, 
+    GammaRgb, 
+    minParams: 1,
+    maxParams: 1,
+    paramList: "=<gamma>",
+    desc: "Gamma correction for all RGB channels equally.",
+    paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
 ```
