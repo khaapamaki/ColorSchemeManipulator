@@ -31,24 +31,36 @@ namespace ColorSchemeManipulator.CLI
         {
             return GetInstance().Items[index];
         }
-        
+
         public static List<CliArg> GetItems()
         {
             return GetInstance().Items;
         }
-        
-        public static void Register(string option, Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filter, byte minParams,
-            byte maxParams = 0, string paramList = "", string desc = "", string paramDesc = "")
+
+        public static void Register(
+            string option,
+            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filter,
+            byte minParams,
+            byte maxParams = 0,
+            string paramList = "",
+            string desc = "",
+            string paramDesc = "")
         {
             GetInstance().Items.Add(new CliArg(option, filter, minParams, maxParams, paramList, desc, paramDesc));
         }
 
-        public static void Register(List<string> options, Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filter, byte minParams,
-            byte maxParams = 0, string paramList = "", string desc = "", string paramDesc = "")
+        public static void Register(
+            List<string> options,
+            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filter, 
+            byte minParams,
+            byte maxParams = 0, 
+            string paramList = "", 
+            string desc = "", 
+            string paramDesc = "")
         {
             GetInstance().Items.Add(new CliArg(options, filter, minParams, maxParams, paramList, desc, paramDesc));
         }
- 
+
         /// <summary>
         /// Parses command line arguments, creates a FilterSet from them and returns it together with
         /// remaining arguments that should include source and target files
@@ -66,15 +78,16 @@ namespace ColorSchemeManipulator.CLI
         /// </summary>
         /// <param name="option"></param>
         /// <returns></returns>
-        public static (Delegate, ColorRange, double[]) GetDelegateAndData(string option)
+        public static (Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>, 
+            ColorRange, double[]) GetDelegateAndData(string option)
         {
             string paramString;
             string rangeString;
-            
+
             (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
-            
+
             var range = CliUtils.ParseRange(rangeString);
-            
+
             foreach (var batchCliArg in GetInstance().Items) {
                 if (batchCliArg.OptionArgs.Contains(option)) {
                     double[] filterParams = CliUtils.ExtractAndParseDoubleParams(paramString);
@@ -86,7 +99,7 @@ namespace ColorSchemeManipulator.CLI
 
             return (null, null, null);
         }
-        
+
         public static (string[], string[]) ExtractOptionArguments(string[] args)
         {
             List<string> optList = new List<string>();

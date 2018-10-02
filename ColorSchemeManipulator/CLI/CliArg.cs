@@ -10,7 +10,7 @@ namespace ColorSchemeManipulator.CLI
     public class CliArg
     {
         public List<string> OptionArgs { get; set; }
-        public Delegate FilterDelegate { get; set; }
+        public Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> FilterDelegate { get; set; }
         public byte MinParams { get; set; }
         public byte MaxParams { get; set; }
         public string Description { get; set; }
