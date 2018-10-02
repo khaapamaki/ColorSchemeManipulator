@@ -21,8 +21,8 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
             string ext= Path.GetExtension(sourceFile)?.ToLower() ?? "";
             if (ext == ".json") {
               // todo check from contents  
+                return true;
             }
-
             return false;
         }
         
