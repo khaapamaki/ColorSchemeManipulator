@@ -315,20 +315,19 @@ namespace ColorSchemeInverter
         {    
             [...]   
             
-            FilterSet filters = new FilterSet()
-                .Add(InvertLightness)
-                .Add(FilterBundle.AutoLevelsLRgb, null, 0.1, 1, 1.05)
+            var filters = new FilterSet()
+                .Add(FilterBundle.InvertLightness)
+                .Add(FilterBundle.AutoLevelsLRgb, 
+                    colorRange: null,
+                    0.1, 1, 1.05)
                 .Add(FilterBundle.GammaHslSaturation,
                     new ColorRange()
                         .Saturation4P(0.1, 0.1, 0.3, 0.6)
                         .Brightness4P(0, 0.1, 0.4, 0.7),
                     2.4)
-            
-            
-            IColorFileHandler<string> schemeHandler = IDEAFileHandler();
-            var processor = new ColorFileProcessor<string>(schemeHandler);
-            processor.ProcessFile(sourceFile, targetFile, filters);
-            
+                 
+            var processor = new ColorFileProcessor<string>(new IDEAFileHandler());
+            processor.ProcessFile(sourceFile, targetFile, filters);       
         }
     }
 }
