@@ -265,7 +265,6 @@ automatically find a proper handler by the file extension/contents.
 ```c#
 namespace ColorSchemeManipulator
 {
-
     public class CliAppRunner
     {
         [...]
@@ -279,7 +278,7 @@ namespace ColorSchemeManipulator
             _schemeHandlerRegister.Register(new VSCodeFileHandler());
         }
             
-         [...]       
+        [...]       
     }
 }
 ```
@@ -366,8 +365,9 @@ public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors,
 
 And registering it to be used from command line 
 ```C#
-CliArgs.Register(new List<string> {"-ga", "--gamma"}, 
-    GammaRgb, 
+CliArgs.Register(
+    options: new List<string> {"-ga", "--gamma"}, 
+    filter: GammaRgb, 
     minParams: 1,
     maxParams: 1,
     paramList: "=<gamma>",
