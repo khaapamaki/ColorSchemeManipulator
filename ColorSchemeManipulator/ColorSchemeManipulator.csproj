@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CliAppRunner.cs" />
     <Compile Include="CLI\CliArg.cs" />
+    <Compile Include="CLI\CliArgBuilder.cs" />
     <Compile Include="CLI\CliArgs.cs" />
     <Compile Include="CLI\CliUtils.cs" />
     <Compile Include="ColorFileProcessor.cs" />

@@ -334,9 +334,15 @@ namespace ColorSchemeInverter
 
 ### Creating a filter that uses range system
 
-Filter delegate signature:
+Filter are handled as Func<> delegates:
 ```c#
 Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
+```
+
+And they must have signature of
+
+```c#
+IEnumerable<Color> MyFilter(Enumerable<Color> colors, ColorRange range, params double[] params)
 ```
 
 Example of a filter. This maybe defined in **FilterBundle** class or anywhere as long as you register it to **CliArgs**. 
@@ -363,7 +369,22 @@ public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors,
 }
 ```
 
-And registering it to be used from command line 
+...and registering it to be used from command line 
+
+```C#
+CliArgs.Register(new CliArgBuilder()
+    .Filter(GammaRgb)
+    .AddOption("-ga")
+    .AddOption("--gamma")
+    .Params(1) // .MinParams(x) and .MaxParams(x) also available
+    .Description("Gamma correction for all RGB channels equally.")
+    .ParamString("=<gamma>")
+    .ParamDescription("<gamma> is value in colorRange of 0.01..9.99 (1.0)")
+);
+```
+
+Legacy non-fluent way
+
 ```C#
 CliArgs.Register(
     options: new List<string> {"-ga", "--gamma"}, 
