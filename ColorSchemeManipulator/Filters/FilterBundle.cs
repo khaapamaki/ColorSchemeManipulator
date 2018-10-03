@@ -38,7 +38,7 @@ namespace ColorSchemeManipulator.Filters
 
             CliArgs.Register(new CliArgBuilder()
                 .Filter(ShiftHslHue)
-                .AddOption("-h").AddOption("--hue")
+                .AddOptions("-h", "--hue")
                 .Params(1)
                 .ParamString("=<offset>")
                 .Description("Hue shift.")

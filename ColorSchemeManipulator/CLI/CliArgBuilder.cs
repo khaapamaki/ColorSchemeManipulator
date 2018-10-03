@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Policy;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.CLI
@@ -27,6 +28,14 @@ namespace ColorSchemeManipulator.CLI
             return this;
         }
 
+        public CliArgBuilder AddOptions(params string[] options)
+        {
+            foreach (var option in options) {
+                _optionArgs.Add(option);
+            }
+            return this;
+        }
+        
         public CliArgBuilder Filter(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate)
         {
             _filterDelegate = filterDelegate;
@@ -40,19 +49,12 @@ namespace ColorSchemeManipulator.CLI
             return this;
         }
         
-        public CliArgBuilder MinParams(byte value)
+        public CliArgBuilder Params(byte min, byte max)
         {
-            _minParams = value;
-            if (_maxParams == 0)
-                _maxParams = value;
+            _minParams = min;
+            _maxParams = max;
             return this;
-        }
-
-        public CliArgBuilder MaxParams(byte value)
-        {
-            _maxParams = value;
-            return this;
-        }
+        }    
 
         public CliArgBuilder Description(string value)
         {

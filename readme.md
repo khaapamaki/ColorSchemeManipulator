@@ -374,9 +374,9 @@ public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors,
 ```C#
 CliArgs.Register(new CliArgBuilder()
     .Filter(GammaRgb)
-    .AddOption("-ga")
-    .AddOption("--gamma")
-    .Params(1) // .MinParams(x) and .MaxParams(x) also available
+    .AddOptions("-ga", "--gamma") // you can add as many options you want
+    .Params(1) // .Params(min, max) is also available
+    // all below are only for printing help
     .Description("Gamma correction for all RGB channels equally.")
     .ParamString("=<gamma>")
     .ParamDescription("<gamma> is value in colorRange of 0.01..9.99 (1.0)")
