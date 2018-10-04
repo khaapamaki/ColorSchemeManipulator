@@ -34,19 +34,19 @@ namespace ColorSchemeManipulator.Filters
             //     desc:
             //     "Adjusts levels of HSV saturation. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
 
-            CliArgs.Register(new List<string> {"-ipc", "--invert-perceived-corr"},
+            CliArgs.Register(new List<string> {"-ipc"},
                 InvertPerceivedLightnessWithCorrection, 0, 1,
                 paramList: "[=<corr>]",
                 desc: "Inverts perceived brightness with correction parameter.",
                 paramDesc:
                 "<corr> is value between 0..1, 0 is safest conversion, 1 is closest to truth but also causes clipping of some colors.");
 
-            CliArgs.Register(new List<string> {"-ilv", "--invert-lightness-value"}, InvertMixedLightnessAndValue, 0, 1,
+            CliArgs.Register(new List<string> {"-ilv"}, InvertMixedLightnessAndValue, 0, 1,
                 paramList: "=<mix>",
                 desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)",
                 paramDesc: "<mix> is mix parameter 0..1, 0 is full lightness inversion, 1 is full value inversion.");
 
-            CliArgs.Register(new List<string> {"-ipm", "--invert-perceived-mixed"},
+            CliArgs.Register(new List<string> {"-ipm"},
                 InvertMixedPerceivedLightnessAndValue, 0, 1,
                 paramList: "=<mix>",
                 desc: "Inverts colors using both lightness and value, by mixing the result by parameter (0..1)",
@@ -82,7 +82,7 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"--tolight"}, ToLight, 0, 0,
                 desc: "A preset with multiple filters to convert dark scheme to light");
 
-            CliArgs.Register(new List<string> {"-ipv", "--invert-perceived-value"}, InvertPerceivedValue, 0, 0,
+            CliArgs.Register(new List<string> {"-ipv", "--invert-per-value"}, InvertPerceivedValue, 0, 0,
                 desc: "Inverts perceived brightness.");
 
             // CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
