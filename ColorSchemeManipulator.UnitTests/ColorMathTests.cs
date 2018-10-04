@@ -1,6 +1,5 @@
 using ColorSchemeManipulator.Colors;
 using NUnit.Framework;
-using ColorSchemeManipulator.Common;
 
 namespace ColorSchemeManipulator.UnitTests
 {

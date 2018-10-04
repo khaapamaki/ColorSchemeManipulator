@@ -16,23 +16,6 @@ namespace ColorSchemeManipulator.CLI
         public string Description { get; set; }
         public string ParamList { get; set; }
         public string ParamDesc { get; set; }
-    
-//        public CliArg(string option, 
-//            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate,
-//            byte minParams, 
-//            byte maxParams = 0,
-//            string paramList = "", 
-//            string desc = "", 
-//            string paramDesc = "")
-//        {
-//            OptionArgs = new List<string> {option};
-//            FilterDelegate = filterDelegate;
-//            MinParams = minParams;
-//            MaxParams = minParams < maxParams ? maxParams : minParams;
-//            Description = desc;
-//            ParamList = paramList;
-//            ParamDesc = paramDesc;
-//        }
 
         public CliArg(IEnumerable<string> options,
             Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate, 

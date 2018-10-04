@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Policy;
 using ColorSchemeManipulator.Colors;
-using ColorSchemeManipulator.Common;
 using ColorSchemeManipulator.Filters;
 
 namespace ColorSchemeManipulator.CLI
@@ -17,10 +15,7 @@ namespace ColorSchemeManipulator.CLI
         private string _paramList = "";
         private string _paramDesc = "";
 
-        public CliArgBuilder()
-        {
-            
-        }
+        public CliArgBuilder() { }
 
         public CliArgBuilder AddOption(string option)
         {
@@ -33,9 +28,10 @@ namespace ColorSchemeManipulator.CLI
             foreach (var option in options) {
                 _optionArgs.Add(option);
             }
+
             return this;
         }
-        
+
         public CliArgBuilder Filter(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate)
         {
             _filterDelegate = filterDelegate;
@@ -48,13 +44,13 @@ namespace ColorSchemeManipulator.CLI
             _maxParams = value;
             return this;
         }
-        
+
         public CliArgBuilder Params(byte min, byte max)
         {
             _minParams = min;
             _maxParams = max;
             return this;
-        }    
+        }
 
         public CliArgBuilder Description(string value)
         {
@@ -67,7 +63,7 @@ namespace ColorSchemeManipulator.CLI
             _paramList = value;
             return this;
         }
-        
+
         public CliArgBuilder ParamDescription(string value)
         {
             _paramDesc = value;
@@ -75,18 +71,17 @@ namespace ColorSchemeManipulator.CLI
         }
 
         // This is alternative for using Build() method as last piece of fluent build process
-        
+
         public static implicit operator CliArg(CliArgBuilder cab)
         {
             return new CliArg(
-                cab._optionArgs, 
-                cab._filterDelegate, 
-                cab._minParams, 
-                cab._maxParams, 
+                cab._optionArgs,
+                cab._filterDelegate,
+                cab._minParams,
+                cab._maxParams,
                 cab._description,
                 cab._paramList,
                 cab._paramDesc);
         }
-        
     }
 }

@@ -87,7 +87,6 @@ namespace ColorSchemeManipulator.Filters
 
             // CliArgs.Register(new List<string> {"--bypass"}, ByBass, 0);
 
-
             GetInstance()._isRegistered = true;
         }
 
@@ -136,7 +135,6 @@ namespace ColorSchemeManipulator.Filters
         {
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
-
                 var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
                 var targetBrightness = (1 - brightness);
 
@@ -148,7 +146,6 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(inverted, rangeFactor);
             }
         }
-
 
         public static IEnumerable<Color> InvertMixedPerceivedLightnessAndValue(IEnumerable<Color> colors,
             ColorRange range,
@@ -199,7 +196,6 @@ namespace ColorSchemeManipulator.Filters
                 yield return hsl.InterpolateWith(hsv, mix);
             }
         }
-
 
         public static IEnumerable<Color> BrightnessToLightness(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
@@ -318,7 +314,6 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-
 
         public static IEnumerable<Color> GammaHsvSaturation(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
