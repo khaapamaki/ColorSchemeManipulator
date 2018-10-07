@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
@@ -94,38 +95,46 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
 
-                var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                var targetBrightness = (1 - brightness);
+                    var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                    var targetBrightness = (1 - brightness);
 
-                // using brightness as lightness is not accurate but we can correct this later
-                // how ever it seems that completely correct value produces worse outcome
-                // so we may use something in between
-                var inverted = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
+                    // using brightness as lightness is not accurate but we can correct this later
+                    // how ever it seems that completely correct value produces worse outcome
+                    // so we may use something in between
+                    var inverted = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
 
-                var newBrightness =
-                    ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
+                    var newBrightness =
+                        ColorMath.RgbPerceivedBrightness(inverted.Red, inverted.Green, inverted.Blue);
 
-                //var delta = targetBrightness / newBrightness - 1;
-                var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1); // / 4;
-                if (filterParams.Any())
-                    corr = ColorMath.LinearInterpolation(filterParams[0], 0, 1, 1, corr);
-                else {
-                    corr = 1;
-                }
+                    //var delta = targetBrightness / newBrightness - 1;
+                    var corr = targetBrightness / newBrightness + (targetBrightness / newBrightness - 1); // / 4;
+                    if (filterParams.Any())
+                        corr = ColorMath.LinearInterpolation(filterParams[0], 0, 1, 1, corr);
+                    else {
+                        corr = 1;
+                    }
 
-                double r = inverted.Red * corr;
-                double g = inverted.Green * corr;
-                double b = inverted.Blue * corr;
+                    double r = inverted.Red * corr;
+                    double g = inverted.Green * corr;
+                    double b = inverted.Blue * corr;
 
-                var corrected = Color.FromRgb(r, g, b, color.Alpha);
+                    var corrected = Color.FromRgb(r, g, b, color.Alpha);
 
-                // var correctedBrightness = ColorMath.RgbPerceivedBrightness(corrected.Red,
-                //     corrected.Green, corrected.Blue);
-
-                yield return color.InterpolateWith(corrected, rangeFactor);
+                    // var correctedBrightness = ColorMath.RgbPerceivedBrightness(corrected.Red,
+                    //     corrected.Green, corrected.Blue);
+                    color.InterpolateWith(corrected, rangeFactor);
+                    temp[i] = color;
+                });
+            foreach (var color in temp) {
+                yield return color;
             }
         }
 
@@ -133,17 +142,29 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange = null,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
-                var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                var targetBrightness = (1 - brightness);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                    var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                    var targetBrightness = (1 - brightness);
 
-                // using brightness as lightness is not accurate but we can correct this later
-                // how ever it seems that completely correct value produces worse outcome
-                // so we may use something in between
-                var inverted = Color.FromHsv(color.HueHsv, color.SaturationHsv, targetBrightness, color.Alpha);
+                    // using brightness as lightness is not accurate but we can correct this later
+                    // how ever it seems that completely correct value produces worse outcome
+                    // so we may use something in between
+                    var inverted = Color.FromHsv(color.HueHsv, color.SaturationHsv, targetBrightness, color.Alpha);
 
-                yield return color.InterpolateWith(inverted, rangeFactor);
+                    color.InterpolateWith(inverted, rangeFactor);
+
+                    temp[i] = color;
+                }
+            );
+
+            foreach (var color in temp) {
+                yield return color;
             }
         }
 
@@ -156,22 +177,33 @@ namespace ColorSchemeManipulator.Filters
                 mix = filterParams[0].Clamp(0, 1);
             }
 
-            foreach (var color in colors) {
-                var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                var targetBrightness = (1 - brightness);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                    var targetBrightness = (1 - brightness);
 
-                // using brightness as lightness is not accurate but we can correct this later
-                // how ever it seems that completely correct value produces worse outcome
-                // so we may use something in between
-                var inverted = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
+                    // using brightness as lightness is not accurate but we can correct this later
+                    // how ever it seems that completely correct value produces worse outcome
+                    // so we may use something in between
+                    var inverted = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
 
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var hslFiltered = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
-                var hsvFiltered = Color.FromHsv(color.HueHsv, color.SaturationHsv, targetBrightness, color.Alpha);
-                var hsl = color.InterpolateWith(hslFiltered, rangeFactor).Clone();
-                var hsv = color.InterpolateWith(hsvFiltered, rangeFactor).Clone();
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var hslFiltered = Color.FromHsl(color.Hue, color.Saturation, targetBrightness, color.Alpha);
+                    var hsvFiltered = Color.FromHsv(color.HueHsv, color.SaturationHsv, targetBrightness, color.Alpha);
+                    var hsl = color.InterpolateWith(hslFiltered, rangeFactor).Clone();
+                    var hsv = color.InterpolateWith(hsvFiltered, rangeFactor).Clone();
 
-                yield return hsl.InterpolateWith(hsv, mix);
+                    hsl.InterpolateWith(hsv, mix);
+                    temp[i] = hsl;
+                }
+            );
+
+            foreach (var color in temp) {
+                yield return color;
             }
         }
 
@@ -184,30 +216,51 @@ namespace ColorSchemeManipulator.Filters
                 mix = filterParams[0].Clamp(0, 1);
             }
 
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var hslFiltered = new Color(color);
-                var hsvFiltered = new Color(color);
-                hslFiltered.Lightness = ColorMath.Invert(color.Lightness);
-                hsvFiltered.Value = ColorMath.Invert(color.Value);
-                var hsl = color.InterpolateWith(hslFiltered, rangeFactor).Clone();
-                var hsv = color.InterpolateWith(hsvFiltered, rangeFactor).Clone();
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var hslFiltered = new Color(color);
+                    var hsvFiltered = new Color(color);
+                    hslFiltered.Lightness = ColorMath.Invert(color.Lightness);
+                    hsvFiltered.Value = ColorMath.Invert(color.Value);
+                    var hsl = color.InterpolateWith(hslFiltered, rangeFactor).Clone();
+                    var hsv = color.InterpolateWith(hsvFiltered, rangeFactor).Clone();
 
-                yield return hsl.InterpolateWith(hsv, mix);
+                    hsl.InterpolateWith(hsv, mix);
+                    temp[i] = hsl;
+                }
+            );
+
+            foreach (var color in temp) {
+                yield return color;
             }
         }
 
         public static IEnumerable<Color> BrightnessToLightness(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var filtered = new Color(color);
 
-                var br = color.GetBrightness();
-                filtered.Lightness = br;
+                    var br = color.GetBrightness();
+                    filtered.Lightness = br;
 
-                color.InterpolateWith(filtered, rangeFactor);
+                    color.InterpolateWith(filtered, rangeFactor);
+                    temp[i] = color;
+                }
+            );
+
+            foreach (var color in temp) {
                 yield return color;
             }
         }
@@ -215,16 +268,26 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GainHsvSaturation(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var filtered = new Color(color);
 
-                if (filterParams.Any()) {
-                    double gain = (filterParams[0]);
-                    filtered.SaturationHsv = (filtered.SaturationHsv * gain);
+                    if (filterParams.Any()) {
+                        double gain = (filterParams[0]);
+                        filtered.SaturationHsv = (filtered.SaturationHsv * gain);
+                    }
+
+                    color.InterpolateWith(filtered, rangeFactor);
+                    temp[i] = color;
                 }
+            );
 
-                color.InterpolateWith(filtered, rangeFactor);
+            foreach (var color in temp) {
                 yield return color;
             }
         }
@@ -232,14 +295,25 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> BrightnessToValue(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var filtered = new Color(color);
 
-                var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                filtered.Value = br;
+                    var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                    filtered.Value = br;
 
-                color.InterpolateWith(filtered, rangeFactor);
+                    color.InterpolateWith(filtered, rangeFactor);
+                    temp[i] = color;
+                }
+            );
+
+            int c = 0;
+            foreach (var color in temp) {
                 yield return color;
             }
         }
@@ -283,17 +357,28 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> LevelsHsvSaturation(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var filtered = new Color(color);
 
-                (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
-                    FilterUtils.GetLevelsParameters(filterParams);
+                    (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
+                        FilterUtils.GetLevelsParameters(filterParams);
 
-                filtered.SaturationHsv =
-                    ColorMath.Levels(color.SaturationHsv, inBlack, inWhite, gamma, outBlack, outWhite);
+                    filtered.SaturationHsv =
+                        ColorMath.Levels(color.SaturationHsv, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                color.InterpolateWith(filtered, rangeFactor);
+                    color.InterpolateWith(filtered, rangeFactor);
+                    temp[i] = color;
+                }
+            );
+
+            int c = 0;
+            foreach (var color in temp) {
                 yield return color;
             }
         }
@@ -302,18 +387,28 @@ namespace ColorSchemeManipulator.Filters
             ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var filtered = new Color(color);
 
-                if (filterParams.Any()) {
-                    double strength = filterParams[0];
-                    double midpoint = filterParams.Length >= 2 ? filterParams[1] : 0.5;
+                    if (filterParams.Any()) {
+                        double strength = filterParams[0];
+                        double midpoint = filterParams.Length >= 2 ? filterParams[1] : 0.5;
 
-                    filtered.SaturationHsv = ColorMath.SSpline(color.SaturationHsv, strength, midpoint);
+                        filtered.SaturationHsv = ColorMath.SSpline(color.SaturationHsv, strength, midpoint);
+                    }
+
+                    color.InterpolateWith(filtered, rangeFactor);
+                    temp[i] = color;
                 }
+            );
 
-                color.InterpolateWith(filtered, rangeFactor);
+            foreach (var color in temp) {
                 yield return color;
             }
         }
@@ -321,16 +416,26 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaHsvSaturation(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var filtered = new Color(color);
 
-                if (filterParams.Any()) {
-                    double gamma = filterParams[0];
-                    filtered.SaturationHsv = ColorMath.Gamma(color.SaturationHsv, gamma);
+                    if (filterParams.Any()) {
+                        double gamma = filterParams[0];
+                        filtered.SaturationHsv = ColorMath.Gamma(color.SaturationHsv, gamma);
+                    }
+
+                    color.InterpolateWith(filtered, rangeFactor);
+                    temp[i] = color;
                 }
+            );
 
-                color.InterpolateWith(filtered, rangeFactor);
+            foreach (var color in temp) {
                 yield return color;
             }
         }
@@ -341,18 +446,28 @@ namespace ColorSchemeManipulator.Filters
         {
             (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(colors);
 
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                var filtered = new Color(color);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                    var filtered = new Color(color);
 
-                (double outBlack, double outWhite, double gamma) =
-                    FilterUtils.GetAutoLevelParameters(filterParams);
+                    (double outBlack, double outWhite, double gamma) =
+                        FilterUtils.GetAutoLevelParameters(filterParams);
 
-                filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
-                filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
-                filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
+                    filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
+                    filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
+                    filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                color.InterpolateWith(filtered, rangeFactor);
+                    color.InterpolateWith(filtered, rangeFactor);
+                    temp[i] = color;
+                }
+            );
+
+            foreach (var color in temp) {
                 yield return color;
             }
         }
@@ -360,14 +475,22 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> ByBass(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                if (filterParams.Any()) {
-                    (double h, double s, double l) = color.GetHslComponents();
-                    var newColor = Color.FromHsl(h, s, l, color.Alpha);
-                    yield return newColor;
-                } else {
-                    yield return color;
-                }
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                i =>
+                {
+                    var color = temp[i];
+                    if (filterParams.Any()) {
+                        (double h, double s, double l) = color.GetHslComponents();
+                        var newColor = Color.FromHsl(h, s, l, color.Alpha);
+                        temp[i] = newColor;
+                    } else {
+                        temp[i] = color;
+                    }
+                });
+            foreach (var color in temp) {
+                yield return color;
             }
         }
     }
