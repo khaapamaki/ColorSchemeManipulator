@@ -204,11 +204,10 @@ namespace ColorSchemeManipulator.Filters
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
-                if (filterParams.Any()) {
-                    var br = color.GetBrightness();
-                    filtered.Lightness = br;
-                    yield return color.InterpolateWith(filtered, rangeFactor);
-                }
+                var br = color.GetBrightness();
+                filtered.Lightness = br;
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
@@ -235,11 +234,10 @@ namespace ColorSchemeManipulator.Filters
                 var rangeFactor = FilterUtils.GetRangeFactor(range, color);
                 var filtered = new Color(color);
 
-                if (filterParams.Any()) {
-                    var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
-                    filtered.Value = br;
-                    yield return color.InterpolateWith(filtered, rangeFactor);
-                }
+                var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
+                filtered.Value = br;
+
+                yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
 
