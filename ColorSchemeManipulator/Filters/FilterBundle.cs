@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
@@ -258,15 +260,39 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> InvertRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            foreach (var color in colors) {
-                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
-                var inverted = Color.FromRgb(
-                    ColorMath.Invert(color.Red),
-                    ColorMath.Invert(color.Green),
-                    ColorMath.Invert(color.Blue),
-                    color.Alpha);
-                yield return color.InterpolateWith(inverted, rangeFactor);
+            List<Color> temp = colors.ToList();
+            var x = Parallel.For(0, temp.Count,
+                new ParallelOptions() {MaxDegreeOfParallelism = 32},
+                i =>
+                {
+                    var color = temp[i];
+                    var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                    var inverted = Color.FromRgb(
+                        ColorMath.Invert(color.Red),
+                        ColorMath.Invert(color.Green),
+                        ColorMath.Invert(color.Blue),
+                        color.Alpha);
+                    color.InterpolateWith(inverted, rangeFactor);
+
+                    temp[i] = color;
+                }
+            );
+
+            int c = 0;
+            foreach (var color in temp) {
+                yield return color;
             }
+
+
+            // foreach (var color in colors) {
+            //     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+            //     var inverted = Color.FromRgb(
+            //         ColorMath.Invert(color.Red),
+            //         ColorMath.Invert(color.Green),
+            //         ColorMath.Invert(color.Blue),
+            //         color.Alpha);
+            //     yield return color.InterpolateWith(inverted, rangeFactor);
+            // }
         }
 
         public static IEnumerable<Color> InvertLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
@@ -279,7 +305,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Lightness = ColorMath.Invert(filtered.Lightness);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -292,7 +319,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Value = ColorMath.Invert(color.Value);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -331,7 +359,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Saturation = (filtered.Saturation * gain);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -349,7 +378,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Blue = ColorMath.Gain(color.Blue, gain);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -365,7 +395,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Lightness = (filtered.Lightness * gain);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -381,7 +412,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Value = (filtered.Value * gain);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -403,7 +435,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -419,7 +452,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Red = ColorMath.Gamma(color.Red, gain);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -436,7 +470,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Green = ColorMath.Gamma(color.Green, gain);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -452,7 +487,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Blue = ColorMath.Gamma(color.Blue, gain);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -468,7 +504,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Saturation = ColorMath.Gamma(color.Saturation, gamma);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -484,7 +521,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Lightness = ColorMath.Gamma(color.Lightness, gamma);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -500,7 +538,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Value = ColorMath.Gamma(color.Value, gamma);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -524,7 +563,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Blue = ColorMath.SSpline(color.Blue, strength, midpoint);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -542,7 +582,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Lightness = ColorMath.SSpline(color.Lightness, strength, midpoint);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -560,7 +601,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Value = ColorMath.SSpline(color.Value, strength, midpoint);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -579,7 +621,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Saturation = ColorMath.SSpline(color.Saturation, strength, midpoint);
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -600,7 +643,8 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Hue = color.Hue + hueShift;
                 }
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -622,7 +666,8 @@ namespace ColorSchemeManipulator.Filters
                 filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
                 filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -638,7 +683,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -654,7 +700,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -670,7 +717,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -697,7 +745,8 @@ namespace ColorSchemeManipulator.Filters
                 filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
                 filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -722,7 +771,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -739,7 +789,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Lightness = ColorMath.Levels(color.Lightness, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -755,7 +806,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Value = ColorMath.Levels(color.Value, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -773,7 +825,8 @@ namespace ColorSchemeManipulator.Filters
 
                 filtered.Saturation = ColorMath.Levels(color.Saturation, inBlack, inWhite, gamma, outBlack, outWhite);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -792,7 +845,8 @@ namespace ColorSchemeManipulator.Filters
                 if (filterParams.Any())
                     filtered.Lightness = color.Lightness.LimitHigh(filterParams[0]);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -807,7 +861,8 @@ namespace ColorSchemeManipulator.Filters
                 if (filterParams.Any())
                     filtered.Lightness = color.Lightness.LimitLow(filterParams[0]);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -822,7 +877,8 @@ namespace ColorSchemeManipulator.Filters
                 if (filterParams.Any())
                     filtered.Value = color.Value.LimitHigh(filterParams[0]);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -837,7 +893,8 @@ namespace ColorSchemeManipulator.Filters
                 if (filterParams.Any())
                     filtered.Value = color.Value.LimitLow(filterParams[0]);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -852,7 +909,8 @@ namespace ColorSchemeManipulator.Filters
                 if (filterParams.Any())
                     filtered.Saturation = color.Saturation.LimitHigh(filterParams[0]);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -867,7 +925,8 @@ namespace ColorSchemeManipulator.Filters
                 if (filterParams.Any())
                     filtered.SaturationHsv = color.SaturationHsv.LimitHigh(filterParams[0]);
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -888,7 +947,8 @@ namespace ColorSchemeManipulator.Filters
                 filtered.Green = br;
                 filtered.Blue = br;
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -904,7 +964,8 @@ namespace ColorSchemeManipulator.Filters
                 filtered.Green = color.Lightness;
                 filtered.Blue = color.Lightness;
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
@@ -920,7 +981,8 @@ namespace ColorSchemeManipulator.Filters
                 filtered.Green = color.Value;
                 filtered.Blue = color.Value;
 
-                yield return color.InterpolateWith(filtered, rangeFactor);
+                color.InterpolateWith(filtered, rangeFactor);
+                yield return color;
             }
         }
 
