@@ -246,7 +246,7 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color FromRgb(double r, double g, double b, double a = 1.0)
         {
-            Color color = new Color();
+            var color = new Color();
             color.SetRgb(r, g, b, a);
             
             return color;
@@ -254,7 +254,7 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color FromRgb(byte r, byte g, byte b, byte a = 0xFF)
         {
-            Color color = new Color();
+            var color = new Color();
             color.SetRgb(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
             
             return color;
@@ -262,7 +262,7 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color FromHsl(double h, double s, double l, double a = 1.0)
         {
-            Color color = new Color();
+            var color = new Color();
             color.SetHsl(h, s, l, a);
             
             return color;
@@ -270,7 +270,7 @@ namespace ColorSchemeManipulator.Colors
 
         public static Color FromHsv(double h, double s, double v, double a = 1.0)
         {
-            Color color = new Color();
+            var color = new Color();
             color.SetHsv(h, s, v, a);
             
             return color;
@@ -467,7 +467,7 @@ namespace ColorSchemeManipulator.Colors
             return ClampValue(input, InputInputClamping);
         }
 
-        private double ClampValue(double input, Clamping clamping)
+        private static double ClampValue(double input, Clamping clamping)
         {
             if (clamping == Clamping.LowHigh)
                 return input.Clamp(0, 1);
@@ -525,8 +525,10 @@ namespace ColorSchemeManipulator.Colors
 
         private bool CalcRgb()
         {
-            if (_calcLock > 0)
+            if (_calcLock > 0) {
+                // Console.Error.WriteLine("Calc lock prevented action");
                 return _rgbValid;
+            }
 
             if (!HasValue())
                 throw new Exception("Color has no value");
@@ -543,8 +545,10 @@ namespace ColorSchemeManipulator.Colors
 
         private bool CalcHsl()
         {
-            if (_calcLock > 0)
+            if (_calcLock > 0) {
+                // Console.Error.WriteLine("Calc lock prevented action");
                 return _hslValid;
+            }
 
             if (!HasValue())
                 throw new Exception("Color has no value");
@@ -564,8 +568,10 @@ namespace ColorSchemeManipulator.Colors
 
         private bool CalcHsv()
         {
-            if (_calcLock > 0)
+            if (_calcLock > 0) {
+                // Console.Error.WriteLine("Calc lock prevented action");
                 return _hsvValid;
+            }
 
             if (!HasValue())
                 throw new Exception("Color has no value");
