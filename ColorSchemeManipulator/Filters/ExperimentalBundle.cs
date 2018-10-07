@@ -97,7 +97,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -144,7 +144,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -179,7 +179,7 @@ namespace ColorSchemeManipulator.Filters
 
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -218,7 +218,7 @@ namespace ColorSchemeManipulator.Filters
 
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -245,7 +245,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -270,7 +270,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -297,7 +297,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -359,7 +359,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -389,7 +389,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -418,7 +418,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -448,7 +448,7 @@ namespace ColorSchemeManipulator.Filters
 
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
@@ -477,7 +477,7 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
             var x = Parallel.For(0, temp.Count,
-                new ParallelOptions() {MaxDegreeOfParallelism = 256},
+                new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
                     var color = temp[i];
