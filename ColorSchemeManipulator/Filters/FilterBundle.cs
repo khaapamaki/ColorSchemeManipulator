@@ -260,7 +260,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> InvertRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                     var inverted = Color.FromRgb(
@@ -282,7 +282,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> InvertLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -304,7 +304,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> InvertValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -326,7 +326,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -355,7 +355,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GainHslSaturation(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -379,7 +379,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GainRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -405,7 +405,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GainLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -429,7 +429,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GainValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -456,7 +456,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -481,7 +481,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaRed(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -504,7 +504,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaGreen(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -527,7 +527,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaBlue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -550,7 +550,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaHslSaturation(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -574,7 +574,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -597,7 +597,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> GammaValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -624,7 +624,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> ContrastRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -650,7 +650,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> ContrastLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -674,7 +674,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> ContrastValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -699,7 +699,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -727,7 +727,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> ShiftHslHue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -754,7 +754,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> LevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -776,7 +776,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> LevelsRed(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -798,7 +798,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> LevelsGreen(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -820,7 +820,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> LevelsBlue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -848,7 +848,7 @@ namespace ColorSchemeManipulator.Filters
 #if DEBUG
             Console.WriteLine($"  (Auto rgb levels - source min {inBlack:F3}, max {inWhite:F3})");
 #endif
-            var result = cache.AsParallel().AsOrdered().Select(
+            var result = cache.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -879,7 +879,7 @@ namespace ColorSchemeManipulator.Filters
             Console.WriteLine($"  (Auto lightness levels - source min {inBlack:F3}, max {inWhite:F3})");
 #endif
 
-            var result = cache.AsParallel().AsOrdered().Select(
+            var result = cache.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -900,7 +900,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -921,7 +921,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> LevelsValue(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -943,7 +943,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -970,7 +970,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -991,7 +991,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1012,7 +1012,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1033,7 +1033,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1054,7 +1054,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1075,7 +1075,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1100,7 +1100,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1123,7 +1123,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1145,7 +1145,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
@@ -1166,7 +1166,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> Clamp(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
-            var result = colors.AsParallel().AsOrdered().Select(
+            var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
                     color.ClampExceedingColors(); 
