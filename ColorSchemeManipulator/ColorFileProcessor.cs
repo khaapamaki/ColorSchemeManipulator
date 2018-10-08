@@ -46,16 +46,16 @@ namespace ColorSchemeManipulator
             
             // Apply filters
             IEnumerable<Color> filteredColors = filters.ApplyTo(colors);
-#if DEBUG            
+// #if DEBUG            
             var watch = new Stopwatch();
             watch.Start();
-#endif
+// #endif
             // replace original colors with filtered ones
             var result = _handler.ReplaceColors(source, filteredColors);
-#if DEBUG            
+// #if DEBUG            
             watch.Stop();
-            Console.WriteLine("Colors processed in " + watch.ElapsedMilliseconds + "ms");
-#endif
+            Console.WriteLine("Color processed in " + watch.ElapsedMilliseconds + "ms");
+// #endif
             return result;
         }
    

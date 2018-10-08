@@ -37,16 +37,9 @@ namespace ColorSchemeManipulator.CLI
             return GetInstance().Items;
         }
 
-        public static void Register(
-            string option,
-            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filter,
-            byte minParams,
-            byte maxParams = 0,
-            string paramList = "",
-            string desc = "",
-            string paramDesc = "")
+        public static void Register(CliArg cliArg)
         {
-            GetInstance().Items.Add(new CliArg(option, filter, minParams, maxParams, paramList, desc, paramDesc));
+            GetInstance().Items.Add(cliArg);
         }
 
         public static void Register(

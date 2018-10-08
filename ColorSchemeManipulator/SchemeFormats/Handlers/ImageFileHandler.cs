@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using ColorSchemeManipulator.Colors;
 using Color = ColorSchemeManipulator.Colors.Color;
 

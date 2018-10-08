@@ -28,8 +28,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
         protected abstract PaddableHexFormat[] InputHexFormats { get; }
         protected abstract string MatchGroupName { get; }
         protected abstract string OutputHexFormat { get; }
-        
-        
+               
         private MatchCollection _matches;
         
         double sourceMin = double.MaxValue;
@@ -93,8 +92,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                     minmax.Append($"<Result Max {resultColor.CompareValue():F3}> ");
                 if (resultColor.CompareValue().AboutEqual(resultMin))
                     minmax.Append($"<Result Min {resultColor.CompareValue():F3}> ");
-                
-                
+                              
                 if (match.Groups["attr"] != null && match.Groups["attr"].Value != "") {
                     Console.WriteLine(match.Groups["attr"].Value);
                 }

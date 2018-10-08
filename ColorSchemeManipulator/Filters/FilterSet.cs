@@ -15,7 +15,6 @@ namespace ColorSchemeManipulator.Filters
 
         public FilterSet() { }
 
-
         public FilterSet Add(ColorFilter filter)
         {
             _filters.Add(filter);

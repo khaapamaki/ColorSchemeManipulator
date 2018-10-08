@@ -34,25 +34,25 @@ namespace ColorSchemeManipulator
 
             (var filters, string[] nonOptionArgs, string[] remainingOptArgs) = RegisterCliOptions(args);
 
-            
+
             //--------------------------------------------------------------------------
             //    Print help / Other options
             //--------------------------------------------------------------------------
 
             // todo refactor, extract to method for handing other options
-            
+
             //
             //  PARSE other than filter options here from nonFilterOptArgs
             //       
-            
+
             Console.WriteLine("Color Scheme Manipulator "
                               + Assembly.GetExecutingAssembly().GetName().Version);
-            
+
             if (args.Length == 0) {
                 Utils.PrintHelp(_filterCount, _experimentalFilterCount, verbose: false);
                 return;
             } else if (args.Length == 1 && args[0].ToLower() == "--help") {
-                Utils.PrintHelp(_filterCount, _experimentalFilterCount, verbose: true); 
+                Utils.PrintHelp(_filterCount, _experimentalFilterCount, verbose: true);
                 return;
             }
 
@@ -61,7 +61,7 @@ namespace ColorSchemeManipulator
                 Console.WriteLine("Illegal argument: " + remainingOptArgs[0]);
                 return;
             }
-            
+
             //--------------------------------------------------------------------------
             //    Extract source and target files
             //--------------------------------------------------------------------------
@@ -87,7 +87,6 @@ namespace ColorSchemeManipulator
             ProcessFile(sourceFile, targetFile, filters);
         }
 
-
         private HandlerRegister<string> _schemeHandlerRegister = new HandlerRegister<string>();
         private HandlerRegister<Bitmap> _bitmapHandlerRegister = new HandlerRegister<Bitmap>();
 
@@ -106,7 +105,7 @@ namespace ColorSchemeManipulator
 
         private int _filterCount;
         private int _experimentalFilterCount;
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -128,7 +127,7 @@ namespace ColorSchemeManipulator
             // Extract non-option and remaining option arguments
             string[] nonFilterOptionArgs;
             (nonOptionArgs, nonFilterOptionArgs) = CliArgs.ExtractOptionArguments(nonOptionArgs);
-            
+
             return (filterSet, nonOptionArgs, nonFilterOptionArgs);
         }
 
@@ -183,6 +182,6 @@ namespace ColorSchemeManipulator
                 Console.Error.WriteLine(sourceFile + " does not exist");
             }
         }
-        
+
     }
 }

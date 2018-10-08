@@ -36,43 +36,47 @@ namespace ColorSchemeManipulator.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            CliArgs.Register(new List<string> {"-h", "--hue"}, ShiftHslHue, 1,
-                paramList: "=<offset>",
-                desc: "Hue shift.",
-                paramDesc: "<offset> is hue offset in colorRange of -360..360 (0)");
+            CliArgs.Register(new CliArgBuilder()
+                .Filter(ShiftHslHue)
+                .AddOptions("-h", "--hue")
+                .Params(1)
+                .ParamString("=<offset>")
+                .Description("Hue shift.")
+                .ParamDescription("<offset> is hue offset in range of -360..360 (0)")
+            );
 
             CliArgs.Register(new List<string> {"-s", "--saturation"}, GainHslSaturation, 1,
                 paramList: "=<gain>",
                 desc: "Saturation gain.",
-                paramDesc: "<gain> is multiplier in colorRange of 0..10 (1.0)");
-            
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
+
             CliArgs.Register(new List<string> {"-g", "--gain"}, GainRgb, 1,
                 paramList: "=<gain>",
                 desc: "RGB gain.",
-                paramDesc: "<gain> is multiplier in colorRange of 0..10 (1.0)");
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
 
             CliArgs.Register(new List<string> {"-l", "--lightness"}, GainLightness, 1,
                 paramList: "=<gain>",
                 desc: "Lightness gain.",
-                paramDesc: "<gain> is multiplier in colorRange of 0..10 (1.0)");
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
 
             CliArgs.Register(new List<string> {"-v", "--value"}, GainValue, 1,
                 paramList: "=<gain>",
                 desc: "Value gain.",
-                paramDesc: "<gain> is multiplier in colorRange of 0..10 (1.0)");
+                paramDesc: "<gain> is multiplier in range of 0..10 (1.0)");
 
             CliArgs.Register(new List<string> {"-c", "--contrast"}, ContrastRgb, 1, 2,
                 paramList: "=<contrast>[,<ip>]",
                 desc: "Adjusts contrast by S-spline curve.",
                 paramDesc:
-                "<contrast> is curvature strength in colorRange of -1..1 (0.0), <ip> is inflection point in colorRange of 0..1 (0.5)");
+                "<contrast> is curvature strength in range of -1..1 (0.0), <ip> is inflection point in range of 0..1 (0.5)");
 
             CliArgs.Register(new List<string> {"-cl", "--contrast-lightness"}, ContrastLightness, 1, 2,
                 paramList: "=<contrast>[,<ip>]",
                 desc:
                 "Applies contrast curve to lightness.",
                 paramDesc:
-                "<contrast> is curvature strength in colorRange of -1..1 (0), <ip> is inflection point in colorRange of 0..1 (0.5)");
+                "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
 
 
             CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1, 2,
@@ -80,49 +84,49 @@ namespace ColorSchemeManipulator.Filters
                 desc:
                 "Applies contrast curve to value.",
                 paramDesc:
-                "<contrast> is curvature strength in colorRange of -1..1 (0), <ip> is inflection point in colorRange of 0..1 (0.5)");
+                "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
 
             CliArgs.Register(new List<string> {"-cs", "--contrast-saturation"}, ContrastHslSaturation, 1, 2,
                 paramList: "=<contrast>[,<ip>]",
                 desc:
                 "Applies contrast curve to saturation.",
                 paramDesc:
-                "<contrast> is curvature strength in colorRange of -1..1 (0), <ip> is inflection point in colorRange of 0..1 (0.5)");
+                "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
 
             CliArgs.Register(new List<string> {"-ga", "--gamma"}, GammaRgb, 1, 1,
                 paramList: "=<gamma>",
                 desc: "Gamma correction for all RGB channels equally.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gar", "--gamma-red"}, GammaRed, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of red channel.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gag", "--gamma-green"}, GammaGreen, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of green channel.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gab", "--gamma-blue"}, GammaBlue, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of blue channel.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gal", "--gamma-lightness"}, GammaLightness, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of lightness.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gav", "--gamma-value"}, GammaValue, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of value.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-gas", "--gamma-saturation"}, GammaHslSaturation, 1,
                 paramList: "=<gamma>",
                 desc: "Adjusts gamma of saturation.",
-                paramDesc: "<gamma> is value in colorRange of 0.01..9.99 (1.0)");
+                paramDesc: "<gamma> is value in range of 0.01..9.99 (1.0)");
 
             CliArgs.Register(new List<string> {"-le", "--levels"}, LevelsRgb, 5, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
@@ -157,7 +161,7 @@ namespace ColorSchemeManipulator.Filters
                 desc:
                 "Auto levels RGB channels by normalizing them by HSV values to full scale between given minimum and maximum.",
                 paramDesc: "<min> is output min 0..1 (0), <max> is output max 0..1 (1), <g> is gamma 0.01..9.99 (1)");
-            
+
             CliArgs.Register(new List<string> {"-all", "--auto-levels-lightness"}, AutoLevelsLightness, 0, 3,
                 paramList: "=<min>,<max>,<g>",
                 desc:
@@ -194,30 +198,30 @@ namespace ColorSchemeManipulator.Filters
             CliArgs.Register(new List<string> {"-iv", "--invert-value"}, InvertValue, 0, 0,
                 desc: "Inverts value.");
 
-            CliArgs.Register(new List<string> {"-ipl", "--invert-perc-lightness"}, InvertPerceivedLightness, 0, 0,
+            CliArgs.Register(new List<string> {"-ipl", "--invert-per-lightness"}, InvertPerceivedLightness, 0, 0,
                 desc: "Inverts perceived lightness.");
 
             CliArgs.Register(new List<string> {"-gsb", "--grayscale-brightness"}, BrightnessToGrayScale, 0, 0,
                 desc: "Converts to gray scale based on perceived brightness.");
 
             CliArgs.Register(new List<string> {"-gsl", "--grayscale-ligthness"}, LightnessToGrayScale, 0, 0,
-                desc: "Converts to gray scale based on perceived brightness.");
+                desc: "Converts to gray scale based on lightness.");
 
             CliArgs.Register(new List<string> {"-gsv", "--grayscale-value"}, ValueToGrayScale, 0, 0,
-                desc: "Converts to gray scale based on perceived brightness.");
+                desc: "Converts to gray scale based on HSV value.");
 
             CliArgs.Register(new List<string> {"--min-lightness"}, MinLightness, 1, 1,
                 paramList: "=<min>",
                 desc: "Limits lower end of lightness.",
                 paramDesc: "<min> minimum lightness"
-                );
+            );
 
             CliArgs.Register(new List<string> {"--max-lightness"}, MaxLightness, 1, 1,
                 paramList: "=<max>",
                 desc: "Limits higher end of lightness.",
                 paramDesc: "<max> max lightness"
             );
- 
+
             CliArgs.Register(new List<string> {"--min-value"}, MinValue, 1, 1,
                 paramList: "=<min>",
                 desc: "Limits lower end of HSV value.",
@@ -229,22 +233,22 @@ namespace ColorSchemeManipulator.Filters
                 desc: "Limits higher end of value.",
                 paramDesc: "<max> max HSV value"
             );
- 
+
             CliArgs.Register(new List<string> {"--max-saturation"}, MaxHslSaturation, 1, 1,
                 paramList: "=<max>",
                 desc: "Limits higher end of saturation.",
                 paramDesc: "<max> max saturation"
             );
-            
+
             CliArgs.Register(new List<string> {"--max-saturation-hsv"}, MaxHsvSaturation, 1, 1,
                 paramList: "=<max>",
                 desc: "Limits higher end of HSV saturation.",
                 paramDesc: "<max> max saturation"
             );
-            
+
             CliArgs.Register(new List<string> {"--clamp"}, Clamp, 0, 0,
                 desc:
-                "Clamps color values to normal colorRange of 0..1. Tries to preserve hue. This is automatically done as last filter.");
+                "Clamps color values to normal range of 0..1. Tries to preserve hue. This is automatically applied as last filter.");
 
             GetInstance()._isRegistered = true;
         }
@@ -672,10 +676,10 @@ namespace ColorSchemeManipulator.Filters
 
         public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
-        {        
+        {
             // This is to avoid multiple enumeration
             List<Color> cache = colors.ToList();
-            
+
             (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestValue(cache);
 
 #if DEBUG
@@ -696,13 +700,13 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> AutoLevelsLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
-        {        
+        {
             // This is to avoid multiple enumeration
             List<Color> cache = colors.ToList();
-            
+
             (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(cache);
 
 #if DEBUG
@@ -721,7 +725,7 @@ namespace ColorSchemeManipulator.Filters
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
 
         public static IEnumerable<Color> LevelsLightness(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
@@ -776,7 +780,7 @@ namespace ColorSchemeManipulator.Filters
         #endregion
 
         #region "Limit"
-        
+
         public static IEnumerable<Color> MaxLightness(IEnumerable<Color> colors,
             ColorRange colorRange,
             params double[] filterParams)
@@ -784,14 +788,14 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
-                
+
                 if (filterParams.Any())
-                    filtered.Lightness = color.Lightness.LimitHigh(filterParams[0]); 
+                    filtered.Lightness = color.Lightness.LimitHigh(filterParams[0]);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> MinLightness(IEnumerable<Color> colors,
             ColorRange colorRange,
             params double[] filterParams)
@@ -799,14 +803,14 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
-                
+
                 if (filterParams.Any())
-                    filtered.Lightness = color.Lightness.LimitLow(filterParams[0]); 
+                    filtered.Lightness = color.Lightness.LimitLow(filterParams[0]);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> MaxValue(IEnumerable<Color> colors,
             ColorRange colorRange,
             params double[] filterParams)
@@ -814,14 +818,14 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
-                
+
                 if (filterParams.Any())
-                    filtered.Value = color.Value.LimitHigh(filterParams[0]); 
+                    filtered.Value = color.Value.LimitHigh(filterParams[0]);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> MinValue(IEnumerable<Color> colors,
             ColorRange colorRange,
             params double[] filterParams)
@@ -829,14 +833,14 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
-                
+
                 if (filterParams.Any())
-                    filtered.Value = color.Value.LimitLow(filterParams[0]); 
+                    filtered.Value = color.Value.LimitLow(filterParams[0]);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> MaxHslSaturation(IEnumerable<Color> colors,
             ColorRange colorRange,
             params double[] filterParams)
@@ -844,14 +848,14 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
-                
+
                 if (filterParams.Any())
-                    filtered.Saturation = color.Saturation.LimitHigh(filterParams[0]); 
+                    filtered.Saturation = color.Saturation.LimitHigh(filterParams[0]);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         public static IEnumerable<Color> MaxHsvSaturation(IEnumerable<Color> colors,
             ColorRange colorRange,
             params double[] filterParams)
@@ -859,16 +863,16 @@ namespace ColorSchemeManipulator.Filters
             foreach (var color in colors) {
                 var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                 var filtered = new Color(color);
-                
+
                 if (filterParams.Any())
-                    filtered.SaturationHsv = color.SaturationHsv.LimitHigh(filterParams[0]); 
+                    filtered.SaturationHsv = color.SaturationHsv.LimitHigh(filterParams[0]);
 
                 yield return color.InterpolateWith(filtered, rangeFactor);
             }
         }
-        
+
         #endregion
-        
+
         #region "Misc"
 
         public static IEnumerable<Color> BrightnessToGrayScale(IEnumerable<Color> colors,
