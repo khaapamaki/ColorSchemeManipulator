@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -184,7 +185,6 @@ namespace ColorSchemeManipulator.Filters
                 paramDesc:
                 "<ib> is input black 0..1 (0), <iw> is input white 0..1 (1), <g> is gamma 0.01..9.99 (1), <ob> is output black 0..1 (0), <ow> is output white 0..1 (1)");
 
-
             CliArgs.Register(new List<string> {"-les", "--levels-saturation"}, LevelsHslSaturation, 5, 5,
                 paramList: "=<ib>,<iw>,<g>,<ob>,<ow>",
                 desc: "Adjusts levels of saturation.",
@@ -261,11 +261,14 @@ namespace ColorSchemeManipulator.Filters
             params double[] filterParams)
         {
             List<Color> temp = colors.ToList();
-            var x = Parallel.For(0, temp.Count,
+
+            var partitioner = Partitioner.Create(0, temp.Count, 10000);
+            
+            var x = Parallel.ForEach(partitioner,
                 new ParallelOptions() {MaxDegreeOfParallelism = 256},
                 i =>
                 {
-                    var color = temp[i];
+                    var color = temp[i.Item1];
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                     var inverted = Color.FromRgb(
                         ColorMath.Invert(color.Red),
@@ -274,7 +277,7 @@ namespace ColorSchemeManipulator.Filters
                         color.Alpha);
                     color.InterpolateWith(inverted, rangeFactor);
 
-                    temp[i] = color;
+                    temp[i.Item1] = color;
                 }
             );
 

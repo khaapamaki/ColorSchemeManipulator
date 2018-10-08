@@ -54,7 +54,7 @@ namespace ColorSchemeManipulator
             var result = _handler.ReplaceColors(source, filteredColors);
 // #if DEBUG            
             watch.Stop();
-            Console.WriteLine("Color processed in " + watch.ElapsedMilliseconds + "ms");
+            Console.WriteLine("Colors processed in " + watch.ElapsedMilliseconds + "ms");
 // #endif
             return result;
         }
