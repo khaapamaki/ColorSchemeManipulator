@@ -99,6 +99,7 @@ namespace ColorSchemeManipulator.SchemeFormats.Handlers
                     Console.WriteLine(match.Groups["attr"].Value);
                 }
                 
+                if (i == 0) Console.WriteLine();
                 string subAttr = match.Groups["attr2"]?.Value ?? ""; 
                 Console.WriteLine($"  {subAttr,-30} #{rgbString} -> #{filteredRgbString} {minmax}");
                 
