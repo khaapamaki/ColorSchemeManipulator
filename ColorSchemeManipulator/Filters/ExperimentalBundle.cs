@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -178,11 +179,13 @@ namespace ColorSchemeManipulator.Filters
             }
 
             List<Color> temp = colors.ToList();
-            var x = Parallel.For(0, temp.Count,
+            var partitioner = Partitioner.Create(0, temp.Count, 1);
+
+            var x = Parallel.ForEach(partitioner,
                 new ParallelOptions() {MaxDegreeOfParallelism = 8},
                 i =>
                 {
-                    var color = temp[i];
+                    var color = temp[i.Item1];
                     var brightness = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
                     var targetBrightness = (1 - brightness);
 
@@ -198,7 +201,7 @@ namespace ColorSchemeManipulator.Filters
                     var hsv = color.InterpolateWith(hsvFiltered, rangeFactor).Clone();
 
                     hsl.InterpolateWith(hsv, mix);
-                    temp[i] = hsl;
+                    temp[i.Item1] = hsl;
                 }
             );
 
