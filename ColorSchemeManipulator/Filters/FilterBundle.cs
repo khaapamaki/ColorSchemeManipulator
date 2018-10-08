@@ -262,13 +262,11 @@ namespace ColorSchemeManipulator.Filters
         {
             List<Color> temp = colors.ToList();
 
-            var partitioner = Partitioner.Create(0, temp.Count, 10000);
-            
-            var x = Parallel.ForEach(partitioner,
+            var x = Parallel.For(0, temp.Count(),
                 new ParallelOptions() {MaxDegreeOfParallelism = 256},
                 i =>
                 {
-                    var color = temp[i.Item1];
+                    var color = temp[i];
                     var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                     var inverted = Color.FromRgb(
                         ColorMath.Invert(color.Red),
@@ -277,7 +275,7 @@ namespace ColorSchemeManipulator.Filters
                         color.Alpha);
                     color.InterpolateWith(inverted, rangeFactor);
 
-                    temp[i.Item1] = color;
+                    temp[i] = color;
                 }
             );
 
