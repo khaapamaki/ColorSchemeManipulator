@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Remoting.Messaging;
 using ColorSchemeManipulator.Common;
 
 // Todo Thread safety
@@ -400,6 +401,11 @@ namespace ColorSchemeManipulator.Colors
         public static Color Interpolate(Color color1, Color color2, double factor)
         {
             factor = factor.Clamp(0, 1);
+            if (factor.AboutEqual(1)) {
+                return color2;
+            }
+            if (factor.AboutEqual(0))
+                return color1;
             double r = ColorMath.LinearInterpolation(factor, color1.Red, color2.Red);
             double g = ColorMath.LinearInterpolation(factor, color1.Green, color2.Green);
             double b = ColorMath.LinearInterpolation(factor, color1.Blue, color2.Blue);
@@ -410,6 +416,11 @@ namespace ColorSchemeManipulator.Colors
         public Color InterpolateWith(Color color, double factor)
         {
             factor = factor.Clamp(0, 1);
+            if (factor.AboutEqual(1)) {
+                SetRgb(color.Red, color.Green, color.Blue, color.Alpha);
+            }
+            if (factor.AboutEqual(0))
+                return this;
             double r = ColorMath.LinearInterpolation(factor, Red, color.Red);
             double g = ColorMath.LinearInterpolation(factor, Green, color.Green);
             double b = ColorMath.LinearInterpolation(factor, Blue, color.Blue);
