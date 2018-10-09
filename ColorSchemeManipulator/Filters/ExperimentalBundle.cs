@@ -13,6 +13,8 @@ namespace ColorSchemeManipulator.Filters
     /// </summary>
     public sealed class ExperimentalBundle
     {
+        private const int DegreeOfParallelism = 2;
+
         private static ExperimentalBundle _instance;
         private static readonly object Padlock = new object();
 
@@ -194,7 +196,8 @@ namespace ColorSchemeManipulator.Filters
             return hsl;
         }
 
-        public static Color BrightnessToLightness(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color BrightnessToLightness(Color color, ColorRange colorRange = null,
+            params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -323,23 +326,34 @@ namespace ColorSchemeManipulator.Filters
             List<Color> cache = colors.ToList();
             (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestLightness(cache);
 
-            var result = cache.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
-                color =>
-                {
-                    var rangeFactor = FilterUtils.GetRangeFactor(range, color);
-                    var filtered = new Color(color);
+            IEnumerable<Color> result;
+            if (DegreeOfParallelism > 0) {
+                result = cache
+                    .AsParallel()
+                    .AsOrdered()
+                    .WithDegreeOfParallelism(DegreeOfParallelism);
+            } else {
+                result = cache;
+            }
 
-                    (double outBlack, double outWhite, double gamma) =
-                        FilterUtils.GetAutoLevelParameters(filterParams);
+            result = result
+                .Select(
+                    color =>
+                    {
+                        var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+                        var filtered = new Color(color);
 
-                    filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
-                    filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
-                    filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
+                        (double outBlack, double outWhite, double gamma) =
+                            FilterUtils.GetAutoLevelParameters(filterParams);
 
-                    color.InterpolateWith(filtered, rangeFactor);
-                    return color;
-                }
-            );
+                        filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
+                        filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
+                        filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
+
+                        color.InterpolateWith(filtered, rangeFactor);
+                        return color;
+                    }
+                );
 
             foreach (var color in result) {
                 yield return color;

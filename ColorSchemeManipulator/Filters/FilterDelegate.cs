@@ -9,9 +9,10 @@ namespace ColorSchemeManipulator.Filters
 {
     public class FilterDelegate
     {
+        private const int DegreeOfParallelism = 2;
+        
         private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> MultiFilterDelegate { get; }
         private Func<Color, ColorRange, double[], Color> SingleFilterDelegate { get; }
-        // private Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> ParallelMultiFilterDelegate { get; }
 
         private FilterDelegate() { }
         
@@ -25,12 +26,12 @@ namespace ColorSchemeManipulator.Filters
             SingleFilterDelegate = singleFilterDelegate;
         }
         
-        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters)
         {
             if (IsMultiFilter()) {
                 return ApplyMultiFilter(colors, colorRange, parameters);
             } else if (IsSingleFilter()) {
-                return ApplySingleFilter(colors, colorRange, parameters, parallel);
+                return ApplySingleFilter(colors, colorRange, parameters);
             }
             throw new Exception("No filter defined");
         }
@@ -40,14 +41,14 @@ namespace ColorSchemeManipulator.Filters
             return MultiFilterDelegate(colors, colorRange, parameters); 
         }
         
-        private IEnumerable<Color> ApplySingleFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
+        private IEnumerable<Color> ApplySingleFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters)
         {
             IEnumerable<Color> result;
-            if (parallel > 0) {
+            if (DegreeOfParallelism > 0) {
                 result = colors
                     .AsParallel()
                     .AsOrdered()
-                    .WithDegreeOfParallelism(parallel)
+                    .WithDegreeOfParallelism(DegreeOfParallelism)
                     .Select(color => SingleFilterDelegate(color, colorRange, parameters));
             } else {
                 result = colors

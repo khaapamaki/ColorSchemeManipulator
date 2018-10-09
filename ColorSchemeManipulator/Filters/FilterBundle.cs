@@ -21,8 +21,8 @@ namespace ColorSchemeManipulator.Filters
     /// </summary>
     public sealed class FilterBundle
     {
-        private const int ParallelDegreeForMultiFilters = 2;
-        
+        private const int DegreeOfParallelism = 2;
+
         private static FilterBundle _instance;
         private static readonly object Padlock = new object();
 
@@ -633,16 +633,15 @@ namespace ColorSchemeManipulator.Filters
 #endif
 
             IEnumerable<Color> result;
-
-            if (ParallelDegreeForMultiFilters > 0) {
+            if (DegreeOfParallelism > 0) {
                 result = cache
                     .AsParallel()
                     .AsOrdered()
-                    .WithDegreeOfParallelism(ParallelDegreeForMultiFilters);
+                    .WithDegreeOfParallelism(DegreeOfParallelism);
             } else {
                 result = cache;
             }
-                
+
             result = result
                 .Select(
                     color =>
@@ -665,7 +664,7 @@ namespace ColorSchemeManipulator.Filters
         }
 
         public static IEnumerable<Color> AutoLevelsLightness(IEnumerable<Color> colors, ColorRange colorRange,
-              params double[] filterParams)
+            params double[] filterParams)
         {
             // This is to avoid multiple enumeration
             List<Color> cache = colors.ToList();
@@ -673,18 +672,18 @@ namespace ColorSchemeManipulator.Filters
 #if DEBUG
             Console.WriteLine($"  (Auto lightness levels - source min {inBlack:F3}, max {inWhite:F3})");
 #endif
-            
+
             IEnumerable<Color> result;
 
-            if (ParallelDegreeForMultiFilters > 0) {
+            if (DegreeOfParallelism > 0) {
                 result = cache
                     .AsParallel()
                     .AsOrdered()
-                    .WithDegreeOfParallelism(ParallelDegreeForMultiFilters);
+                    .WithDegreeOfParallelism(DegreeOfParallelism);
             } else {
                 result = cache;
             }
-                
+
             result = result
                 .Select(
                     color =>

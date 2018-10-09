@@ -43,15 +43,7 @@ namespace ColorSchemeManipulator.Filters
             _filters.Add(new ColorFilter(new FilterDelegate(multiFilter), colorRange, filterParams));
             return this;
         }
-        
-        // public FilterChain Add(Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> multiFilter,
-        //     ColorRange colorRange,
-        //     params double[] filterParams)
-        // {
-        //     _filters.Add(new ColorFilter(new FilterDelegate(multiFilter), colorRange, filterParams));
-        //     return this;
-        // }
-        
+         
         /// <summary>
         /// Adds single color filter
         /// </summary>
@@ -76,14 +68,8 @@ namespace ColorSchemeManipulator.Filters
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping = true)
         {
             // Process all filters in chain
-            int count = 0;
             foreach (var filter in _filters) {
-                colors = filter.ApplyTo(colors, count < 1 ? 3 : 0);
-                count++;
-
-                if (filter.GetDelegate().IsMultiFilter()) {
-                    count = 0;
-                }
+                colors = filter.ApplyTo(colors);
             }    
 
             // Final clamping after last filter in chain

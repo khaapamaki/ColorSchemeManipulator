@@ -30,12 +30,11 @@ namespace ColorSchemeManipulator.Filters
         /// Applies the filter for a color enumeration
         /// </summary>
         /// <param name="colors"></param>
-        /// <param name="parallel"></param>
         /// <returns></returns>
-        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, int parallel = 0)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             Console.WriteLine("  " + ToString());
-            return Filter.ApplyTo(colors, ColorRange, Parameters, parallel);
+            return Filter.ApplyTo(colors, ColorRange, Parameters);
         }
 
         /// <summary>
@@ -43,11 +42,10 @@ namespace ColorSchemeManipulator.Filters
         /// </summary>
         /// <param name="colors"></param>
         /// <param name="outputClamping"></param>
-        /// <param name="parallel"></param>
         /// <returns></returns>
-        private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping, int parallel = 0)
+        private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping)
         {
-            colors = ApplyTo(colors, parallel);
+            colors = ApplyTo(colors);
         
             // Final clamping after last filter in chain
             foreach (var color in colors) {
