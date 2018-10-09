@@ -71,6 +71,23 @@ namespace ColorSchemeManipulator.CLI
             ParamDesc = paramDesc;
         }
         
+        public CliArg(IEnumerable<string> options,
+            Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> parallelMultiFilter, 
+            byte minParams,
+            byte maxParams = 0,
+            string paramList = "", 
+            string desc = "", 
+            string paramDesc = "")
+        {
+            OptionArgs = new List<string>(options);
+            FilterDelegate = new FilterDelegate(parallelMultiFilter);
+            MinParams = minParams;
+            MaxParams = minParams < maxParams ? maxParams : minParams;
+            Description = desc;
+            ParamList = paramList;
+            ParamDesc = paramDesc;
+        }
+        
         public string GetDescription(bool verbose)
         {
             return verbose ? GetVerboseDescription() : GetBriefDescription();

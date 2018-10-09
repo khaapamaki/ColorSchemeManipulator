@@ -14,8 +14,8 @@ namespace ColorSchemeManipulator.Filters
     public class ColorFilter
     {
         private FilterDelegate Filter { get; }
-        private double[] Parameters { get; }
-        private ColorRange ColorRange { get; }
+        public double[] Parameters { get; }
+        public ColorRange ColorRange { get; }
 
         public ColorFilter(FilterDelegate filter,
             ColorRange colorColorRange = null,
@@ -25,16 +25,17 @@ namespace ColorSchemeManipulator.Filters
             ColorRange = colorColorRange;
             Parameters = filterParams;
         }
-       
+
         /// <summary>
         /// Applies the filter for a color enumeration
         /// </summary>
         /// <param name="colors"></param>
+        /// <param name="parallel"></param>
         /// <returns></returns>
-        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, int parallel)
         {
             Console.WriteLine("  " + ToString());
-            return Filter.ApplyTo(colors, ColorRange, Parameters);
+            return Filter.ApplyTo(colors, ColorRange, Parameters, parallel);
         }
 
         /// <summary>
@@ -42,10 +43,11 @@ namespace ColorSchemeManipulator.Filters
         /// </summary>
         /// <param name="colors"></param>
         /// <param name="outputClamping"></param>
+        /// <param name="parallel"></param>
         /// <returns></returns>
-        private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping)
+        private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping, int parallel)
         {
-            colors = ApplyTo(colors);
+            colors = ApplyTo(colors, parallel);
         
             // Final clamping after last filter in chain
             foreach (var color in colors) {
@@ -53,6 +55,11 @@ namespace ColorSchemeManipulator.Filters
                     color.ClampExceedingColors();
                 yield return color;
             }
+        }
+
+        public FilterDelegate GetDelegate()
+        {
+            return Filter;
         }
         
         public override string ToString()

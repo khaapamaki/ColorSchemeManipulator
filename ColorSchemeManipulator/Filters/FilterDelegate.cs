@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 
@@ -9,6 +10,7 @@ namespace ColorSchemeManipulator.Filters
     public class FilterDelegate
     {
         private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> MultiFilterDelegate { get; }
+        private Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> ParallelMultiFilterDelegate { get; }
         private Func<Color, ColorRange, double[], Color> SingleFilterDelegate { get; }
 
         private FilterDelegate() { }
@@ -18,41 +20,80 @@ namespace ColorSchemeManipulator.Filters
             MultiFilterDelegate = multiFilterDelegate;
         }
         
+        public FilterDelegate(Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> parallelMultiFilterDelegate)
+        {
+            ParallelMultiFilterDelegate = parallelMultiFilterDelegate;
+        }
+        
         public FilterDelegate(Func<Color, ColorRange, double[], Color> singleFilterDelegate)
         {
             SingleFilterDelegate = singleFilterDelegate;
         }
         
-        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, ColorRange colorRange, params double[] parameters)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
         {
             if (MultiFilterDelegate != null) {
                 return ApplyMultiFilter(colors, colorRange, parameters);
+            } else if (ParallelMultiFilterDelegate != null) {
+                return ApplyParallelMultiFilter(colors, colorRange, parameters, parallel);
             } else if (SingleFilterDelegate != null) {
-                return ApplySingleFilter(colors, colorRange, parameters);
+                return ApplySingleFilter(colors, colorRange, parameters, parallel);
             }
             throw new Exception("No filter defined");
         }
 
-        private IEnumerable<Color> ApplyMultiFilter(IEnumerable<Color> colors, ColorRange colorRange, params double[] parameters)
+        private IEnumerable<Color> ApplyMultiFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters)
         {
             return MultiFilterDelegate(colors, colorRange, parameters); 
         }
-             
-        private IEnumerable<Color> ApplySingleFilter(IEnumerable<Color> colors, ColorRange colorRange, params double[] parameters)
+        
+        private IEnumerable<Color> ApplyParallelMultiFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
         {
-            var result = colors
-                .AsParallel()
-                .AsOrdered()
-                .WithDegreeOfParallelism(2)
-                .Select(color => SingleFilterDelegate(color, colorRange, parameters));
+            return ParallelMultiFilterDelegate(colors, parallel, colorRange, parameters); 
+        }
+        
+        private IEnumerable<Color> ApplySingleFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
+        {
+            IEnumerable<Color> result;
+            if (parallel > 0) {
+                result = colors
+                    .AsParallel()
+                    .AsOrdered()
+                    .WithDegreeOfParallelism(parallel)
+                    .Select(color => SingleFilterDelegate(color, colorRange, parameters));
+            } else {
+                result = colors
+                    .Select(color => SingleFilterDelegate(color, colorRange, parameters));
+            }
             foreach (var color in result) {
                 yield return color;
             }
         }
 
+        public bool IsMultiFilter()
+        {
+            return MultiFilterDelegate != null;
+        }
+        
+        public bool IsParallelMultiFilter()
+        {
+            return ParallelMultiFilterDelegate != null;
+        }
+        
+        public bool IsSingleFilter()
+        {
+            return SingleFilterDelegate != null;
+        }
+        
         public string FilterName()
         {
-            return MultiFilterDelegate?.Method.Name ?? SingleFilterDelegate?.Method.Name;
+            if (IsMultiFilter())
+                return MultiFilterDelegate.Method.Name;
+            if (IsParallelMultiFilter())
+                return ParallelMultiFilterDelegate.Method.Name;
+            if (IsSingleFilter())
+                return SingleFilterDelegate?.Method.Name;
+            return "<No filter set>";
         }
         
         public string ToString(ColorRange colorRange, params double[] parameters)

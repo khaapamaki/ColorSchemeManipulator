@@ -78,6 +78,17 @@ namespace ColorSchemeManipulator.CLI
             GetInstance().Items.Add(new CliArg(options, multiFilter, minParams, maxParams, paramList, desc, paramDesc));
         }
         
+        public static void Register(
+            List<string> options,
+            Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> parallelMultiFilter, 
+            byte minParams,
+            byte maxParams = 0, 
+            string paramList = "", 
+            string desc = "", 
+            string paramDesc = "")
+        {
+            GetInstance().Items.Add(new CliArg(options, parallelMultiFilter, minParams, maxParams, paramList, desc, paramDesc));
+        }
         
         /// <summary>
         /// Parses command line arguments, creates a FilterSet from them and returns it together with
