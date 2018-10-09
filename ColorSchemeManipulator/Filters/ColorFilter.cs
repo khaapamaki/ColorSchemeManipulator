@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 
@@ -12,6 +14,7 @@ namespace ColorSchemeManipulator.Filters
     public class ColorFilter
     {
         private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> FilterDelegate { get; }
+        private Func<Color, ColorRange, double[], Color> FilterDelegate1 { get; }
         private double[] Parameters { get; }
         private ColorRange ColorRange { get; }
 
@@ -20,6 +23,15 @@ namespace ColorSchemeManipulator.Filters
             params double[] filterParams)
         {
             FilterDelegate = filterDelegate;
+            ColorRange = colorColorRange;
+            Parameters = filterParams;
+        }
+        
+        public ColorFilter(Func<Color, ColorRange, double[], Color> filterDelegate,
+            ColorRange colorColorRange = null,
+            params double[] filterParams)
+        {
+            FilterDelegate1 = filterDelegate;
             ColorRange = colorColorRange;
             Parameters = filterParams;
         }
@@ -32,8 +44,30 @@ namespace ColorSchemeManipulator.Filters
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             Console.WriteLine("  " + ToString());
-            return FilterDelegate(colors, ColorRange, Parameters);
+            if (FilterDelegate != null) {
+                return ApplyMultiFilter(colors);
+            } else {
+                return ApplySingleFilter(colors);
+            }
         }
+
+
+
+        public IEnumerable<Color> ApplyMultiFilter(IEnumerable<Color> colors)
+        {
+            return FilterDelegate(colors, ColorRange, Parameters); 
+        }
+        
+        
+        public IEnumerable<Color> ApplySingleFilter(IEnumerable<Color> colors)
+        {
+            var result = colors.Select(color => { return FilterDelegate1(color, ColorRange, Parameters); });
+            foreach (var color in result) {
+                yield return color;
+            }
+        }
+        
+        
         
         /// <summary>
         /// Applies the filter for a color enumeration with final color clamping.
@@ -61,7 +95,9 @@ namespace ColorSchemeManipulator.Filters
                 sb.Append((sb.Length > 0 ? ", " : "") + argument);
             }
 
-            return FilterDelegate.Method.Name + (sb.Length > 0 ? $"({sb})" : "") + (ColorRange != null ? " ==> " + ColorRange  : "");
+            string name = FilterDelegate?.Method.Name ?? FilterDelegate1?.Method.Name;
+            
+            return name + (sb.Length > 0 ? $"({sb})" : "") + (ColorRange != null ? " ==> " + ColorRange  : "");
         }
     }
 }

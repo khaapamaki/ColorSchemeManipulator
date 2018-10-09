@@ -326,7 +326,9 @@ namespace ColorSchemeManipulator.Filters
                 .Add(FilterBundle.GainHslSaturation,
                     new ColorRange()
                         .Hue(37, 56, 6, 20)
-                        .Lightness(0.04, 0.6, 0, 0.2), 1.3); // yellow-neon green boost
+                        .Lightness(0.04, 0.6, 0, 0.2), 1.3)
+                .Add(FilterBundle.InvertRgb1, null)
+                ; // yellow-neon green boost
 
             return filterSet.ApplyTo(colors);
         }

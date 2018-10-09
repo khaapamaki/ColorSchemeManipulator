@@ -21,13 +21,15 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
 
-        public FilterSet Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate)
+        public FilterSet Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate,
+            ColorRange colorRange,
+            params double[] filterParams)
         {
-            _filters.Add(new ColorFilter(filterDelegate));
+            _filters.Add(new ColorFilter(filterDelegate, colorRange, filterParams));
             return this;
         }
-
-        public FilterSet Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate,
+        
+        public FilterSet Add(Func<Color, ColorRange, double[],Color> filterDelegate,
             ColorRange colorRange,
             params double[] filterParams)
         {

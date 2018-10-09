@@ -255,6 +255,23 @@ namespace ColorSchemeManipulator.Filters
             GetInstance()._isRegistered = true;
         }
 
+        public static Color InvertRgb1(
+            Color color, 
+            ColorRange colorRange = null,
+            params double[] filterParams)
+        {
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+            var inverted = Color.FromRgb(
+                ColorMath.Invert(color.Red),
+                ColorMath.Invert(color.Green),
+                ColorMath.Invert(color.Blue),
+                color.Alpha);
+            color.InterpolateWith(inverted, rangeFactor);
+
+            return color;
+        }
+
+
         #region "Invert"
 
         public static IEnumerable<Color> InvertRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
@@ -262,7 +279,8 @@ namespace ColorSchemeManipulator.Filters
         {
             var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
-                {var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                {
+                    var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
                     var inverted = Color.FromRgb(
                         ColorMath.Invert(color.Red),
                         ColorMath.Invert(color.Green),
@@ -396,7 +414,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -420,7 +438,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -443,7 +461,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -472,7 +490,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -495,7 +513,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -518,7 +536,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -541,7 +559,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -562,10 +580,9 @@ namespace ColorSchemeManipulator.Filters
 
                     color.InterpolateWith(filtered, rangeFactor);
                     return color;
-                    
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -588,7 +605,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -611,7 +628,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -641,7 +658,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -665,7 +682,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -689,7 +706,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -714,7 +731,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -741,7 +758,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -784,12 +801,12 @@ namespace ColorSchemeManipulator.Filters
                     (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                         FilterUtils.GetLevelsParameters(filterParams);
                     filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
-                    
+
                     color.InterpolateWith(filtered, rangeFactor);
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -806,12 +823,12 @@ namespace ColorSchemeManipulator.Filters
                     (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                         FilterUtils.GetLevelsParameters(filterParams);
                     filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
-                    
+
                     color.InterpolateWith(filtered, rangeFactor);
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -828,12 +845,12 @@ namespace ColorSchemeManipulator.Filters
                     (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
                         FilterUtils.GetLevelsParameters(filterParams);
                     filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
-                    
+
                     color.InterpolateWith(filtered, rangeFactor);
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -858,12 +875,12 @@ namespace ColorSchemeManipulator.Filters
                     filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
                     filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
                     filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
-                    
+
                     color.InterpolateWith(filtered, rangeFactor);
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -891,7 +908,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -912,7 +929,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -933,7 +950,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -956,7 +973,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -981,7 +998,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1002,7 +1019,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1023,7 +1040,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1044,7 +1061,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1065,7 +1082,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1086,7 +1103,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1113,7 +1130,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1135,7 +1152,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1157,7 +1174,7 @@ namespace ColorSchemeManipulator.Filters
                     return color;
                 }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
@@ -1169,11 +1186,11 @@ namespace ColorSchemeManipulator.Filters
             var result = colors.AsParallel().AsOrdered().WithDegreeOfParallelism(2).Select(
                 color =>
                 {
-                    color.ClampExceedingColors(); 
+                    color.ClampExceedingColors();
                     return color;
-                }  
+                }
             );
-            
+
             foreach (var color in result) {
                 yield return color;
             }
