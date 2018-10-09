@@ -12,7 +12,6 @@ namespace ColorSchemeManipulator.CLI
         public List<string> OptionArgs { get; set; }
         
         public FilterDelegate FilterDelegate { get; set; }
-        //public Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> SingleFilter { get; set; }
         public byte MinParams { get; set; }
         public byte MaxParams { get; set; }
         public string Description { get; set; }
@@ -35,8 +34,7 @@ namespace ColorSchemeManipulator.CLI
             ParamList = paramList;
             ParamDesc = paramDesc;
         }
-        
-        
+            
         public CliArg(IEnumerable<string> options,
             Func<Color, ColorRange, double[], Color> singleFilter, 
             byte minParams,
@@ -64,23 +62,6 @@ namespace ColorSchemeManipulator.CLI
         {
             OptionArgs = new List<string>(options);
             FilterDelegate = new FilterDelegate(multiFilter);
-            MinParams = minParams;
-            MaxParams = minParams < maxParams ? maxParams : minParams;
-            Description = desc;
-            ParamList = paramList;
-            ParamDesc = paramDesc;
-        }
-        
-        public CliArg(IEnumerable<string> options,
-            Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> parallelMultiFilter, 
-            byte minParams,
-            byte maxParams = 0,
-            string paramList = "", 
-            string desc = "", 
-            string paramDesc = "")
-        {
-            OptionArgs = new List<string>(options);
-            FilterDelegate = new FilterDelegate(parallelMultiFilter);
             MinParams = minParams;
             MaxParams = minParams < maxParams ? maxParams : minParams;
             Description = desc;

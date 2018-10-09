@@ -21,6 +21,8 @@ namespace ColorSchemeManipulator.Filters
     /// </summary>
     public sealed class FilterBundle
     {
+        private const int ParallelDegreeForMultiFilters = 2;
+        
         private static FilterBundle _instance;
         private static readonly object Padlock = new object();
 
@@ -620,7 +622,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, int parallel, ColorRange colorRange = null,
+        public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
             params double[] filterParams)
         {
             // This is to avoid multiple enumeration
@@ -631,12 +633,12 @@ namespace ColorSchemeManipulator.Filters
 #endif
 
             IEnumerable<Color> result;
-            
-            if (parallel > 0) {
+
+            if (ParallelDegreeForMultiFilters > 0) {
                 result = cache
                     .AsParallel()
                     .AsOrdered()
-                    .WithDegreeOfParallelism(parallel);
+                    .WithDegreeOfParallelism(ParallelDegreeForMultiFilters);
             } else {
                 result = cache;
             }
@@ -662,7 +664,7 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static IEnumerable<Color> AutoLevelsLightness(IEnumerable<Color> colors, int parallel, ColorRange colorRange,
+        public static IEnumerable<Color> AutoLevelsLightness(IEnumerable<Color> colors, ColorRange colorRange,
               params double[] filterParams)
         {
             // This is to avoid multiple enumeration
@@ -673,12 +675,12 @@ namespace ColorSchemeManipulator.Filters
 #endif
             
             IEnumerable<Color> result;
-            
-            if (parallel > 0) {
+
+            if (ParallelDegreeForMultiFilters > 0) {
                 result = cache
                     .AsParallel()
                     .AsOrdered()
-                    .WithDegreeOfParallelism(parallel);
+                    .WithDegreeOfParallelism(ParallelDegreeForMultiFilters);
             } else {
                 result = cache;
             }

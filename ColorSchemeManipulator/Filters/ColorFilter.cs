@@ -32,7 +32,7 @@ namespace ColorSchemeManipulator.Filters
         /// <param name="colors"></param>
         /// <param name="parallel"></param>
         /// <returns></returns>
-        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, int parallel)
+        public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, int parallel = 0)
         {
             Console.WriteLine("  " + ToString());
             return Filter.ApplyTo(colors, ColorRange, Parameters, parallel);
@@ -45,7 +45,7 @@ namespace ColorSchemeManipulator.Filters
         /// <param name="outputClamping"></param>
         /// <param name="parallel"></param>
         /// <returns></returns>
-        private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping, int parallel)
+        private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping, int parallel = 0)
         {
             colors = ApplyTo(colors, parallel);
         

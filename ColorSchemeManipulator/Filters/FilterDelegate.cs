@@ -10,19 +10,14 @@ namespace ColorSchemeManipulator.Filters
     public class FilterDelegate
     {
         private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> MultiFilterDelegate { get; }
-        private Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> ParallelMultiFilterDelegate { get; }
         private Func<Color, ColorRange, double[], Color> SingleFilterDelegate { get; }
+        // private Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> ParallelMultiFilterDelegate { get; }
 
         private FilterDelegate() { }
         
         public FilterDelegate(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilterDelegate)
         {
             MultiFilterDelegate = multiFilterDelegate;
-        }
-        
-        public FilterDelegate(Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> parallelMultiFilterDelegate)
-        {
-            ParallelMultiFilterDelegate = parallelMultiFilterDelegate;
         }
         
         public FilterDelegate(Func<Color, ColorRange, double[], Color> singleFilterDelegate)
@@ -32,11 +27,9 @@ namespace ColorSchemeManipulator.Filters
         
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
         {
-            if (MultiFilterDelegate != null) {
+            if (IsMultiFilter()) {
                 return ApplyMultiFilter(colors, colorRange, parameters);
-            } else if (ParallelMultiFilterDelegate != null) {
-                return ApplyParallelMultiFilter(colors, colorRange, parameters, parallel);
-            } else if (SingleFilterDelegate != null) {
+            } else if (IsSingleFilter()) {
                 return ApplySingleFilter(colors, colorRange, parameters, parallel);
             }
             throw new Exception("No filter defined");
@@ -45,11 +38,6 @@ namespace ColorSchemeManipulator.Filters
         private IEnumerable<Color> ApplyMultiFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters)
         {
             return MultiFilterDelegate(colors, colorRange, parameters); 
-        }
-        
-        private IEnumerable<Color> ApplyParallelMultiFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
-        {
-            return ParallelMultiFilterDelegate(colors, parallel, colorRange, parameters); 
         }
         
         private IEnumerable<Color> ApplySingleFilter(IEnumerable<Color> colors, ColorRange colorRange, double[] parameters, int parallel)
@@ -75,11 +63,6 @@ namespace ColorSchemeManipulator.Filters
             return MultiFilterDelegate != null;
         }
         
-        public bool IsParallelMultiFilter()
-        {
-            return ParallelMultiFilterDelegate != null;
-        }
-        
         public bool IsSingleFilter()
         {
             return SingleFilterDelegate != null;
@@ -89,8 +72,6 @@ namespace ColorSchemeManipulator.Filters
         {
             if (IsMultiFilter())
                 return MultiFilterDelegate.Method.Name;
-            if (IsParallelMultiFilter())
-                return ParallelMultiFilterDelegate.Method.Name;
             if (IsSingleFilter())
                 return SingleFilterDelegate?.Method.Name;
             return "<No filter set>";

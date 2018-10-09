@@ -77,19 +77,7 @@ namespace ColorSchemeManipulator.CLI
         {
             GetInstance().Items.Add(new CliArg(options, multiFilter, minParams, maxParams, paramList, desc, paramDesc));
         }
-        
-        public static void Register(
-            List<string> options,
-            Func<IEnumerable<Color>, int, ColorRange, double[], IEnumerable<Color>> parallelMultiFilter, 
-            byte minParams,
-            byte maxParams = 0, 
-            string paramList = "", 
-            string desc = "", 
-            string paramDesc = "")
-        {
-            GetInstance().Items.Add(new CliArg(options, parallelMultiFilter, minParams, maxParams, paramList, desc, paramDesc));
-        }
-        
+           
         /// <summary>
         /// Parses command line arguments, creates a FilterSet from them and returns it together with
         /// remaining arguments that should include source and target files
@@ -127,37 +115,7 @@ namespace ColorSchemeManipulator.CLI
             }
 
             return (null, null, null);
-        }
-        
-        
-        /*/// <summary>
-        /// Gets matching filter delegate function and given arguments for given command line options
-        /// Filter must be registered in CliArgs class.
-        /// </summary>
-        /// <param name="option"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public static (Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>, 
-            ColorRange, double[]) GetDelegateAndData(string option)
-        {
-            string paramString;
-            string rangeString;
-
-            (option, paramString, rangeString) = CliUtils.SplitArgIntoPieces(option);
-
-            var range = CliUtils.ParseRange(rangeString);
-
-            foreach (var batchCliArg in GetInstance().Items) {
-                if (batchCliArg.OptionArgs.Contains(option)) {
-                    double[] filterParams = CliUtils.ExtractAndParseDoubleParams(paramString);
-                    if (filterParams.Length >= batchCliArg.MinParams) {
-                        return (batchCliArg.FilterDelegate, range, filterParams);
-                    }
-                }
-            }
-
-            return (null, null, null);
-        }*/
+        } 
 
         public static (string[], string[]) ExtractOptionArguments(string[] args)
         {
