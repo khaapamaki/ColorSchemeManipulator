@@ -299,7 +299,7 @@ namespace ColorSchemeManipulator.Filters
         public static IEnumerable<Color> ToLight(IEnumerable<Color> colors, ColorRange range,
             params double[] filterParams)
         {
-            var filterSet = new FilterSet()
+            var filterSet = new FilterChain()
                 // .Add(FilterBundle.GainLightness,
                 //     new ColorRange()
                 //         .Brightness(0.7, 1, 0.2, 0)

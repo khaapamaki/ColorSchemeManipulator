@@ -13,17 +13,15 @@ namespace ColorSchemeManipulator.Filters
     /// </summary>
     public class LoadedFilter
     {
-        private FilterWrapper Filter { get; }
-        // private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> MultiFilter { get; }
-        // private Func<Color, ColorRange, double[], Color> SingleFilter { get; }
+        private ColorFilter ColorFilter { get; }
         private double[] Parameters { get; }
         private ColorRange ColorRange { get; }
 
-        public LoadedFilter(FilterWrapper filter,
+        public LoadedFilter(ColorFilter colorFilter,
             ColorRange colorColorRange = null,
             params double[] filterParams)
         {
-            Filter = filter;
+            ColorFilter = colorFilter;
             ColorRange = colorColorRange;
             Parameters = filterParams;
         }
@@ -54,7 +52,7 @@ namespace ColorSchemeManipulator.Filters
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             Console.WriteLine("  " + ToString());
-            return Filter.ApplyTo(colors, ColorRange, Parameters);
+            return ColorFilter.ApplyTo(colors, ColorRange, Parameters);
         }
 
         /*public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
@@ -102,7 +100,7 @@ namespace ColorSchemeManipulator.Filters
         
         public override string ToString()
         {
-            return Filter.ToString(ColorRange, Parameters);
+            return ColorFilter.ToString(ColorRange, Parameters);
         }
     }
 }

@@ -6,26 +6,26 @@ using ColorSchemeManipulator.Colors;
 
 namespace ColorSchemeManipulator.Filters
 {
-    public class FilterWrapper
+    public class ColorFilter
     {
-        private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> MultiFilter { get; }
-        private Func<Color, ColorRange, double[], Color> SingleFilter { get; }
+        private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> MultiFilterDelegate { get; }
+        private Func<Color, ColorRange, double[], Color> SingleFilterDelegate { get; }
 
-        private FilterWrapper() { }
+        private ColorFilter() { }
         
-        public FilterWrapper(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilter)
+        public ColorFilter(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilterDelegate)
         {
-            MultiFilter = multiFilter;
+            MultiFilterDelegate = multiFilterDelegate;
         }
         
-        public FilterWrapper(Func<Color, ColorRange, double[], Color> singleFilter)
+        public ColorFilter(Func<Color, ColorRange, double[], Color> singleFilterDelegate)
         {
-            SingleFilter = singleFilter;
+            SingleFilterDelegate = singleFilterDelegate;
         }
         
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, ColorRange colorRange, params double[] parameters)
         {
-            if (MultiFilter != null) {
+            if (MultiFilterDelegate != null) {
                 return ApplyMultiFilter(colors, colorRange, parameters);
             } else {
                 return ApplySingleFilter(colors, colorRange, parameters);
@@ -34,12 +34,12 @@ namespace ColorSchemeManipulator.Filters
 
         private IEnumerable<Color> ApplyMultiFilter(IEnumerable<Color> colors, ColorRange colorRange, params double[] parameters)
         {
-            return MultiFilter(colors, colorRange, parameters); 
+            return MultiFilterDelegate(colors, colorRange, parameters); 
         }
              
         private IEnumerable<Color> ApplySingleFilter(IEnumerable<Color> colors, ColorRange colorRange, params double[] parameters)
         {
-            var result = colors.Select(color => SingleFilter(color, colorRange, parameters));
+            var result = colors.Select(color => SingleFilterDelegate(color, colorRange, parameters));
             foreach (var color in result) {
                 yield return color;
             }
@@ -47,7 +47,7 @@ namespace ColorSchemeManipulator.Filters
 
         public string GetName()
         {
-            return MultiFilter?.Method.Name ?? SingleFilter?.Method.Name;
+            return MultiFilterDelegate?.Method.Name ?? SingleFilterDelegate?.Method.Name;
         }
         
         public string ToString(ColorRange colorRange, params double[] parameters)

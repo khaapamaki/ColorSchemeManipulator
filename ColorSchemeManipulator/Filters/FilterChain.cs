@@ -6,41 +6,41 @@ using ColorSchemeManipulator.Colors;
 namespace ColorSchemeManipulator.Filters
 {
     /// <summary>
-    /// A collection class for storing multiple ColoFilters that
+    /// A collection class for storing multiple filters with their parameters that
     /// are meant to be processed sequentially
     /// </summary>
-    public class FilterSet
+    public class FilterChain
     {
         private readonly List<LoadedFilter> _filters = new List<LoadedFilter>();
 
-        public FilterSet() { }
+        public FilterChain() { }
 
-        public FilterSet Add(LoadedFilter filter)
+        public FilterChain Add(LoadedFilter filter)
         {
             _filters.Add(filter);
             return this;
         }
 
-        public FilterSet Add(FilterWrapper filter, ColorRange colorRange,
+        public FilterChain Add(ColorFilter colorFilter, ColorRange colorRange,
             params double[] filterParams)
         {
-            _filters.Add(new LoadedFilter(filter, colorRange, filterParams));
+            _filters.Add(new LoadedFilter(colorFilter, colorRange, filterParams));
             return this;
         }
         
-        public FilterSet Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilter,
+        public FilterChain Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilter,
             ColorRange colorRange,
             params double[] filterParams)
         {
-            _filters.Add(new LoadedFilter(new FilterWrapper(multiFilter), colorRange, filterParams));
+            _filters.Add(new LoadedFilter(new ColorFilter(multiFilter), colorRange, filterParams));
             return this;
         }
         
-        public FilterSet Add(Func<Color, ColorRange, double[],Color> singleFilter,
+        public FilterChain Add(Func<Color, ColorRange, double[],Color> singleFilter,
             ColorRange colorRange,
             params double[] filterParams)
         {
-            _filters.Add(new LoadedFilter(new FilterWrapper(singleFilter), colorRange, filterParams));
+            _filters.Add(new LoadedFilter(new ColorFilter(singleFilter), colorRange, filterParams));
             return this;
         }
 

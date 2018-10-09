@@ -22,7 +22,7 @@ namespace ColorSchemeManipulator
 
         private ColorFileProcessor() { }
         
-        public void ProcessFile(string sourceFile, string targetFile, FilterSet filters)
+        public void ProcessFile(string sourceFile, string targetFile, FilterChain filters)
         {
             Console.WriteLine("Applying filters:");
             
@@ -39,7 +39,7 @@ namespace ColorSchemeManipulator
             _handler.WriteFile(filteredData,targetFile);
         }
 
-        private T ApplyFilters(T source, FilterSet filters)
+        private T ApplyFilters(T source, FilterChain filters)
         {      
             // Fetch all colors
             IEnumerable<Color> colors = _handler.GetColors(source);

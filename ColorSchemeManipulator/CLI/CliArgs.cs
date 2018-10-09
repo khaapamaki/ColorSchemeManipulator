@@ -44,14 +44,14 @@ namespace ColorSchemeManipulator.CLI
 
         public static void Register(
             List<string> options,
-            FilterWrapper filter, 
+            ColorFilter colorFilter, 
             byte minParams,
             byte maxParams = 0, 
             string paramList = "", 
             string desc = "", 
             string paramDesc = "")
         {
-            GetInstance().Items.Add(new CliArg(options, filter, minParams, maxParams, paramList, desc, paramDesc));
+            GetInstance().Items.Add(new CliArg(options, colorFilter, minParams, maxParams, paramList, desc, paramDesc));
         }
         
         public static void Register(
@@ -85,7 +85,7 @@ namespace ColorSchemeManipulator.CLI
         /// </summary>
         /// <param name="args"></param>
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (FilterSet, string[]) ParseFilterArgs(params string[] args)
+        public static (FilterChain, string[]) ParseFilterArgs(params string[] args)
         {
             return CliUtils.ParseFilterArgs(args);
         }
@@ -96,7 +96,7 @@ namespace ColorSchemeManipulator.CLI
         /// </summary>
         /// <param name="option"></param>
         /// <returns></returns>
-        public static (FilterWrapper, 
+        public static (ColorFilter, 
             ColorRange, double[]) GetDelegateAndData(string option)
         {
             string paramString;
@@ -110,7 +110,7 @@ namespace ColorSchemeManipulator.CLI
                 if (batchCliArg.OptionArgs.Contains(option)) {
                     double[] filterParams = CliUtils.ExtractAndParseDoubleParams(paramString);
                     if (filterParams.Length >= batchCliArg.MinParams) {
-                        return (batchCliArg.Filter, range, filterParams);
+                        return (batchCliArg.ColorFilter, range, filterParams);
                     }
                 }
             }
