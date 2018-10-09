@@ -122,13 +122,13 @@ namespace ColorSchemeManipulator
             _experimentalFilterCount = CliArgs.GetItems().Count() - _filterCount;
 
             // Parse CLI args and generate FilterSet of them
-            (var filterSet, string[] nonOptionArgs) = CliArgs.ParseFilterArgs(args);
+            (var filterChain, string[] nonOptionArgs) = CliArgs.ParseFilterArgs(args);
 
             // Extract non-option and remaining option arguments
             string[] nonFilterOptionArgs;
             (nonOptionArgs, nonFilterOptionArgs) = CliArgs.ExtractOptionArguments(nonOptionArgs);
 
-            return (filterSet, nonOptionArgs, nonFilterOptionArgs);
+            return (filterChain, nonOptionArgs, nonFilterOptionArgs);
         }
 
         /// <summary>

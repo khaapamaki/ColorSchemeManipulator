@@ -11,20 +11,20 @@ namespace ColorSchemeManipulator.Filters
     /// </summary>
     public class FilterChain
     {
-        private readonly List<LoadedFilter> _filters = new List<LoadedFilter>();
+        private readonly List<ColorFilter> _filters = new List<ColorFilter>();
 
         public FilterChain() { }
 
-        public FilterChain Add(LoadedFilter filter)
+        public FilterChain Add(ColorFilter filter)
         {
             _filters.Add(filter);
             return this;
         }
 
-        public FilterChain Add(ColorFilter colorFilter, ColorRange colorRange,
+        public FilterChain Add(FilterDelegate filterDelegate, ColorRange colorRange,
             params double[] filterParams)
         {
-            _filters.Add(new LoadedFilter(colorFilter, colorRange, filterParams));
+            _filters.Add(new ColorFilter(filterDelegate, colorRange, filterParams));
             return this;
         }
         
@@ -32,7 +32,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            _filters.Add(new LoadedFilter(new ColorFilter(multiFilter), colorRange, filterParams));
+            _filters.Add(new ColorFilter(new FilterDelegate(multiFilter), colorRange, filterParams));
             return this;
         }
         
@@ -40,7 +40,7 @@ namespace ColorSchemeManipulator.Filters
             ColorRange colorRange,
             params double[] filterParams)
         {
-            _filters.Add(new LoadedFilter(new ColorFilter(singleFilter), colorRange, filterParams));
+            _filters.Add(new ColorFilter(new FilterDelegate(singleFilter), colorRange, filterParams));
             return this;
         }
 

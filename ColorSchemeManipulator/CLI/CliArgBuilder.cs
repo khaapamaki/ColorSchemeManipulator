@@ -8,7 +8,7 @@ namespace ColorSchemeManipulator.CLI
     public sealed class CliArgBuilder
     {
         private readonly List<string> _optionArgs = new List<string>();
-        private ColorFilter _colorFilter;
+        private FilterDelegate _filterDelegate;
         private byte _minParams;
         private byte _maxParams;
         private string _description = "";
@@ -34,13 +34,13 @@ namespace ColorSchemeManipulator.CLI
 
         public CliArgBuilder Filter(Func<Color, ColorRange, double[], Color> singleFilter)
         {
-            _colorFilter = new ColorFilter(singleFilter);
+            _filterDelegate = new FilterDelegate(singleFilter);
             return this;
         }
         
         public CliArgBuilder Filter(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilter)
         {
-            _colorFilter = new ColorFilter(multiFilter);
+            _filterDelegate = new FilterDelegate(multiFilter);
             return this;
         }
 
@@ -82,7 +82,7 @@ namespace ColorSchemeManipulator.CLI
         {
             return new CliArg(
                 cab._optionArgs,
-                cab._colorFilter,
+                cab._filterDelegate,
                 cab._minParams,
                 cab._maxParams,
                 cab._description,

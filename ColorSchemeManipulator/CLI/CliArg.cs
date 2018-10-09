@@ -11,7 +11,7 @@ namespace ColorSchemeManipulator.CLI
     {
         public List<string> OptionArgs { get; set; }
         
-        public ColorFilter ColorFilter { get; set; }
+        public FilterDelegate FilterDelegate { get; set; }
         //public Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> SingleFilter { get; set; }
         public byte MinParams { get; set; }
         public byte MaxParams { get; set; }
@@ -20,7 +20,7 @@ namespace ColorSchemeManipulator.CLI
         public string ParamDesc { get; set; }
 
         public CliArg(IEnumerable<string> options,
-            ColorFilter colorFilter, 
+            FilterDelegate filterDelegate, 
             byte minParams,
             byte maxParams = 0,
             string paramList = "", 
@@ -28,7 +28,7 @@ namespace ColorSchemeManipulator.CLI
             string paramDesc = "")
         {
             OptionArgs = new List<string>(options);
-            ColorFilter = colorFilter;
+            FilterDelegate = filterDelegate;
             MinParams = minParams;
             MaxParams = minParams < maxParams ? maxParams : minParams;
             Description = desc;
@@ -46,7 +46,7 @@ namespace ColorSchemeManipulator.CLI
             string paramDesc = "")
         {
             OptionArgs = new List<string>(options);
-            ColorFilter = new ColorFilter(singleFilter);
+            FilterDelegate = new FilterDelegate(singleFilter);
             MinParams = minParams;
             MaxParams = minParams < maxParams ? maxParams : minParams;
             Description = desc;
@@ -63,7 +63,7 @@ namespace ColorSchemeManipulator.CLI
             string paramDesc = "")
         {
             OptionArgs = new List<string>(options);
-            ColorFilter = new ColorFilter(multiFilter);
+            FilterDelegate = new FilterDelegate(multiFilter);
             MinParams = minParams;
             MaxParams = minParams < maxParams ? maxParams : minParams;
             Description = desc;
@@ -78,7 +78,7 @@ namespace ColorSchemeManipulator.CLI
 
         public string GetVerboseDescription()
         {
-            string description = Description == "" ? "@" + ColorFilter.GetName() : Description;
+            string description = Description == "" ? "@" + FilterDelegate.FilterName() : Description;
 
             List<string> optLines = new List<string>(4);
             for (var i = 0; i < OptionArgs.Count; i++) {
@@ -113,7 +113,7 @@ namespace ColorSchemeManipulator.CLI
 
         public string GetBriefDescription()
         {
-            string description = Description == "" ? "@" + ColorFilter.GetName() : Description;
+            string description = Description == "" ? "@" + FilterDelegate.FilterName() : Description;
 
             List<string> options = new List<string> {"", ""};
 

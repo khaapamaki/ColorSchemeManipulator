@@ -62,8 +62,8 @@
     <Compile Include="Common\StringExtensions.cs" />
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Filters\ExperimentalBundle.cs" />
+    <Compile Include="Filters\FilterDelegate.cs" />
     <Compile Include="Filters\ColorFilter.cs" />
-    <Compile Include="Filters\LoadedFilter.cs" />
     <Compile Include="Filters\FilterBundle.cs" />
     <Compile Include="Filters\FilterChain.cs" />
     <Compile Include="Filters\FilterUtils.cs" />
