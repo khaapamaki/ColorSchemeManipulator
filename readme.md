@@ -315,7 +315,7 @@ namespace ColorSchemeManipulator
         {    
             [...]   
             
-            var filters = new FilterSet()
+            var filters = new FilterChain()
                 .Add(FilterBundle.InvertLightness)
                 .Add(FilterBundle.AutoLevelsLRgb, 
                     colorRange: null,
@@ -333,7 +333,7 @@ namespace ColorSchemeManipulator
 }
 ```
 
-### Creating a filter that uses range system
+### Creating a filter
 
 From version 0.7 and above there are two different type of filters, one for handling a single color value individually,
 and another one that enumerates the whole set of colors. Both are chainable together.
@@ -359,7 +359,7 @@ Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
 
 The filter must have signature of
 ```c#
-IEnumerable<Color>  MyFilter(Enumerable<Color> colors, ColorRange range, params double[] params)
+IEnumerable<Color> MyFilter(Enumerable<Color> colors, ColorRange range, params double[] params)
 ```
 
 
@@ -367,25 +367,31 @@ Example of a single color filter. This maybe defined in **FilterBundle** class o
 See below.
 
 ```C#
-public static Color GammaRgb(Color color, ColorRange colorRange = null, params double[] filterParams)
+public static Color GammaRgb(Color color, ColorRange colorRange, params double[] filterParams)
 {
     if (filterParams.Any()) {
+        var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+        var filtered = new Color(color);
         double gamma = filterParams[0];
+        
         filtered.Red = ColorMath.Gamma(color.Red, gamma);
         filtered.Green = ColorMath.Gamma(color.Green, gamma);
         filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
+        
+        color.InterpolateWith(filtered, rangeFactor);
     }
-    
-    return filtered;
+
+    return color;
 }
 ```
 
-Another example of enumerating filter. This will find lowest and highest value from color set and uses this before
-filtering the color data
+Another example of enumerating filter. This will first query for find lowest and highest value from all colors and uses this before
+filtering the color data.
 
 ```C#
-public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
-    params double[] filterParams)
+public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, 
+                ColorRange colorRange, 
+                params double[] filterParams)
 {
     List<Color> cache = colors.ToList();
     (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestValue(cache);
@@ -393,10 +399,12 @@ public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorR
     var result = cache.Select(
         color =>
         {
-            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
-            var filtered = new Color(color);
             (double outBlack, double outWhite, double gamma) =
                 FilterUtils.GetAutoLevelParameters(filterParams);
+                
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);        
+            var filtered = new Color(color);
+            
             filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
             filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
             filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
