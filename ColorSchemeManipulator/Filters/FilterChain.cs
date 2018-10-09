@@ -28,6 +28,13 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
         
+        /// <summary>
+        /// Adds enumerating multi filter
+        /// </summary>
+        /// <param name="multiFilter"></param>
+        /// <param name="colorRange"></param>
+        /// <param name="filterParams"></param>
+        /// <returns></returns>
         public FilterChain Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilter,
             ColorRange colorRange,
             params double[] filterParams)
@@ -36,6 +43,13 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
         
+        /// <summary>
+        /// Adds single color filter
+        /// </summary>
+        /// <param name="singleFilter"></param>
+        /// <param name="colorRange"></param>
+        /// <param name="filterParams"></param>
+        /// <returns></returns>
         public FilterChain Add(Func<Color, ColorRange, double[],Color> singleFilter,
             ColorRange colorRange,
             params double[] filterParams)
@@ -44,6 +58,12 @@ namespace ColorSchemeManipulator.Filters
             return this;
         }
 
+        /// <summary>
+        /// Applies all filters to set of colors
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <param name="outputClamping"></param>
+        /// <returns></returns>
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping = true)
         {
             // Process all filters in chain

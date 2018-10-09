@@ -60,7 +60,7 @@ namespace ColorSchemeManipulator.Filters
             var sb = new StringBuilder();
             foreach (var argument in parameters) {
                 sb.Append((sb.Length > 0 ? ", " : "") + argument);
-            };
+            }
             
             return FilterName()+ (sb.Length > 0 ? $"({sb})" : "") + (colorRange != null ? " ==> " + colorRange  : "");
         }

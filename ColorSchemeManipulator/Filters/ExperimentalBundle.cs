@@ -32,9 +32,9 @@ namespace ColorSchemeManipulator.Filters
             if (GetInstance()._isRegistered)
                 return;
 
-            // CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5,
-            //     desc:
-            //     "Adjusts levels of HSV saturation. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
+            CliArgs.Register(new List<string> {"-leS", "--levels-hsv-saturation"}, LevelsHsvSaturation, 5,
+                desc:
+                "Adjusts levels of HSV saturation. Takes five parameters: input black (0..1), input white (0..1), gamma (0.01..9.99), output black (0..1), output white (0..1)");
 
             CliArgs.Register(new List<string> {"-ipc"},
                 InvertPerceivedLightnessWithCorrection, 0, 1,
@@ -194,10 +194,9 @@ namespace ColorSchemeManipulator.Filters
             return hsl;
         }
 
-        public static Color BrightnessToLightness(Color color, ColorRange range,
-            params double[] filterParams)
+        public static Color BrightnessToLightness(Color color, ColorRange colorRange = null, params double[] filterParams)
         {
-            var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
 
             var br = color.GetBrightness();
@@ -207,10 +206,9 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GainHsvSaturation(Color color, ColorRange range,
-            params double[] filterParams)
+        public static Color GainHsvSaturation(Color color, ColorRange colorRange = null, params double[] filterParams)
         {
-            var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
 
             if (filterParams.Any()) {
@@ -222,10 +220,9 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color BrightnessToValue(Color color, ColorRange range,
-            params double[] filterParams)
+        public static Color BrightnessToValue(Color color, ColorRange colorRange = null, params double[] filterParams)
         {
-            var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
 
             var br = ColorMath.RgbPerceivedBrightness(color.Red, color.Green, color.Blue);
@@ -273,10 +270,9 @@ namespace ColorSchemeManipulator.Filters
             return filterChain.ApplyTo(colors);
         }
 
-        public static Color LevelsHsvSaturation(Color color, ColorRange range,
-            params double[] filterParams)
+        public static Color LevelsHsvSaturation(Color color, ColorRange colorRange = null, params double[] filterParams)
         {
-            var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
 
             (double inBlack, double inWhite, double gamma, double outBlack, double outWhite) =
@@ -307,10 +303,9 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GammaHsvSaturation(Color color, ColorRange range,
-            params double[] filterParams)
+        public static Color GammaHsvSaturation(Color color, ColorRange colorRange = null, params double[] filterParams)
         {
-            var rangeFactor = FilterUtils.GetRangeFactor(range, color);
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
 
             if (filterParams.Any()) {
@@ -352,8 +347,7 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static Color ByBass(Color color, ColorRange range,
-            params double[] filterParams)
+        public static Color ByBass(Color color, ColorRange colorRange = null, params double[] filterParams)
         {
             if (filterParams.Any()) {
                 (double h, double s, double l) = color.GetHslComponents();
