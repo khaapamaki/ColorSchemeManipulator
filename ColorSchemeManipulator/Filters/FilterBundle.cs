@@ -275,7 +275,7 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Invert"
 
-        public static Color InvertRgb(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color InvertRgb(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var inverted = Color.FromRgb(
@@ -288,7 +288,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color InvertLightness(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color InvertLightness(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -297,7 +297,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color InvertValue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color InvertValue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -326,7 +326,7 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Gain"
 
-        public static Color GainHslSaturation(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GainHslSaturation(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -340,7 +340,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GainRgb(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GainRgb(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -356,7 +356,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GainLightness(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GainLightness(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -370,7 +370,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GainValue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GainValue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -387,22 +387,22 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Gamma"
 
-        public static Color GammaRgb(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GammaRgb(Color color, ColorRange colorRange, params double[] filterParams)
         {
-            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
-            var filtered = new Color(color);
             if (filterParams.Any()) {
+                var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+                var filtered = new Color(color);
                 double gamma = filterParams[0];
                 filtered.Red = ColorMath.Gamma(color.Red, gamma);
                 filtered.Green = ColorMath.Gamma(color.Green, gamma);
                 filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
+                color.InterpolateWith(filtered, rangeFactor);
             }
 
-            color.InterpolateWith(filtered, rangeFactor);
             return color;
         }
 
-        public static Color GammaRed(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GammaRed(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -415,7 +415,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GammaGreen(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GammaGreen(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -428,7 +428,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GammaBlue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GammaBlue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -441,7 +441,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GammaHslSaturation(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GammaHslSaturation(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -454,7 +454,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GammaLightness(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GammaLightness(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -467,7 +467,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color GammaValue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color GammaValue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -484,7 +484,7 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Contrast"
 
-        public static Color ContrastRgb(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color ContrastRgb(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -501,7 +501,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color ContrastLightness(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color ContrastLightness(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -516,7 +516,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color ContrastValue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color ContrastValue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -552,7 +552,7 @@ namespace ColorSchemeManipulator.Filters
 
         #region Hue
 
-        public static Color ShiftHslHue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color ShiftHslHue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -570,7 +570,7 @@ namespace ColorSchemeManipulator.Filters
 
         #region "Levels"
 
-        public static Color LevelsRgb(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color LevelsRgb(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -586,7 +586,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color LevelsRed(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color LevelsRed(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -598,7 +598,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color LevelsGreen(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color LevelsGreen(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -610,7 +610,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color LevelsBlue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color LevelsBlue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -622,7 +622,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
+        public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange,
             params double[] filterParams)
         {
             // This is to avoid multiple enumeration
@@ -703,7 +703,7 @@ namespace ColorSchemeManipulator.Filters
             }
         }
 
-        public static Color LevelsLightness(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color LevelsLightness(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -714,7 +714,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color LevelsValue(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color LevelsValue(Color color, ColorRange colorRange, params double[] filterParams)
         {
             var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
             var filtered = new Color(color);
@@ -877,7 +877,7 @@ namespace ColorSchemeManipulator.Filters
             return color;
         }
 
-        public static Color Clamp(Color color, ColorRange colorRange = null, params double[] filterParams)
+        public static Color Clamp(Color color, ColorRange colorRange, params double[] filterParams)
         {
             color.ClampExceedingColors();
             return color;
