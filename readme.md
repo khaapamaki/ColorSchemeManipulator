@@ -1,11 +1,12 @@
 #### *** You are in development branch ***
 
-## Color Scheme Manipulator 0.6
+## Color Scheme Manipulator 0.7
 
 This is a tiny command line tool for adjusting colors in color schemes. 
 Works currently with JetBrains IDEA (.icls), Visual Studio (.vstheme) and VS Code color scheme files (.json).
 
 This can also filter png/jpg-files for quick testing.
+
 
 ### Features
 
@@ -302,11 +303,11 @@ for the current file by invoking `GetHandlerForFile(string sourceFile)` methdod.
 
 ```c#
 using System;
-using ColorSchemeInverter.Filters;
-using ColorSchemeInverter.SchemeFormats;
-using ColorSchemeInverter.SchemeFormats.Handlers;
+using ColorSchemeManipulator.Filters;
+using ColorSchemeManipulator.SchemeFormats;
+using ColorSchemeManipulator.SchemeFormats.Handlers;
 
-namespace ColorSchemeInverter
+namespace ColorSchemeManipulator
 {
     internal class Program
     {
@@ -334,42 +335,83 @@ namespace ColorSchemeInverter
 
 ### Creating a filter that uses range system
 
-Filter are handled as Func<> delegates:
+From version 0.7 and above there are two different type of filters, one for handling a single color value individually,
+and another one that enumerates the whole set of colors. Both are chainable together.
+
+Filter are used as Func<> delegates.
+
+#### Single color filter delegate type
+
+```c#
+Func<Color, ColorRange, double[], Color>
+```
+
+The filter must have signature of
+```c#
+Color MyFilter(Color color, ColorRange range, params double[] params)
+```
+
+#### Enumerating color filter delegate type
+
 ```c#
 Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>>
 ```
 
-And they must have signature of
-
+The filter must have signature of
 ```c#
-IEnumerable<Color> MyFilter(Enumerable<Color> colors, ColorRange range, params double[] params)
+IEnumerable<Color>  MyFilter(Enumerable<Color> colors, ColorRange range, params double[] params)
 ```
 
-Example of a filter. This maybe defined in **FilterBundle** class or anywhere as long as you register it to **CliArgs**. 
+
+Example of a single color filter. This maybe defined in **FilterBundle** class or anywhere as long as you register it to **CliArgs**. 
 See below.
 
 ```C#
-public static IEnumerable<Color> GammaRgb(IEnumerable<Color> colors, 
-                                            ColorRange colorRange = null,
-                                            params double[] filterParams)
+public static Color GammaRgb(Color color, ColorRange colorRange = null, params double[] filterParams)
 {
-    foreach (var color in colors) {
-        var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
-        var filtered = new Color(color);
+    if (filterParams.Any()) {
+        double gamma = filterParams[0];
+        filtered.Red = ColorMath.Gamma(color.Red, gamma);
+        filtered.Green = ColorMath.Gamma(color.Green, gamma);
+        filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
+    }
+    
+    return filtered;
+}
+```
 
-        if (filterParams.Any()) {
-            double gamma = filterParams[0];
-            filtered.Red = ColorMath.Gamma(color.Red, gamma);
-            filtered.Green = ColorMath.Gamma(color.Green, gamma);
-            filtered.Blue = ColorMath.Gamma(color.Blue, gamma);
-        }
+Another example of enumerating filter. This will find lowest and highest value from color set and uses this before
+filtering the color data
 
-        yield return color.InterpolateWith(filtered, rangeFactor);
+```C#
+public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, ColorRange colorRange = null,
+    params double[] filterParams)
+{
+    List<Color> cache = colors.ToList();
+    (double inBlack, double inWhite) = FilterUtils.GetLowestAndHighestValue(cache);
+
+    var result = cache.Select(
+        color =>
+        {
+            var rangeFactor = FilterUtils.GetRangeFactor(colorRange, color);
+            var filtered = new Color(color);
+            (double outBlack, double outWhite, double gamma) =
+                FilterUtils.GetAutoLevelParameters(filterParams);
+            filtered.Red = ColorMath.Levels(color.Red, inBlack, inWhite, gamma, outBlack, outWhite);
+            filtered.Green = ColorMath.Levels(color.Green, inBlack, inWhite, gamma, outBlack, outWhite);
+            filtered.Blue = ColorMath.Levels(color.Blue, inBlack, inWhite, gamma, outBlack, outWhite);
+
+            color.InterpolateWith(filtered, rangeFactor);
+            return color;
+        });
+
+    foreach (var color in result) {
+        yield return color;
     }
 }
 ```
 
-...and registering it to be used from command line 
+Finally you need to register the filter to be used from command line 
 
 ```C#
 CliArgs.Register(new CliArgBuilder()

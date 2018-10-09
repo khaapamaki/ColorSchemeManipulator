@@ -111,7 +111,7 @@ namespace ColorSchemeManipulator
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public (FilterSet, string[], string[]) RegisterCliOptions(string[] args)
+        public (FilterChain, string[], string[]) RegisterCliOptions(string[] args)
         {
             // Register Filters
             FilterBundle.RegisterCliOptions();
@@ -122,13 +122,13 @@ namespace ColorSchemeManipulator
             _experimentalFilterCount = CliArgs.GetItems().Count() - _filterCount;
 
             // Parse CLI args and generate FilterSet of them
-            (var filterSet, string[] nonOptionArgs) = CliArgs.ParseFilterArgs(args);
+            (var filterChain, string[] nonOptionArgs) = CliArgs.ParseFilterArgs(args);
 
             // Extract non-option and remaining option arguments
             string[] nonFilterOptionArgs;
             (nonOptionArgs, nonFilterOptionArgs) = CliArgs.ExtractOptionArguments(nonOptionArgs);
 
-            return (filterSet, nonOptionArgs, nonFilterOptionArgs);
+            return (filterChain, nonOptionArgs, nonFilterOptionArgs);
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace ColorSchemeManipulator
         /// </summary>
         /// <param name="sourceFile"></param>
         /// <param name="targetFile"></param>
-        /// <param name="filterSet"></param>
-        public void ProcessFile(string sourceFile, string targetFile, FilterSet filterSet)
+        /// <param name="filterChain"></param>
+        public void ProcessFile(string sourceFile, string targetFile, FilterChain filterChain)
         {
             if (File.Exists(sourceFile)) {
                 //--------------------------------------------------------------------------
@@ -170,10 +170,10 @@ namespace ColorSchemeManipulator
 
                 if (bitmapHandler != null) {
                     var processor = new ColorFileProcessor<Bitmap>(bitmapHandler);
-                    processor.ProcessFile(sourceFile, targetFile, filterSet);
+                    processor.ProcessFile(sourceFile, targetFile, filterChain);
                 } else if (schemeHandler != null) {
                     var processor = new ColorFileProcessor<string>(schemeHandler);
-                    processor.ProcessFile(sourceFile, targetFile, filterSet);
+                    processor.ProcessFile(sourceFile, targetFile, filterChain);
                 } else {
                     Console.WriteLine($"{sourceFile} is not supported color scheme format");
                     return;

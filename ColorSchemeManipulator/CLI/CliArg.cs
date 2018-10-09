@@ -10,7 +10,9 @@ namespace ColorSchemeManipulator.CLI
     public class CliArg
     {
         public List<string> OptionArgs { get; set; }
-        public Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> FilterDelegate { get; set; }
+        
+        public FilterDelegate FilterDelegate { get; set; }
+        //public Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> SingleFilter { get; set; }
         public byte MinParams { get; set; }
         public byte MaxParams { get; set; }
         public string Description { get; set; }
@@ -18,7 +20,7 @@ namespace ColorSchemeManipulator.CLI
         public string ParamDesc { get; set; }
 
         public CliArg(IEnumerable<string> options,
-            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate, 
+            FilterDelegate filterDelegate, 
             byte minParams,
             byte maxParams = 0,
             string paramList = "", 
@@ -34,6 +36,41 @@ namespace ColorSchemeManipulator.CLI
             ParamDesc = paramDesc;
         }
         
+        
+        public CliArg(IEnumerable<string> options,
+            Func<Color, ColorRange, double[], Color> singleFilter, 
+            byte minParams,
+            byte maxParams = 0,
+            string paramList = "", 
+            string desc = "", 
+            string paramDesc = "")
+        {
+            OptionArgs = new List<string>(options);
+            FilterDelegate = new FilterDelegate(singleFilter);
+            MinParams = minParams;
+            MaxParams = minParams < maxParams ? maxParams : minParams;
+            Description = desc;
+            ParamList = paramList;
+            ParamDesc = paramDesc;
+        }
+        
+        public CliArg(IEnumerable<string> options,
+            Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilter, 
+            byte minParams,
+            byte maxParams = 0,
+            string paramList = "", 
+            string desc = "", 
+            string paramDesc = "")
+        {
+            OptionArgs = new List<string>(options);
+            FilterDelegate = new FilterDelegate(multiFilter);
+            MinParams = minParams;
+            MaxParams = minParams < maxParams ? maxParams : minParams;
+            Description = desc;
+            ParamList = paramList;
+            ParamDesc = paramDesc;
+        }
+        
         public string GetDescription(bool verbose)
         {
             return verbose ? GetVerboseDescription() : GetBriefDescription();
@@ -41,7 +78,7 @@ namespace ColorSchemeManipulator.CLI
 
         public string GetVerboseDescription()
         {
-            string description = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
+            string description = Description == "" ? "@" + FilterDelegate.FilterName() : Description;
 
             List<string> optLines = new List<string>(4);
             for (var i = 0; i < OptionArgs.Count; i++) {
@@ -76,7 +113,7 @@ namespace ColorSchemeManipulator.CLI
 
         public string GetBriefDescription()
         {
-            string description = Description == "" ? "@" + FilterDelegate.Method.Name : Description;
+            string description = Description == "" ? "@" + FilterDelegate.FilterName() : Description;
 
             List<string> options = new List<string> {"", ""};
 
@@ -99,7 +136,7 @@ namespace ColorSchemeManipulator.CLI
             //Utils.WordWrap(ParamDesc, 70).ForEach(l => descLines.Add(l));
 
             var sb = new StringBuilder();
-            ;
+
             for (var index = 0; index < descLines.Count; index++) {
                 var desc = index < descLines.Count ? descLines[index].Trim() : "";
                 if (index == 0)
@@ -114,4 +151,5 @@ namespace ColorSchemeManipulator.CLI
         }
         
     }
+
 }

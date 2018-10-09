@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 
@@ -11,19 +13,19 @@ namespace ColorSchemeManipulator.Filters
     /// </summary>
     public class ColorFilter
     {
-        private Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> FilterDelegate { get; }
+        private FilterDelegate Filter { get; }
         private double[] Parameters { get; }
         private ColorRange ColorRange { get; }
 
-        public ColorFilter(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate,
+        public ColorFilter(FilterDelegate filter,
             ColorRange colorColorRange = null,
             params double[] filterParams)
         {
-            FilterDelegate = filterDelegate;
+            Filter = filter;
             ColorRange = colorColorRange;
             Parameters = filterParams;
         }
-
+       
         /// <summary>
         /// Applies the filter for a color enumeration
         /// </summary>
@@ -32,20 +34,21 @@ namespace ColorSchemeManipulator.Filters
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors)
         {
             Console.WriteLine("  " + ToString());
-            return FilterDelegate(colors, ColorRange, Parameters);
+            return Filter.ApplyTo(colors, ColorRange, Parameters);
         }
-        
+
         /// <summary>
         /// Applies the filter for a color enumeration with final color clamping.
         /// </summary>
         /// <param name="colors"></param>
         /// <param name="outputClamping"></param>
         /// <returns></returns>
+        [Obsolete]
         private IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping)
         {
             Console.WriteLine("  " + ToString());
-            colors = FilterDelegate(colors, ColorRange, Parameters);
-
+            colors = Filter.ApplyTo(colors, ColorRange, Parameters);
+        
             // Final clamping after last filter in chain
             foreach (var color in colors) {
                 if (outputClamping)
@@ -56,12 +59,7 @@ namespace ColorSchemeManipulator.Filters
         
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            foreach (var argument in Parameters) {
-                sb.Append((sb.Length > 0 ? ", " : "") + argument);
-            }
-
-            return FilterDelegate.Method.Name + (sb.Length > 0 ? $"({sb})" : "") + (ColorRange != null ? " ==> " + ColorRange  : "");
+            return Filter.ToString(ColorRange, Parameters);
         }
     }
 }

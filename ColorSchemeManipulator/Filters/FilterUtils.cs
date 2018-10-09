@@ -34,7 +34,6 @@ namespace ColorSchemeManipulator.Filters
 
                 return result;
             }
-
         }
 
         public static (double, double) GetLowestAndHighestRgb(List<Color> colors)

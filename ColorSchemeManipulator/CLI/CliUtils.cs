@@ -14,25 +14,25 @@ namespace ColorSchemeManipulator.CLI
         /// </summary>
         /// <param name="args"></param>
         /// <returns>FilterSet with delegate and parameters, Remaining arguments</returns>
-        public static (FilterSet, string[]) ParseFilterArgs(string[] args)
+        public static (FilterChain, string[]) ParseFilterArgs(string[] args)
         {
-            (FilterSet filters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
+            (FilterChain filters, List<string> remainingArgs) = RecursiveParseFilterArgs(args);
             return (filters, remainingArgs.ToArray());
         }
 
-        private static (FilterSet, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
-            FilterSet filters = null, List<string> remainingArgs = null)
+        private static (FilterChain, List<string>) RecursiveParseFilterArgs(string[] args, int index = 0,
+            FilterChain filters = null, List<string> remainingArgs = null)
         {
-            filters = filters ?? new FilterSet();
+            filters = filters ?? new FilterChain();
             remainingArgs = remainingArgs ?? new List<string>();
             if (args.Length < index + 1)
                 return (filters, remainingArgs);
 
             string arg = args[index++];
 
-            (var filterDelegate, var colorRange, double[] filterParams) = CliArgs.GetDelegateAndData(arg);
+            (FilterDelegate filterDelegate, var colorRange, double[] filterParams) = CliArgs.GetDelegateAndData(arg);
 
-            if (filterDelegate is Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> func) {
+            if (filterDelegate is FilterDelegate func) {
                 filters.Add(func, colorRange, filterParams);
             } else {
                 remainingArgs.Add(arg);

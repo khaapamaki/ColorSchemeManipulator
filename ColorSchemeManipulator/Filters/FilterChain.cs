@@ -6,40 +6,49 @@ using ColorSchemeManipulator.Colors;
 namespace ColorSchemeManipulator.Filters
 {
     /// <summary>
-    /// A collection class for storing multiple ColoFilters that
+    /// A collection class for storing multiple filters with their parameters that
     /// are meant to be processed sequentially
     /// </summary>
-    public class FilterSet
+    public class FilterChain
     {
         private readonly List<ColorFilter> _filters = new List<ColorFilter>();
 
-        public FilterSet() { }
+        public FilterChain() { }
 
-        public FilterSet Add(ColorFilter filter)
+        public FilterChain Add(ColorFilter filter)
         {
             _filters.Add(filter);
             return this;
         }
 
-        public FilterSet Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate)
-        {
-            _filters.Add(new ColorFilter(filterDelegate));
-            return this;
-        }
-
-        public FilterSet Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> filterDelegate,
-            ColorRange colorRange,
+        public FilterChain Add(FilterDelegate filterDelegate, ColorRange colorRange,
             params double[] filterParams)
         {
             _filters.Add(new ColorFilter(filterDelegate, colorRange, filterParams));
+            return this;
+        }
+        
+        public FilterChain Add(Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> multiFilter,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            _filters.Add(new ColorFilter(new FilterDelegate(multiFilter), colorRange, filterParams));
+            return this;
+        }
+        
+        public FilterChain Add(Func<Color, ColorRange, double[],Color> singleFilter,
+            ColorRange colorRange,
+            params double[] filterParams)
+        {
+            _filters.Add(new ColorFilter(new FilterDelegate(singleFilter), colorRange, filterParams));
             return this;
         }
 
         public IEnumerable<Color> ApplyTo(IEnumerable<Color> colors, bool outputClamping = true)
         {
             // Process all filters in chain
-            foreach (var filterDelegate in _filters) {               
-                colors = filterDelegate.ApplyTo(colors);
+            foreach (var filter in _filters) {               
+                colors = filter.ApplyTo(colors);
             }
 
             // Final clamping after last filter in chain
