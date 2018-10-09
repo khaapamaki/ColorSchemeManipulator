@@ -30,9 +30,9 @@ namespace ColorSchemeManipulator.CLI
 
             string arg = args[index++];
 
-            (var filterDelegate, var colorRange, double[] filterParams) = CliArgs.GetDelegateAndData(arg);
+            (FilterWrapper filterDelegate, var colorRange, double[] filterParams) = CliArgs.GetDelegateAndData(arg);
 
-            if (filterDelegate is Func<IEnumerable<Color>, ColorRange, double[], IEnumerable<Color>> func) {
+            if (filterDelegate is FilterWrapper func) {
                 filters.Add(func, colorRange, filterParams);
             } else {
                 remainingArgs.Add(arg);

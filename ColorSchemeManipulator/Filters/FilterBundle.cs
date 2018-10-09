@@ -81,7 +81,6 @@ namespace ColorSchemeManipulator.Filters
                 paramDesc:
                 "<contrast> is curvature strength in range of -1..1 (0), <ip> is inflection point in range of 0..1 (0.5)");
 
-
             CliArgs.Register(new List<string> {"-cv", "--contrast-value"}, ContrastValue, 1, 2,
                 paramList: "=<contrast>[,<ip>]",
                 desc:
