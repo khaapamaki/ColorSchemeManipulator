@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Common;
+using ColorSchemeManipulator.Ranges;
 
 namespace ColorSchemeManipulator.Filters
 {

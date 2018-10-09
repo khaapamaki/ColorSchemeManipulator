@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Ranges;
 
 namespace ColorSchemeManipulator.Filters
 {

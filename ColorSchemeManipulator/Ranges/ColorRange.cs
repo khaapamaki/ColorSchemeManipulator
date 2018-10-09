@@ -1,20 +1,20 @@
 using System.Text;
 using ColorSchemeManipulator.Colors;
 
-namespace ColorSchemeManipulator.Filters
+namespace ColorSchemeManipulator.Ranges
 {
     public class ColorRange
     {
         public ColorRange() { }
 
-        public ParameterRange SaturationRange { get; set; } = null;
-        public ParameterRange LightnessRange { get; set; } = null;
-        public ParameterRange ValueRange { get; set; } = null;
-        public ParameterRange RedRange { get; set; } = null;
-        public ParameterRange GreenRange { get; set; } = null;
-        public ParameterRange BlueRange { get; set; } = null;
-        public ParameterRange HueRange { get; set; } = null;
-        public ParameterRange BrightnessRange { get; set; } = null;
+        public ParameterRange SaturationRange { get; set; }
+        public ParameterRange LightnessRange { get; set; }
+        public ParameterRange ValueRange { get; set; }
+        public ParameterRange RedRange { get; set; }
+        public ParameterRange GreenRange { get; set; }
+        public ParameterRange BlueRange { get; set; }
+        public ParameterRange HueRange { get; set; }
+        public ParameterRange BrightnessRange { get; set; }
 
         public double InRangeFactor(Color color)
         {

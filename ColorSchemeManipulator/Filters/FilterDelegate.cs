@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Ranges;
 
 namespace ColorSchemeManipulator.Filters
 {

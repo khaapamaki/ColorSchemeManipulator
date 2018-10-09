@@ -1,7 +1,7 @@
 using System;
 using ColorSchemeManipulator.Common;
 
-namespace ColorSchemeManipulator.Filters
+namespace ColorSchemeManipulator.Ranges
 {
     public class ParameterRange
     {
@@ -10,7 +10,7 @@ namespace ColorSchemeManipulator.Filters
         public double MaxStart { get; set; }
         public double MaxEnd { get; set; }
 
-        public bool IsLoopingRange { get; private set; } = false;
+        public bool IsLoopingRange { get; private set; }
 
         private double _loopMax;
 

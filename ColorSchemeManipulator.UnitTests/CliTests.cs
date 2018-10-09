@@ -3,6 +3,7 @@ using NUnit.Framework;
 using ColorSchemeManipulator.Filters;
 using ColorSchemeManipulator.CLI;
 using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Ranges;
 
 namespace ColorSchemeManipulator.UnitTests
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ColorSchemeManipulator.Colors;
 using ColorSchemeManipulator.Filters;
+using ColorSchemeManipulator.Ranges;
 
 namespace ColorSchemeManipulator.CLI
 {

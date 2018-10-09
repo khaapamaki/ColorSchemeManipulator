@@ -367,6 +367,9 @@ Example of a single color filter. This maybe defined in **FilterBundle** class o
 See below.
 
 ```C#
+using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Ranges;
+
 public static Color GammaRgb(Color color, ColorRange colorRange, params double[] filterParams)
 {
     if (filterParams.Any()) {
@@ -389,6 +392,11 @@ Another example of enumerating filter. This will first query for find lowest and
 filtering the color data.
 
 ```C#
+using System.Collections.Generic;
+using ColorSchemeManipulator.Colors;
+using ColorSchemeManipulator.Ranges;
+using System.Linq;
+
 public static IEnumerable<Color> AutoLevelsRgb(IEnumerable<Color> colors, 
                 ColorRange colorRange, 
                 params double[] filterParams)
